@@ -1,0 +1,7 @@
+/packages
+*.user
+/FredsImageMagickScripts.NET/bin
+/FredsImageMagickScripts.NET/obj
+/FredsImageMagickScripts.NET.Tests/obj
+/FredsImageMagickScripts.NET.Tests/bin
+/*.suo
