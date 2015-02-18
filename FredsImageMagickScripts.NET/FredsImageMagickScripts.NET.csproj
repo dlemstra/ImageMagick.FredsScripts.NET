@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\Threshold\TwoColorThreshScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FredsImageMagickScripts.NET.snk" />

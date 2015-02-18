@@ -7,10 +7,8 @@
 // For use of scripts in commercial (for-profit) environments or non-free applications, please
 // contact Fred Weinhaus for licensing arrangements. His email address is fmw at alink dot net.
 //
-// If you:
-// 1. redistribute
-// 2. incorporate any of these scripts into other free applications or
-// 3. reprogram them in another scripting language, then you must contact Fred Weinhaus for
+// If you: 1) redistribute, 2) incorporate any of these scripts into other free applications or
+// 3) reprogram them in another scripting language, then you must contact Fred Weinhaus for
 // permission, especially if the result might be used in a commercial or for-profit environment.
 //
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
@@ -34,5 +32,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: ComVisible(false)]
-[assembly: CLSCompliant(false)]
+[assembly: CLSCompliant(true)]
 //=================================================================================================
