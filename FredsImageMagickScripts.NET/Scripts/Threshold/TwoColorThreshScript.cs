@@ -4,8 +4,8 @@
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
-// For use of scripts in commercial (for-profit) environments or non-free applications, please
-// contact Fred Weinhaus for licensing arrangements. His email address is fmw at alink dot net.
+// For use of these scripts in commercial (for-profit) environments or non-free applications,
+// please contact Fred Weinhaus (fmw at alink dot net) for licensing arrangements.
 //
 // If you: 1) redistribute, 2) incorporate any of these scripts into other free applications or
 // 3) reprogram them in another scripting language, then you must contact Fred Weinhaus for
