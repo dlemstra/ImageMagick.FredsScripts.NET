@@ -17,9 +17,6 @@
 //=================================================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ImageMagick;
 
 namespace FredsImageMagickScripts
@@ -28,7 +25,7 @@ namespace FredsImageMagickScripts
 	/// <summary>
 	/// Applies a Dragan-like effect to an image to enhance wrinkles creating a "gritty" effect.
 	/// </summary>
-	public class DraganEffectScript
+	public sealed class DraganEffectScript
 	{
 		//===========================================================================================
 		private void ApplyBrightness(MagickImage image)
@@ -72,7 +69,7 @@ namespace FredsImageMagickScripts
 		}
 		///==========================================================================================
 		/// <summary>
-		/// Creates a new instance of the WhiteboardScript class using the specified image.
+		/// Creates a new instance of the DraganEffectScript class.
 		/// </summary>
 		public DraganEffectScript()
 		{

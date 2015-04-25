@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\FredsImageMagickScripts.NET.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\FredsImageMagickScripts.NET.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\FredsImageMagickScripts.NET.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
     <PlatformTarget>x64</PlatformTarget>
@@ -34,7 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Release\FredsImageMagickScripts.NET.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\FredsImageMagickScripts.NET.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\FredsImageMagickScripts.NET.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x64</PlatformTarget>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -68,9 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\DraganEffectScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\Effects\DraganEffectScript.cs" />
-    <Compile Include="Scripts\Threshold\TwoColorThreshScript.cs" />
+    <Compile Include="Threshold\TwoColorThreshScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FredsImageMagickScripts.NET.snk" />
