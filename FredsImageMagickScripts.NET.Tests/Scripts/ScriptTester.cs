@@ -28,7 +28,20 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 	public abstract class ScriptTester
 	{
 		//===========================================================================================
-		private static string _Root = @"..\..\..\FredsImageMagickScripts.NET.Tests\";
+		private static string _ImagesRoot = @"..\..\..\Images\";
+		//===========================================================================================
+		private string GetExpectedOutputFile(string fileName)
+		{
+			return _ImagesRoot + @"Output\" + ScriptName + @"\" + fileName;
+		}
+		//===========================================================================================
+		private string GetActualOutputFile(string fileName)
+		{
+			int dotIndex = fileName.LastIndexOf('.');
+			string name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
+
+			return _ImagesRoot + @"Output\" + ScriptName + @"\" + name;
+		}
 		//===========================================================================================
 		protected string ScriptName
 		{
@@ -41,23 +54,23 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 		//===========================================================================================
 		protected string GetInputFile(string fileName)
 		{
-			return _Root + @"Images\" + fileName;
-		}
-		//===========================================================================================
-		protected string GetOutputFile(string fileName)
-		{
-			return _Root + @"Images\Output\" + ScriptName + @"\" + fileName;
+			return _ImagesRoot + @"Input\" + fileName;
 		}
 		//===========================================================================================
 		protected void TestOutput(MagickImage image, string expectedOutput)
 		{
-			string outputFile = GetOutputFile(expectedOutput);
+			string actualOutputFile = GetActualOutputFile(expectedOutput);
+			image.Write(actualOutputFile);
 
-			using (MagickImage expectedImage = new MagickImage(outputFile))
+			string expectedOutputFile = GetExpectedOutputFile(expectedOutput);
+			using (MagickImage expectedImage = new MagickImage(expectedOutputFile))
 			{
-				double distortion = image.Compare(expectedImage, ErrorMetric.RootMeanSquared);
+				using (MagickImage actualImage = new MagickImage(actualOutputFile))
+				{
+					double distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
 
-				Assert.AreEqual(0.0, distortion, 0.015, "Distortion is too high.");
+					Assert.AreEqual(0.0, distortion, "Distortion is too high.");
+				}
 			}
 		}
 		//===========================================================================================

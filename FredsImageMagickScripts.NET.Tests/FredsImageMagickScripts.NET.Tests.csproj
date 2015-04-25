@@ -35,6 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Magick.NET-x64, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=AMD64">
@@ -57,7 +58,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Helpers\ExceptionAssert.cs" />
+    <Compile Include="Images.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\Effect\DraganEffectScriptTests.cs" />
     <Compile Include="Scripts\ScriptTester.cs" />
     <Compile Include="Scripts\Threshold\TwoColorThreshScriptTests.cs" />
   </ItemGroup>
@@ -68,7 +72,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

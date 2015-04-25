@@ -42,6 +42,9 @@ namespace FredsImageMagickScripts
 		/// </summary>
 		public static MagickImage Execute(MagickImage input)
 		{
+			if (input == null)
+				throw new ArgumentNullException("input");
+
 			MagickImage result = input.Clone();
 
 			QuantizeSettings settings = new QuantizeSettings()
@@ -51,7 +54,7 @@ namespace FredsImageMagickScripts
 			};
 
 			result.Quantize(settings);
-			result.ColorSpace =  ColorSpace.GRAY;
+			result.ColorSpace = ColorSpace.GRAY;
 			result.ContrastStretch(0);
 
 			return result;

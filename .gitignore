@@ -4,5 +4,6 @@
 /FredsImageMagickScripts.NET.Tests/bin
 /packages
 /TestResults
+*.actual.*
 *.suo
 *.user

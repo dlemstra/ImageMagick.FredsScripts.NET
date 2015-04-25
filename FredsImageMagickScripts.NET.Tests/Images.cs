@@ -17,54 +17,23 @@
 //=================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using FredsImageMagickScripts;
+using System.Text;
 using ImageMagick;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
+namespace FredsImageMagickScripts.NET.Tests
 {
 	//==============================================================================================
-	[TestClass]
-	public class TwoColorThreshScriptTests : ScriptTester
+	internal static class Images
 	{
 		//===========================================================================================
-		private const string _Category = "TwoColorThreshScriptTests";
-		//===========================================================================================
-		private void Test_Execute(string input)
+		public static MagickImage Logo
 		{
-			string inputFile = GetInputFile(input);
-			string output = input.Replace(".jpg", ".gif");
-
-			using (MagickImage image = new MagickImage(inputFile))
+			get
 			{
-				MagickImage scriptOutput = TwoColorThreshScript.Execute(image);
-				TestOutput(scriptOutput, output);
+				return new MagickImage("logo:");
 			}
-		}
-		//===========================================================================================
-		[TestMethod, TestCategory(_Category)]
-		public void Test_Execute()
-		{
-			Test_Execute("blocks.gif");
-			Test_Execute("blood.jpg");
-			Test_Execute("fingerprint.jpg");
-			Test_Execute("flower.jpg");
-			Test_Execute("house.jpg");
-			Test_Execute("kanji.jpg");
-			Test_Execute("parts.gif");
-			Test_Execute("rice.jpg");
-			Test_Execute("tank.jpg");
-			Test_Execute("textsample.jpg");
-		}
-		//===========================================================================================
-		[TestMethod, TestCategory(_Category)]
-		public void Test_Execute_Null()
-		{
-			ExceptionAssert.Throws<ArgumentNullException>(() =>
-			{
-				TwoColorThreshScript.Execute(null);
-			});
 		}
 		//===========================================================================================
 	}

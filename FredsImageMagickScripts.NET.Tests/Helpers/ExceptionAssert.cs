@@ -17,54 +17,50 @@
 //=================================================================================================
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using FredsImageMagickScripts;
-using ImageMagick;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
+namespace FredsImageMagickScripts.NET.Tests
 {
 	//==============================================================================================
-	[TestClass]
-	public class TwoColorThreshScriptTests : ScriptTester
+	public static class ExceptionAssert
 	{
 		//===========================================================================================
-		private const string _Category = "TwoColorThreshScriptTests";
-		//===========================================================================================
-		private void Test_Execute(string input)
+		private static void Fail(string message, params object[] arguments)
 		{
-			string inputFile = GetInputFile(input);
-			string output = input.Replace(".jpg", ".gif");
-
-			using (MagickImage image = new MagickImage(inputFile))
+			if (arguments != null && arguments.Length > 0)
+				Assert.Fail(String.Format(CultureInfo.InvariantCulture, message, arguments));
+			else
+				Assert.Fail(message);
+		}
+		//===========================================================================================
+		public static void Throws<TException>(Action action)
+			 where TException : Exception
+		{
+			Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
+		}
+		//===========================================================================================
+		public static void Throws<TException>(Action action, string message, params object[] arguments)
+			 where TException : Exception
+		{
+			try
 			{
-				MagickImage scriptOutput = TwoColorThreshScript.Execute(image);
-				TestOutput(scriptOutput, output);
+				action();
+				Fail(message, arguments);
 			}
-		}
-		//===========================================================================================
-		[TestMethod, TestCategory(_Category)]
-		public void Test_Execute()
-		{
-			Test_Execute("blocks.gif");
-			Test_Execute("blood.jpg");
-			Test_Execute("fingerprint.jpg");
-			Test_Execute("flower.jpg");
-			Test_Execute("house.jpg");
-			Test_Execute("kanji.jpg");
-			Test_Execute("parts.gif");
-			Test_Execute("rice.jpg");
-			Test_Execute("tank.jpg");
-			Test_Execute("textsample.jpg");
-		}
-		//===========================================================================================
-		[TestMethod, TestCategory(_Category)]
-		public void Test_Execute_Null()
-		{
-			ExceptionAssert.Throws<ArgumentNullException>(() =>
+			catch (TException exception)
 			{
-				TwoColorThreshScript.Execute(null);
-			});
+				Type type = exception.GetType();
+				if (type != typeof(TException))
+					Fail("Exception of type {0} was not thrown an exception of type {1} was thrown.", typeof(TException).Name, type.Name);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 		//===========================================================================================
 	}
