@@ -57,19 +57,17 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 		{
 			Test_Execute("before1.gif", (DraganEffectScript script) =>
 			{
+				script.Brightness = 1;
+				script.Contrast = 0;
+				script.Darkness = 1;
+				script.Saturation = 150;
 			}, "before1_draganeffect_b1_c0_d1_s150_r5.jpg");
 
 			Test_Execute("before1.gif", (DraganEffectScript script) =>
 			{
 				script.Brightness = 1.5;
 				script.Contrast = -5;
-				script.Saturation = 175;
-			}, "before1_draganeffect_b1p5_cm5_d1_s175_r5.jpg");
-
-			Test_Execute("before1.gif", (DraganEffectScript script) =>
-			{
-				script.Brightness = 1.5;
-				script.Contrast = -5;
+				script.Darkness = 1;
 				script.Saturation = 175;
 			}, "before1_draganeffect_b1p5_cm5_d1_s175_r5.jpg");
 
@@ -86,16 +84,23 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 		{
 			Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
 			{
+				script.Brightness = 1;
+				script.Contrast = 0;
+				script.Darkness = 1;
+				script.Saturation = 150;
 			}, "bluehat_draganeffect_b1_c0_d1_s150_r5.jpg");
 
 			Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
 			{
+				script.Brightness = 1;
 				script.Contrast = -7.5;
+				script.Darkness = 1;
 				script.Saturation = 200;
 			}, "bluehat_draganeffect_b1_cm7p5_d1_s200_r5.jpg");
 
 			Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
 			{
+				script.Brightness = 1;
 				script.Contrast = -7.5;
 				script.Darkness = 1.25;
 				script.Saturation = 200;
@@ -106,12 +111,16 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 		{
 			Test_Execute("CHINA-715-4_small.jpg", (DraganEffectScript script) =>
 			{
+				script.Brightness = 1;
 				script.Contrast = -5;
+				script.Darkness = 1;
+				script.Saturation = 150;
 			}, "CHINA-715-4_small_draganeffect_b1_cm5_d1_s150_r5.jpg");
 
 			Test_Execute("CHINA-715-4_small.jpg", (DraganEffectScript script) =>
 			{
 				script.Contrast = -10;
+				script.Darkness = 1;
 				script.Saturation = 200;
 			}, "CHINA-715-4_small_draganeffect_b1_cm10_d1_s200_r5.jpg");
 		}
@@ -120,6 +129,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 		{
 			Test_Execute("mustache.jpg", (DraganEffectScript script) =>
 			{
+				script.Brightness = 1;
 				script.Contrast = -5;
 				script.Darkness = 1.75;
 				script.Saturation = 175;
