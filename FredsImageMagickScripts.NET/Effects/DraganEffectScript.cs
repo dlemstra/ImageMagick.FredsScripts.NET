@@ -118,6 +118,7 @@ namespace FredsImageMagickScripts
 		/// <summary>
 		/// Applies a Dragan-like effect to an image to enhance wrinkles creating a "gritty" effect.
 		/// </summary>
+		/// <param name="input">The image to execute the script on.</param>
 		public MagickImage Execute(MagickImage input)
 		{
 			if (input == null)
@@ -145,7 +146,7 @@ namespace FredsImageMagickScripts
 					first.Clamp();
 				}
 
-				MagickImage result = first.Clone();
+				MagickImage output = first.Clone();
 
 				using (MagickImage third = first.Clone())
 				{
@@ -154,14 +155,14 @@ namespace FredsImageMagickScripts
 					third.Morphology(MorphologyMethod.Convolve, Kernel.DoG, "0,0,5");
 					third.Clamp();
 
-					result.Composite(third, CompositeOperator.Overlay);
+					output.Composite(third, CompositeOperator.Overlay);
 
 					using (MagickImage fourth = first.Clone())
 					{
 						fourth.Modulate(100, 0, 100);
 
-						result.Composite(fourth, CompositeOperator.HardLight);
-						return result;
+						output.Composite(fourth, CompositeOperator.HardLight);
+						return output;
 					}
 				}
 			}

@@ -328,6 +328,7 @@ namespace FredsImageMagickScripts
 		/// <summary>
 		/// Processses a scanned document of text to clean the text background and enhance the text.
 		/// </summary>
+		/// <param name="input">The image to execute the script on.</param>
 		public MagickImage Execute(MagickImage input)
 		{
 			if (input == null)
@@ -335,20 +336,20 @@ namespace FredsImageMagickScripts
 
 			CheckSettings();
 
-			MagickImage result = input.Clone();
-			RotateImage(result);
-			CropImage(result);
-			ConvertToGrayscale(result);
-			EnhanceImage(result);
-			RemoveNoise(result);
-			UnrotateImage(result);
-			SharpenImage(result);
-			SaturateImage(result);
-			AdaptiveBlurImage(result);
-			TrimImage(result);
-			PadImage(result);
+			MagickImage output = input.Clone();
+			RotateImage(output);
+			CropImage(output);
+			ConvertToGrayscale(output);
+			EnhanceImage(output);
+			RemoveNoise(output);
+			UnrotateImage(output);
+			SharpenImage(output);
+			SaturateImage(output);
+			AdaptiveBlurImage(output);
+			TrimImage(output);
+			PadImage(output);
 
-			return result;
+			return output;
 		}
 		///==========================================================================================
 		/// <summary>
