@@ -29,7 +29,15 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 	public class DraganEffectScriptTests : ScriptTester
 	{
 		//===========================================================================================
-		private const string _Category = "DraganEffectScriptTests";
+		private const string _Category = "DraganEffectScript";
+		//===========================================================================================
+		private static void Test_Defaults(DraganEffectScript script)
+		{
+			Assert.AreEqual(1.0, script.Brightness);
+			Assert.AreEqual(0.0, script.Contrast);
+			Assert.AreEqual(1.0, script.Darkness);
+			Assert.AreEqual(150, script.Saturation);
+		}
 		//===========================================================================================
 		private void Test_Execute(string input, Action<DraganEffectScript> action, string output)
 		{
@@ -122,10 +130,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 		public void Test_Defaults()
 		{
 			DraganEffectScript script = new DraganEffectScript();
-			Assert.AreEqual(1.0, script.Brightness);
-			Assert.AreEqual(0.0, script.Contrast);
-			Assert.AreEqual(1.0, script.Darkness);
-			Assert.AreEqual(150, script.Saturation);
+			Test_Defaults(script);
 
 			script.Brightness = 0.5;
 			script.Contrast = 4;
@@ -133,10 +138,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 			script.Saturation = 100;
 
 			script.Reset();
-			Assert.AreEqual(1.0, script.Brightness);
-			Assert.AreEqual(0.0, script.Contrast);
-			Assert.AreEqual(1.0, script.Darkness);
-			Assert.AreEqual(150, script.Saturation);
+			Test_Defaults(script);
 		}
 		//===========================================================================================
 		[TestMethod, TestCategory(_Category)]

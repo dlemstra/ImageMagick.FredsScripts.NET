@@ -29,7 +29,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 	public class TwoColorThreshScriptTests : ScriptTester
 	{
 		//===========================================================================================
-		private const string _Category = "TwoColorThreshScriptTests";
+		private const string _Category = "TwoColorThreshScript";
 		//===========================================================================================
 		private void Test_Execute(string input)
 		{
