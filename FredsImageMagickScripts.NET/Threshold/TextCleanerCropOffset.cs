@@ -16,48 +16,73 @@
 // http://www.imagemagick.org/script/license.php
 //=================================================================================================
 
-using System;
-using System.Globalization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace FredsImageMagickScripts.NET.Tests
+namespace FredsImageMagickScripts
 {
-	//==============================================================================================
-	public static class ExceptionAssert
+	///=============================================================================================
+	/// <summary>
+	/// Crop offsets for the TextCleaner script.
+	/// </summary>
+	public sealed class TextCleanerCropOffset
 	{
 		//===========================================================================================
-		private static void Fail(string message, params object[] arguments)
+		internal TextCleanerCropOffset()
 		{
-			if (arguments != null && arguments.Length > 0)
-				Assert.Fail(String.Format(CultureInfo.InvariantCulture, message, arguments));
-			else
-				Assert.Fail(message);
+			Bottom = 0;
+			Left = 0;
+			Right = 0;
+			Top = 0;
 		}
 		//===========================================================================================
-		public static void Throws<TException>(Action action)
-			 where TException : Exception
+		internal bool IsSet
 		{
-			Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
+			get
+			{
+				return Bottom != 0 || Left != 0 || Right != 0 || Top != 0;
+			}
 		}
 		//===========================================================================================
-		public static void Throws<TException>(Action action, string message, params object[] arguments)
-			 where TException : Exception
+		internal bool IsValid
 		{
-			try
+			get
 			{
-				action();
-				Fail(message, arguments);
+				return Bottom >= 0 && Left >= 0 && Right >= 0 && Top >= 0;
 			}
-			catch (TException exception)
-			{
-				Type type = exception.GetType();
-				if (type != typeof(TException))
-					Fail("Exception of type {0} was not thrown an exception of type {1} was thrown.", typeof(TException).Name, type.Name);
-			}
-			catch (Exception)
-			{
-				throw;
-			}
+		}
+		///==========================================================================================
+		/// <summary>
+		/// Gets or sets the width, in pixels, of the lower side of the bounding rectangle.
+		/// </summary>
+		public int Bottom
+		{
+			get;
+			set;
+		}
+		///==========================================================================================
+		/// <summary>
+		/// Gets or sets the width, in pixels, of the left side of the bounding rectangle.
+		/// </summary>
+		public int Left
+		{
+			get;
+			set;
+		}
+		///==========================================================================================
+		/// <summary>
+		/// Gets or sets the width, in pixels, of the right side of the bounding rectangle.
+		/// </summary>
+		public int Right
+		{
+			get;
+			set;
+		}
+		///==========================================================================================
+		/// <summary>
+		/// Gets or sets the width, in pixels, of the upper side of the bounding rectangle.
+		/// </summary>
+		public int Top
+		{
+			get;
+			set;
 		}
 		//===========================================================================================
 	}

@@ -17,6 +17,7 @@
 //=================================================================================================
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using ImageMagick;
@@ -30,17 +31,17 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 		//===========================================================================================
 		private static string _ImagesRoot = @"..\..\..\Images\";
 		//===========================================================================================
-		private string GetExpectedOutputFile(string fileName)
+		private FileInfo GetExpectedOutputFile(string fileName)
 		{
-			return _ImagesRoot + @"Output\" + ScriptName + @"\" + fileName;
+			return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + fileName);
 		}
 		//===========================================================================================
-		private string GetActualOutputFile(string fileName)
+		private FileInfo GetActualOutputFile(string fileName)
 		{
 			int dotIndex = fileName.LastIndexOf('.');
 			string name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
 
-			return _ImagesRoot + @"Output\" + ScriptName + @"\" + name;
+			return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + name);
 		}
 		//===========================================================================================
 		protected string ScriptName
@@ -59,10 +60,23 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 		//===========================================================================================
 		protected void TestOutput(MagickImage image, string expectedOutput)
 		{
-			string actualOutputFile = GetActualOutputFile(expectedOutput);
+			FileInfo actualOutputFile = GetActualOutputFile(expectedOutput);
+
+			if (!actualOutputFile.Directory.Exists)
+				actualOutputFile.Directory.Create();
+
 			image.Write(actualOutputFile);
 
-			string expectedOutputFile = GetExpectedOutputFile(expectedOutput);
+			FileInfo expectedOutputFile = GetExpectedOutputFile(expectedOutput);
+
+			/* Compress the image that will be used as the expected output after it has been compared
+			 * to the result from Fred his script. */
+			if (!expectedOutputFile.Exists && expectedOutputFile.Extension == ".jpg")
+			{
+				JpegOptimizer optimizer = new JpegOptimizer(actualOutputFile);
+				optimizer.LosslessCompress();
+			}
+
 			using (MagickImage expectedImage = new MagickImage(expectedOutputFile))
 			{
 				using (MagickImage actualImage = new MagickImage(actualOutputFile))
