@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.DraganEffect</id>
-    <version>1.0.5593.39017</version>
+    <version>1.0.5601.17389</version>
     <title>Fred's ImageMagick Script DraganEffect</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>

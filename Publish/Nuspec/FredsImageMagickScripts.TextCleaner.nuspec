@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata minClientVersion="2.5">
+    <id>FredsImageMagickScripts.TextCleaner</id>
+    <version>1.0.5601.17389</version>
+    <title>Fred's ImageMagick Script TextCleaner</title>
+    <authors>Dirk Lemstra, Fred Weinhaus</authors>
+    <owners>Dirk Lemstra, Fred Weinhaus</owners>
+    <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
+    <iconUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/raw/master/Images/FredsImageMagickScripts.Logo.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Processses a scanned document of text to clean the text background and enhance the text.</description>
+    <summary>Fred's ImageMagick Script TextCleaner (requires Magick.NET)</summary>
+    <releaseNotes />
+    <copyright>Copyright 2015 Dirk Lemstra, Fred Weinhaus</copyright>
+    <tags>Fred Weinhaus ImageMagick </tags>
+  </metadata>
+  <files>
+    <file src="Readme.txt" target="" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerCropOffset.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerCropOffset.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerEnhance.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerEnhance.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerLayout.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerLayout.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerRotation.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerRotation.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerScript.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerScript.cs" />
+  </files>
+</package>

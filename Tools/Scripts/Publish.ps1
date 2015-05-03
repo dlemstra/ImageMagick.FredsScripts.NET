@@ -3,6 +3,8 @@ $scriptPath = Split-Path -parent $MyInvocation.MyCommand.Path
 . $scriptPath\Shared\Functions.ps1
 SetFolder $scriptPath
 #==================================================================================================
+$github = 'https://github.com/dlemstra/FredsImageMagickScripts.NET'
+#==================================================================================================
 function AddFileElement($xml, $src, $target)
 {
 	$files = $xml.package.files
@@ -47,7 +49,7 @@ function CreateNuGetPackages()
 #==================================================================================================
 function CreateNuspecFiles()
 {
-	Foreach($script in $scripts)
+	Foreach ($script in $scripts)
 	{
 		$nuspecFile = FullPath "Publish\Nuspec\$($script.id).nuspec"
 		if (Test-Path $nuspecFile)
@@ -68,7 +70,12 @@ function CreateNuspecFiles()
 		$xml.package.metadata.description = $script.description
 		$xml.package.metadata.tags = "Fred Weinhaus ImageMagick " + $name
 
-		AddFileElement $xml "..\..\FredsImageMagickScripts.NET\$($script.path)" "Content\FredsImageMagickScripts\$($script.path)"
+		$path = FullPath "FredsImageMagickScripts.NET\$($script.path)"
+		Foreach ($file in Get-ChildItem $path -Filter "$($script.name)*")
+		{
+			$file = "$($script.path)\$file"
+			AddFileElement $xml "..\..\FredsImageMagickScripts.NET\$file" "Content\FredsImageMagickScripts\$file"
+		}
 
 		$xml.Save($nuspecFile)
 		Write-Host "Created: $nuspecFile"
@@ -95,6 +102,7 @@ function LoadScripts()
 		$file = Get-ChildItem -Filter "$($type.Name).cs" -Recurse
 		$path = FullPath "FredsImageMagickScripts.NET"
 		$path = $file.FullName.SubString($path.Length + 1)
+		$path = Split-Path -parent $path
 		$summary = $documentation.SelectSingleNode("member[@name='T:FredsImageMagickScripts.$($type.Name)']").summary.Trim()
 		$summary = [System.Text.RegularExpressions.Regex]::Replace($summary, '\s+', ' ')
 
@@ -104,7 +112,7 @@ function LoadScripts()
 			name = $name
 			description = $summary
 			path = $path
-			url = "https://github.com/dlemstra/FredsImageMagickScripts.NET/tree/master/FredsImageMagickScripts.NET/" + $path.Replace("\", "/")
+			url = "$github/tree/master/FredsImageMagickScripts.NET/" + $path.Replace("\", "/")
 		}
 	}
 
@@ -118,7 +126,7 @@ $content = @"
 This projects goal is to port most of the scripts for ImageMagick that are created by [Fred Weinhaus](http://www.fmwconcepts.com/imagemagick/) to C#. With the help of [Magick.NET](https://magick.codeplex.com) a library will be created that will make it easy to use Fred's scripts in .NET.
 
 ## License
-This project uses the same license as Fred's ImageMagick Scripts. You can find the license in the [LICENSE.md](https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md) file.
+This project uses the same license as Fred's ImageMagick Scripts. You can find the license in the [LICENSE.md]($github/blob/master/LICENSE.md) file.
 
 ## Scripts
 The following scripts have been ported to .NET and can be found on NuGet.
