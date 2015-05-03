@@ -286,7 +286,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 		{
 			ExceptionAssert.Throws<ArgumentNullException>(() =>
 			{
-				DraganEffectScript script = new DraganEffectScript();
+				TextCleanerScript script = new TextCleanerScript();
 				script.Execute(null);
 			});
 		}
