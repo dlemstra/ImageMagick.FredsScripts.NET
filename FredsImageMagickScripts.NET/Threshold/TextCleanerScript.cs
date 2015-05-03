@@ -97,10 +97,9 @@ namespace FredsImageMagickScripts
 			if (Padding == 0)
 				return;
 
-			int padding = Padding * 2;
-
-			image.BackgroundColor = BackgroundColor;
-			image.Extent(image.Width + padding, image.Height + padding, Gravity.Center);
+			image.Compose = CompositeOperator.Over;
+			image.BorderColor = BackgroundColor;
+			image.Border(Padding);
 		}
 		//===========================================================================================
 		private void RemoveNoise(MagickImage image)

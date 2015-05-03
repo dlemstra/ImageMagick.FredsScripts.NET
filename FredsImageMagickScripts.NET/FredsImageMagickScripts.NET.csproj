@@ -76,6 +76,8 @@
     <Compile Include="Threshold\TextCleanerRotation.cs" />
     <Compile Include="Threshold\TextCleanerScript.cs" />
     <Compile Include="Threshold\TwoColorThreshScript.cs" />
+    <Compile Include="Threshold\WhiteboardEnhancements.cs" />
+    <Compile Include="Threshold\WhiteboardScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FredsImageMagickScripts.NET.snk" />

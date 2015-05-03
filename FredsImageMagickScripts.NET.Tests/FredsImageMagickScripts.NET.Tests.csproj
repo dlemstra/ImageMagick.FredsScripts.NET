@@ -74,6 +74,7 @@
     <Compile Include="Scripts\ScriptTester.cs" />
     <Compile Include="Scripts\Threshold\TextCleanerScriptTests.cs" />
     <Compile Include="Scripts\Threshold\TwoColorThreshScriptTests.cs" />
+    <Compile Include="Scripts\Threshold\WhiteboardScriptTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FredsImageMagickScripts.NET\FredsImageMagickScripts.NET.csproj">

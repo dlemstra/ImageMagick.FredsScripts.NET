@@ -81,6 +81,9 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 			{
 				using (MagickImage actualImage = new MagickImage(actualOutputFile))
 				{
+					Assert.AreEqual(actualImage.Width, expectedImage.Width);
+					Assert.AreEqual(actualImage.Height, expectedImage.Height);
+
 					double distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
 
 					Assert.AreEqual(0.0, distortion, "Distortion is too high.");
