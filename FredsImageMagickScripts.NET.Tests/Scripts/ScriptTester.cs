@@ -71,10 +71,11 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 
 			/* Compress the image that will be used as the expected output after it has been compared
 			 * to the result from Fred his script. */
-			if (!expectedOutputFile.Exists && expectedOutputFile.Extension == ".jpg")
+			if (!expectedOutputFile.Exists)
 			{
-				JpegOptimizer optimizer = new JpegOptimizer(actualOutputFile);
-				optimizer.LosslessCompress();
+				ImageOptimizer optimizer = new ImageOptimizer();
+				optimizer.OptimalCompression = true;
+				optimizer.LosslessCompress(actualOutputFile);
 			}
 
 			using (MagickImage expectedImage = new MagickImage(expectedOutputFile))
