@@ -69,7 +69,7 @@ namespace FredsImageMagickScripts
 			if (!MakeGray)
 				return;
 
-			image.ColorSpace = ColorSpace.GRAY;
+			image.ColorSpace = ColorSpace.Gray;
 			image.ColorType = ColorType.Grayscale;
 		}
 		//===========================================================================================
@@ -87,7 +87,7 @@ namespace FredsImageMagickScripts
 		private void EnhanceImage(MagickImage image)
 		{
 			if (Enhance == TextCleanerEnhance.Stretch)
-				image.ContrastStretch(0);
+				image.ContrastStretch((Percentage)0);
 			else if (Enhance == TextCleanerEnhance.Normalize)
 				image.Normalize();
 		}
@@ -106,10 +106,10 @@ namespace FredsImageMagickScripts
 		{
 			using (MagickImage second = image.Clone())
 			{
-				second.ColorSpace = ColorSpace.GRAY;
+				second.ColorSpace = ColorSpace.Gray;
 				second.Negate();
 				second.AdaptiveThreshold(FilterSize, FilterSize, FilterOffset);
-				second.ContrastStretch(0);
+				second.ContrastStretch((Percentage)0);
 
 				if (SmoothingThreshold != null)
 				{
@@ -138,10 +138,10 @@ namespace FredsImageMagickScripts
 		//===========================================================================================
 		private void SaturateImage(MagickImage image)
 		{
-			if (Saturation == 100)
+			if (Saturation == (Percentage)100)
 				return;
 
-			image.Modulate(100, Saturation, 100);
+			image.Modulate((Percentage)100, Saturation, (Percentage)100);
 		}
 		//===========================================================================================
 		private void SharpenImage(MagickImage image)
@@ -167,7 +167,7 @@ namespace FredsImageMagickScripts
 				return;
 
 			image.BackgroundColor = BackgroundColor;
-			image.Deskew(40);
+			image.Deskew((Percentage)40);
 		}
 		///==========================================================================================
 		/// <summary>
@@ -360,13 +360,13 @@ namespace FredsImageMagickScripts
 			BackgroundColor = new MagickColor("white");
 			CropOffset = new TextCleanerCropOffset();
 			Enhance = TextCleanerEnhance.Stretch;
-			FilterOffset = 5;
+			FilterOffset = (Percentage)5;
 			FilterSize = 15;
 			Layout = TextCleanerLayout.Portrait;
 			MakeGray = false;
 			Padding = 0;
 			Rotation = TextCleanerRotation.None;
-			Saturation = 200;
+			Saturation = (Percentage)200;
 			Sharpen = 0.0;
 			SmoothingThreshold = null;
 			Trim = false;

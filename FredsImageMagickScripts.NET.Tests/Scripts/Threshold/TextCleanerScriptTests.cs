@@ -40,13 +40,13 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 			Assert.AreEqual(0, script.CropOffset.Right);
 			Assert.AreEqual(0, script.CropOffset.Bottom);
 			Assert.AreEqual(TextCleanerEnhance.Stretch, script.Enhance);
-			Assert.AreEqual(5, script.FilterOffset);
+			Assert.AreEqual((Percentage)5, script.FilterOffset);
 			Assert.AreEqual(15, script.FilterSize);
 			Assert.AreEqual(TextCleanerLayout.Portrait, script.Layout);
 			Assert.AreEqual(false, script.MakeGray);
 			Assert.AreEqual(0, script.Padding);
 			Assert.AreEqual(TextCleanerRotation.None, script.Rotation);
-			Assert.AreEqual(200, script.Saturation);
+			Assert.AreEqual((Percentage)200, script.Saturation);
 			Assert.AreEqual(0.0, script.Sharpen);
 			Assert.AreEqual(null, script.SmoothingThreshold);
 			Assert.AreEqual(false, script.Trim);
@@ -74,7 +74,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.None;
 				script.FilterSize = 15;
-				script.FilterOffset = 20;
+				script.FilterOffset = (Percentage)20;
 			}, "abbott2_g_none_f15_o20.jpg");
 
 			Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
@@ -82,7 +82,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 15;
-				script.FilterOffset = 20;
+				script.FilterOffset = (Percentage)20;
 			}, "abbott2_g_stretch_f15_o20.jpg");
 
 			Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
@@ -90,7 +90,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 25;
-				script.FilterOffset = 20;
+				script.FilterOffset = (Percentage)20;
 			}, "abbott2_g_stretch_f25_o20.jpg");
 
 			Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
@@ -98,7 +98,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 25;
-				script.FilterOffset = 20;
+				script.FilterOffset = (Percentage)20;
 				script.Sharpen = 1;
 			}, "abbott2_g_stretch_f25_o20_s1.jpg");
 
@@ -107,7 +107,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 25;
-				script.FilterOffset = 20;
+				script.FilterOffset = (Percentage)20;
 				script.Unrotate = true;
 				script.Sharpen = 1;
 				script.Trim = true;
@@ -122,7 +122,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.None;
 				script.FilterSize = 15;
-				script.FilterOffset = 10;
+				script.FilterOffset = (Percentage)10;
 			}, "brscan_original_r90_g_none_f15_o10.jpg");
 
 			Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
@@ -130,7 +130,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Normalize;
 				script.FilterSize = 15;
-				script.FilterOffset = 10;
+				script.FilterOffset = (Percentage)10;
 			}, "brscan_original_r90_g_normalize_f15_o10.jpg");
 
 			Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
@@ -138,7 +138,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Normalize;
 				script.FilterSize = 15;
-				script.FilterOffset = 10;
+				script.FilterOffset = (Percentage)10;
 				script.Sharpen = 1;
 			}, "brscan_original_r90_g_normalize_f15_o10_s1.jpg");
 
@@ -148,7 +148,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Normalize;
 				script.FilterSize = 15;
-				script.FilterOffset = 10;
+				script.FilterOffset = (Percentage)10;
 				script.Unrotate = true;
 				script.Sharpen = 2;
 				script.Trim = true;
@@ -162,16 +162,16 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 			{
 				script.Enhance = TextCleanerEnhance.Normalize;
 				script.FilterSize = 15;
-				script.FilterOffset = 5;
-				script.Saturation = 200;
+				script.FilterOffset = (Percentage)5;
+				script.Saturation = (Percentage)200;
 			}, "congress_norm_f15_o5_S200.jpg");
 
 			Test_Execute("congress.jpg", (TextCleanerScript script) =>
 			{
 				script.Enhance = TextCleanerEnhance.Normalize;
 				script.FilterSize = 15;
-				script.FilterOffset = 5;
-				script.Saturation = 200;
+				script.FilterOffset = (Percentage)5;
+				script.Saturation = (Percentage)200;
 				script.Sharpen = 1;
 			}, "congress_norm_f15_o5_S200_s1.jpg");
 
@@ -179,8 +179,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 			{
 				script.Enhance = TextCleanerEnhance.Normalize;
 				script.FilterSize = 15;
-				script.FilterOffset = 5;
-				script.Saturation = 400;
+				script.FilterOffset = (Percentage)5;
+				script.Saturation = (Percentage)400;
 				script.Sharpen = 1;
 			}, "congress_norm_f15_o5_S400.jpg");
 		}
@@ -192,7 +192,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 25;
-				script.FilterOffset = 10;
+				script.FilterOffset = (Percentage)10;
 				script.Unrotate = true;
 				script.Sharpen = 1;
 				script.Trim = true;
@@ -208,7 +208,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 25;
-				script.FilterOffset = 5;
+				script.FilterOffset = (Percentage)5;
 				script.Sharpen = 1;
 				script.Layout = TextCleanerLayout.Landscape;
 			}, "railways_g_stretch_f25_o5_s1.jpg");
@@ -221,7 +221,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 25;
-				script.FilterOffset = 5;
+				script.FilterOffset = (Percentage)5;
 				script.Sharpen = 1;
 				script.Layout = TextCleanerLayout.Landscape;
 			}, "rfid_g_stretch_f25_o5_s1.jpg");
@@ -234,7 +234,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 15;
-				script.FilterOffset = 5;
+				script.FilterOffset = (Percentage)5;
 				script.Sharpen = 1;
 			}, "telegram_g_stretch_f15_o5_s1.jpg");
 		}
@@ -246,7 +246,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				script.MakeGray = true;
 				script.Enhance = TextCleanerEnhance.Stretch;
 				script.FilterSize = 25;
-				script.FilterOffset = 10;
+				script.FilterOffset = (Percentage)10;
 				script.Sharpen = 1;
 				script.Layout = TextCleanerLayout.Landscape;
 			}, "twinkle_g_stretch_f25_o10_s1.jpg");
@@ -265,15 +265,15 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 			script.CropOffset.Right = 1;
 			script.CropOffset.Bottom = 1;
 			script.Enhance = TextCleanerEnhance.Normalize;
-			script.FilterOffset = 10;
+			script.FilterOffset = (Percentage)10;
 			script.FilterSize = 10;
 			script.Layout = TextCleanerLayout.Landscape;
 			script.MakeGray = true;
 			script.Padding = 15;
 			script.Rotation = TextCleanerRotation.Clockwise;
-			script.Saturation = 150;
+			script.Saturation = (Percentage)150;
 			script.Sharpen = 1;
-			script.SmoothingThreshold = 50;
+			script.SmoothingThreshold = (Percentage)50;
 			script.Trim = true;
 			script.Unrotate = true;
 
@@ -369,21 +369,21 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 				ExceptionAssert.Throws<InvalidOperationException>(() =>
 				{
 					script.Reset();
-					script.Saturation = -1;
+					script.Saturation = (Percentage)(-1);
 					script.Execute(logo);
 				});
 
 				ExceptionAssert.Throws<InvalidOperationException>(() =>
 				{
 					script.Reset();
-					script.SmoothingThreshold = 150;
+					script.SmoothingThreshold = (Percentage)150;
 					script.Execute(logo);
 				});
 
 				ExceptionAssert.Throws<InvalidOperationException>(() =>
 				{
 					script.Reset();
-					script.SmoothingThreshold = -50;
+					script.SmoothingThreshold = (Percentage)(-50);
 					script.Execute(logo);
 				});
 			}

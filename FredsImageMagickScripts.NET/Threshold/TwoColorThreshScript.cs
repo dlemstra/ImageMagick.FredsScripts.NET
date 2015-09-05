@@ -51,8 +51,8 @@ namespace FredsImageMagickScripts
 			};
 
 			result.Quantize(settings);
-			result.ColorSpace = ColorSpace.GRAY;
-			result.ContrastStretch(0);
+			result.ColorSpace = ColorSpace.Gray;
+			result.ContrastStretch((Percentage)0);
 
 			return result;
 		}

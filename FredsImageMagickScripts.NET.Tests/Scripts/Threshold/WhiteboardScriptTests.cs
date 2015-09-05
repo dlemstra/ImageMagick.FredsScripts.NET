@@ -33,10 +33,10 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 		{
 			ColorAssert.AreEqual(new MagickColor("white"), script.BackgroundColor);
 			Assert.AreEqual(WhiteboardEnhancements.Stretch, script.Enhance);
-			Assert.AreEqual(5, script.FilterOffset);
+			Assert.AreEqual((Percentage)5, script.FilterOffset);
 			Assert.AreEqual(15, script.FilterSize);
-			Assert.AreEqual(200, script.Saturation);
-			Assert.AreEqual(0.01, script.WhiteBalancePercentage);
+			Assert.AreEqual((Percentage)200, script.Saturation);
+			Assert.AreEqual((Percentage)0.01, script.WhiteBalance);
 		}
 		//===========================================================================================
 		private static void TestDimensions(int width, int height)
@@ -76,7 +76,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 				script.AspectRatio = new PointD(4, 3);
 				script.Magnification = 2;
 				script.FilterSize = 25;
-				script.FilterOffset = 3;
+				script.FilterOffset = (Percentage)3;
 			}, "whiteboard_a1p33_m2_S200_f25_o3_none.jpg");
 
 			Test_Execute("whiteboard.jpg", delegate(WhiteboardScript script)
@@ -87,7 +87,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 				script.AspectRatio = new PointD(4, 3);
 				script.Magnification = 2;
 				script.FilterSize = 25;
-				script.FilterOffset = 3;
+				script.FilterOffset = (Percentage)3;
 			}, "whiteboard_a1p33_m2_S200_f25_o3_both.jpg");
 
 			Test_Execute("whiteboard.jpg", delegate(WhiteboardScript script)
@@ -98,8 +98,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 				script.AspectRatio = new PointD(4, 3);
 				script.Magnification = 2;
 				script.FilterSize = 25;
-				script.FilterOffset = 3;
-				script.Threshold = 60;
+				script.FilterOffset = (Percentage)3;
+				script.Threshold = (Percentage)60;
 			}, "whiteboard_a1p33_m2_S200_t60_f25_o3_both.jpg");
 		}
 		//===========================================================================================
@@ -109,30 +109,30 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 			{
 				script.Enhance = WhiteboardEnhancements.None;
 				script.FilterSize = 12;
-				script.FilterOffset = 3;
+				script.FilterOffset = (Percentage)3;
 			}, "whiteboard1_35pct_m1_S200_f12_o3_none.jpg");
 
 			Test_Execute("whiteboard1_35pct.jpg", delegate(WhiteboardScript script)
 			{
 				script.Enhance = WhiteboardEnhancements.Both;
 				script.FilterSize = 12;
-				script.FilterOffset = 3;
+				script.FilterOffset = (Percentage)3;
 			}, "whiteboard1_35pct_m1_S200_f12_o3_both.jpg");
 
 			Test_Execute("whiteboard1_35pct.jpg", delegate(WhiteboardScript script)
 			{
 				script.Enhance = WhiteboardEnhancements.Both;
 				script.FilterSize = 12;
-				script.FilterOffset = 3;
-				script.Threshold = 30;
+				script.FilterOffset = (Percentage)3;
+				script.Threshold = (Percentage)30;
 			}, "whiteboard1_35pct_m1_S200_t30_f12_o3_both.jpg");
 
 			Test_Execute("whiteboard1_35pct.jpg", delegate(WhiteboardScript script)
 			{
 				script.Enhance = WhiteboardEnhancements.Both;
 				script.FilterSize = 12;
-				script.FilterOffset = 3;
-				script.Threshold = 30;
+				script.FilterOffset = (Percentage)3;
+				script.Threshold = (Percentage)30;
 				script.SharpeningAmount = 1;
 			}, "whiteboard1_35pct_m1_S200_s1_t30_f12_o3_both.jpg");
 		}
@@ -146,8 +146,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 				script.Enhance = WhiteboardEnhancements.Both;
 				script.AspectRatio = new PointD(4, 3);
 				script.FilterSize = 12;
-				script.FilterOffset = 7;
-				script.Threshold = 30;
+				script.FilterOffset = (Percentage)7;
+				script.Threshold = (Percentage)30;
 			}, "whiteboard2_a1p5_m1_S200_t30_f12_o7_both.jpg");
 
 			Test_Execute("whiteboard2.gif", delegate(WhiteboardScript script)
@@ -156,8 +156,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 					new Coordinate(416, 277), new Coordinate(75, 345));
 				script.Enhance = WhiteboardEnhancements.Both;
 				script.FilterSize = 12;
-				script.FilterOffset = 7;
-				script.Threshold = 30;
+				script.FilterOffset = (Percentage)7;
+				script.Threshold = (Percentage)30;
 			}, "whiteboard2_a_m1_S200_t30_f12_o7_both.jpg");
 		}
 		//===========================================================================================
@@ -170,8 +170,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 				script.Enhance = WhiteboardEnhancements.Both;
 				script.AspectRatio = new PointD(3, 4);
 				script.FilterSize = 12;
-				script.FilterOffset = 3;
-				script.Threshold = 40;
+				script.FilterOffset = (Percentage)3;
+				script.Threshold = (Percentage)40;
 			}, "WhiteboardBlog_a0p75_m1_S200_t40_f12_o3_both.jpg");
 
 			Test_Execute("WhiteboardBlog.jpg", delegate(WhiteboardScript script)
@@ -180,8 +180,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 					new Coordinate(331, 467), new Coordinate(38, 482));
 				script.Enhance = WhiteboardEnhancements.Both;
 				script.FilterSize = 12;
-				script.FilterOffset = 3;
-				script.Threshold = 40;
+				script.FilterOffset = (Percentage)3;
+				script.Threshold = (Percentage)40;
 			}, "WhiteboardBlog_a_m1_S200_t40_f12_o3_both.jpg");
 		}
 		//===========================================================================================
@@ -191,7 +191,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 			{
 				script.Enhance = WhiteboardEnhancements.Both;
 				script.FilterSize = 12;
-				script.FilterOffset = 3;
+				script.FilterOffset = (Percentage)3;
 			}, "whiteboardScenario1_m1_S200_f12_o3_both.jpg");
 		}
 		//===========================================================================================
@@ -216,10 +216,10 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 
 			script.BackgroundColor = new MagickColor("purple");
 			script.Enhance = WhiteboardEnhancements.None;
-			script.FilterOffset = 5;
+			script.FilterOffset = (Percentage)5;
 			script.FilterSize = 10;
-			script.Saturation = 100;
-			script.WhiteBalancePercentage = 0.1;
+			script.Saturation = (Percentage)100;
+			script.WhiteBalance = (Percentage)0.1;
 
 			script.Reset();
 			Test_Defaults(script);

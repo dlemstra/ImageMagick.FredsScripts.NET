@@ -47,10 +47,10 @@ namespace FredsImageMagickScripts
 		//===========================================================================================
 		private void ApplySaturation(MagickImage result)
 		{
-			if (Saturation == 100)
+			if (Saturation == (Percentage)100)
 				return;
 
-			result.Modulate(100, Saturation, 100);
+			result.Modulate((Percentage)100, Saturation, (Percentage)100);
 		}
 		//===========================================================================================
 		private void CheckSettings()
@@ -134,7 +134,7 @@ namespace FredsImageMagickScripts
 
 				using (MagickImage second = first.Clone())
 				{
-					second.Modulate(100, 0, 100);
+					second.Modulate((Percentage)100, (Percentage)0, (Percentage)100);
 					double darkness = 3 / Darkness;
 					if (darkness != 1)
 					{
@@ -159,7 +159,7 @@ namespace FredsImageMagickScripts
 
 					using (MagickImage fourth = first.Clone())
 					{
-						fourth.Modulate(100, 0, 100);
+						fourth.Modulate((Percentage)100, (Percentage)0, (Percentage)100);
 
 						output.Composite(fourth, CompositeOperator.HardLight);
 						return output;
@@ -176,7 +176,7 @@ namespace FredsImageMagickScripts
 			Brightness = 1.0;
 			Contrast = 0;
 			Darkness = 1;
-			Saturation = 150;
+			Saturation = (Percentage)150;
 		}
 		//===========================================================================================
 	}

@@ -36,6 +36,36 @@ namespace FredsImageMagickScripts
 		private double _Height;
 		private double _Width;
 		//===========================================================================================
+		private void ApplyWhiteBalance(MagickImage image)
+		{
+			using (MagickImage mask = image.Clone())
+			{
+				mask.ColorSpace = ColorSpace.HSB;
+				mask.Negate(Channels.Green);
+
+				using (MagickImage newMask = mask.Separate(Channels.Green).First())
+				{
+					using (MagickImage maskBlue = mask.Separate(Channels.Blue).First())
+					{
+						newMask.Composite(maskBlue, CompositeOperator.Multiply);
+					}
+
+					newMask.ContrastStretch((Percentage)0, WhiteBalance);
+					newMask.InverseOpaque(new MagickColor("white"), new MagickColor("black"));
+
+					double maskMean = GetMean(newMask);
+
+					double redRatio = GetRatio(image, Channels.Red, newMask, maskMean);
+					double greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
+					double blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
+
+					ColorMatrix matrix = new ColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
+
+					image.ColorMatrix(matrix);
+				}
+			}
+		}
+		//===========================================================================================
 		private void CalculateWidthAndHeight(MagickImage image)
 		{
 			if (_Coords != null)
@@ -161,10 +191,10 @@ namespace FredsImageMagickScripts
 
 			using (MagickImage gray = image.Clone())
 			{
-				gray.ColorSpace = ColorSpace.GRAY;
+				gray.ColorSpace = ColorSpace.Gray;
 				gray.Negate();
 				gray.AdaptiveThreshold(FilterSize, FilterSize, FilterOffset);
-				gray.ContrastStretch(0);
+				gray.ContrastStretch((Percentage)0);
 				if (Threshold.HasValue)
 				{
 					gray.Blur((double)Threshold.Value / 100.0, Quantum.Max);
@@ -228,45 +258,15 @@ namespace FredsImageMagickScripts
 				return;
 
 			if (Enhance.HasFlag(WhiteboardEnhancements.Stretch))
-				image.ContrastStretch(0, 0);
+				image.ContrastStretch((Percentage)0, (Percentage)0);
 
 			if (Enhance.HasFlag(WhiteboardEnhancements.Whitebalance))
-				WhiteBalance(image);
+				ApplyWhiteBalance(image);
 		}
 		//===========================================================================================
 		private double GetMagnification()
 		{
 			return Magnification.HasValue ? Magnification.Value : 1;
-		}
-		//===========================================================================================
-		private void WhiteBalance(MagickImage image)
-		{
-			using (MagickImage mask = image.Clone())
-			{
-				mask.ColorSpace = ColorSpace.HSB;
-				mask.Negate(Channels.Green);
-
-				using (MagickImage newMask = mask.Separate(Channels.Green).First())
-				{
-					using (MagickImage maskBlue = mask.Separate(Channels.Blue).First())
-					{
-						newMask.Composite(maskBlue, CompositeOperator.Multiply);
-					}
-
-					newMask.ContrastStretch(0, WhiteBalancePercentage);
-					newMask.InverseOpaque(new MagickColor("white"), new MagickColor("black"));
-
-					double maskMean = GetMean(newMask);
-
-					double redRatio = GetRatio(image, Channels.Red, newMask, maskMean);
-					double greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
-					double blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
-
-					ColorMatrix matrix = new ColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
-
-					image.ColorMatrix(matrix);
-				}
-			}
 		}
 		//===========================================================================================
 		private static double GetMean(MagickImage image)
@@ -288,10 +288,10 @@ namespace FredsImageMagickScripts
 		//===========================================================================================
 		private void Modulate(MagickImage image)
 		{
-			if (Saturation == 100)
+			if (Saturation == (Percentage)100)
 				return;
 
-			image.Modulate(100, Saturation);
+			image.Modulate((Percentage)100, Saturation);
 		}
 		//===========================================================================================
 		private void SetDistortViewport(MagickImage image, int x, int y)
@@ -401,7 +401,7 @@ namespace FredsImageMagickScripts
 		/// The desired color saturation of the text expressed as a percentage. A value of 100 means
 		/// no change. The default=200. Larger values will make the text colors more saturated.
 		/// </summary>
-		public int Saturation
+		public Percentage Saturation
 		{
 			get;
 			set;
@@ -431,7 +431,7 @@ namespace FredsImageMagickScripts
 		/// <summary>
 		/// percent near white to use for white balancing. The default is 0.01.
 		/// </summary>
-		public Percentage WhiteBalancePercentage
+		public Percentage WhiteBalance
 		{
 			get;
 			set;
@@ -470,9 +470,9 @@ namespace FredsImageMagickScripts
 			BackgroundColor = new MagickColor("white");
 			Enhance = WhiteboardEnhancements.Stretch;
 			FilterSize = 15;
-			FilterOffset = 5;
-			Saturation = 200;
-			WhiteBalancePercentage = 0.01;
+			FilterOffset = (Percentage)5;
+			Saturation = (Percentage)200;
+			WhiteBalance = (Percentage)0.01;
 		}
 		///==========================================================================================
 		/// <summary>
