@@ -82,12 +82,12 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 			{
 				using (MagickImage actualImage = new MagickImage(actualOutputFile))
 				{
-					Assert.AreEqual(expectedImage.Width, actualImage.Width);
-					Assert.AreEqual(expectedImage.Height, actualImage.Height);
+					Assert.AreEqual(expectedImage.Width, actualImage.Width, actualImage.FileName);
+					Assert.AreEqual(expectedImage.Height, actualImage.Height, actualImage.FileName);
 
 					double distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
 
-					Assert.AreEqual(0.0, distortion, "Distortion is too high.");
+					Assert.AreEqual(0.0, distortion, actualImage.FileName);
 				}
 			}
 		}
