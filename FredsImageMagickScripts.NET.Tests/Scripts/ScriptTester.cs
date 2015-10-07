@@ -15,11 +15,8 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 //=================================================================================================
-using System;
-using System.Collections.Generic;
+
 using System.IO;
-using System.Linq;
-using System.Text;
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,7 +25,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
   public abstract class ScriptTester
   {
     private static string _ImagesRoot = @"..\..\..\Images\";
- 
+
     private FileInfo GetExpectedOutputFile(string fileName)
     {
       return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + fileName);

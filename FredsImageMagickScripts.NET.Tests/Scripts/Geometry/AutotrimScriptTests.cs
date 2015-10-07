@@ -17,9 +17,6 @@
 //=================================================================================================
 
 using System;
-using System.IO;
-using System.Linq;
-using FredsImageMagickScripts;
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

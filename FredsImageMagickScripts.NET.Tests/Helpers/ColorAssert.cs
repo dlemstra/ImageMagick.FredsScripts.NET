@@ -21,18 +21,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FredsImageMagickScripts.NET.Tests
 {
-	//==============================================================================================
-	public static class ColorAssert
-	{
-		//===========================================================================================
-		public static void AreEqual(MagickColor expected, MagickColor actual)
-		{
-			Assert.AreEqual(expected.R, actual.R, "R is not equal");
-			Assert.AreEqual(expected.G, actual.G, "G is not equal");
-			Assert.AreEqual(expected.B, actual.B, "B is not equal");
-			Assert.AreEqual(expected.A, actual.A, "A is not equal");
-		}
-		//===========================================================================================
-	}
-	//==============================================================================================
+  public static class ColorAssert
+  {
+    public static void AreEqual(MagickColor expected, MagickColor actual)
+    {
+      Assert.AreEqual(expected.R, actual.R, "R is not equal");
+      Assert.AreEqual(expected.G, actual.G, "G is not equal");
+      Assert.AreEqual(expected.B, actual.B, "B is not equal");
+      Assert.AreEqual(expected.A, actual.A, "A is not equal");
+    }
+  }
 }

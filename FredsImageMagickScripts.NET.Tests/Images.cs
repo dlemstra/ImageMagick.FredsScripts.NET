@@ -16,26 +16,18 @@
 // http://www.imagemagick.org/script/license.php
 //=================================================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ImageMagick;
 
 namespace FredsImageMagickScripts.NET.Tests
 {
-	//==============================================================================================
-	internal static class Images
-	{
-		//===========================================================================================
-		public static MagickImage Logo
-		{
-			get
-			{
-				return new MagickImage("logo:");
-			}
-		}
-		//===========================================================================================
-	}
-	//==============================================================================================
+  internal static class Images
+  {
+    public static MagickImage Logo
+    {
+      get
+      {
+        return new MagickImage("logo:");
+      }
+    }
+  }
 }

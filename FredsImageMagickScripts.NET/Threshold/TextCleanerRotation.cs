@@ -18,27 +18,24 @@
 
 namespace FredsImageMagickScripts
 {
-	///=============================================================================================
-	/// <summary>
-	/// Rotation for the TextCleaner script.
-	/// </summary>
-	public enum TextCleanerRotation
-	{
-		///==========================================================================================
-		/// <summary>
-		/// No rotation.
-		/// </summary>
-		None,
-		///==========================================================================================
-		/// <summary>
-		/// Clockwise rotation.
-		/// </summary>
-		Clockwise,
-		///==========================================================================================
-		/// <summary>
-		/// Counterclockwise rotation.
-		/// </summary>
-		Counterclockwise
-	}
-	//==============================================================================================
+  /// <summary>
+  /// Rotation for the TextCleaner script.
+  /// </summary>
+  public enum TextCleanerRotation
+  {
+    /// <summary>
+    /// No rotation.
+    /// </summary>
+    None,
+
+    /// <summary>
+    /// Clockwise rotation.
+    /// </summary>
+    Clockwise,
+
+    /// <summary>
+    /// Counterclockwise rotation.
+    /// </summary>
+    Counterclockwise
+  }
 }

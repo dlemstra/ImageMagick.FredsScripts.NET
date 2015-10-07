@@ -21,42 +21,38 @@ using ImageMagick;
 
 namespace FredsImageMagickScripts
 {
-	///=============================================================================================
-	/// <summary>
-	/// Automatically thresholds an image to binary (b/w) format using an adaptive spatial subdivision
-	/// color reduction technique. This is the -colors IM operator as implemented with slight
-	/// modification from Anthony's Examples at http://www.imagemagick.org/Usage/quantize/#two_color.
-	/// For algorithm details, see http://www.imagemagick.org/script/quantize.php
-	/// </summary>
-	public static class TwoColorThreshScript
-	{
-		///==========================================================================================
-		/// <summary>
-		/// Automatically thresholds an image to binary (b/w) format using an adaptive spatial subdivision
-		/// color reduction technique. This is the -colors IM operator as implemented with slight
-		/// modification from Anthony's Examples at http://www.imagemagick.org/Usage/quantize/#two_color.
-		/// For algorithm details, see http://www.imagemagick.org/script/quantize.php
-		/// </summary>
-		public static MagickImage Execute(MagickImage input)
-		{
-			if (input == null)
-				throw new ArgumentNullException("input");
+  /// <summary>
+  /// Automatically thresholds an image to binary (b/w) format using an adaptive spatial subdivision
+  /// color reduction technique. This is the -colors IM operator as implemented with slight
+  /// modification from Anthony's Examples at http://www.imagemagick.org/Usage/quantize/#two_color.
+  /// For algorithm details, see http://www.imagemagick.org/script/quantize.php
+  /// </summary>
+  public static class TwoColorThreshScript
+  {
+    /// <summary>
+    /// Automatically thresholds an image to binary (b/w) format using an adaptive spatial subdivision
+    /// color reduction technique. This is the -colors IM operator as implemented with slight
+    /// modification from Anthony's Examples at http://www.imagemagick.org/Usage/quantize/#two_color.
+    /// For algorithm details, see http://www.imagemagick.org/script/quantize.php
+    /// </summary>
+    public static MagickImage Execute(MagickImage input)
+    {
+      if (input == null)
+        throw new ArgumentNullException("input");
 
-			MagickImage result = input.Clone();
+      MagickImage result = input.Clone();
 
-			QuantizeSettings settings = new QuantizeSettings()
-			{
-				Colors = 2,
-				DitherMethod = DitherMethod.No
-			};
+      QuantizeSettings settings = new QuantizeSettings()
+      {
+        Colors = 2,
+        DitherMethod = DitherMethod.No
+      };
 
-			result.Quantize(settings);
-			result.ColorSpace = ColorSpace.Gray;
-			result.ContrastStretch((Percentage)0);
+      result.Quantize(settings);
+      result.ColorSpace = ColorSpace.Gray;
+      result.ContrastStretch((Percentage)0);
 
-			return result;
-		}
-		//===========================================================================================
-	}
-	//==============================================================================================
+      return result;
+    }
+  }
 }

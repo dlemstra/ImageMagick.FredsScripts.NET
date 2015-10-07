@@ -20,17 +20,15 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-//=================================================================================================
 [assembly: AssemblyTitle("FredsImageMagickScripts.NET")]
 [assembly: AssemblyProduct("FredsImageMagickScripts.NET")]
 [assembly: AssemblyDescription("FredsImageMagickScripts.NET")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyCopyright("Copyright © 2015 Dirk Lemstra, Fred Weinhaus")]
 [assembly: AssemblyTrademark("")]
-//=================================================================================================
+
 [assembly: AssemblyConfiguration("Release")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
-//=================================================================================================

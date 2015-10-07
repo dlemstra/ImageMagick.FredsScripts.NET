@@ -18,27 +18,24 @@
 
 namespace FredsImageMagickScripts
 {
-	///=============================================================================================
-	/// <summary>
-	/// Enhance settings for the TextCleaner script.
-	/// </summary>
-	public enum TextCleanerEnhance
-	{
-		///==========================================================================================
-		/// <summary>
-		/// None
-		/// </summary>
-		None,
-		///==========================================================================================
-		/// <summary>
-		/// Normalize.
-		/// </summary>
-		Normalize,
-		///==========================================================================================
-		/// <summary>
-		/// Stretch.
-		/// </summary>
-		Stretch
-	}
-	//==============================================================================================
+  /// <summary>
+  /// Enhance settings for the TextCleaner script.
+  /// </summary>
+  public enum TextCleanerEnhance
+  {
+    /// <summary>
+    /// None
+    /// </summary>
+    None,
+
+    /// <summary>
+    /// Normalize.
+    /// </summary>
+    Normalize,
+
+    /// <summary>
+    /// Stretch.
+    /// </summary>
+    Stretch
+  }
 }

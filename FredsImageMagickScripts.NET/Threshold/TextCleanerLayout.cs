@@ -18,22 +18,19 @@
 
 namespace FredsImageMagickScripts
 {
-	///=============================================================================================
-	/// <summary>
-	/// Layout for the TextCleaner script.
-	/// </summary>
-	public enum TextCleanerLayout
-	{
-		///==========================================================================================
-		/// <summary>
-		/// Portrait.
-		/// </summary>
-		Portrait,
-		///==========================================================================================
-		/// <summary>
-		/// Landscape.
-		/// </summary>
-		Landscape
-	}
-	//==============================================================================================
+  /// <summary>
+  /// Layout for the TextCleaner script.
+  /// </summary>
+  public enum TextCleanerLayout
+  {
+    /// <summary>
+    /// Portrait.
+    /// </summary>
+    Portrait,
+
+    /// <summary>
+    /// Landscape.
+    /// </summary>
+    Landscape
+  }
 }
