@@ -25,73 +25,73 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FredsImageMagickScripts.NET.Tests.Scripts
 {
-	//==============================================================================================
-	public abstract class ScriptTester
-	{
-		//===========================================================================================
-		private static string _ImagesRoot = @"..\..\..\Images\";
-		//===========================================================================================
-		private FileInfo GetExpectedOutputFile(string fileName)
-		{
-			return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + fileName);
-		}
-		//===========================================================================================
-		private FileInfo GetActualOutputFile(string fileName)
-		{
-			int dotIndex = fileName.LastIndexOf('.');
-			string name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
+  public abstract class ScriptTester
+  {
+    private static string _ImagesRoot = @"..\..\..\Images\";
+ 
+    private FileInfo GetExpectedOutputFile(string fileName)
+    {
+      return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + fileName);
+    }
 
-			return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + name);
-		}
-		//===========================================================================================
-		protected string ScriptName
-		{
-			get
-			{
-				string scriptName = GetType().Name;
-				return scriptName.Substring(0, scriptName.Length - 5); // Remove 'Tests'
-			}
-		}
-		//===========================================================================================
-		protected string GetInputFile(string fileName)
-		{
-			return _ImagesRoot + @"Input\" + fileName;
-		}
-		//===========================================================================================
-		protected void TestOutput(MagickImage image, string expectedOutput)
-		{
-			FileInfo actualOutputFile = GetActualOutputFile(expectedOutput);
+    private FileInfo GetActualOutputFile(string fileName)
+    {
+      int dotIndex = fileName.LastIndexOf('.');
+      string name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
 
-			if (!actualOutputFile.Directory.Exists)
-				actualOutputFile.Directory.Create();
+      return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + name);
+    }
 
-			image.Write(actualOutputFile);
+    protected string ScriptName
+    {
+      get
+      {
+        string scriptName = GetType().Name;
+        return scriptName.Substring(0, scriptName.Length - 5); // Remove 'Tests'
+      }
+    }
 
-			FileInfo expectedOutputFile = GetExpectedOutputFile(expectedOutput);
+    protected string GetInputFile(string fileName)
+    {
+      return _ImagesRoot + @"Input\" + fileName;
+    }
 
-			/* Compress the image that will be used as the expected output after it has been compared
-			 * to the result from Fred his script. */
-			if (!expectedOutputFile.Exists)
-			{
-				ImageOptimizer optimizer = new ImageOptimizer();
-				optimizer.OptimalCompression = true;
-				optimizer.LosslessCompress(actualOutputFile);
-			}
+    protected static void LosslessCompress(string fileName)
+    {
+      ImageOptimizer optimizer = new ImageOptimizer();
+      optimizer.OptimalCompression = true;
+      optimizer.LosslessCompress(fileName);
+    }
 
-			using (MagickImage expectedImage = new MagickImage(expectedOutputFile))
-			{
-				using (MagickImage actualImage = new MagickImage(actualOutputFile))
-				{
-					Assert.AreEqual(expectedImage.Width, actualImage.Width, actualImage.FileName);
-					Assert.AreEqual(expectedImage.Height, actualImage.Height, actualImage.FileName);
+    protected void TestOutput(MagickImage image, string expectedOutput)
+    {
+      FileInfo actualOutputFile = GetActualOutputFile(expectedOutput);
 
-					double distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
+      if (!actualOutputFile.Directory.Exists)
+        actualOutputFile.Directory.Create();
 
-					Assert.AreEqual(0.0, distortion, actualImage.FileName);
-				}
-			}
-		}
-		//===========================================================================================
-	}
-	//==============================================================================================
+      image.Write(actualOutputFile);
+
+      FileInfo expectedOutputFile = GetExpectedOutputFile(expectedOutput);
+
+      /* Compress the image that will be used as the expected output after it has been compared
+       * to the result from Fred his script. */
+      if (!expectedOutputFile.Exists)
+        LosslessCompress(actualOutputFile.FullName);
+
+      using (MagickImage expectedImage = new MagickImage(expectedOutputFile))
+      {
+        using (MagickImage actualImage = new MagickImage(actualOutputFile))
+        {
+          Assert.AreEqual(expectedImage.Width, actualImage.Width, actualImage.FileName);
+          Assert.AreEqual(expectedImage.Height, actualImage.Height, actualImage.FileName);
+
+          double distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
+
+          /* Allow a minor difference between the images */
+          Assert.AreEqual(0.0, distortion, 0.05, actualImage.FileName);
+        }
+      }
+    }
+  }
 }
