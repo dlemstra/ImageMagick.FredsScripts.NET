@@ -210,7 +210,7 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private MagickGeometry TestGeometry(MagickGeometry geometry, Line line1, Line line2)
+    private static MagickGeometry TestGeometry(MagickGeometry geometry, Line line1, Line line2)
     {
       int x = Math.Max(line1.X1, line2.X1);
       int y = line1.Y;

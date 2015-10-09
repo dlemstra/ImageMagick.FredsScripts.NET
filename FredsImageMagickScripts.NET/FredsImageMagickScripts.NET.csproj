@@ -68,23 +68,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Effects\DraganEffectScript.cs" />
-    <Compile Include="Geometry\Autotrim.cs" />
-    <Compile Include="Geometry\AutotrimPixelShift.cs" />
+    <Compile Include="Effects\DraganEffect\DraganEffectScript.cs" />
+    <Compile Include="Geometry\Autotrim\AutotrimPixelShift.cs" />
+    <Compile Include="Geometry\Autotrim\AutotrimScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Threshold\TextCleanerCropOffset.cs" />
-    <Compile Include="Threshold\TextCleanerEnhance.cs" />
-    <Compile Include="Threshold\TextCleanerLayout.cs" />
-    <Compile Include="Threshold\TextCleanerRotation.cs" />
-    <Compile Include="Threshold\TextCleanerScript.cs" />
-    <Compile Include="Threshold\TwoColorThreshScript.cs" />
-    <Compile Include="Threshold\WhiteboardEnhancements.cs" />
-    <Compile Include="Threshold\WhiteboardScript.cs" />
+    <Compile Include="Threshold\TextCleaner\TextCleanerCropOffset.cs" />
+    <Compile Include="Threshold\TextCleaner\TextCleanerEnhance.cs" />
+    <Compile Include="Threshold\TextCleaner\TextCleanerLayout.cs" />
+    <Compile Include="Threshold\TextCleaner\TextCleanerRotation.cs" />
+    <Compile Include="Threshold\TextCleaner\TextCleanerScript.cs" />
+    <Compile Include="Threshold\TwoColorThresh\TwoColorThreshScript.cs" />
+    <Compile Include="Threshold\Whiteboard\WhiteboardEnhancements.cs" />
+    <Compile Include="Threshold\Whiteboard\WhiteboardScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FredsImageMagickScripts.NET.snk" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
