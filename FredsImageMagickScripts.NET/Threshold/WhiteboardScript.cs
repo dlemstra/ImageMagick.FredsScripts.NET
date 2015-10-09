@@ -378,7 +378,7 @@ namespace FredsImageMagickScripts
     /// that size. If no coordinates are supplied, then the width and height will be those of the
     /// input image multiplied by the magnify factor.
     /// </summary>
-    public Nullable<double> Magnification
+    public double? Magnification
     {
       get;
       set;
@@ -409,7 +409,7 @@ namespace FredsImageMagickScripts
     /// Is the amount of sharpening to be applied to the resulting image in pixels. If used, it
     /// should be small (suggested about 1).
     /// </summary>
-    public Nullable<int> SharpeningAmount
+    public int? SharpeningAmount
     {
       get;
       set;
@@ -420,7 +420,7 @@ namespace FredsImageMagickScripts
     /// thin, but can result in gaps in the text. Nominal value is in the middle at about 50.
     /// The default is to disable smoothing.
     /// </summary>
-    public Nullable<Percentage> Threshold
+    public Percentage? Threshold
     {
       get;
       set;
