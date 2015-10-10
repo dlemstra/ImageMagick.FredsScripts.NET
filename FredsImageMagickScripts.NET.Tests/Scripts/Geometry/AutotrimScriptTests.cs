@@ -177,16 +177,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute_Null()
-    {
-      ExceptionAssert.Throws<ArgumentNullException>(() =>
-      {
-        AutotrimScript script = new AutotrimScript();
-        script.Execute(null);
-      });
-    }
-
-    [TestMethod, TestCategory(_Category)]
     public void Test_Execute()
     {
       Test_Execute_Trim_Of_Square_Image_With_Uniform_Border_Color();
@@ -194,6 +184,16 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       Test_Execute_Trim_Of_Rotated_Image_To_Bounding_Region();
       Test_Execute_Trim_To_Center_Area_Of_Rotated_Square_Image();
       Test_Trim_To_Center_Area_Of_Rotated_Rectangular_Image();
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_Null()
+    {
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
+      {
+        AutotrimScript script = new AutotrimScript();
+        script.Execute(null);
+      }, "input");
     }
 
     [TestMethod, TestCategory(_Category)]

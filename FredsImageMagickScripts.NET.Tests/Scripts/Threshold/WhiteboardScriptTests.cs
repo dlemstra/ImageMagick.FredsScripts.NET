@@ -193,9 +193,9 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboardScenario1_m1_S200_f12_o3_both.jpg");
     }
 
-    private void Test_SetCoordinates(Coordinate topLeft, Coordinate topRight, Coordinate bottomLeft, Coordinate bottomRight)
+    private void Test_SetCoordinates(string paramName, Coordinate topLeft, Coordinate topRight, Coordinate bottomLeft, Coordinate bottomRight)
     {
-      ExceptionAssert.Throws<ArgumentOutOfRangeException>(delegate ()
+      ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>(delegate ()
       {
         using (MagickImage logo = Images.Logo)
         {
@@ -203,7 +203,30 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
           script.SetCoordinates(topLeft, topRight, bottomLeft, bottomRight);
           script.Execute(logo);
         }
-      });
+      }, paramName);
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Coordinates()
+    {
+      Coordinate topLeft = new Coordinate(10, 10);
+      Coordinate topRight = new Coordinate(630, 10);
+      Coordinate bottomLeft = new Coordinate(10, 470);
+      Coordinate bottomRight = new Coordinate(630, 470);
+
+      Coordinate[] invalid = new Coordinate[]
+      {
+        new Coordinate(-10, 10), new Coordinate(10, -10),
+        new Coordinate(650, 10), new Coordinate(630, 490)
+      };
+
+      for (int i = 0; i < invalid.Length; i++)
+      {
+        Test_SetCoordinates("topLeft", invalid[i], topRight, bottomLeft, bottomRight);
+        Test_SetCoordinates("topRight", topLeft, invalid[i], bottomLeft, bottomRight);
+        Test_SetCoordinates("bottomLeft", topLeft, topRight, invalid[i], bottomRight);
+        Test_SetCoordinates("bottomRight", topLeft, topRight, bottomLeft, invalid[i]);
+      }
     }
 
     [TestMethod, TestCategory(_Category)]
@@ -224,6 +247,15 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     }
 
     [TestMethod, TestCategory(_Category)]
+    public void Test_Dimensions()
+    {
+      TestDimensions(0, 0);
+      TestDimensions(-1, -1);
+      TestDimensions(-1, 0);
+      TestDimensions(0, -1);
+    }
+
+    [TestMethod, TestCategory(_Category)]
     public void Test_Execute()
     {
       Test_Execute_Whiteboard();
@@ -234,37 +266,13 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Exceptions()
+    public void Test_Execute_Null()
     {
       ExceptionAssert.Throws<ArgumentNullException>(delegate ()
       {
         WhiteboardScript script = new WhiteboardScript();
         script.Execute(null);
       });
-
-      Coordinate topLeft = new Coordinate(10, 10);
-      Coordinate topRight = new Coordinate(630, 10);
-      Coordinate bottomLeft = new Coordinate(10, 470);
-      Coordinate bottomRight = new Coordinate(630, 470);
-
-      Coordinate[] invalid = new Coordinate[]
-      {
-        new Coordinate(-10, 10), new Coordinate(10, -10),
-        new Coordinate(650, 10), new Coordinate(630, 490)
-      };
-
-      for (int i = 0; i < invalid.Length; i++)
-      {
-        Test_SetCoordinates(invalid[i], topRight, bottomLeft, bottomRight);
-        Test_SetCoordinates(topLeft, invalid[i], bottomLeft, bottomRight);
-        Test_SetCoordinates(topLeft, topRight, invalid[i], bottomRight);
-        Test_SetCoordinates(topLeft, topRight, bottomLeft, invalid[i]);
-      }
-
-      TestDimensions(0, 0);
-      TestDimensions(-1, -1);
-      TestDimensions(-1, 0);
-      TestDimensions(0, -1);
     }
   }
 }

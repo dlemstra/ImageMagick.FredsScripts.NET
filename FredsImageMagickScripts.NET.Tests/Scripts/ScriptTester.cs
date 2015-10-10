@@ -62,6 +62,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 
     protected void TestOutput(MagickImage image, string expectedOutput)
     {
+      Assert.IsNotNull(image);
+
       FileInfo actualOutputFile = GetActualOutputFile(expectedOutput);
 
       if (!actualOutputFile.Directory.Exists)

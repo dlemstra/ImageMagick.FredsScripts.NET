@@ -148,16 +148,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute_Null()
-    {
-      ExceptionAssert.Throws<ArgumentNullException>(() =>
-      {
-        DraganEffectScript script = new DraganEffectScript();
-        script.Execute(null);
-      });
-    }
-
-    [TestMethod, TestCategory(_Category)]
     public void Test_Execute()
     {
       Test_Execute_Before1();
@@ -167,12 +157,24 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_Null()
+    {
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
+      {
+        DraganEffectScript script = new DraganEffectScript();
+        script.Execute(null);
+      }, "input");
+    }
+
+    [TestMethod, TestCategory(_Category)]
     public void Test_Settings()
     {
       DraganEffectScript script = new DraganEffectScript();
 
       using (MagickImage logo = new MagickImage(Images.Logo))
       {
+        script.Execute(logo);
+
         ExceptionAssert.Throws<InvalidOperationException>(() =>
         {
           script.Brightness = -1.0;

@@ -55,12 +55,12 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute_Null()
+    public void Test_Excecute_Null()
     {
-      ExceptionAssert.Throws<ArgumentNullException>(() =>
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
       {
         TwoColorThreshScript.Execute(null);
-      });
+      }, "input");
     }
   }
 }

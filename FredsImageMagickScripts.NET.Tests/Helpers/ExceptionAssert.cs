@@ -32,13 +32,7 @@ namespace FredsImageMagickScripts.NET.Tests
         Assert.Fail(message);
     }
 
-    public static void Throws<TException>(Action action)
-       where TException : Exception
-    {
-      Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
-    }
-
-    public static void Throws<TException>(Action action, string message, params object[] arguments)
+    private static string Throws<TException>(Action action, string message, params object[] arguments)
        where TException : Exception
     {
       try
@@ -51,11 +45,34 @@ namespace FredsImageMagickScripts.NET.Tests
         Type type = exception.GetType();
         if (type != typeof(TException))
           Fail("Exception of type {0} was not thrown an exception of type {1} was thrown.", typeof(TException).Name, type.Name);
+
+        return exception.Message;
       }
       catch (Exception)
       {
         throw;
       }
+
+      return null;
+    }
+
+    public static void Throws<TException>(Action action)
+       where TException : Exception
+    {
+      Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
+    }
+
+    public static void Throws<TException>(Action action, string expectedMessage)
+       where TException : Exception
+    {
+      string message = Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
+      Assert.AreEqual(expectedMessage, message);
+    }
+
+    public static void ThrowsArgumentException<TException>(Action action, string paramName)
+      where TException : ArgumentException
+    {
+      Throws<TException>(action, "Exception of type {0} was not thrown for {1}.", typeof(TException).Name, paramName);
     }
   }
 }

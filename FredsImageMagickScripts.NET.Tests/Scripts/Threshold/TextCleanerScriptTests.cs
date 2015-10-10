@@ -278,16 +278,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute_Null()
-    {
-      ExceptionAssert.Throws<ArgumentNullException>(() =>
-      {
-        TextCleanerScript script = new TextCleanerScript();
-        script.Execute(null);
-      });
-    }
-
-    [TestMethod, TestCategory(_Category)]
     public void Test_Execute()
     {
       Test_Execute_Abbott2();
@@ -301,12 +291,24 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_Null()
+    {
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
+      {
+        TextCleanerScript script = new TextCleanerScript();
+        script.Execute(null);
+      }, "input");
+    }
+
+    [TestMethod, TestCategory(_Category)]
     public void Test_Settings()
     {
       TextCleanerScript script = new TextCleanerScript();
 
       using (MagickImage logo = new MagickImage(Images.Logo))
       {
+        script.Execute(logo);
+
         ExceptionAssert.Throws<InvalidOperationException>(() =>
         {
           script.AdaptiveBlur = -1;
