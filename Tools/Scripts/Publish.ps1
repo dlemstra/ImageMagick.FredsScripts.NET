@@ -7,116 +7,116 @@ $github = 'https://github.com/dlemstra/FredsImageMagickScripts.NET'
 #==================================================================================================
 function AddFileElement($xml, $src, $target)
 {
-	$files = $xml.package.files
+  $files = $xml.package.files
 
-	if (!($files))
-	{
-		$files = $xml.CreateElement("files", $xml.DocumentElement.NamespaceURI)
-		[void] $xml.package.AppendChild($files)
-	}
+  if (!($files))
+  {
+    $files = $xml.CreateElement("files", $xml.DocumentElement.NamespaceURI)
+    [void] $xml.package.AppendChild($files)
+  }
 
-	$file = $xml.CreateElement("file", $xml.DocumentElement.NamespaceURI)
-	
-	$srcAtt = $xml.CreateAttribute("src")
-	$srcAtt.Value = $src
-	[void] $file.Attributes.Append($srcAtt)
+  $file = $xml.CreateElement("file", $xml.DocumentElement.NamespaceURI)
 
-	$targetAtt = $xml.CreateAttribute("target")
-	$targetAtt.Value = $target
-	[void] $file.Attributes.Append($targetAtt)
+  $srcAtt = $xml.CreateAttribute("src")
+  $srcAtt.Value = $src
+  [void] $file.Attributes.Append($srcAtt)
 
-	[void] $files.AppendChild($file)
+  $targetAtt = $xml.CreateAttribute("target")
+  $targetAtt.Value = $target
+  [void] $file.Attributes.Append($targetAtt)
+
+  [void] $files.AppendChild($file)
 }
 #==================================================================================================
 function CreateNuGetPackages()
 {
-	Foreach ($script in $scripts)
-	{
-		$archived = FullPath "..\FredsImageMagickScripts.NET.Archive\$($script.id).$($script.version).nupkg"
-		if (Test-Path $archived)
-		{
-			Write-Host "$($script.id) is already published."
-			continue
-		}
+  Foreach ($script in $scripts)
+  {
+    $archived = FullPath "..\FredsImageMagickScripts.NET.Archive\$($script.id).$($script.version).nupkg"
+    if (Test-Path $archived)
+    {
+      Write-Host "$($script.id) is already published."
+      continue
+    }
 
-		$nuspecFile = FullPath "Publish\Nuspec\$($script.id).nuspec"
-		$dir = FullPath "Publish\Nupkg"
+    $nuspecFile = FullPath "Publish\Nuspec\$($script.id).nuspec"
+    $dir = FullPath "Publish\Nupkg"
 
-		.\Tools\Programs\NuGet.exe pack $nuspecFile -NoPackageAnalysis -OutputDirectory $dir
-		CheckExitCode "Failed to create NuGet package"
-	}
+    .\Tools\Programs\NuGet.exe pack $nuspecFile -NoPackageAnalysis -OutputDirectory $dir
+    CheckExitCode "Failed to create NuGet package"
+  }
 }
 #==================================================================================================
 function CreateNuspecFiles()
 {
-	Foreach ($script in $scripts)
-	{
-		$nuspecFile = FullPath "Publish\Nuspec\$($script.id).nuspec"
-		if (Test-Path $nuspecFile)
-		{
-			$xml = [xml](Get-Content $nuspecFile)
-			$script.version = $xml.package.metadata.version
-			continue
-		}
+  Foreach ($script in $scripts)
+  {
+    $nuspecFile = FullPath "Publish\Nuspec\$($script.id).nuspec"
+    if (Test-Path $nuspecFile)
+    {
+      $xml = [xml](Get-Content $nuspecFile)
+      $script.version = $xml.package.metadata.version
+      continue
+    }
 
-		$title = "Fred's ImageMagick Script " + $script.name
+    $title = "Fred's ImageMagick Script " + $script.name
 
-		$path = FullPath "Publish\FredsImageMagickScripts.NET.nuspec"
-		$xml = [xml](Get-Content $path)
-		$xml.package.metadata.id = $script.id
-		$xml.package.metadata.version = $script.version
-		$xml.package.metadata.title = $title
-		$xml.package.metadata.summary = $title + " (requires Magick.NET)"
-		$xml.package.metadata.description = $script.description
-		$xml.package.metadata.tags = "Fred Weinhaus ImageMagick " + $name
+    $path = FullPath "Publish\FredsImageMagickScripts.NET.nuspec"
+    $xml = [xml](Get-Content $path)
+    $xml.package.metadata.id = $script.id
+    $xml.package.metadata.version = $script.version
+    $xml.package.metadata.title = $title
+    $xml.package.metadata.summary = $title + " (requires Magick.NET)"
+    $xml.package.metadata.description = $script.description
+    $xml.package.metadata.tags = "Fred Weinhaus ImageMagick " + $name
 
-		$path = FullPath "FredsImageMagickScripts.NET\$($script.path)"
-		Foreach ($file in Get-ChildItem $path -Filter "$($script.name)*")
-		{
-			$file = "$($script.path)\$file"
-			AddFileElement $xml "..\..\FredsImageMagickScripts.NET\$file" "Content\FredsImageMagickScripts\$file"
-		}
+    $path = FullPath "FredsImageMagickScripts.NET\$($script.path)"
+    Foreach ($file in Get-ChildItem $path -Filter "$($script.name)*")
+    {
+      $file = "$($script.path)\$file"
+      AddFileElement $xml "..\..\FredsImageMagickScripts.NET\$file" "Content\FredsImageMagickScripts\$file"
+    }
 
-		$xml.Save($nuspecFile)
-		Write-Host "Created: $nuspecFile"
-	}
+    $xml.Save($nuspecFile)
+    Write-Host "Created: $nuspecFile"
+  }
 }
 #==================================================================================================
 function LoadScripts()
 {
-	$path = FullPath "FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.xml"
-	$documentation = ([xml](Get-Content $path)).doc.members
+  $path = FullPath "FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.xml"
+  $documentation = ([xml](Get-Content $path)).doc.members
 
-	$utcNow = [System.DateTime]::Now.ToUniversalTime()
-	$build = ($utcNow.Date - (New-Object DateTime(2000, 1, 1)).Date).TotalDays
-	$revision = [int]($utcNow.TimeOfDay.TotalSeconds / 2)
+  $utcNow = [System.DateTime]::Now.ToUniversalTime()
+  $build = ($utcNow.Date - (New-Object DateTime(2000, 1, 1)).Date).TotalDays
+  $revision = [int]($utcNow.TimeOfDay.TotalSeconds / 2)
 
-	$assembly = [System.Reflection.Assembly]::LoadFrom("..\FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.dll")
-	$types = $assembly.GetTypes() | Where { $_.Name.EndsWith("Script") }
+  $assembly = [System.Reflection.Assembly]::LoadFrom("..\FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.dll")
+  $types = $assembly.GetTypes() | Where { $_.Name.EndsWith("Script") }
 
-	$scripts = @()
+  $scripts = @()
 
-	Foreach ($type in $types)
-	{
-		$name = $type.Name.Replace("Script", "")
-		$file = Get-ChildItem -Filter "$($type.Name).cs" -Recurse
-		$path = FullPath "FredsImageMagickScripts.NET"
-		$path = $file.FullName.SubString($path.Length + 1)
-		$path = Split-Path -parent $path
-		$summary = $documentation.SelectSingleNode("member[@name='T:FredsImageMagickScripts.$($type.Name)']").summary.Trim()
-		$summary = [System.Text.RegularExpressions.Regex]::Replace($summary, '\s+', ' ')
+  Foreach ($type in $types)
+  {
+    $name = $type.Name.Replace("Script", "")
+    $file = Get-ChildItem -Filter "$($type.Name).cs" -Recurse
+    $path = FullPath "FredsImageMagickScripts.NET"
+    $path = $file.FullName.SubString($path.Length + 1)
+    $path = Split-Path -parent $path
+    $summary = $documentation.SelectSingleNode("member[@name='T:FredsImageMagickScripts.$($type.Name)']").summary.Trim()
+    $summary = [System.Text.RegularExpressions.Regex]::Replace($summary, '\s+', ' ')
 
-		$scripts +=	[pscustomobject]@{
-			id = "FredsImageMagickScripts.$name"
-			version = "1.0.$build.$revision"
-			name = $name
-			description = $summary
-			path = $path
-			url = "$github/tree/master/FredsImageMagickScripts.NET/" + $path.Replace("\", "/")
-		}
-	}
+    $scripts +=	[pscustomobject]@{
+      id = "FredsImageMagickScripts.$name"
+      version = "1.0.$build.$revision"
+      name = $name
+      description = $summary
+      path = $path
+      url = "$github/tree/master/FredsImageMagickScripts.NET/" + $path.Replace("\", "/")
+    }
+  }
 
-	return $scripts | Sort-Object name
+  return $scripts | Sort-Object name
 }
 #==================================================================================================
 function UpdateReadme()
@@ -135,13 +135,13 @@ The following scripts have been ported to .NET and can be found on NuGet.
 --- | ---
 "@
 
-	Foreach($script in $scripts)
-	{
-		$content += "`r`n" + '[' + $script.name + '](' + $script.url + ')|[download](https://www.nuget.org/packages/' + $script.id + '/)'
-	}
+  Foreach($script in $scripts)
+  {
+    $content += "`r`n" + '[' + $script.name + '](' + $script.url + ')|[download](https://www.nuget.org/packages/' + $script.id + '/)'
+  }
 
-	$path = FullPath "README.md"
-	$content | Out-File -filepath $path
+  $path = FullPath "README.md"
+  $content | Out-File -filepath $path
 }
 #==================================================================================================
 $scripts = LoadScripts
