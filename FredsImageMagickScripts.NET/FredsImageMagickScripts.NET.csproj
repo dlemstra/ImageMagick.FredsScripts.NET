@@ -71,6 +71,8 @@
     <Compile Include="Effects\DraganEffect\DraganEffectScript.cs" />
     <Compile Include="Geometry\Autotrim\AutotrimPixelShift.cs" />
     <Compile Include="Geometry\Autotrim\AutotrimScript.cs" />
+    <Compile Include="Geometry\Tshirt\TshirtFit.cs" />
+    <Compile Include="Geometry\Tshirt\TshirtScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threshold\TextCleaner\TextCleanerCropOffset.cs" />
     <Compile Include="Threshold\TextCleaner\TextCleanerEnhance.cs" />
