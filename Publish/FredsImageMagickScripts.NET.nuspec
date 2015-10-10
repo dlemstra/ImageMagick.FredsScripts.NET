@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-	<metadata minClientVersion="2.5">
-		<id/>
-		<version/>
-		<title/>
-		<authors>Dirk Lemstra, Fred Weinhaus</authors>
-		<owners>Dirk Lemstra, Fred Weinhaus</owners>
-		<licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
-		<projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
-		<iconUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/raw/master/Images/FredsImageMagickScripts.Logo.png</iconUrl>
-		<requireLicenseAcceptance>true</requireLicenseAcceptance>
-		<description></description>
-		<summary></summary>
-		<releaseNotes/>
-		<copyright>Copyright 2015 Dirk Lemstra, Fred Weinhaus</copyright>
-		<tags>Fred Weinhaus ImageMagick Magick.NET</tags>
-	</metadata>
-	<files>
-		<file src="Readme.txt" target="" /> 
-	</files>
+  <metadata minClientVersion="2.5">
+    <id/>
+    <version/>
+    <title/>
+    <authors>Dirk Lemstra, Fred Weinhaus</authors>
+    <owners>Dirk Lemstra, Fred Weinhaus</owners>
+    <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
+    <iconUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/raw/master/Images/FredsImageMagickScripts.Logo.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description></description>
+    <summary></summary>
+    <releaseNotes/>
+    <copyright>Copyright 2015 Dirk Lemstra, Fred Weinhaus</copyright>
+    <tags>Fred Weinhaus ImageMagick Magick.NET</tags>
+  </metadata>
+  <files>
+    <file src="Readme.txt" target="" />
+  </files>
 </package>

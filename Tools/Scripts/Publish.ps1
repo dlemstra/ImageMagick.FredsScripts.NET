@@ -1,10 +1,9 @@
-#==================================================================================================
 $scriptPath = Split-Path -parent $MyInvocation.MyCommand.Path
 . $scriptPath\Shared\Functions.ps1
 SetFolder $scriptPath
-#==================================================================================================
-$github = 'https://github.com/dlemstra/FredsImageMagickScripts.NET'
-#==================================================================================================
+
+$github = "https://github.com/dlemstra/FredsImageMagickScripts.NET"
+
 function AddFileElement($xml, $src, $target)
 {
   $files = $xml.package.files
@@ -27,7 +26,7 @@ function AddFileElement($xml, $src, $target)
 
   [void] $files.AppendChild($file)
 }
-#==================================================================================================
+
 function CreateNuGetPackages()
 {
   Foreach ($script in $scripts)
@@ -46,7 +45,7 @@ function CreateNuGetPackages()
     CheckExitCode "Failed to create NuGet package"
   }
 }
-#==================================================================================================
+
 function CreateNuspecFiles()
 {
   Foreach ($script in $scripts)
@@ -81,7 +80,7 @@ function CreateNuspecFiles()
     Write-Host "Created: $nuspecFile"
   }
 }
-#==================================================================================================
+
 function LoadScripts()
 {
   $path = FullPath "FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.xml"
@@ -118,7 +117,7 @@ function LoadScripts()
 
   return $scripts | Sort-Object name
 }
-#==================================================================================================
+
 function UpdateReadme()
 {
 $content = @"
@@ -143,10 +142,9 @@ The following scripts have been ported to .NET and can be found on NuGet.
   $path = FullPath "README.md"
   $content | Out-File -filepath $path
 }
-#==================================================================================================
+
 $scripts = LoadScripts
-#==================================================================================================
+
 CreateNuspecFiles
 UpdateReadme
 CreateNuGetPackages
-#==================================================================================================
