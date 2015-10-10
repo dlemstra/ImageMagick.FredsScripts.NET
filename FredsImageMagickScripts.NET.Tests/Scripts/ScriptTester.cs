@@ -87,8 +87,10 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 
           double distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
 
-          /* Allow a minor difference between the images */
-          Assert.AreEqual(0.0, distortion, 0.05, actualImage.FileName);
+          if (distortion != 0)
+            LosslessCompress(actualOutputFile.FullName);
+
+          Assert.AreEqual(0.0, distortion, actualImage.FileName);
         }
       }
     }

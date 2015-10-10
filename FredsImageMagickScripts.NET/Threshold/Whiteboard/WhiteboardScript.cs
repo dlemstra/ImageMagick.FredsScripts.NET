@@ -101,7 +101,7 @@ namespace FredsImageMagickScripts
     private double CalculateAspectRatio()
     {
       if (AspectRatio.HasValue)
-        return (double)AspectRatio.Value.X / AspectRatio.Value.Y;
+        return AspectRatio.Value.X / AspectRatio.Value.Y;
 
       double m1x = _Coords[3].X;
       double m1y = _Coords[3].Y;
