@@ -69,9 +69,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       string tshirtFile = GetInputFile(tshirt);
       string overlayFile = GetInputFile(overlay);
 
-      LosslessCompress(tshirtFile);
-      LosslessCompress(overlayFile);
-
       using (MagickImage tshirtImage = new MagickImage(tshirtFile))
       {
         using (MagickImage overlayImage = new MagickImage(overlayFile))
@@ -129,6 +126,12 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
         script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
         script.Fit = TshirtFit.Distort;
       }, "tshirt_gray_flowers_distort.jpg");
+
+      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Rotation = -3;
+      }, "tshirt_gray_flowers_none_rm3.jpg");
     }
 
     private void Test_Execute_Gray_Transparent()

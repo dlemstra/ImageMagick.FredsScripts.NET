@@ -133,7 +133,7 @@ namespace FredsImageMagickScripts
       if (Rotation == 0)
         return _Coords;
 
-      double rotate = Math.PI / 180 * Rotation;
+      double rotate = (Math.PI / 180) * Rotation;
       double xcent = Math.Round(0.5 * topWidth) + _Coords[0].X;
       double ycent = Math.Round(0.5 * (overlay.Height / scale) + _Coords[0].Y);
 
@@ -142,7 +142,7 @@ namespace FredsImageMagickScripts
       {
         coords[i] = new Coordinate(
           (int)Math.Round(xcent + (_Coords[i].X - xcent) * Math.Cos(rotate) - (_Coords[i].Y - ycent) * Math.Sin(rotate)),
-          (int)Math.Round(ycent + (_Coords[i].X - xcent) * Math.Cos(rotate) + (_Coords[i].Y - ycent) * Math.Sin(rotate)));
+          (int)Math.Round(ycent + (_Coords[i].X - xcent) * Math.Sin(rotate) + (_Coords[i].Y - ycent) * Math.Cos(rotate)));
       }
 
       return coords;
