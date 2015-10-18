@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.TextCleaner</id>
-    <version>1.0.5601.17389</version>
+    <version>1.0.5769.34750</version>
     <title>Fred's ImageMagick Script TextCleaner</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
@@ -18,10 +18,10 @@
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerCropOffset.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerCropOffset.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerEnhance.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerEnhance.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerLayout.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerLayout.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerRotation.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerRotation.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleanerScript.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleanerScript.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerCropOffset.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerCropOffset.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerEnhance.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerEnhance.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerLayout.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerLayout.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerRotation.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerRotation.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerScript.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerScript.cs" />
   </files>
 </package>

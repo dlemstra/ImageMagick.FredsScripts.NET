@@ -27,6 +27,20 @@ function AddFileElement($xml, $src, $target)
   [void] $files.AppendChild($file)
 }
 
+function Build()
+{
+  msbuild /m "FredsImageMagickScripts.NET.sln" /t:Rebuild ("/p:Configuration=Release,Platform=Any CPU")
+  CheckExitCode "Failed to build: FredsImageMagickScripts.NET.sln"
+}
+
+function Test()
+{
+  $dll = "FredsImageMagickScripts.NET.Tests\bin\Release\FredsImageMagickScripts.NET.Tests.dll"
+  # vstest.console.exe keeps crashing, so we need to use mstest.exe instead
+  mstest.exe /testcontainer:$dll /noisolation
+  CheckExitCode ("Test failed for FredsImageMagickScripts.NET.Tests.dll")
+}
+
 function CreateNuGetPackages()
 {
   Foreach ($script in $scripts)
@@ -142,6 +156,9 @@ The following scripts have been ported to .NET and can be found on NuGet.
   $path = FullPath "README.md"
   $content | Out-File -filepath $path
 }
+
+Build
+Test
 
 $scripts = LoadScripts
 

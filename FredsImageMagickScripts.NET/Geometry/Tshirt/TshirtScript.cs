@@ -17,6 +17,7 @@
 //=================================================================================================
 
 using System;
+using System.Globalization;
 using ImageMagick;
 
 namespace FredsImageMagickScripts
@@ -80,7 +81,7 @@ namespace FredsImageMagickScripts
         throw new InvalidOperationException("Invalid Blur specified.");
     }
 
-    private double[] CreateArguments(Coordinate[] overlayCoordinates, Coordinate[] tshirtCoordinates)
+    private static double[] CreateArguments(Coordinate[] overlayCoordinates, Coordinate[] tshirtCoordinates)
     {
       double[] result = new double[16];
 
@@ -173,7 +174,7 @@ namespace FredsImageMagickScripts
       output.Composite(mergedAlpha, CompositeOperator.CopyAlpha);
       mergedAlpha.Dispose();
 
-      string args = string.Format("{0},{0}", -Displace);
+      string args = string.Format(CultureInfo.InvariantCulture, "{0},{0}", -Displace);
       output.Composite(blur, 0, 0, CompositeOperator.Displace, args);
 
       return output;
@@ -215,7 +216,7 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private MagickImage SubtractMean(MagickImage image, Coordinate[] coords)
+    private static MagickImage SubtractMean(MagickImage image, Coordinate[] coords)
     {
       using (MagickImage img = image.Clone())
       {
@@ -239,7 +240,7 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private MagickImage ToGrayScale(MagickImage image)
+    private static MagickImage ToGrayScale(MagickImage image)
     {
       MagickImage gray = image.Clone();
       gray.Alpha(AlphaOption.Off);

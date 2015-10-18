@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata minClientVersion="2.5">
+    <id>FredsImageMagickScripts.Autotrim</id>
+    <version>1.0.5769.34750</version>
+    <title>Fred's ImageMagick Script Autotrim</title>
+    <authors>Dirk Lemstra, Fred Weinhaus</authors>
+    <owners>Dirk Lemstra, Fred Weinhaus</owners>
+    <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
+    <iconUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/raw/master/Images/FredsImageMagickScripts.Logo.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Automatically trim a (nearly) uniform color border around an image. If the image is rotated, one can trim to the bounding box around the image area or alternately trim to the maximum central area that contains no border pixels. The excess border does not have to completely surround the image. It may be only on one side. However, one must identify a coordinate within the border area for the algorithm to extract the base border color and also specify a fuzz value when the border color is not uniform. For simple border trimming of a normally oriented image or the bounding box of a rotated image, you may err somewhat towards larger than optimal fuzz values. For images that contain rotated picture data, when you want to trim to the central area, you should choose the smallest fuzz value that is appropriate. For images that contain rotated picture data, an estimate of the rotation angle is needed for the algorithm to work. However, setting the rotation angle to zero will let the algorithm determine the rotation angle. The resulting trim is usually pretty good for angles &gt;= 5 degrees. If the result is off a little, you may use the left/right/top/bottom arguments to adjust the automatically determined trim region.</description>
+    <summary>Fred's ImageMagick Script Autotrim (requires Magick.NET)</summary>
+    <releaseNotes />
+    <copyright>Copyright 2015 Dirk Lemstra, Fred Weinhaus</copyright>
+    <tags>Fred Weinhaus ImageMagick </tags>
+  </metadata>
+  <files>
+    <file src="Readme.txt" target="" />
+    <file src="..\..\FredsImageMagickScripts.NET\Geometry\Autotrim\AutotrimPixelShift.cs" target="Content\FredsImageMagickScripts\Geometry\Autotrim\AutotrimPixelShift.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Geometry\Autotrim\AutotrimScript.cs" target="Content\FredsImageMagickScripts\Geometry\Autotrim\AutotrimScript.cs" />
+  </files>
+</package>

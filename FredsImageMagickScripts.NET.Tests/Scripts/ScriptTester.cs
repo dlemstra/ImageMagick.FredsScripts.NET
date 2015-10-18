@@ -26,17 +26,17 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
   {
     private static string _ImagesRoot = @"..\..\..\Images\";
 
-    private FileInfo GetExpectedOutputFile(string fileName)
-    {
-      return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + fileName);
-    }
-
     private FileInfo GetActualOutputFile(string fileName)
     {
       int dotIndex = fileName.LastIndexOf('.');
       string name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
 
       return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + name);
+    }
+
+    private FileInfo GetExpectedOutputFile(string fileName)
+    {
+      return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + fileName);
     }
 
     protected string ScriptName
