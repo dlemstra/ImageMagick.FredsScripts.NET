@@ -43,7 +43,7 @@ function Test()
 
 function CreateNuGetPackages()
 {
-  Foreach ($script in $scripts)
+  foreach ($script in $scripts)
   {
     $archived = FullPath "..\FredsImageMagickScripts.NET.Archive\$($script.id).$($script.version).nupkg"
     if (Test-Path $archived)
@@ -62,7 +62,7 @@ function CreateNuGetPackages()
 
 function CreateNuspecFiles()
 {
-  Foreach ($script in $scripts)
+  foreach ($script in $scripts)
   {
     $nuspecFile = FullPath "Publish\Nuspec\$($script.id).nuspec"
     if (Test-Path $nuspecFile)
@@ -84,7 +84,7 @@ function CreateNuspecFiles()
     $xml.package.metadata.tags = "Fred Weinhaus ImageMagick " + $name
 
     $path = FullPath "FredsImageMagickScripts.NET\$($script.path)"
-    Foreach ($file in Get-ChildItem $path -Filter "$($script.name)*")
+    foreach ($file in Get-ChildItem $path -Filter "$($script.name)*")
     {
       $file = "$($script.path)\$file"
       AddFileElement $xml "..\..\FredsImageMagickScripts.NET\$file" "Content\FredsImageMagickScripts\$file"
@@ -109,7 +109,7 @@ function LoadScripts()
 
   $scripts = @()
 
-  Foreach ($type in $types)
+  foreach ($type in $types)
   {
     $name = $type.Name.Replace("Script", "")
     $file = Get-ChildItem -Filter "$($type.Name).cs" -Recurse
@@ -144,13 +144,15 @@ This project uses the same license as Fred's ImageMagick Scripts. You can find t
 ## Scripts
 The following scripts have been ported to .NET and can be found on NuGet.
 
- | |
---- | ---
+Script | Download | Original
+--- | --- | ---
 "@
 
-  Foreach($script in $scripts)
+  foreach($script in $scripts)
   {
-    $content += "`r`n" + '[' + $script.name + '](' + $script.url + ')|[download](https://www.nuget.org/packages/' + $script.id + '/)'
+    $content += "`r`n" + "[" + $script.name + "](" + $script.url + ")"
+    $content += "|[download](https://www.nuget.org/packages/" + $script.id + "/)"
+    $content += "|[original](http://www.fmwconcepts.com/imagemagick/" + $script.name.toLower() + "/)"
   }
 
   $path = FullPath "README.md"
