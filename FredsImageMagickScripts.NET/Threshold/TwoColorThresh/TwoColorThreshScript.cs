@@ -40,9 +40,9 @@ namespace FredsImageMagickScripts
       if (input == null)
         throw new ArgumentNullException("input");
 
-      MagickImage result = input.Clone();
+      var result = input.Clone();
 
-      QuantizeSettings settings = new QuantizeSettings()
+      var settings = new QuantizeSettings()
       {
         Colors = 2,
         DitherMethod = DitherMethod.No

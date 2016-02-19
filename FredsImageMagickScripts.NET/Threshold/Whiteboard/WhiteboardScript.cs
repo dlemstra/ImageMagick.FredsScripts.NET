@@ -36,14 +36,14 @@ namespace FredsImageMagickScripts
 
     private void ApplyWhiteBalance(MagickImage image)
     {
-      using (MagickImage mask = image.Clone())
+      using (var mask = image.Clone())
       {
         mask.ColorSpace = ColorSpace.HSB;
         mask.Negate(Channels.Green);
 
-        using (MagickImage newMask = mask.Separate(Channels.Green).First())
+        using (var newMask = mask.Separate(Channels.Green).First())
         {
-          using (MagickImage maskBlue = mask.Separate(Channels.Blue).First())
+          using (var maskBlue = mask.Separate(Channels.Blue).First())
           {
             newMask.Composite(maskBlue, CompositeOperator.Multiply);
           }
@@ -57,7 +57,7 @@ namespace FredsImageMagickScripts
           double greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
           double blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
 
-          MagickColorMatrix matrix = new MagickColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
+          var matrix = new MagickColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
 
           image.ColorMatrix(matrix);
         }
@@ -87,7 +87,7 @@ namespace FredsImageMagickScripts
 
     private void CalculateWidthAndHeightWithCoords()
     {
-      double aspect = CalculateAspectRatio();
+      var aspect = CalculateAspectRatio();
 
       if (Dimensions != null)
         CalculateWidthAndHeightWithDimensions(aspect);
@@ -103,18 +103,18 @@ namespace FredsImageMagickScripts
       if (AspectRatio.HasValue)
         return AspectRatio.Value.X / AspectRatio.Value.Y;
 
-      double m1x = _Coords[3].X;
-      double m1y = _Coords[3].Y;
-      double m2x = _Coords[2].X;
-      double m2y = _Coords[2].Y;
-      double m3x = _Coords[0].X;
-      double m3y = _Coords[0].Y;
-      double m4x = _Coords[1].X;
-      double m4y = _Coords[1].Y;
+      var m1x = _Coords[3].X;
+      var m1y = _Coords[3].Y;
+      var m2x = _Coords[2].X;
+      var m2y = _Coords[2].Y;
+      var m3x = _Coords[0].X;
+      var m3y = _Coords[0].Y;
+      var m4x = _Coords[1].X;
+      var m4y = _Coords[1].Y;
 
       // get centroid of quadrilateral
-      double ccx = (m1x + m2x + m3x + m4x) / 4;
-      double ccy = (m1y + m2y + m3y + m4y) / 4;
+      var ccx = (m1x + m2x + m3x + m4x) / 4;
+      var ccy = (m1y + m2y + m3y + m4y) / 4;
 
       // convert to proper x,y coordinates relative to center
       m1x = m1x - ccx;
@@ -127,18 +127,18 @@ namespace FredsImageMagickScripts
       m4y = ccy - m4y;
 
       // simplified equations, assuming u0=0, v0=0, s=1
-      double k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x);
-      double k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x);
-      double ff = ((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1));
-      double f = Math.Sqrt(Math.Sqrt(ff * ff));
-      double aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + Math.Pow(k2 * m2y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k2 * m2x - m1x, 2) / Math.Pow(f, 2)) / (Math.Pow(k3 - 1, 2) + Math.Pow(k3 * m3y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k3 * m3x - m1x, 2) / Math.Pow(f, 2)));
+      var k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x);
+      var k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x);
+      var ff = ((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1));
+      var f = Math.Sqrt(Math.Sqrt(ff * ff));
+      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + Math.Pow(k2 * m2y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k2 * m2x - m1x, 2) / Math.Pow(f, 2)) / (Math.Pow(k3 - 1, 2) + Math.Pow(k3 * m3y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k3 * m3x - m1x, 2) / Math.Pow(f, 2)));
 
       return aspect;
     }
 
     private void CalculateWidthAndHeightWithDimensions(MagickImage image)
     {
-      double aspect = image.Width / image.Height;
+      var aspect = image.Width / image.Height;
 
       CalculateWidthAndHeightWithDimensions(aspect);
     }
@@ -169,7 +169,7 @@ namespace FredsImageMagickScripts
 
     private void CalculateWidthAndHeightWithMagnification(MagickImage image)
     {
-      double magnification = GetMagnification();
+      var magnification = GetMagnification();
       _Width = image.Width * magnification;
       _Height = image.Height * magnification;
     }
@@ -187,7 +187,7 @@ namespace FredsImageMagickScripts
     {
       image.Alpha(AlphaOption.Off);
 
-      using (MagickImage gray = image.Clone())
+      using (var gray = image.Clone())
       {
         gray.ColorSpace = ColorSpace.Gray;
         gray.Negate();
@@ -218,7 +218,7 @@ namespace FredsImageMagickScripts
     {
       SetDistortViewport(image, 0, 0);
 
-      double[] arguments = new double[16]
+      var arguments = new double[16]
       {
         _Coords[0].X, _Coords[0].Y, 0, 0, _Coords[1].X, _Coords[1].Y, _Width, 0,
         _Coords[2].X, _Coords[2].Y, _Width, _Height, _Coords[3].X, _Coords[3].Y, 0, _Height
@@ -229,22 +229,22 @@ namespace FredsImageMagickScripts
 
     private void DistortImageWithDimensions(MagickImage input, MagickImage image)
     {
-      double delX = (input.Width - _Width) / 2;
-      double delY = (input.Height - _Height) / 2;
+      var delX = (input.Width - _Width) / 2;
+      var delY = (input.Height - _Height) / 2;
       SetDistortViewport(image, (int)delX, (int)delY);
 
-      double cx = input.Width / 2;
-      double cy = input.Height / 2;
-      double magX = input.Width / _Width;
-      double magy = input.Height / _Height;
+      var cx = input.Width / 2;
+      var cy = input.Height / 2;
+      var magX = input.Width / _Width;
+      var magy = input.Height / _Height;
 
       image.Distort(DistortMethod.ScaleRotateTranslate, cx, cy, magX, magy, 0);
     }
 
     private void DistortImageWithMagnification(MagickImage input, MagickImage image)
     {
-      double delX = (input.Width - _Width) / 2;
-      double delY = (input.Height - _Height) / 2;
+      var delX = (input.Width - _Width) / 2;
+      var delY = (input.Height - _Height) / 2;
       SetDistortViewport(image, (int)delX, (int)delY);
 
       image.Distort(DistortMethod.ScaleRotateTranslate, Magnification.Value, 0);
@@ -269,7 +269,7 @@ namespace FredsImageMagickScripts
 
     private static double GetMean(MagickImage image)
     {
-      double mean = image.Statistics().GetChannel(PixelChannel.Composite).Mean;
+      var mean = image.Statistics().GetChannel(PixelChannel.Composite).Mean;
       return mean * 100 / Quantum.Max;
     }
 
@@ -278,8 +278,8 @@ namespace FredsImageMagickScripts
       using (MagickImage channelImage = image.Separate(channel).First())
       {
         channelImage.Composite(mask, CompositeOperator.Multiply);
-        double channelMean = GetMean(channelImage);
-        double average = 100 * channelMean / maskMean;
+        var channelMean = GetMean(channelImage);
+        var average = 100 * channelMean / maskMean;
         return 100 / average;
       }
     }
@@ -296,7 +296,7 @@ namespace FredsImageMagickScripts
     {
       image.VirtualPixelMethod = VirtualPixelMethod.White;
 
-      string viewport = string.Format(CultureInfo.InvariantCulture, "{0}x{1}+{2}+{3}", (int)_Width, (int)_Height, x, y);
+      var viewport = string.Format(CultureInfo.InvariantCulture, "{0}x{1}+{2}+{3}", (int)_Width, (int)_Height, x, y);
       image.SetArtifact("distort:viewport", viewport);
     }
 
@@ -449,7 +449,7 @@ namespace FredsImageMagickScripts
       CheckSettings(input);
       CalculateWidthAndHeight(input);
 
-      MagickImage output = input.Clone();
+      var output = input.Clone();
       EnhanceImage(output);
       DistortImage(input, output);
       CopyOpacity(output);

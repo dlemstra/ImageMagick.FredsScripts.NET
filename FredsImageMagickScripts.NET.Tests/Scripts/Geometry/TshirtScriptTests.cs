@@ -66,17 +66,17 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
 
     private void Test_Execute(string tshirt, string overlay, Action<TshirtScript> action, string output)
     {
-      string tshirtFile = GetInputFile(tshirt);
-      string overlayFile = GetInputFile(overlay);
+      var tshirtFile = GetInputFile(tshirt);
+      var overlayFile = GetInputFile(overlay);
 
-      using (MagickImage tshirtImage = new MagickImage(tshirtFile))
+      using (var tshirtImage = new MagickImage(tshirtFile))
       {
-        using (MagickImage overlayImage = new MagickImage(overlayFile))
+        using (var overlayImage = new MagickImage(overlayFile))
         {
-          TshirtScript script = new TshirtScript();
+          var script = new TshirtScript();
           action(script);
 
-          MagickImage scriptOutput = script.Execute(tshirtImage, overlayImage);
+          var scriptOutput = script.Execute(tshirtImage, overlayImage);
           TestOutput(scriptOutput, output);
         }
       }
@@ -94,10 +94,10 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     {
       Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
       {
-        PointD topLeft = new PointD(275, 175);
-        PointD topRight = new PointD(404, 175);
-        PointD bottomRight = new PointD(404, 304);
-        PointD bottomLeft = new PointD(275, 304);
+        var topLeft = new PointD(275, 175);
+        var topRight = new PointD(404, 175);
+        var bottomRight = new PointD(404, 304);
+        var bottomLeft = new PointD(275, 304);
 
         script.SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
       }, "tshirt_gray_flowers_none_r.jpg");
@@ -145,7 +145,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     [TestMethod, TestCategory(_Category)]
     public void Test_Defaults()
     {
-      TshirtScript script = new TshirtScript();
+      var script = new TshirtScript();
       Test_Defaults(script);
 
       script.AntiAlias = 1.0;
@@ -172,7 +172,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     [TestMethod, TestCategory(_Category)]
     public void Test_Excecute_Null()
     {
-      using (MagickImage logo = Images.Logo)
+      using (var logo = Images.Logo)
       {
         ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(delegate ()
         {
@@ -193,14 +193,14 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     {
       ExceptionAssert.Throws<InvalidOperationException>(delegate ()
       {
-        using (MagickImage logo = Images.Logo)
+        using (var logo = Images.Logo)
         {
           TshirtScript script = new TshirtScript();
           script.Execute(logo, logo);
         }
       }, "No coordinates have been set.");
 
-      PointD[] invalid = new PointD[]
+      var invalid = new PointD[]
       {
         new PointD(-10, 10), new PointD(10, -10),
         new PointD(650, 10), new PointD(630, 490)
@@ -218,9 +218,9 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     [TestMethod, TestCategory(_Category)]
     public void Test_Settings()
     {
-      TshirtScript script = new TshirtScript();
+      var script = new TshirtScript();
 
-      using (MagickImage logo = Images.Logo)
+      using (var logo = Images.Logo)
       {
         Reset(script);
         script.Execute(logo, logo);

@@ -43,12 +43,12 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     {
       string inputFile = GetInputFile(input);
 
-      using (MagickImage image = new MagickImage(inputFile))
+      using (var image = new MagickImage(inputFile))
       {
-        AutotrimScript script = new AutotrimScript();
+        var script = new AutotrimScript();
         action(script);
 
-        MagickImage scriptOutput = script.Execute(image);
+        var scriptOutput = script.Execute(image);
         TestOutput(scriptOutput, output);
       }
     }
@@ -161,7 +161,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     [TestMethod, TestCategory(_Category)]
     public void Test_Defaults()
     {
-      AutotrimScript script = new AutotrimScript();
+      var script = new AutotrimScript();
       Test_Defaults(script);
 
       script.BorderColorLocation = new PointD(10, 10);
@@ -191,7 +191,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
       {
-        AutotrimScript script = new AutotrimScript();
+        var script = new AutotrimScript();
         script.Execute(null);
       }, "input");
     }
@@ -199,9 +199,9 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     [TestMethod, TestCategory(_Category)]
     public void Test_Settings()
     {
-      AutotrimScript script = new AutotrimScript();
+      var script = new AutotrimScript();
 
-      using (MagickImage logo = new MagickImage(Images.Logo))
+      using (var logo = new MagickImage(Images.Logo))
       {
         ExceptionAssert.Throws<ArgumentException>(() =>
         {

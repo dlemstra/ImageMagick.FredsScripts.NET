@@ -32,10 +32,12 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       string inputFile = GetInputFile(input);
       string output = input.Replace(".jpg", ".gif");
 
-      using (MagickImage image = new MagickImage(inputFile))
+      using (var image = new MagickImage(inputFile))
       {
-        MagickImage scriptOutput = TwoColorThreshScript.Execute(image);
-        TestOutput(scriptOutput, output);
+        using (var scriptOutput = TwoColorThreshScript.Execute(image))
+        {
+          TestOutput(scriptOutput, output);
+        }
       }
     }
 

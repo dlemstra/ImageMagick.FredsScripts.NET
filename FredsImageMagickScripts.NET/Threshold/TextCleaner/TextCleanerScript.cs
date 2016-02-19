@@ -102,7 +102,7 @@ namespace FredsImageMagickScripts
 
     private void RemoveNoise(MagickImage image)
     {
-      using (MagickImage second = image.Clone())
+      using (var second = image.Clone())
       {
         second.ColorSpace = ColorSpace.Gray;
         second.Negate();
@@ -333,7 +333,7 @@ namespace FredsImageMagickScripts
 
       CheckSettings();
 
-      MagickImage output = input.Clone();
+      var output = input.Clone();
       RotateImage(output);
       CropImage(output);
       ConvertToGrayscale(output);

@@ -39,7 +39,7 @@ namespace FredsImageMagickScripts
       if (Contrast == 0.0)
         return;
 
-      bool sharpen = Contrast >= 0.0;
+      var sharpen = Contrast >= 0.0;
       image.SigmoidalContrast(sharpen, Math.Abs(Contrast), Quantum.Max / 2);
     }
 
@@ -124,13 +124,13 @@ namespace FredsImageMagickScripts
 
       CheckSettings();
 
-      using (MagickImage first = input.Clone())
+      using (var first = input.Clone())
       {
         ApplyBrightness(first);
         ApplyContrast(first);
         ApplySaturation(first);
 
-        using (MagickImage second = first.Clone())
+        using (var second = first.Clone())
         {
           second.Modulate((Percentage)100, (Percentage)0, (Percentage)100);
           double darkness = 3 / Darkness;
@@ -144,9 +144,9 @@ namespace FredsImageMagickScripts
           first.Clamp();
         }
 
-        MagickImage output = first.Clone();
+        var output = first.Clone();
 
-        using (MagickImage third = first.Clone())
+        using (var third = first.Clone())
         {
           third.SetArtifact("convolve:bias", "50%");
           third.SetArtifact("convolve:scale", "1");
@@ -155,7 +155,7 @@ namespace FredsImageMagickScripts
 
           output.Composite(third, CompositeOperator.Overlay);
 
-          using (MagickImage fourth = first.Clone())
+          using (var fourth = first.Clone())
           {
             fourth.Modulate((Percentage)100, (Percentage)0, (Percentage)100);
 

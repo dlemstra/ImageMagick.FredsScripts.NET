@@ -72,11 +72,11 @@ namespace FredsImageMagickScripts
 
     private MagickGeometry GetLargestArea(MagickImage image)
     {
-      Line[] points = new Line[4];
+      var points = new Line[4];
 
       using (PixelCollection pixels = image.GetPixels())
       {
-        Line line = new Line(0, 0);
+        var line = new Line(0, 0);
 
         while (IsBorderColor(pixels, line.X1, line.Y) && line.Y < image.Height - 1 && line.X1 < image.Width - 1)
         {
@@ -136,7 +136,7 @@ namespace FredsImageMagickScripts
         points[3] = line;
       }
 
-      MagickGeometry geometry = new MagickGeometry(0, 0);
+      var geometry = new MagickGeometry(0, 0);
 
       SwapPoints(points);
 
@@ -150,10 +150,10 @@ namespace FredsImageMagickScripts
 
     private void ExecuteInnerTrim(MagickImage image)
     {
-      MagickGeometry area = GetLargestArea(image);
+      var area = GetLargestArea(image);
 
       image.Rotate(90);
-      MagickGeometry rotatedArea = GetLargestArea(image);
+      var rotatedArea = GetLargestArea(image);
 
       if (rotatedArea > area)
       {
@@ -174,14 +174,14 @@ namespace FredsImageMagickScripts
       image.Trim();
       image.RePage();
 
-      MagickGeometry geometry = new MagickGeometry(0, 0, image.Width, image.Height);
+      var geometry = new MagickGeometry(0, 0, image.Width, image.Height);
       ShiftGeometry(geometry);
       Crop(image, geometry);
     }
 
     private bool IsBorderColor(PixelCollection pixels, int x, int y)
     {
-      MagickColor color = pixels.GetPixel(x, y).ToColor();
+      var color = pixels.GetPixel(x, y).ToColor();
       return color.FuzzyEquals(_BorderColor, ColorFuzz);
     }
 
@@ -218,7 +218,7 @@ namespace FredsImageMagickScripts
       int width = Math.Min(line1.X2, line2.X2) - x;
       int height = line2.Y - line1.Y;
 
-      MagickGeometry newGeometry = new MagickGeometry(x, y, width, height);
+      var newGeometry = new MagickGeometry(x, y, width, height);
 
       return newGeometry > geometry ? newGeometry : geometry;
     }
@@ -279,7 +279,7 @@ namespace FredsImageMagickScripts
       if (input == null)
         throw new ArgumentNullException("input");
 
-      MagickImage output = input.Clone();
+      var output = input.Clone();
       _BorderColor = GetBorderColor(output);
 
       if (InnerTrim)

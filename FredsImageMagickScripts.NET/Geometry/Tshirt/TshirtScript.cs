@@ -83,7 +83,7 @@ namespace FredsImageMagickScripts
 
     private static double[] CreateArguments(PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
     {
-      double[] result = new double[16];
+      var result = new double[16];
 
       int i = 0;
       for (int j = 0; j < 4; j++)
@@ -100,9 +100,9 @@ namespace FredsImageMagickScripts
 
     private PointD[] CreateOverlayCoordinates(MagickImage overlay, double scale)
     {
-      double angle = -Math.Atan2(_Coords[1].Y - _Coords[0].Y, _Coords[1].X - _Coords[0].X);
-      double xOffset = _Coords[0].X;
-      double yOffset = _Coords[0].Y;
+      var angle = -Math.Atan2(_Coords[1].Y - _Coords[0].Y, _Coords[1].X - _Coords[0].X);
+      var xOffset = _Coords[0].X;
+      var yOffset = _Coords[0].Y;
 
       PointD[] coords = new PointD[4];
       for (int i = 0; i < 4; i++)
@@ -130,11 +130,11 @@ namespace FredsImageMagickScripts
       if (Rotation == 0)
         return _Coords;
 
-      double rotate = (Math.PI / 180) * Rotation;
-      double xcent = Math.Round(0.5 * topWidth) + _Coords[0].X;
-      double ycent = Math.Round(0.5 * (overlay.Height / scale) + _Coords[0].Y);
+      var rotate = (Math.PI / 180) * Rotation;
+      var xcent = Math.Round(0.5 * topWidth) + _Coords[0].X;
+      var ycent = Math.Round(0.5 * (overlay.Height / scale) + _Coords[0].Y);
 
-      PointD[] coords = new PointD[4];
+      var coords = new PointD[4];
       for (int i = 0; i < 4; i++)
       {
         coords[i] = new PointD(
@@ -147,7 +147,7 @@ namespace FredsImageMagickScripts
 
     private MagickImage CropOverlay(MagickImage image, PointD[] coords)
     {
-      MagickImage result = image.Clone();
+      var result = image.Clone();
       if (Fit == TshirtFit.Crop)
       {
         int height = (int)coords[2].Y + 1;
@@ -160,17 +160,17 @@ namespace FredsImageMagickScripts
 
     private MagickImage DisplaceOverlay(MagickImage overlay, MagickImage light, MagickImage blur)
     {
-      MagickImage mergedAlpha = overlay.Clone();
+      var mergedAlpha = overlay.Clone();
       mergedAlpha.Alpha(AlphaOption.Extract);
 
-      MagickImage output = overlay.Clone();
+      var output = overlay.Clone();
       output.Composite(light, CompositeOperator.HardLight);
 
       output.Alpha(AlphaOption.Off);
       output.Composite(mergedAlpha, CompositeOperator.CopyAlpha);
       mergedAlpha.Dispose();
 
-      string args = string.Format(CultureInfo.InvariantCulture, "{0},{0}", -Displace);
+      var args = string.Format(CultureInfo.InvariantCulture, "{0},{0}", -Displace);
       output.Composite(blur, 0, 0, CompositeOperator.Displace, args);
 
       return output;
@@ -178,16 +178,16 @@ namespace FredsImageMagickScripts
 
     private MagickImage DistortOverlay(MagickImage grayShirt, MagickImage overlay, PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
     {
-      using (MagickImageCollection images = new MagickImageCollection())
+      using (var images = new MagickImageCollection())
       {
         grayShirt.Alpha(AlphaOption.Transparent);
         grayShirt.BackgroundColor = MagickColors.Transparent;
         images.Add(grayShirt);
 
-        MagickImage croppedOverlay = CropOverlay(overlay, overlayCoordinates);
+        var croppedOverlay = CropOverlay(overlay, overlayCoordinates);
         croppedOverlay.VirtualPixelMethod = VirtualPixelMethod.Transparent;
 
-        double[] arguments = CreateArguments(overlayCoordinates, tshirtCoordinates);
+        var arguments = CreateArguments(overlayCoordinates, tshirtCoordinates);
         croppedOverlay.Distort(DistortMethod.Perspective, true, arguments);
         ApplySharpen(croppedOverlay);
 
@@ -202,7 +202,7 @@ namespace FredsImageMagickScripts
       if (!image.HasAlpha)
         return null;
 
-      using (MagickImage alpha = image.Clone())
+      using (var alpha = image.Clone())
       {
         alpha.Alpha(AlphaOption.Extract);
         alpha.Blur(0, AntiAlias);
@@ -214,7 +214,7 @@ namespace FredsImageMagickScripts
 
     private static MagickImage SubtractMean(MagickImage image, PointD[] coords)
     {
-      using (MagickImage img = image.Clone())
+      using (var img = image.Clone())
       {
         int minX = (int)Math.Min(Math.Min(coords[0].X, coords[1].X), Math.Min(coords[2].X, coords[3].X));
         int minY = (int)Math.Min(Math.Min(coords[0].Y, coords[1].Y), Math.Min(coords[2].Y, coords[3].Y));
@@ -227,10 +227,10 @@ namespace FredsImageMagickScripts
         img.Crop(minX, minY, width, height);
         img.RePage();
 
-        Statistics statistics = img.Statistics();
+        var statistics = img.Statistics();
         double mean = (statistics.Composite().Mean / Quantum.Max) - 0.5;
 
-        MagickImage result = image.Clone();
+        var result = image.Clone();
         result.Evaluate(Channels.All, EvaluateOperator.Subtract, mean * Quantum.Max);
         return result;
       }
@@ -238,7 +238,7 @@ namespace FredsImageMagickScripts
 
     private static MagickImage ToGrayScale(MagickImage image)
     {
-      MagickImage gray = image.Clone();
+      var gray = image.Clone();
       gray.Alpha(AlphaOption.Off);
       gray.ColorSpace = ColorSpace.Gray;
 
@@ -362,33 +362,33 @@ namespace FredsImageMagickScripts
 
       CheckSettings(tshirt);
 
-      double x = _Coords[1].X - _Coords[0].X;
-      double y = _Coords[1].Y - _Coords[0].Y;
-      double topWidth = Math.Sqrt(x * x + y * y);
-      double scale = (overlay.Width - 1) / (topWidth / 1);
+      var x = _Coords[1].X - _Coords[0].X;
+      var y = _Coords[1].Y - _Coords[0].Y;
+      var topWidth = Math.Sqrt(x * x + y * y);
+      var scale = (overlay.Width - 1) / (topWidth / 1);
 
-      PointD[] overlayCoordinates = CreateOverlayCoordinates(overlay, scale);
-      PointD[] tshirtCoordinates = CreateTshirtCoordinates(overlay, scale, topWidth);
+      var overlayCoordinates = CreateOverlayCoordinates(overlay, scale);
+      var tshirtCoordinates = CreateTshirtCoordinates(overlay, scale, topWidth);
 
-      MagickImage alpha = ExtractAlpha(tshirt);
-      MagickImage gray = ToGrayScale(tshirt);
-      MagickImage mean = SubtractMean(gray, tshirtCoordinates);
+      var alpha = ExtractAlpha(tshirt);
+      var gray = ToGrayScale(tshirt);
+      var mean = SubtractMean(gray, tshirtCoordinates);
 
       ApplyLighting(mean);
-      MagickImage light = mean.Clone();
+      var light = mean.Clone();
       mean.Dispose();
 
-      MagickImage blur = gray.Clone();
+      var blur = gray.Clone();
       ApplyBlur(blur);
 
-      MagickImage distorted = DistortOverlay(gray, overlay, overlayCoordinates, tshirtCoordinates);
+      var distorted = DistortOverlay(gray, overlay, overlayCoordinates, tshirtCoordinates);
 
-      MagickImage displaced = DisplaceOverlay(distorted, light, blur);
+      var displaced = DisplaceOverlay(distorted, light, blur);
       distorted.Dispose();
       light.Dispose();
       blur.Dispose();
 
-      MagickImage output = tshirt.Clone();
+      var output = tshirt.Clone();
       output.Composite(displaced, CompositeOperator.Over);
       displaced.Dispose();
 
@@ -443,10 +443,10 @@ namespace FredsImageMagickScripts
       if (geometry == null)
         throw new ArgumentNullException("geometry");
 
-      PointD topLeft = new PointD(geometry.X, geometry.Y);
-      PointD topRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y);
-      PointD bottomRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y + geometry.Height - 1);
-      PointD bottomLeft = new PointD(geometry.X, geometry.Y + geometry.Height - 1);
+      var topLeft = new PointD(geometry.X, geometry.Y);
+      var topRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y);
+      var bottomRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y + geometry.Height - 1);
+      var bottomLeft = new PointD(geometry.X, geometry.Y + geometry.Height - 1);
       SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
     }
   }

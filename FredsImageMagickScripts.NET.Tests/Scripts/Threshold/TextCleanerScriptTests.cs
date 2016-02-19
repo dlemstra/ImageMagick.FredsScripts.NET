@@ -251,7 +251,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     [TestMethod, TestCategory(_Category)]
     public void Test_Defaults()
     {
-      TextCleanerScript script = new TextCleanerScript();
+      var script = new TextCleanerScript();
       Test_Defaults(script);
 
       script.AdaptiveBlur = 2;
@@ -295,7 +295,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
       {
-        TextCleanerScript script = new TextCleanerScript();
+        var script = new TextCleanerScript();
         script.Execute(null);
       }, "input");
     }
@@ -303,9 +303,9 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     [TestMethod, TestCategory(_Category)]
     public void Test_Settings()
     {
-      TextCleanerScript script = new TextCleanerScript();
+      var script = new TextCleanerScript();
 
-      using (MagickImage logo = new MagickImage(Images.Logo))
+      using (var logo = new MagickImage(Images.Logo))
       {
         script.Execute(logo);
 

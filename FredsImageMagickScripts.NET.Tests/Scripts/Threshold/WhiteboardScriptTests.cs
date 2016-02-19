@@ -41,9 +41,9 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     {
       ExceptionAssert.Throws<InvalidOperationException>(delegate ()
       {
-        using (MagickImage logo = Images.Logo)
+        using (var logo = Images.Logo)
         {
-          WhiteboardScript script = new WhiteboardScript();
+          var script = new WhiteboardScript();
           script.Dimensions = new MagickGeometry(width, height);
           script.Execute(logo);
         }
@@ -54,13 +54,15 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     {
       string inputFile = GetInputFile(input);
 
-      using (MagickImage image = new MagickImage(inputFile))
+      using (var image = new MagickImage(inputFile))
       {
-        WhiteboardScript script = new WhiteboardScript();
+        var script = new WhiteboardScript();
         action(script);
 
-        MagickImage scriptOutput = script.Execute(image);
-        TestOutput(scriptOutput, output);
+        using (var scriptOutput = script.Execute(image))
+        {
+          TestOutput(scriptOutput, output);
+        }
       }
     }
 
@@ -197,9 +199,9 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>(delegate ()
       {
-        using (MagickImage logo = Images.Logo)
+        using (var logo = Images.Logo)
         {
-          WhiteboardScript script = new WhiteboardScript();
+          var script = new WhiteboardScript();
           script.SetCoordinates(topLeft, topRight, bottomLeft, bottomRight);
           script.Execute(logo);
         }
@@ -209,12 +211,12 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     [TestMethod, TestCategory(_Category)]
     public void Test_Coordinates()
     {
-      PointD topLeft = new PointD(10, 10);
-      PointD topRight = new PointD(630, 10);
-      PointD bottomLeft = new PointD(10, 470);
-      PointD bottomRight = new PointD(630, 470);
+      var topLeft = new PointD(10, 10);
+      var topRight = new PointD(630, 10);
+      var bottomLeft = new PointD(10, 470);
+      var bottomRight = new PointD(630, 470);
 
-      PointD[] invalid = new PointD[]
+      var invalid = new PointD[]
       {
         new PointD(-10, 10), new PointD(10, -10),
         new PointD(650, 10), new PointD(630, 490)
@@ -232,7 +234,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     [TestMethod, TestCategory(_Category)]
     public void Test_Defaults()
     {
-      WhiteboardScript script = new WhiteboardScript();
+      var script = new WhiteboardScript();
       Test_Defaults(script);
 
       script.BackgroundColor = new MagickColor("purple");
@@ -270,7 +272,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     {
       ExceptionAssert.Throws<ArgumentNullException>(delegate ()
       {
-        WhiteboardScript script = new WhiteboardScript();
+        var script = new WhiteboardScript();
         script.Execute(null);
       });
     }

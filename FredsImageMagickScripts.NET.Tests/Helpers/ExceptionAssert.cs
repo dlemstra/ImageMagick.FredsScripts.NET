@@ -42,7 +42,7 @@ namespace FredsImageMagickScripts.NET.Tests
       }
       catch (TException exception)
       {
-        Type type = exception.GetType();
+        var type = exception.GetType();
         if (type != typeof(TException))
           Fail("Exception of type {0} was not thrown an exception of type {1} was thrown.", typeof(TException).Name, type.Name);
 
@@ -65,7 +65,7 @@ namespace FredsImageMagickScripts.NET.Tests
     public static void Throws<TException>(Action action, string expectedMessage)
        where TException : Exception
     {
-      string message = Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
+      var message = Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
       Assert.AreEqual(expectedMessage, message);
     }
 

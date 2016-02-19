@@ -39,12 +39,12 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     {
       string inputFile = GetInputFile(input);
 
-      using (MagickImage image = new MagickImage(inputFile))
+      using (var image = new MagickImage(inputFile))
       {
-        DraganEffectScript script = new DraganEffectScript();
+        var script = new DraganEffectScript();
         action(script);
 
-        MagickImage scriptOutput = script.Execute(image);
+        var scriptOutput = script.Execute(image);
         TestOutput(scriptOutput, output);
       }
     }
@@ -135,7 +135,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     [TestMethod, TestCategory(_Category)]
     public void Test_Defaults()
     {
-      DraganEffectScript script = new DraganEffectScript();
+      var script = new DraganEffectScript();
       Test_Defaults(script);
 
       script.Brightness = 0.5;
@@ -161,7 +161,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
       {
-        DraganEffectScript script = new DraganEffectScript();
+        var script = new DraganEffectScript();
         script.Execute(null);
       }, "input");
     }
@@ -169,9 +169,9 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     [TestMethod, TestCategory(_Category)]
     public void Test_Settings()
     {
-      DraganEffectScript script = new DraganEffectScript();
+      var script = new DraganEffectScript();
 
-      using (MagickImage logo = new MagickImage(Images.Logo))
+      using (var logo = new MagickImage(Images.Logo))
       {
         script.Execute(logo);
 

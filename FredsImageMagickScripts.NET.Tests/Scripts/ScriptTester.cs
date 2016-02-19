@@ -29,7 +29,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
     private FileInfo GetActualOutputFile(string fileName)
     {
       int dotIndex = fileName.LastIndexOf('.');
-      string name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
+      var name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
 
       return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + name);
     }
@@ -43,7 +43,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
     {
       get
       {
-        string scriptName = GetType().Name;
+        var scriptName = GetType().Name;
         return scriptName.Substring(0, scriptName.Length - 5); // Remove 'Tests'
       }
     }
@@ -55,7 +55,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 
     protected static void LosslessCompress(string fileName)
     {
-      ImageOptimizer optimizer = new ImageOptimizer();
+      var optimizer = new ImageOptimizer();
       optimizer.OptimalCompression = true;
       optimizer.LosslessCompress(fileName);
     }
@@ -64,28 +64,28 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
     {
       Assert.IsNotNull(image);
 
-      FileInfo actualOutputFile = GetActualOutputFile(expectedOutput);
+      var actualOutputFile = GetActualOutputFile(expectedOutput);
 
       if (!actualOutputFile.Directory.Exists)
         actualOutputFile.Directory.Create();
 
       image.Write(actualOutputFile);
 
-      FileInfo expectedOutputFile = GetExpectedOutputFile(expectedOutput);
+      var expectedOutputFile = GetExpectedOutputFile(expectedOutput);
 
       /* Compress the image that will be used as the expected output after it has been compared
        * to the result from Fred his script. */
       if (!expectedOutputFile.Exists)
         LosslessCompress(actualOutputFile.FullName);
 
-      using (MagickImage expectedImage = new MagickImage(expectedOutputFile))
+      using (var expectedImage = new MagickImage(expectedOutputFile))
       {
-        using (MagickImage actualImage = new MagickImage(actualOutputFile))
+        using (var actualImage = new MagickImage(actualOutputFile))
         {
           Assert.AreEqual(expectedImage.Width, actualImage.Width, actualImage.FileName);
           Assert.AreEqual(expectedImage.Height, actualImage.Height, actualImage.FileName);
 
-          double distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
+          var distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
 
           if (distortion != 0)
             LosslessCompress(actualOutputFile.FullName);
