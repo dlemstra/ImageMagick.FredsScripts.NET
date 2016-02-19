@@ -53,111 +53,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }
     }
 
-    private void Test_Execute_Trim_Of_Square_Image_With_Uniform_Border_Color()
-    {
-      Test_Execute("zelda3_border2w.png", (AutotrimScript script) =>
-      {
-      }, "zelda3_border_crop.png");
-
-      Test_Execute("zelda3_border2b.png", (AutotrimScript script) =>
-      {
-      }, "zelda3_border_crop.png");
-
-      Test_Execute("zelda3_border2wrt.png", (AutotrimScript script) =>
-      {
-        script.BorderColorLocation = new PointD(129, 0);
-      }, "zelda3_border_crop.png");
-
-      Test_Execute("zelda3_border2brt.png", (AutotrimScript script) =>
-      {
-        script.BorderColorLocation = new PointD(129, 0);
-      }, "zelda3_border_crop.png");
-    }
-
-    private void Test_Execute_Trim_Of_Square_Image_With_NonUniform_Border_Color()
-    {
-      Test_Execute("zelda3_radborder.png", (AutotrimScript script) =>
-      {
-        script.ColorFuzz = (Percentage)30;
-      }, "zelda3_radborder_crop_fuzz30.png");
-
-      Test_Execute("zelda3_radborder.png", (AutotrimScript script) =>
-      {
-        script.ColorFuzz = (Percentage)35;
-      }, "zelda3_radborder_crop_fuzz35.png");
-      ;
-
-      Test_Execute("zelda3_radborder.png", (AutotrimScript script) =>
-      {
-        script.ColorFuzz = (Percentage)40;
-      }, "zelda3_radborder_crop_fuzz40.png");
-      ;
-
-      Test_Execute("zelda3_radborder.png", (AutotrimScript script) =>
-      {
-        script.ColorFuzz = (Percentage)60;
-      }, "zelda3_radborder_crop_fuzz60.png");
-    }
-
-    private void Test_Execute_Trim_Of_Rotated_Image_To_Bounding_Region()
-    {
-      Test_Execute("zelda3_rot20_border10.png", (AutotrimScript script) =>
-      {
-      }, "zelda3_rot20_border10_crop.png");
-    }
-
-    private void Test_Execute_Trim_To_Center_Area_Of_Rotated_Square_Image()
-    {
-      Test_Execute("zelda3_rot45.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      }, "zelda3_rot45_crop.png");
-
-      Test_Execute("zelda3_rotm20.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-        script.ColorFuzz = (Percentage)1;
-      }, "zelda3_rotm20_crop_fuzz1.png");
-
-      Test_Execute("zelda3_rot10.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      }, "zelda3_rot10_crop.png");
-
-      Test_Execute("zelda3_rotm5.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      }, "zelda3_rotm5_crop.png");
-
-      Test_Execute("zelda3_rot2.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      }, "zelda3_rot2_crop.png");
-    }
-
-    private void Test_Trim_To_Center_Area_Of_Rotated_Rectangular_Image()
-    {
-      Test_Execute("image3s_rot45.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      }, "image3s_rot45_crop.png");
-
-      Test_Execute("image3s_rotm20.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      }, "image3s_rotm20_crop.png");
-
-      Test_Execute("image3s_rot10.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      }, "image3s_rot10_crop.png");
-
-      Test_Execute("image3s_rotm5.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      }, "image3s_rotm5_crop.png");
-    }
-
     [TestMethod, TestCategory(_Category)]
     public void Test_Defaults()
     {
@@ -177,13 +72,163 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute()
+    public void Test_Execute_zelda3_border2w()
     {
-      Test_Execute_Trim_Of_Square_Image_With_Uniform_Border_Color();
-      Test_Execute_Trim_Of_Square_Image_With_NonUniform_Border_Color();
-      Test_Execute_Trim_Of_Rotated_Image_To_Bounding_Region();
-      Test_Execute_Trim_To_Center_Area_Of_Rotated_Square_Image();
-      Test_Trim_To_Center_Area_Of_Rotated_Rectangular_Image();
+      Test_Execute("zelda3_border2w.png", (AutotrimScript script) =>
+      {
+      }, "zelda3_border_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_border2b()
+    {
+      Test_Execute("zelda3_border2b.png", (AutotrimScript script) =>
+      {
+      }, "zelda3_border_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_border2wrt()
+    {
+      Test_Execute("zelda3_border2wrt.png", (AutotrimScript script) =>
+      {
+        script.BorderColorLocation = new PointD(129, 0);
+      }, "zelda3_border_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_border2brt()
+    {
+      Test_Execute("zelda3_border2brt.png", (AutotrimScript script) =>
+      {
+        script.BorderColorLocation = new PointD(129, 0);
+      }, "zelda3_border_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_radborder_crop_fuzz30r()
+    {
+      Test_Execute("zelda3_radborder.png", (AutotrimScript script) =>
+      {
+        script.ColorFuzz = (Percentage)30;
+      }, "zelda3_radborder_crop_fuzz30.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_radborder_crop_fuzz35()
+    {
+      Test_Execute("zelda3_radborder.png", (AutotrimScript script) =>
+      {
+        script.ColorFuzz = (Percentage)35;
+      }, "zelda3_radborder_crop_fuzz35.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_radborder_crop_fuzz40()
+    {
+      Test_Execute("zelda3_radborder.png", (AutotrimScript script) =>
+      {
+        script.ColorFuzz = (Percentage)40;
+      }, "zelda3_radborder_crop_fuzz40.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_radborder_crop_fuzz60()
+    {
+      Test_Execute("zelda3_radborder.png", (AutotrimScript script) =>
+      {
+        script.ColorFuzz = (Percentage)60;
+      }, "zelda3_radborder_crop_fuzz60.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_rot20_border10_crop()
+    {
+      Test_Execute("zelda3_rot20_border10.png", (AutotrimScript script) =>
+      {
+      }, "zelda3_rot20_border10_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_rot45_crop()
+    {
+      Test_Execute("zelda3_rot45.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      }, "zelda3_rot45_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_rotm20_crop_fuzz1()
+    {
+      Test_Execute("zelda3_rotm20.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+        script.ColorFuzz = (Percentage)1;
+      }, "zelda3_rotm20_crop_fuzz1.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_rot10_crop()
+    {
+      Test_Execute("zelda3_rot10.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      }, "zelda3_rot10_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_rotm5_crop()
+    {
+      Test_Execute("zelda3_rotm5.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      }, "zelda3_rotm5_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_zelda3_rot2_crop()
+    {
+      Test_Execute("zelda3_rot2.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      }, "zelda3_rot2_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_image3s_rot45_crop()
+    {
+      Test_Execute("image3s_rot45.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      }, "image3s_rot45_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_image3s_rotm20_crop()
+    {
+      Test_Execute("image3s_rotm20.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      }, "image3s_rotm20_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_image3s_rot10_crop()
+    {
+      Test_Execute("image3s_rot10.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      }, "image3s_rot10_crop.png");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_image3s_rotm5_crop()
+    {
+      Test_Execute("image3s_rotm5.png", (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      }, "image3s_rotm5_crop.png");
     }
 
     [TestMethod, TestCategory(_Category)]

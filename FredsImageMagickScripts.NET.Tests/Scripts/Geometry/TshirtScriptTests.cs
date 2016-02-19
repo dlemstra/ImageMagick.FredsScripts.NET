@@ -82,66 +82,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }
     }
 
-    private void Test_Execute_Blue()
-    {
-      Test_Execute("tshirt_blue.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
-      {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-      }, "tshirt_blue_flowers_none_r.jpg");
-    }
-
-    private void Test_Execute_Gray()
-    {
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
-      {
-        var topLeft = new PointD(275, 175);
-        var topRight = new PointD(404, 175);
-        var bottomRight = new PointD(404, 304);
-        var bottomLeft = new PointD(275, 304);
-
-        script.SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
-      }, "tshirt_gray_flowers_none_r.jpg");
-
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
-      {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-      }, "tshirt_gray_flowers_none_r.jpg");
-
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
-      {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Fit = TshirtFit.Crop;
-        script.Gravity = Gravity.North;
-      }, "tshirt_gray_flowers_crop_north.jpg");
-
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
-      {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Fit = TshirtFit.Crop;
-        script.Gravity = Gravity.Center;
-      }, "tshirt_gray_flowers_crop_center.jpg");
-
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
-      {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Fit = TshirtFit.Distort;
-      }, "tshirt_gray_flowers_distort.jpg");
-
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
-      {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Rotation = -3;
-      }, "tshirt_gray_flowers_none_rm3.jpg");
-    }
-
-    private void Test_Execute_Gray_Transparent()
-    {
-      Test_Execute("tshirt_gray.jpg", "Super_Mario.png", delegate (TshirtScript script)
-      {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-      }, "tshirt_gray_mario_none_Rm3_o5x0.jpg");
-    }
-
     [TestMethod, TestCategory(_Category)]
     public void Test_Defaults()
     {
@@ -162,11 +102,86 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute()
+    public void Test_Execute_tshirt_blue_flowers_none_r()
     {
-      Test_Execute_Gray();
-      Test_Execute_Blue();
-      Test_Execute_Gray_Transparent();
+      Test_Execute("tshirt_blue.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+      }, "tshirt_blue_flowers_none_r.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_tshirt_gray_flowers_none_r()
+    {
+      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
+      {
+        var topLeft = new PointD(275, 175);
+        var topRight = new PointD(404, 175);
+        var bottomRight = new PointD(404, 304);
+        var bottomLeft = new PointD(275, 304);
+
+        script.SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
+      }, "tshirt_gray_flowers_none_r.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_tshirt_gray_flowers_none_r2()
+    {
+      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+      }, "tshirt_gray_flowers_none_r.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_tshirt_gray_flowers_crop_north()
+    {
+      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Fit = TshirtFit.Crop;
+        script.Gravity = Gravity.North;
+      }, "tshirt_gray_flowers_crop_north.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_tshirt_gray_flowers_crop_center()
+    {
+      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Fit = TshirtFit.Crop;
+        script.Gravity = Gravity.Center;
+      }, "tshirt_gray_flowers_crop_center.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_tshirt_gray_flowers_distort()
+    {
+      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Fit = TshirtFit.Distort;
+      }, "tshirt_gray_flowers_distort.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_tshirt_gray_flowers_none_rm3()
+    {
+      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Rotation = -3;
+      }, "tshirt_gray_flowers_none_rm3.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_tshirt_gray_mario_none_Rm3_o5x0()
+    {
+      Test_Execute("tshirt_gray.jpg", "Super_Mario.png", delegate (TshirtScript script)
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+      }, "tshirt_gray_mario_none_Rm3_o5x0.jpg");
     }
 
     [TestMethod, TestCategory(_Category)]

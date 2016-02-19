@@ -63,191 +63,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }
     }
 
-    private void Test_Execute_Abbott2()
-    {
-      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.None;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)20;
-      }, "abbott2_g_none_f15_o20.jpg");
-
-      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)20;
-      }, "abbott2_g_stretch_f15_o20.jpg");
-
-      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)20;
-      }, "abbott2_g_stretch_f25_o20.jpg");
-
-      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)20;
-        script.Sharpen = 1;
-      }, "abbott2_g_stretch_f25_o20_s1.jpg");
-
-      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)20;
-        script.Unrotate = true;
-        script.Sharpen = 1;
-        script.Trim = true;
-        script.Padding = 20;
-      }, "abbott2_g_stretch_f25_o20_t30_s1_u_T_p20.jpg");
-    }
-
-    private void Test_Execute_BrScan()
-    {
-      Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.None;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)10;
-      }, "brscan_original_r90_g_none_f15_o10.jpg");
-
-      Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Normalize;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)10;
-      }, "brscan_original_r90_g_normalize_f15_o10.jpg");
-
-      Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Normalize;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)10;
-        script.Sharpen = 1;
-      }, "brscan_original_r90_g_normalize_f15_o10_s1.jpg");
-
-      Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
-      {
-        script.CropOffset.Top = 50;
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Normalize;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)10;
-        script.Unrotate = true;
-        script.Sharpen = 2;
-        script.Trim = true;
-        script.Padding = 20;
-      }, "brscan_original_r90_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20.jpg");
-    }
-
-    private void Test_Execute_Congress()
-    {
-      Test_Execute("congress.jpg", (TextCleanerScript script) =>
-      {
-        script.Enhance = TextCleanerEnhance.Normalize;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)5;
-        script.Saturation = (Percentage)200;
-      }, "congress_norm_f15_o5_S200.jpg");
-
-      Test_Execute("congress.jpg", (TextCleanerScript script) =>
-      {
-        script.Enhance = TextCleanerEnhance.Normalize;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)5;
-        script.Saturation = (Percentage)200;
-        script.Sharpen = 1;
-      }, "congress_norm_f15_o5_S200_s1.jpg");
-
-      Test_Execute("congress.jpg", (TextCleanerScript script) =>
-      {
-        script.Enhance = TextCleanerEnhance.Normalize;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)5;
-        script.Saturation = (Percentage)400;
-        script.Sharpen = 1;
-      }, "congress_norm_f15_o5_S400.jpg");
-    }
-
-    private void Test_Execute_Crankshaft()
-    {
-      Test_Execute("crankshaft.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)10;
-        script.Unrotate = true;
-        script.Sharpen = 1;
-        script.Trim = true;
-        script.Padding = 10;
-        script.Layout = TextCleanerLayout.Landscape;
-      }, "crankshaft_g_stretch_f25_o10_u_s1_T_p10.jpg");
-    }
-
-    private void Test_Execute_Railways()
-    {
-      Test_Execute("railways.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)5;
-        script.Sharpen = 1;
-        script.Layout = TextCleanerLayout.Landscape;
-      }, "railways_g_stretch_f25_o5_s1.jpg");
-    }
-
-    private void Test_Execute_Rfid()
-    {
-      Test_Execute("rfid.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)5;
-        script.Sharpen = 1;
-        script.Layout = TextCleanerLayout.Landscape;
-      }, "rfid_g_stretch_f25_o5_s1.jpg");
-    }
-
-    private void Test_Execute_Telegram()
-    {
-      Test_Execute("telegram.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)5;
-        script.Sharpen = 1;
-      }, "telegram_g_stretch_f15_o5_s1.jpg");
-    }
-
-    private void Test_Execute_Twinkle()
-    {
-      Test_Execute("twinkle.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Stretch;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)10;
-        script.Sharpen = 1;
-        script.Layout = TextCleanerLayout.Landscape;
-      }, "twinkle_g_stretch_f25_o10_s1.jpg");
-    }
-
     [TestMethod, TestCategory(_Category)]
     public void Test_Defaults()
     {
@@ -278,16 +93,232 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute()
+    public void Test_Execute_abbott2_g_none_f15_o20()
     {
-      Test_Execute_Abbott2();
-      Test_Execute_BrScan();
-      Test_Execute_Congress();
-      Test_Execute_Crankshaft();
-      Test_Execute_Railways();
-      Test_Execute_Rfid();
-      Test_Execute_Telegram();
-      Test_Execute_Twinkle();
+      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.None;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)20;
+      }, "abbott2_g_none_f15_o20.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_abbott2_g_stretch_f15_o20()
+    {
+      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)20;
+      }, "abbott2_g_stretch_f15_o20.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_abbott2_g_stretch_f25_o20()
+    {
+      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)20;
+      }, "abbott2_g_stretch_f25_o20.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_abbott2_g_stretch_f25_o20_s1()
+    {
+      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)20;
+        script.Sharpen = 1;
+      }, "abbott2_g_stretch_f25_o20_s1.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_abbott2_g_stretch_f25_o20_t30_s1_u_T_p20()
+    {
+      Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)20;
+        script.Unrotate = true;
+        script.Sharpen = 1;
+        script.Trim = true;
+        script.Padding = 20;
+      }, "abbott2_g_stretch_f25_o20_t30_s1_u_T_p20.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_brscan_original_r90_g_none_f15_o10()
+    {
+      Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.None;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)10;
+      }, "brscan_original_r90_g_none_f15_o10.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_brscan_original_r90_g_normalize_f15_o10()
+    {
+      Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Normalize;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)10;
+      }, "brscan_original_r90_g_normalize_f15_o10.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_brscan_original_r90_g_normalize_f15_o10_s1()
+    {
+      Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Normalize;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)10;
+        script.Sharpen = 1;
+      }, "brscan_original_r90_g_normalize_f15_o10_s1.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_brscan_original_r90_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20()
+    {
+      Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
+      {
+        script.CropOffset.Top = 50;
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Normalize;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)10;
+        script.Unrotate = true;
+        script.Sharpen = 2;
+        script.Trim = true;
+        script.Padding = 20;
+      }, "brscan_original_r90_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_congress_norm_f15_o5_S200()
+    {
+      Test_Execute("congress.jpg", (TextCleanerScript script) =>
+      {
+        script.Enhance = TextCleanerEnhance.Normalize;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)5;
+        script.Saturation = (Percentage)200;
+      }, "congress_norm_f15_o5_S200.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_congress_norm_f15_o5_S200_s1()
+    {
+      Test_Execute("congress.jpg", (TextCleanerScript script) =>
+      {
+        script.Enhance = TextCleanerEnhance.Normalize;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)5;
+        script.Saturation = (Percentage)200;
+        script.Sharpen = 1;
+      }, "congress_norm_f15_o5_S200_s1.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_congress_norm_f15_o5_S400()
+    {
+      Test_Execute("congress.jpg", (TextCleanerScript script) =>
+      {
+        script.Enhance = TextCleanerEnhance.Normalize;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)5;
+        script.Saturation = (Percentage)400;
+        script.Sharpen = 1;
+      }, "congress_norm_f15_o5_S400.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_crankshaft_g_stretch_f25_o10_u_s1_T_p10()
+    {
+      Test_Execute("crankshaft.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)10;
+        script.Unrotate = true;
+        script.Sharpen = 1;
+        script.Trim = true;
+        script.Padding = 10;
+        script.Layout = TextCleanerLayout.Landscape;
+      }, "crankshaft_g_stretch_f25_o10_u_s1_T_p10.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_railways_g_stretch_f25_o5_s1()
+    {
+      Test_Execute("railways.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)5;
+        script.Sharpen = 1;
+        script.Layout = TextCleanerLayout.Landscape;
+      }, "railways_g_stretch_f25_o5_s1.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_rfid_g_stretch_f25_o5_s1()
+    {
+      Test_Execute("rfid.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)5;
+        script.Sharpen = 1;
+        script.Layout = TextCleanerLayout.Landscape;
+      }, "rfid_g_stretch_f25_o5_s1.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_telegram_g_stretch_f15_o5_s1()
+    {
+      Test_Execute("telegram.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)5;
+        script.Sharpen = 1;
+      }, "telegram_g_stretch_f15_o5_s1.jpg");
+    }
+
+    [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_twinkle_g_stretch_f25_o10_s1()
+    {
+      Test_Execute("twinkle.jpg", (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)10;
+        script.Sharpen = 1;
+        script.Layout = TextCleanerLayout.Landscape;
+      }, "twinkle_g_stretch_f25_o10_s1.jpg");
     }
 
     [TestMethod, TestCategory(_Category)]
