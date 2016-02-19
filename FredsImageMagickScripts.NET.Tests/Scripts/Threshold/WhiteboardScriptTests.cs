@@ -68,8 +68,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     {
       Test_Execute("whiteboard.jpg", delegate (WhiteboardScript script)
       {
-        script.SetCoordinates(new Coordinate(101, 53), new Coordinate(313, 31),
-          new Coordinate(313, 218), new Coordinate(101, 200));
+        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31),
+          new PointD(313, 218), new PointD(101, 200));
         script.Enhance = WhiteboardEnhancements.None;
         script.AspectRatio = new PointD(4, 3);
         script.Magnification = 2;
@@ -79,8 +79,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 
       Test_Execute("whiteboard.jpg", delegate (WhiteboardScript script)
       {
-        script.SetCoordinates(new Coordinate(101, 53), new Coordinate(313, 31),
-          new Coordinate(313, 218), new Coordinate(101, 200));
+        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31),
+          new PointD(313, 218), new PointD(101, 200));
         script.Enhance = WhiteboardEnhancements.Both;
         script.AspectRatio = new PointD(4, 3);
         script.Magnification = 2;
@@ -90,8 +90,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 
       Test_Execute("whiteboard.jpg", delegate (WhiteboardScript script)
       {
-        script.SetCoordinates(new Coordinate(101, 53), new Coordinate(313, 31),
-          new Coordinate(313, 218), new Coordinate(101, 200));
+        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31),
+          new PointD(313, 218), new PointD(101, 200));
         script.Enhance = WhiteboardEnhancements.Both;
         script.AspectRatio = new PointD(4, 3);
         script.Magnification = 2;
@@ -139,8 +139,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     {
       Test_Execute("whiteboard2.gif", delegate (WhiteboardScript script)
       {
-        script.SetCoordinates(new Coordinate(55, 60), new Coordinate(420, 76),
-          new Coordinate(416, 277), new Coordinate(75, 345));
+        script.SetCoordinates(new PointD(55, 60), new PointD(420, 76),
+          new PointD(416, 277), new PointD(75, 345));
         script.Enhance = WhiteboardEnhancements.Both;
         script.AspectRatio = new PointD(4, 3);
         script.FilterSize = 12;
@@ -150,8 +150,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 
       Test_Execute("whiteboard2.gif", delegate (WhiteboardScript script)
       {
-        script.SetCoordinates(new Coordinate(55, 60), new Coordinate(420, 76),
-          new Coordinate(416, 277), new Coordinate(75, 345));
+        script.SetCoordinates(new PointD(55, 60), new PointD(420, 76),
+          new PointD(416, 277), new PointD(75, 345));
         script.Enhance = WhiteboardEnhancements.Both;
         script.FilterSize = 12;
         script.FilterOffset = (Percentage)7;
@@ -163,8 +163,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     {
       Test_Execute("WhiteboardBlog.jpg", delegate (WhiteboardScript script)
       {
-        script.SetCoordinates(new Coordinate(13, 3), new Coordinate(342, 6),
-          new Coordinate(331, 467), new Coordinate(38, 482));
+        script.SetCoordinates(new PointD(13, 3), new PointD(342, 6),
+          new PointD(331, 467), new PointD(38, 482));
         script.Enhance = WhiteboardEnhancements.Both;
         script.AspectRatio = new PointD(3, 4);
         script.FilterSize = 12;
@@ -174,8 +174,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
 
       Test_Execute("WhiteboardBlog.jpg", delegate (WhiteboardScript script)
       {
-        script.SetCoordinates(new Coordinate(13, 3), new Coordinate(342, 6),
-          new Coordinate(331, 467), new Coordinate(38, 482));
+        script.SetCoordinates(new PointD(13, 3), new PointD(342, 6),
+          new PointD(331, 467), new PointD(38, 482));
         script.Enhance = WhiteboardEnhancements.Both;
         script.FilterSize = 12;
         script.FilterOffset = (Percentage)3;
@@ -193,7 +193,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboardScenario1_m1_S200_f12_o3_both.jpg");
     }
 
-    private void Test_SetCoordinates(string paramName, Coordinate topLeft, Coordinate topRight, Coordinate bottomLeft, Coordinate bottomRight)
+    private void Test_SetCoordinates(string paramName, PointD topLeft, PointD topRight, PointD bottomLeft, PointD bottomRight)
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>(delegate ()
       {
@@ -209,15 +209,15 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     [TestMethod, TestCategory(_Category)]
     public void Test_Coordinates()
     {
-      Coordinate topLeft = new Coordinate(10, 10);
-      Coordinate topRight = new Coordinate(630, 10);
-      Coordinate bottomLeft = new Coordinate(10, 470);
-      Coordinate bottomRight = new Coordinate(630, 470);
+      PointD topLeft = new PointD(10, 10);
+      PointD topRight = new PointD(630, 10);
+      PointD bottomLeft = new PointD(10, 470);
+      PointD bottomRight = new PointD(630, 470);
 
-      Coordinate[] invalid = new Coordinate[]
+      PointD[] invalid = new PointD[]
       {
-        new Coordinate(-10, 10), new Coordinate(10, -10),
-        new Coordinate(650, 10), new Coordinate(630, 490)
+        new PointD(-10, 10), new PointD(10, -10),
+        new PointD(650, 10), new PointD(630, 490)
       };
 
       for (int i = 0; i < invalid.Length; i++)

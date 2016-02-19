@@ -64,7 +64,7 @@ namespace FredsImageMagickScripts
 
     private MagickColor GetBorderColor(MagickImage image)
     {
-      using (PixelCollection pixels = image.GetReadOnlyPixels())
+      using (PixelCollection pixels = image.GetPixels())
       {
         return pixels.GetPixel((int)BorderColorLocation.X, (int)BorderColorLocation.Y).ToColor();
       }
@@ -74,7 +74,7 @@ namespace FredsImageMagickScripts
     {
       Line[] points = new Line[4];
 
-      using (PixelCollection pixels = image.GetReadOnlyPixels())
+      using (PixelCollection pixels = image.GetPixels())
       {
         Line line = new Line(0, 0);
 
@@ -234,7 +234,7 @@ namespace FredsImageMagickScripts
     /// <summary>
     /// Any location within the border area for the algorithm to find the base border color.
     /// </summary>
-    public Coordinate BorderColorLocation
+    public PointD BorderColorLocation
     {
       get;
       set;
@@ -295,7 +295,7 @@ namespace FredsImageMagickScripts
     /// </summary>
     public void Reset()
     {
-      BorderColorLocation = new Coordinate(0, 0);
+      BorderColorLocation = new PointD(0, 0);
       ColorFuzz = (Percentage)0;
       InnerTrim = false;
       PixelShift = new AutotrimPixelShift();

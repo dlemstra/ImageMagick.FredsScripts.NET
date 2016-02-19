@@ -65,12 +65,12 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 
       Test_Execute("zelda3_border2wrt.png", (AutotrimScript script) =>
       {
-        script.BorderColorLocation = new Coordinate(129, 0);
+        script.BorderColorLocation = new PointD(129, 0);
       }, "zelda3_border_crop.png");
 
       Test_Execute("zelda3_border2brt.png", (AutotrimScript script) =>
       {
-        script.BorderColorLocation = new Coordinate(129, 0);
+        script.BorderColorLocation = new PointD(129, 0);
       }, "zelda3_border_crop.png");
     }
 
@@ -164,7 +164,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       AutotrimScript script = new AutotrimScript();
       Test_Defaults(script);
 
-      script.BorderColorLocation = new Coordinate(10, 10);
+      script.BorderColorLocation = new PointD(10, 10);
       script.ColorFuzz = (Percentage)6;
       script.InnerTrim = true;
       script.PixelShift.Left = 5;
@@ -205,13 +205,13 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       {
         ExceptionAssert.Throws<ArgumentException>(() =>
         {
-          script.BorderColorLocation = new Coordinate(-1, -1);
+          script.BorderColorLocation = new PointD(-1, -1);
           script.Execute(logo);
         });
 
         ExceptionAssert.Throws<ArgumentException>(() =>
         {
-          script.BorderColorLocation = new Coordinate(logo.Width, logo.Height);
+          script.BorderColorLocation = new PointD(logo.Width, logo.Height);
           script.Execute(logo);
         });
       }

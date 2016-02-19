@@ -118,7 +118,7 @@ namespace FredsImageMagickScripts
         image.Composite(second, CompositeOperator.CopyAlpha);
       }
 
-      image.Opaque(MagickColor.Transparent, BackgroundColor);
+      image.Opaque(MagickColors.Transparent, BackgroundColor);
       image.Alpha(AlphaOption.Off);
     }
 

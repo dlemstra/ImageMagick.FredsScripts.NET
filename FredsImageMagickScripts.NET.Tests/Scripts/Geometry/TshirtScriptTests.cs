@@ -27,10 +27,10 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
   {
     private const string _Category = "TShirtScriptTests";
 
-    private Coordinate _TopLeft = new Coordinate(10, 15);
-    private Coordinate _TopRight = new Coordinate(630, 10);
-    private Coordinate _BottomLeft = new Coordinate(25, 470);
-    private Coordinate _BottomRight = new Coordinate(630, 470);
+    private PointD _TopLeft = new PointD(10, 15);
+    private PointD _TopRight = new PointD(630, 10);
+    private PointD _BottomLeft = new PointD(25, 470);
+    private PointD _BottomRight = new PointD(630, 470);
 
     private void Reset(TshirtScript script)
     {
@@ -51,7 +51,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       Assert.AreEqual(0, script.VerticalShift);
     }
 
-    private void Test_SetCoordinates(string paramName, Coordinate topLeft, Coordinate topRight, Coordinate bottomLeft, Coordinate bottomRight)
+    private void Test_SetCoordinates(string paramName, PointD topLeft, PointD topRight, PointD bottomLeft, PointD bottomRight)
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>(delegate ()
       {
@@ -94,10 +94,10 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     {
       Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
       {
-        Coordinate topLeft = new Coordinate(275, 175);
-        Coordinate topRight = new Coordinate(404, 175);
-        Coordinate bottomRight = new Coordinate(404, 304);
-        Coordinate bottomLeft = new Coordinate(275, 304);
+        PointD topLeft = new PointD(275, 175);
+        PointD topRight = new PointD(404, 175);
+        PointD bottomRight = new PointD(404, 304);
+        PointD bottomLeft = new PointD(275, 304);
 
         script.SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
       }, "tshirt_gray_flowers_none_r.jpg");
@@ -200,10 +200,10 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
         }
       }, "No coordinates have been set.");
 
-      Coordinate[] invalid = new Coordinate[]
+      PointD[] invalid = new PointD[]
       {
-        new Coordinate(-10, 10), new Coordinate(10, -10),
-        new Coordinate(650, 10), new Coordinate(630, 490)
+        new PointD(-10, 10), new PointD(10, -10),
+        new PointD(650, 10), new PointD(630, 490)
       };
 
       for (int i = 0; i < invalid.Length; i++)

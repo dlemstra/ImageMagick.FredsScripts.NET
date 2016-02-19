@@ -29,7 +29,7 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class TshirtScript
   {
-    private Coordinate[] _Coords;
+    private PointD[] _Coords;
 
     private void ApplyBlur(MagickImage image)
     {
@@ -46,10 +46,10 @@ namespace FredsImageMagickScripts
     private void ApplySharpen(MagickImage image)
     {
       if (Sharpen != 0)
-        image.Unsharpmask(0, Sharpen);
+        image.UnsharpMask(0, Sharpen);
     }
 
-    private static void CheckCoordinate(MagickImage image, string paramName, Coordinate coord)
+    private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
     {
       if (coord.X < 0 || coord.X > image.Width)
         throw new ArgumentOutOfRangeException(paramName);
@@ -81,7 +81,7 @@ namespace FredsImageMagickScripts
         throw new InvalidOperationException("Invalid Blur specified.");
     }
 
-    private static double[] CreateArguments(Coordinate[] overlayCoordinates, Coordinate[] tshirtCoordinates)
+    private static double[] CreateArguments(PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
     {
       double[] result = new double[16];
 
@@ -98,38 +98,34 @@ namespace FredsImageMagickScripts
       return result;
     }
 
-    private Coordinate[] CreateOverlayCoordinates(MagickImage overlay, double scale)
+    private PointD[] CreateOverlayCoordinates(MagickImage overlay, double scale)
     {
       double angle = -Math.Atan2(_Coords[1].Y - _Coords[0].Y, _Coords[1].X - _Coords[0].X);
       double xOffset = _Coords[0].X;
       double yOffset = _Coords[0].Y;
 
-      Coordinate[] coords = new Coordinate[4];
+      PointD[] coords = new PointD[4];
       for (int i = 0; i < 4; i++)
       {
-        coords[i] = new Coordinate(
+        coords[i] = new PointD(
           (int)Math.Round((_Coords[i].X - xOffset) * Math.Cos(angle) + (_Coords[i].Y - yOffset) * Math.Sin(angle)),
           (int)Math.Round((_Coords[i].X - xOffset) * Math.Sin(angle) + (_Coords[i].Y - yOffset) * Math.Cos(angle)));
       }
 
       double ho = Math.Max(coords[3].Y - coords[0].Y, coords[2].Y - coords[1].Y);
 
-      coords[0].X = 0;
-      coords[0].Y = 0;
-      coords[1].X = overlay.Width - 1;
-      coords[1].Y = 0;
-      coords[2].X = overlay.Width - 1;
+      coords[0] = new PointD(0, 0);
+      coords[1] = new PointD(overlay.Width - 1, 0);
       if (Fit == TshirtFit.Distort)
-        coords[2].Y = overlay.Height - 1;
+        coords[2] = new PointD(overlay.Width - 1, overlay.Height - 1);
       else
-        coords[2].Y = scale * ho;
-      coords[3].X = 0;
-      coords[3].Y = coords[2].Y;
+        coords[2] = new PointD(overlay.Width - 1, scale * ho);
+      coords[3] = new PointD(0, coords[2].Y);
 
       return coords;
     }
 
-    private Coordinate[] CreateTshirtCoordinates(MagickImage overlay, double scale, double topWidth)
+    private PointD[] CreateTshirtCoordinates(MagickImage overlay, double scale, double topWidth)
     {
       if (Rotation == 0)
         return _Coords;
@@ -138,10 +134,10 @@ namespace FredsImageMagickScripts
       double xcent = Math.Round(0.5 * topWidth) + _Coords[0].X;
       double ycent = Math.Round(0.5 * (overlay.Height / scale) + _Coords[0].Y);
 
-      Coordinate[] coords = new Coordinate[4];
+      PointD[] coords = new PointD[4];
       for (int i = 0; i < 4; i++)
       {
-        coords[i] = new Coordinate(
+        coords[i] = new PointD(
           (int)Math.Round(xcent + (_Coords[i].X - xcent) * Math.Cos(rotate) - (_Coords[i].Y - ycent) * Math.Sin(rotate)),
           (int)Math.Round(ycent + (_Coords[i].X - xcent) * Math.Sin(rotate) + (_Coords[i].Y - ycent) * Math.Cos(rotate)));
       }
@@ -149,7 +145,7 @@ namespace FredsImageMagickScripts
       return coords;
     }
 
-    private MagickImage CropOverlay(MagickImage image, Coordinate[] coords)
+    private MagickImage CropOverlay(MagickImage image, PointD[] coords)
     {
       MagickImage result = image.Clone();
       if (Fit == TshirtFit.Crop)
@@ -180,12 +176,12 @@ namespace FredsImageMagickScripts
       return output;
     }
 
-    private MagickImage DistortOverlay(MagickImage grayShirt, MagickImage overlay, Coordinate[] overlayCoordinates, Coordinate[] tshirtCoordinates)
+    private MagickImage DistortOverlay(MagickImage grayShirt, MagickImage overlay, PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
     {
       using (MagickImageCollection images = new MagickImageCollection())
       {
         grayShirt.Alpha(AlphaOption.Transparent);
-        grayShirt.BackgroundColor = MagickColor.Transparent;
+        grayShirt.BackgroundColor = MagickColors.Transparent;
         images.Add(grayShirt);
 
         MagickImage croppedOverlay = CropOverlay(overlay, overlayCoordinates);
@@ -216,7 +212,7 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private static MagickImage SubtractMean(MagickImage image, Coordinate[] coords)
+    private static MagickImage SubtractMean(MagickImage image, PointD[] coords)
     {
       using (MagickImage img = image.Clone())
       {
@@ -371,8 +367,8 @@ namespace FredsImageMagickScripts
       double topWidth = Math.Sqrt(x * x + y * y);
       double scale = (overlay.Width - 1) / (topWidth / 1);
 
-      Coordinate[] overlayCoordinates = CreateOverlayCoordinates(overlay, scale);
-      Coordinate[] tshirtCoordinates = CreateTshirtCoordinates(overlay, scale, topWidth);
+      PointD[] overlayCoordinates = CreateOverlayCoordinates(overlay, scale);
+      PointD[] tshirtCoordinates = CreateTshirtCoordinates(overlay, scale, topWidth);
 
       MagickImage alpha = ExtractAlpha(tshirt);
       MagickImage gray = ToGrayScale(tshirt);
@@ -433,9 +429,9 @@ namespace FredsImageMagickScripts
     /// <param name="topRight">Top right coordinate</param>
     /// <param name="bottomLeft">Bottom left coordinate</param>
     /// <param name="bottomRight">Bottom right coordinate</param>
-    public void SetCoordinates(Coordinate topLeft, Coordinate topRight, Coordinate bottomRight, Coordinate bottomLeft)
+    public void SetCoordinates(PointD topLeft, PointD topRight, PointD bottomRight, PointD bottomLeft)
     {
-      _Coords = new Coordinate[] { topLeft, topRight, bottomRight, bottomLeft };
+      _Coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
     }
 
     /// <summary>
@@ -447,10 +443,10 @@ namespace FredsImageMagickScripts
       if (geometry == null)
         throw new ArgumentNullException("geometry");
 
-      Coordinate topLeft = new Coordinate(geometry.X, geometry.Y);
-      Coordinate topRight = new Coordinate(geometry.X + geometry.Width - 1, geometry.Y);
-      Coordinate bottomRight = new Coordinate(geometry.X + geometry.Width - 1, geometry.Y + geometry.Height - 1);
-      Coordinate bottomLeft = new Coordinate(geometry.X, geometry.Y + geometry.Height - 1);
+      PointD topLeft = new PointD(geometry.X, geometry.Y);
+      PointD topRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y);
+      PointD bottomRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y + geometry.Height - 1);
+      PointD bottomLeft = new PointD(geometry.X, geometry.Y + geometry.Height - 1);
       SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
     }
   }

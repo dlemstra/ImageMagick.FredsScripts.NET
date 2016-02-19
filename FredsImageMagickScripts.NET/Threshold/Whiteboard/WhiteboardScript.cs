@@ -30,7 +30,7 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class WhiteboardScript
   {
-    private Coordinate[] _Coords;
+    private PointD[] _Coords;
     private double _Height;
     private double _Width;
 
@@ -57,7 +57,7 @@ namespace FredsImageMagickScripts
           double greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
           double blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
 
-          ColorMatrix matrix = new ColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
+          MagickColorMatrix matrix = new MagickColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
 
           image.ColorMatrix(matrix);
         }
@@ -174,7 +174,7 @@ namespace FredsImageMagickScripts
       _Height = image.Height * magnification;
     }
 
-    private static void CheckCoordinate(MagickImage image, string paramName, Coordinate coord)
+    private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
     {
       if (coord.X < 0 || coord.X > image.Width)
         throw new ArgumentOutOfRangeException(paramName);
@@ -199,7 +199,7 @@ namespace FredsImageMagickScripts
           gray.Level(Threshold.Value, new Percentage(100));
         }
         image.Composite(gray, CompositeOperator.CopyAlpha);
-        image.Opaque(MagickColor.Transparent, BackgroundColor);
+        image.Opaque(MagickColors.Transparent, BackgroundColor);
         image.Alpha(AlphaOption.Off);
       }
     }
@@ -482,9 +482,9 @@ namespace FredsImageMagickScripts
     /// <param name="topRight">Top right coordinate</param>
     /// <param name="bottomLeft">Bottom left coordinate</param>
     /// <param name="bottomRight">Bottom right coordinate</param>
-    public void SetCoordinates(Coordinate topLeft, Coordinate topRight, Coordinate bottomRight, Coordinate bottomLeft)
+    public void SetCoordinates(PointD topLeft, PointD topRight, PointD bottomRight, PointD bottomLeft)
     {
-      _Coords = new Coordinate[] { topLeft, topRight, bottomRight, bottomLeft };
+      _Coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
     }
   }
 }
