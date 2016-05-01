@@ -42,6 +42,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     private void Test_Execute(string input, Action<AutotrimScript> action, string output)
     {
       string inputFile = GetInputFile(input);
+      //LosslessCompress(inputFile);
 
       using (var image = new MagickImage(inputFile))
       {
@@ -248,13 +249,13 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 
       using (var logo = new MagickImage(Images.Logo))
       {
-        ExceptionAssert.Throws<ArgumentException>(() =>
+        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
         {
           script.BorderColorLocation = new PointD(-1, -1);
           script.Execute(logo);
         });
 
-        ExceptionAssert.Throws<ArgumentException>(() =>
+        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
         {
           script.BorderColorLocation = new PointD(logo.Width, logo.Height);
           script.Execute(logo);

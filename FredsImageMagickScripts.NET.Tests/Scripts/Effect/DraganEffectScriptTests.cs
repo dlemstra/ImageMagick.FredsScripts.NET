@@ -38,6 +38,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     private void Test_Execute(string input, Action<DraganEffectScript> action, string output)
     {
       string inputFile = GetInputFile(input);
+      //LosslessCompress(inputFile);
 
       using (var image = new MagickImage(inputFile))
       {

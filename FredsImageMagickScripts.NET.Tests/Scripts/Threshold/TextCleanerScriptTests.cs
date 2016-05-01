@@ -52,6 +52,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     private void Test_Execute(string input, Action<TextCleanerScript> action, string output)
     {
       string inputFile = GetInputFile(input);
+      //LosslessCompress(inputFile);
 
       using (MagickImage image = new MagickImage(inputFile))
       {

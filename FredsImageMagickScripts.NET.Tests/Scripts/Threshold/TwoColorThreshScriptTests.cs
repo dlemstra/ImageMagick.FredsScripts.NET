@@ -30,6 +30,8 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     private void Test_Execute(string input)
     {
       string inputFile = GetInputFile(input);
+      //LosslessCompress(inputFile);
+
       string output = input.Replace(".jpg", ".gif");
 
       using (var image = new MagickImage(inputFile))

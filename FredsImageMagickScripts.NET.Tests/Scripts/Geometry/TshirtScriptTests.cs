@@ -67,7 +67,10 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     private void Test_Execute(string tshirt, string overlay, Action<TshirtScript> action, string output)
     {
       var tshirtFile = GetInputFile(tshirt);
+      //LosslessCompress(tshirtFile);
+
       var overlayFile = GetInputFile(overlay);
+      //LosslessCompress(overlayFile);
 
       using (var tshirtImage = new MagickImage(tshirtFile))
       {

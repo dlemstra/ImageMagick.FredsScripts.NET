@@ -103,37 +103,7 @@ namespace FredsImageMagickScripts
       if (AspectRatio.HasValue)
         return AspectRatio.Value.X / AspectRatio.Value.Y;
 
-      var m1x = _Coords[3].X;
-      var m1y = _Coords[3].Y;
-      var m2x = _Coords[2].X;
-      var m2y = _Coords[2].Y;
-      var m3x = _Coords[0].X;
-      var m3y = _Coords[0].Y;
-      var m4x = _Coords[1].X;
-      var m4y = _Coords[1].Y;
-
-      // get centroid of quadrilateral
-      var ccx = (m1x + m2x + m3x + m4x) / 4;
-      var ccy = (m1y + m2y + m3y + m4y) / 4;
-
-      // convert to proper x,y coordinates relative to center
-      m1x = m1x - ccx;
-      m1y = ccy - m1y;
-      m2x = m2x - ccx;
-      m2y = ccy - m2y;
-      m3x = m3x - ccx;
-      m3y = ccy - m3y;
-      m4x = m4x - ccx;
-      m4y = ccy - m4y;
-
-      // simplified equations, assuming u0=0, v0=0, s=1
-      var k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x);
-      var k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x);
-      var ff = ((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1));
-      var f = Math.Sqrt(Math.Sqrt(ff * ff));
-      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + Math.Pow(k2 * m2y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k2 * m2x - m1x, 2) / Math.Pow(f, 2)) / (Math.Pow(k3 - 1, 2) + Math.Pow(k3 * m3y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k3 * m3x - m1x, 2) / Math.Pow(f, 2)));
-
-      return aspect;
+      return Shared.AspectRatio.Calculate(_Coords[0], _Coords[1], _Coords[2], _Coords[3]);
     }
 
     private void CalculateWidthAndHeightWithDimensions(MagickImage image)
