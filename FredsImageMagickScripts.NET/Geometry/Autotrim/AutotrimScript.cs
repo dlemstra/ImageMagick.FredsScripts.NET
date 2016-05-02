@@ -39,8 +39,6 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class AutotrimScript
   {
-    private MagickColor _BorderColor;
-
     private class Line
     {
       public int X1;
@@ -70,7 +68,7 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private MagickGeometry GetLargestArea(MagickImage image)
+    private MagickGeometry GetLargestArea(MagickImage image, MagickColor borderColor)
     {
       var points = new Line[4];
 
@@ -78,14 +76,14 @@ namespace FredsImageMagickScripts
       {
         var line = new Line(0, 0);
 
-        while (IsBorderColor(pixels, line.X1, line.Y) && line.Y < image.Height - 1 && line.X1 < image.Width - 1)
+        while (IsBorderColor(pixels, line.X1, line.Y, borderColor) && line.Y < image.Height - 1 && line.X1 < image.Width - 1)
         {
           line.Y++;
           line.X1++;
         }
 
         line.X2 = image.Width - 1;
-        while (IsBorderColor(pixels, line.X2, line.Y) && line.X2 > 0)
+        while (IsBorderColor(pixels, line.X2, line.Y, borderColor) && line.X2 > 0)
           line.X2--;
 
         points[0] = line;
@@ -93,14 +91,14 @@ namespace FredsImageMagickScripts
 
         line = new Line(image.Width - 1, 0);
 
-        while (IsBorderColor(pixels, line.X2, line.Y) && line.Y < image.Height && line.X2 > 0)
+        while (IsBorderColor(pixels, line.X2, line.Y, borderColor) && line.Y < image.Height && line.X2 > 0)
         {
           line.Y++;
           line.X2--;
         }
 
         line.X1 = 0;
-        while (IsBorderColor(pixels, line.X1, line.Y) && line.X1 < image.Width - 1)
+        while (IsBorderColor(pixels, line.X1, line.Y, borderColor) && line.X1 < image.Width - 1)
           line.X1++;
 
         points[1] = line;
@@ -108,14 +106,14 @@ namespace FredsImageMagickScripts
 
         line = new Line(0, image.Height - 1);
 
-        while (IsBorderColor(pixels, line.X1, line.Y) && line.Y > 0 && line.X1 < image.Width - 1)
+        while (IsBorderColor(pixels, line.X1, line.Y, borderColor) && line.Y > 0 && line.X1 < image.Width - 1)
         {
           line.Y--;
           line.X1++;
         }
 
         line.X2 = image.Width - 1;
-        while (IsBorderColor(pixels, line.X2, line.Y) && line.X2 > 0)
+        while (IsBorderColor(pixels, line.X2, line.Y, borderColor) && line.X2 > 0)
           line.X2--;
 
         points[2] = line;
@@ -123,14 +121,14 @@ namespace FredsImageMagickScripts
 
         line = new Line(image.Width - 1, image.Height - 1);
 
-        while (IsBorderColor(pixels, line.X2, line.Y) && line.Y > 0 && line.X2 > 0)
+        while (IsBorderColor(pixels, line.X2, line.Y, borderColor) && line.Y > 0 && line.X2 > 0)
         {
           line.Y--;
           line.X2--;
         }
 
         line.X1 = 0;
-        while (IsBorderColor(pixels, line.X1, line.Y) && line.X1 < image.Width - 1)
+        while (IsBorderColor(pixels, line.X1, line.Y, borderColor) && line.X1 < image.Width - 1)
           line.X1++;
 
         points[3] = line;
@@ -148,12 +146,12 @@ namespace FredsImageMagickScripts
       return geometry;
     }
 
-    private void ExecuteInnerTrim(MagickImage image)
+    private void ExecuteInnerTrim(MagickImage image, MagickColor borderColor)
     {
-      var area = GetLargestArea(image);
+      var area = GetLargestArea(image, borderColor);
 
       image.Rotate(90);
-      var rotatedArea = GetLargestArea(image);
+      var rotatedArea = GetLargestArea(image, borderColor);
 
       if (rotatedArea > area)
       {
@@ -167,9 +165,9 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private void ExecuteOuterTrim(MagickImage image)
+    private void ExecuteOuterTrim(MagickImage image, MagickColor borderColor)
     {
-      image.BackgroundColor = _BorderColor;
+      image.BackgroundColor = borderColor;
       image.ColorFuzz = ColorFuzz;
       image.Trim();
       image.RePage();
@@ -179,10 +177,10 @@ namespace FredsImageMagickScripts
       Crop(image, geometry);
     }
 
-    private bool IsBorderColor(PixelCollection pixels, int x, int y)
+    private bool IsBorderColor(PixelCollection pixels, int x, int y, MagickColor borderColor)
     {
       var color = pixels.GetPixel(x, y).ToColor();
-      return color.FuzzyEquals(_BorderColor, ColorFuzz);
+      return color.FuzzyEquals(borderColor, ColorFuzz);
     }
 
     private void ShiftGeometry(MagickGeometry geometry)
@@ -280,12 +278,12 @@ namespace FredsImageMagickScripts
         throw new ArgumentNullException("input");
 
       var output = input.Clone();
-      _BorderColor = GetBorderColor(output);
+      MagickColor borderColor = GetBorderColor(output);
 
       if (InnerTrim)
-        ExecuteInnerTrim(output);
+        ExecuteInnerTrim(output, borderColor);
       else
-        ExecuteOuterTrim(output);
+        ExecuteOuterTrim(output, borderColor);
 
       return output;
     }
