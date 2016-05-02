@@ -160,7 +160,10 @@ namespace FredsImageMagickScripts
     {
       double[] terms = new double[8];
       double[] vectors = new double[8];
-      double[,] matrix = new double[8, 8];
+      double[][] matrix = new double[8][];
+
+      for (int i = 0; i < 8; i++)
+        matrix[i] = new double[8];
 
       for (int i = 0; i < arguments.Length; i += 4)
       {
@@ -186,7 +189,7 @@ namespace FredsImageMagickScripts
       }
 
       if (!GaussJordanElimination(matrix, vectors))
-        throw new InvalidOperationException("Unsolable matrix detected.");
+        throw new InvalidOperationException("Unsolvable matrix detected.");
 
       return InvertPerspectiveCoefficients(vectors);
     }
@@ -205,7 +208,7 @@ namespace FredsImageMagickScripts
       return coeff;
     }
 
-    private PointD[] GetCorners(MagickImage paddedMask, List<PixelValue> maxList, double maxRad, int xOffset)
+    private static PointD[] GetCorners(MagickImage paddedMask, List<PixelValue> maxList, double maxRad, int xOffset)
     {
       double[] coeff = GetCoefficients(paddedMask, maxRad);
 
@@ -217,7 +220,7 @@ namespace FredsImageMagickScripts
       return corners;
     }
 
-    private PointD GetCorner(List<PixelValue> maxList, double[] coeff, int xOffset, int height, int index)
+    private static PointD GetCorner(List<PixelValue> maxList, double[] coeff, int xOffset, int height, int index)
     {
       double aa = (maxList[index].Position + 0.5) * coeff[6] + coeff[5];
       double rr = (((maxList[index].Value * height) / 65535.0) + 0.5) * coeff[7] + coeff[1];
@@ -305,8 +308,6 @@ namespace FredsImageMagickScripts
     {
       ushort min = ushort.MaxValue;
       ushort max = ushort.MinValue;
-      int minpos;
-      int maxpos;
 
       List<PixelValue> minList = new List<PixelValue>();
       List<PixelValue> maxList = new List<PixelValue>();
@@ -316,16 +317,10 @@ namespace FredsImageMagickScripts
       {
         ushort pixel = pixels[i];
         if (pixel > max)
-        {
           max = pixel;
-          maxpos = i;
-        }
 
         if (pixel < min)
-        {
           min = pixel;
-          minpos = i;
-        }
 
         if (lookingForMax)
         {
@@ -334,7 +329,6 @@ namespace FredsImageMagickScripts
             int j = i - 1;
             maxList.Add(new PixelValue(j, pixels[j]));
             min = pixel;
-            minpos = i;
             lookingForMax = false;
           }
         }
@@ -345,7 +339,6 @@ namespace FredsImageMagickScripts
             int j = i - 1;
             minList.Add(new PixelValue(j, pixels[j]));
             max = pixel;
-            maxpos = i;
             lookingForMax = true;
           }
         }
@@ -416,7 +409,7 @@ namespace FredsImageMagickScripts
       return new MagickGeometry((int)xmin, (int)ymin, (int)iw, (int)ih);
     }
 
-    private static bool GaussJordanElimination(double[,] matrix, double[] vectors)
+    private static bool GaussJordanElimination(double[][] matrix, double[] vectors)
     {
       double[] columns = new double[8];
       double[] rows = new double[8];
@@ -438,9 +431,9 @@ namespace FredsImageMagickScripts
               if (pivots[k] > 1)
                 return false;
             }
-            else if (Math.Abs(matrix[j, k]) >= max)
+            else if (Math.Abs(matrix[j][k]) >= max)
             {
-              max = Math.Abs(matrix[j, k]);
+              max = Math.Abs(matrix[j][k]);
               row = j;
               column = k;
             }
@@ -450,26 +443,26 @@ namespace FredsImageMagickScripts
         if (row != column)
         {
           for (int k = 0; k < 8; k++)
-            GaussJordanSwap(ref matrix[row, k], ref matrix[column, k]);
+            GaussJordanSwap(ref matrix[row][k], ref matrix[column][k]);
           GaussJordanSwap(ref vectors[row], ref vectors[column]);
         }
         rows[i] = row;
         columns[i] = column;
-        if (matrix[column, column] == 0.0)
+        if (matrix[column][column] == 0.0)
           return false;  /* sigularity */
-        double scale = PerceptibleReciprocal(matrix[column, column]);
-        matrix[column, column] = 1.0;
+        double scale = PerceptibleReciprocal(matrix[column][column]);
+        matrix[column][column] = 1.0;
         for (int j = 0; j < 8; j++)
-          matrix[column, j] *= scale;
+          matrix[column][j] *= scale;
         vectors[column] *= scale;
         for (int j = 0; j < 8; j++)
         {
           if (j == column)
             continue;
-          scale = matrix[j, column];
-          matrix[j, column] = 0.0;
+          scale = matrix[j][column];
+          matrix[j][column] = 0.0;
           for (int k = 0; k < 8; k++)
-            matrix[j, k] -= scale * matrix[column, k];
+            matrix[j][k] -= scale * matrix[column][k];
           vectors[j] -= scale * vectors[column];
         }
       }
@@ -509,17 +502,17 @@ namespace FredsImageMagickScripts
       return inverse;
     }
 
-    private static void LeastSquaresAddTerms(double[,] matrix, double[] vectors, double[] terms, double result)
+    private static void LeastSquaresAddTerms(double[][] matrix, double[] vectors, double[] terms, double result)
     {
       for (int j = 0; j < 8; j++)
       {
         for (int i = 0; i < 8; i++)
-          matrix[i, j] += terms[i] * terms[j];
+          matrix[i][j] += terms[i] * terms[j];
         vectors[j] += result * terms[j];
       }
     }
 
-    private void PadImage(MagickImage image, int borderSize)
+    private static void PadImage(MagickImage image, int borderSize)
     {
       image.Border(borderSize);
     }
@@ -582,7 +575,7 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private void ResetMaxList(List<PixelValue> maxList, MagickImage image)
+    private static void ResetMaxList(List<PixelValue> maxList, MagickImage image)
     {
       using (var pixels = image.GetPixels())
       {
@@ -594,7 +587,7 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private void Rotate(MagickImage output, UnperspectiveRotation rotation)
+    private static void Rotate(MagickImage output, UnperspectiveRotation rotation)
     {
       if (rotation != UnperspectiveRotation.None)
         output.Rotate((int)rotation);
