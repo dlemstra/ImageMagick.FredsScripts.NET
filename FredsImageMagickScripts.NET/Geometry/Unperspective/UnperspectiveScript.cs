@@ -49,7 +49,24 @@ namespace FredsImageMagickScripts
       double centroidX = image.Width / 2.0;
       double centroidY = image.Height / 2.0;
 
-      return Shared.AspectRatio.Calculate(corners[0], corners[3], corners[2], corners[1], centroidX, centroidY);
+      // convert to proper x,y coordinates relative to center
+      var m1x = corners[1].X - centroidX;
+      var m1y = centroidY - corners[1].Y;
+      var m2x = corners[2].X - centroidX;
+      var m2y = centroidY - corners[2].Y;
+      var m3x = corners[0].X - centroidX;
+      var m3y = centroidY - corners[0].Y;
+      var m4x = corners[3].X - centroidX;
+      var m4y = centroidY - corners[3].Y;
+
+      // simplified equations, assuming u0=0, v0=0, s=1
+      var k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x);
+      var k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x);
+      var ff = ((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1));
+      var f = Math.Sqrt(Math.Sqrt(ff * ff));
+      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + Math.Pow(k2 * m2y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k2 * m2x - m1x, 2) / Math.Pow(f, 2)) / (Math.Pow(k3 - 1, 2) + Math.Pow(k3 * m3y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k3 * m3x - m1x, 2) / Math.Pow(f, 2)));
+
+      return aspect;
     }
 
     private void CheckSettings()

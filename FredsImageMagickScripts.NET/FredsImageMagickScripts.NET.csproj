@@ -30,7 +30,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -73,7 +73,6 @@
     <Compile Include="Geometry\Unperspective\UnperspectiveMethod.cs" />
     <Compile Include="Geometry\Unperspective\UnperspectiveScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shared\AspectRatio.cs" />
     <Compile Include="Threshold\TextCleaner\TextCleanerCropOffset.cs" />
     <Compile Include="Threshold\TextCleaner\TextCleanerEnhance.cs" />
     <Compile Include="Threshold\TextCleaner\TextCleanerLayout.cs" />
