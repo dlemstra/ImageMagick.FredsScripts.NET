@@ -142,7 +142,7 @@ This projects goal is to port most of the scripts for ImageMagick that are creat
 This project uses the same license as Fred's ImageMagick Scripts. You can find the license in the [LICENSE.md]($github/blob/master/LICENSE.md) file.
 
 ## Scripts
-The following scripts have been ported to .NET and can be found on NuGet.
+The scripts below have been ported to .NET and can be found on NuGet. Not all scripts have been ported at the moment. Create an issue if you want a specific script to be ported to C#.
 
 Script | Download | Original
 --- | --- | ---
