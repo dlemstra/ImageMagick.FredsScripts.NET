@@ -262,9 +262,19 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
+    public void Test_Execute_Null()
+    {
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
+      {
+        var script = new UnperspectiveScript();
+        script.Execute(null);
+      }, "input");
+    }
+
+    [TestMethod, TestCategory(_Category)]
     public void Test_Settings()
     {
-      var script = new AutotrimScript();
+      var script = new UnperspectiveScript();
 
       using (var logo = new MagickImage(Images.Logo))
       {
