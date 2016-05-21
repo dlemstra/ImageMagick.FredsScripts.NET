@@ -49,7 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Magick.NET-Q16-x86, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=x86">
-      <HintPath>..\packages\Magick.NET-Q16-x86.7.0.1.0\lib\net40-client\Magick.NET-Q16-x86.dll</HintPath>
+      <HintPath>..\packages\Magick.NET-Q16-x86.7.0.1.500\lib\net40-client\Magick.NET-Q16-x86.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effects\DraganEffect\DraganEffectScript.cs" />
+    <Compile Include="Effects\Embroidery\EmbroideryPattern.cs" />
+    <Compile Include="Effects\Embroidery\EmbroideryScript.cs" />
     <Compile Include="Geometry\Autotrim\AutotrimPixelShift.cs" />
     <Compile Include="Geometry\Autotrim\AutotrimScript.cs" />
     <Compile Include="Geometry\Tshirt\TshirtFit.cs" />
@@ -84,18 +86,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FredsImageMagickScripts.NET.snk" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Magick.NET-Q16-x86.7.0.1.0\build\net40-client\Magick.NET-Q16-x86.targets" Condition="Exists('..\packages\Magick.NET-Q16-x86.7.0.1.0\build\net40-client\Magick.NET-Q16-x86.targets')" />
+  <Import Project="..\packages\Magick.NET-Q16-x86.7.0.1.500\build\net40-client\Magick.NET-Q16-x86.targets" Condition="Exists('..\packages\Magick.NET-Q16-x86.7.0.1.500\build\net40-client\Magick.NET-Q16-x86.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Magick.NET-Q16-x86.7.0.1.0\build\net40-client\Magick.NET-Q16-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Magick.NET-Q16-x86.7.0.1.0\build\net40-client\Magick.NET-Q16-x86.targets'))" />
+    <Error Condition="!Exists('..\packages\Magick.NET-Q16-x86.7.0.1.500\build\net40-client\Magick.NET-Q16-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Magick.NET-Q16-x86.7.0.1.500\build\net40-client\Magick.NET-Q16-x86.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

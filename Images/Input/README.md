@@ -10,6 +10,7 @@ blood.jpg | http://www.istanbul.edu.tr/eng/ee/jeee/main/pages/issues/is62/62008.
 bluehat.jpg | http://photoshoptutorials.ws/photoshop-tutorials/photo-effects/dramatic-wrinkles/
 brscan_original_r90 | Provided by BrScan Tecnologia, Brazil
 CHINA-715-4_small.jpg | http://lifegamesphotography.com/the-weathered-face-of-a-chinese-man/
+cnbc.jpg | http://www.logovaults.com/stock_thumb/big-cnbc-2013-01-27.jpg
 congress.jpg | Unknown
 crankshaft.jpg | Unknown
 fingerprint.jpg | http://www.istanbul.edu.tr/eng/ee/jeee/main/pages/issues/is62/62008.pdf
