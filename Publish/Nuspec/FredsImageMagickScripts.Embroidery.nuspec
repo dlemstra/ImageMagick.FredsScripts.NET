@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata minClientVersion="2.5">
+    <id>FredsImageMagickScripts.Embroidery</id>
+    <version>1.0.5985.26145</version>
+    <title>Fred's ImageMagick Script Embroidery</title>
+    <authors>Dirk Lemstra, Fred Weinhaus</authors>
+    <owners>Dirk Lemstra, Fred Weinhaus</owners>
+    <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
+    <iconUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/raw/master/Images/FredsImageMagickScripts.Logo.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Applies an embroidery effect to each color in an image. The image must have limited number of colors or only the top most frequent colors will be used. Each color will get the same pattern, but at different rotation angles.</description>
+    <summary>Fred's ImageMagick Script Embroidery (requires Magick.NET)</summary>
+    <releaseNotes />
+    <copyright>Copyright 2015 Dirk Lemstra, Fred Weinhaus</copyright>
+    <tags>Fred Weinhaus ImageMagick </tags>
+  </metadata>
+  <files>
+    <file src="Readme.txt" target="" />
+    <file src="..\..\FredsImageMagickScripts.NET\Effects\Embroidery\EmbroideryPattern.cs" target="Content\FredsImageMagickScripts\Effects\Embroidery\EmbroideryPattern.cs" />
+    <file src="..\..\FredsImageMagickScripts.NET\Effects\Embroidery\EmbroideryScript.cs" target="Content\FredsImageMagickScripts\Effects\Embroidery\EmbroideryScript.cs" />
+  </files>
+</package>
