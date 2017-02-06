@@ -249,16 +249,16 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute_textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out_unperspect27_f10_a_t10_s2_S0_B3_r0_el_peak()
+    public void Test_Execute_textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out_unperspect27_f11_a_t10_s2_S0_B3_r0_el_peak()
     {
       Test_Execute("textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out.png", delegate (UnperspectiveScript script)
       {
-        script.ColorFuzz = (Percentage)10;
+        script.ColorFuzz = (Percentage)11;
         script.Threshold = 10;
         script.Smooth = 2;
         script.Sharpen = 0;
         script.Blur = 3;
-      }, "textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out_unperspect27_f10_a_t10_s2_S0_B3_r0_el_peak.jpg");
+      }, "textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out_unperspect27_f11_a_t10_s2_S0_B3_r0_el_peak.jpg");
     }
 
     [TestMethod, TestCategory(_Category)]
