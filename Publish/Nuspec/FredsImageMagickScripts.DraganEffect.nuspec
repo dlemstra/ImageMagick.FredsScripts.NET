@@ -13,8 +13,8 @@
     <description>Applies a Dragan-like effect to an image to enhance wrinkles creating a "gritty" effect.</description>
     <summary>Fred's ImageMagick Script DraganEffect (requires Magick.NET)</summary>
     <releaseNotes />
-    <copyright>Copyright 2015 Dirk Lemstra, Fred Weinhaus</copyright>
-    <tags>Fred Weinhaus ImageMagick </tags>
+    <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
+    <tags>Fred Weinhaus ImageMagick</tags>
   </metadata>
   <files>
     <file src="Readme.txt" target="" />

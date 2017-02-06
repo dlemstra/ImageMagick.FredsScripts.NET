@@ -13,8 +13,8 @@
     <description>Applies an embroidery effect to each color in an image. The image must have limited number of colors or only the top most frequent colors will be used. Each color will get the same pattern, but at different rotation angles.</description>
     <summary>Fred's ImageMagick Script Embroidery (requires Magick.NET)</summary>
     <releaseNotes />
-    <copyright>Copyright 2015 Dirk Lemstra, Fred Weinhaus</copyright>
-    <tags>Fred Weinhaus ImageMagick </tags>
+    <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
+    <tags>Fred Weinhaus ImageMagick</tags>
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
