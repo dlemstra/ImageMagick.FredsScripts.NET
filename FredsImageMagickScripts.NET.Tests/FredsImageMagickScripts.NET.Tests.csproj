@@ -60,6 +60,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ExcludeFromCodeCoverage.cs" />
     <Compile Include="Helpers\ColorAssert.cs" />
     <Compile Include="Helpers\ExceptionAssert.cs" />
     <Compile Include="Images.cs" />

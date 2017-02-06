@@ -16,20 +16,12 @@
 // http://www.imagemagick.org/script/license.php
 //=================================================================================================
 
-using ImageMagick;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace FredsImageMagickScripts.NET.Tests
 {
-  [ExcludeFromCodeCoverage]
-  public static class ColorAssert
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, Inherited = false, AllowMultiple = false)]
+  internal sealed class ExcludeFromCodeCoverageAttribute : Attribute
   {
-    public static void AreEqual(MagickColor expected, MagickColor actual)
-    {
-      Assert.AreEqual(expected.R, actual.R, "R is not equal");
-      Assert.AreEqual(expected.G, actual.G, "G is not equal");
-      Assert.AreEqual(expected.B, actual.B, "B is not equal");
-      Assert.AreEqual(expected.A, actual.A, "A is not equal");
-    }
   }
 }

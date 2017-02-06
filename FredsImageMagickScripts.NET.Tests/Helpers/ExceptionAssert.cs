@@ -22,6 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FredsImageMagickScripts.NET.Tests
 {
+  [ExcludeFromCodeCoverage]
   public static class ExceptionAssert
   {
     private static void Fail(string message, params object[] arguments)
