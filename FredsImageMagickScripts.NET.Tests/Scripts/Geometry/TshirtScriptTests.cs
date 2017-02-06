@@ -179,12 +179,13 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
     }
 
     [TestMethod, TestCategory(_Category)]
-    public void Test_Execute_tshirt_gray_mario_none_Rm3_o5x0()
+    public void Test_Execute_tshirt_gray_mario_none_rm3()
     {
       Test_Execute("tshirt_gray.jpg", "Super_Mario.png", delegate (TshirtScript script)
       {
         script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-      }, "tshirt_gray_mario_none_Rm3_o5x0.jpg");
+        script.Rotation = -3;
+      }, "tshirt_gray_mario_none_rm3.jpg");
     }
 
     [TestMethod, TestCategory(_Category)]
