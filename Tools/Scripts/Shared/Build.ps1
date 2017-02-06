@@ -12,22 +12,18 @@
 # express or implied. See the License for the specific language governing permissions and
 # limitations under the License.
 #==================================================================================================
-function CheckExitCode($msg)
+function Build()
 {
-  if ($LastExitCode -ne 0)
-  {
-    Write-Error $msg
-    Exit 1
-  }
+  $solution = "FredsImageMagickScripts.NET.sln"
+  .\Tools\Programs\nuget.exe restore $solution
+  msbuild /m:4 $solution /t:Rebuild ("/p:Configuration=Release,Platform=Any CPU")
+  CheckExitCode "Failed to build: $solution"
 }
 
-function FullPath($path)
+function Test()
 {
-  $location = $(Get-Location)
-  return "$($location)\$($path)"
-}
-
-function SetFolder($scriptPath)
-{
-  Set-Location "${scriptPath}\..\.."
+  $dll = "FredsImageMagickScripts.NET.Tests\bin\Release\FredsImageMagickScripts.NET.Tests.dll"
+  vstest.console /inIsolation /platform:x86 $dll
+  # /logger:AppVeyor
+  CheckExitCode ("Test failed for FredsImageMagickScripts.NET.Tests.dll")
 }

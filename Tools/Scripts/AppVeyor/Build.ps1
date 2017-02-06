@@ -12,22 +12,11 @@
 # express or implied. See the License for the specific language governing permissions and
 # limitations under the License.
 #==================================================================================================
-function CheckExitCode($msg)
-{
-  if ($LastExitCode -ne 0)
-  {
-    Write-Error $msg
-    Exit 1
-  }
-}
+$scriptPath = Split-Path -parent $MyInvocation.MyCommand.Path
+$scriptPath = "$scriptPath\.."
+. $scriptPath\Shared\Functions.ps1
+SetFolder $scriptPath
 
-function FullPath($path)
-{
-  $location = $(Get-Location)
-  return "$($location)\$($path)"
-}
+. Tools\Scripts\Shared\Build.ps1
 
-function SetFolder($scriptPath)
-{
-  Set-Location "${scriptPath}\..\.."
-}
+Build

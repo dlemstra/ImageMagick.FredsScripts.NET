@@ -1,0 +1,18 @@
+version: FredsImageMagickScripts.NET-{branch}.{build}
+
+os: Windows Server 2012 R2
+
+clone_folder: C:\FredsImageMagickScripts.NET
+shallow_clone: true
+
+skip_tags: true
+
+matrix:
+  fast_finish: true
+
+build_script:
+  - cd Tools\AppVeyor
+  - Build.cmd
+
+test_script:
+  - Test.cmd
