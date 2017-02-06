@@ -19,11 +19,3 @@ function Build()
   msbuild /m:4 $solution /t:Rebuild ("/p:Configuration=Release,Platform=Any CPU")
   CheckExitCode "Failed to build: $solution"
 }
-
-function Test()
-{
-  $dll = "FredsImageMagickScripts.NET.Tests\bin\Release\FredsImageMagickScripts.NET.Tests.dll"
-  vstest.console /inIsolation /platform:x86 $dll
-  # /logger:AppVeyor
-  CheckExitCode ("Test failed for FredsImageMagickScripts.NET.Tests.dll")
-}

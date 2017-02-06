@@ -134,6 +134,13 @@ function LoadScripts()
   return $scripts | Sort-Object name
 }
 
+function Test()
+{
+  $dll = "FredsImageMagickScripts.NET.Tests\bin\Release\FredsImageMagickScripts.NET.Tests.dll"
+  vstest.console /inIsolation /platform:x86 $dll
+  CheckExitCode ("Test failed for FredsImageMagickScripts.NET.Tests.dll")
+}
+
 function UpdateReadme()
 {
 $content = @"
