@@ -1,4 +1,2 @@
-codecov:
-  disable_default_path_fixes: yes
 fixes:
-  - "C:/FredsImageMagickScripts.NET/::"
+  - "FredsImageMagickScripts.NET/::"
