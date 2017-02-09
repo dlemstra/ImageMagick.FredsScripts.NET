@@ -16,6 +16,7 @@
 // http://www.imagemagick.org/script/license.php
 //=================================================================================================
 
+using System;
 using System.IO;
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,19 +26,38 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
   [ExcludeFromCodeCoverage]
   public abstract class ScriptTester
   {
-    private static string _ImagesRoot = @"..\..\..\..\Images\";
+    private static string _Root = GetRoot();
+
+    private static string GetRoot()
+    {
+      string[] paths =
+      {
+        @"..\..\..\", // Code coverage
+        @"..\..\..\..\",
+      };
+
+
+      foreach (string path in paths)
+      {
+        string directory = Path.GetFullPath(path) + @"Images\";
+        if (Directory.Exists(directory))
+          return directory;
+      }
+
+      throw new InvalidOperationException("Unable to find the images folder.");
+    }
 
     private FileInfo GetActualOutputFile(string fileName)
     {
       int dotIndex = fileName.LastIndexOf('.');
       var name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
 
-      return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + name);
+      return new FileInfo(_Root + @"Output\" + ScriptName + @"\" + name);
     }
 
     private FileInfo GetExpectedOutputFile(string fileName)
     {
-      return new FileInfo(_ImagesRoot + @"Output\" + ScriptName + @"\" + fileName);
+      return new FileInfo(_Root + @"Output\" + ScriptName + @"\" + fileName);
     }
 
     protected string ScriptName
@@ -51,7 +71,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
 
     protected string GetInputFile(string fileName)
     {
-      return _ImagesRoot + @"Input\" + fileName;
+      return _Root + @"Input\" + fileName;
     }
 
     protected static void LosslessCompress(string fileName)
