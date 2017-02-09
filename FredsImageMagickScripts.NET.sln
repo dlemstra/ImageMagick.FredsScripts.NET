@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredsImageMagickScripts.NET", "FredsImageMagickScripts.NET\FredsImageMagickScripts.NET.csproj", "{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredsImageMagickScripts.NET", "src\FredsImageMagickScripts.NET\FredsImageMagickScripts.NET.csproj", "{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredsImageMagickScripts.NET.Tests", "FredsImageMagickScripts.NET.Tests\FredsImageMagickScripts.NET.Tests.csproj", "{6C392642-0CFB-4296-AFED-14E63943C4E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredsImageMagickScripts.NET.Tests", "Tests\FredsImageMagickScripts.NET.Tests\FredsImageMagickScripts.NET.Tests.csproj", "{6C392642-0CFB-4296-AFED-14E63943C4E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

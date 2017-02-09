@@ -25,7 +25,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts
   [ExcludeFromCodeCoverage]
   public abstract class ScriptTester
   {
-    private static string _ImagesRoot = @"..\..\..\Images\";
+    private static string _ImagesRoot = @"..\..\..\..\Images\";
 
     private FileInfo GetActualOutputFile(string fileName)
     {

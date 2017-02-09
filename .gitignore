@@ -2,10 +2,8 @@
 *.actual.*
 *.suo
 *.user
-/FredsImageMagickScripts.NET/bin
-/FredsImageMagickScripts.NET/obj
-/FredsImageMagickScripts.NET.Tests/obj
-/FredsImageMagickScripts.NET.Tests/bin
+bin
+obj
 /packages
 /Publish/Nupkg/ApiKey.txt
 /TestResults
