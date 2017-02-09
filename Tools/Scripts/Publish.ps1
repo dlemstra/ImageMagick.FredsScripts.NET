@@ -99,14 +99,14 @@ function CreateNuspecFiles()
 
 function LoadScripts()
 {
-  $path = FullPath "FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.xml"
+  $path = FullPath "src\FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.xml"
   $documentation = ([xml](Get-Content $path)).doc.members
 
   $utcNow = [System.DateTime]::Now.ToUniversalTime()
   $build = ($utcNow.Date - (New-Object DateTime(2000, 1, 1)).Date).TotalDays
   $revision = [int]($utcNow.TimeOfDay.TotalSeconds / 2)
 
-  $assembly = [System.Reflection.Assembly]::LoadFrom("..\FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.dll")
+  $assembly = [System.Reflection.Assembly]::LoadFrom("..\src\FredsImageMagickScripts.NET\bin\Release\FredsImageMagickScripts.NET.dll")
   $types = $assembly.GetTypes() | Where { $_.Name.EndsWith("Script") }
 
   $scripts = @()
@@ -127,7 +127,7 @@ function LoadScripts()
       name = $name
       description = $summary
       path = $path
-      url = "$github/tree/master/FredsImageMagickScripts.NET/" + $path.Replace("\", "/")
+      url = "$github/tree/master/src/FredsImageMagickScripts.NET/" + $path.Replace("\", "/")
     }
   }
 
@@ -136,7 +136,7 @@ function LoadScripts()
 
 function Test()
 {
-  $dll = "FredsImageMagickScripts.NET.Tests\bin\Release\FredsImageMagickScripts.NET.Tests.dll"
+  $dll = "tests\FredsImageMagickScripts.NET.Tests\bin\Release\FredsImageMagickScripts.NET.Tests.dll"
   vstest.console /inIsolation /platform:x86 $dll
   CheckExitCode ("Test failed for FredsImageMagickScripts.NET.Tests.dll")
 }
