@@ -1,5 +1,5 @@
 ﻿//=================================================================================================
-// Copyright 2015-2017 Christoph Bergmeister, Dirk Lemstra, Fred Weinhaus
+// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
 // <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
@@ -366,7 +366,7 @@ namespace FredsImageMagickScripts
         /// <summary>
         /// Gain for method=2
         /// </summary>
-        private int Edgegain = 4;
+        private const int Edgegain = 4;
         #endregion
 
         #region Backup variables for properties
