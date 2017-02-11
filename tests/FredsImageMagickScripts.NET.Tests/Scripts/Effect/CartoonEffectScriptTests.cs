@@ -25,7 +25,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
   [TestClass]
   public class CartoonEffectScriptTests : ScriptTester
   {
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Defaults()
     {
       var script = new CartoonEffectScript();
@@ -43,7 +43,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       Test_Defaults(script);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_Null()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
@@ -53,7 +53,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "input");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Settings()
     {
       var script = new CartoonEffectScript();
@@ -126,7 +126,5 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       Assert.AreEqual(2, script.EdgeWidth);
       Assert.AreEqual((Percentage)90, script.EdgeThreshold);
     }
-
-    private const string _Category = "CartoonEffectScript";
   }
 }

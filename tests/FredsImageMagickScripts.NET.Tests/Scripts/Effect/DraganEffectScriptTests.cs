@@ -25,8 +25,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
   [TestClass]
   public class DraganEffectScriptTests : ScriptTester
   {
-    private const string _Category = "DraganEffectScript";
-
     private static void Test_Defaults(DraganEffectScript script)
     {
       Assert.AreEqual(1.0, script.Brightness);
@@ -50,7 +48,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Defaults()
     {
       var script = new DraganEffectScript();
@@ -65,7 +63,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       Test_Defaults(script);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_before1_draganeffect_b1_c0_d1_s150_r5()
     {
       Test_Execute("before1.gif", (DraganEffectScript script) =>
@@ -77,7 +75,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "before1_draganeffect_b1_c0_d1_s150_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_before1_draganeffect_b1p5_cm5_d1_s175_r5()
     {
       Test_Execute("before1.gif", (DraganEffectScript script) =>
@@ -89,7 +87,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "before1_draganeffect_b1p5_cm5_d1_s175_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_before1_draganeffect_b1p5_cm5_d2_s175_r5()
     {
       Test_Execute("before1.gif", (DraganEffectScript script) =>
@@ -101,7 +99,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "before1_draganeffect_b1p5_cm5_d2_s175_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_bluehat_draganeffect_b1_c0_d1_s150_r5()
     {
       Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
@@ -113,7 +111,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "bluehat_draganeffect_b1_c0_d1_s150_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_bluehat_draganeffect_b1_cm7p5_d1_s200_r5()
     {
       Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
@@ -125,7 +123,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "bluehat_draganeffect_b1_cm7p5_d1_s200_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_bluehat_draganeffect_b1_cm7p5_d1p25_s200_r5()
     {
       Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
@@ -137,7 +135,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "bluehat_draganeffect_b1_cm7p5_d1p25_s200_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_CHINA_715_4_small_draganeffect_b1_cm5_d1_s150_r5()
     {
       Test_Execute("CHINA-715-4_small.jpg", (DraganEffectScript script) =>
@@ -149,7 +147,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "CHINA-715-4_small_draganeffect_b1_cm5_d1_s150_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_CHINA_715_4_small_draganeffect_b1_cm10_d1_s200_r5()
     {
       Test_Execute("CHINA-715-4_small.jpg", (DraganEffectScript script) =>
@@ -160,7 +158,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "CHINA-715-4_small_draganeffect_b1_cm10_d1_s200_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mustache_draganeffect_b1_cm5_d1p75_s175_r5()
     {
       Test_Execute("mustache.jpg", (DraganEffectScript script) =>
@@ -172,7 +170,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "mustache_draganeffect_b1_cm5_d1p75_s175_r5.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_Null()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
@@ -182,7 +180,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "input");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Settings()
     {
       var script = new DraganEffectScript();

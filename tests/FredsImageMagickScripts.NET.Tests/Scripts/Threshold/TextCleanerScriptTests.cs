@@ -25,8 +25,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
   [TestClass]
   public class TextCleanerScriptTests : ScriptTester
   {
-    private const string _Category = "TextCleanerScript";
-
     private static void Test_Defaults(TextCleanerScript script)
     {
       Assert.AreEqual(0.0, script.AdaptiveBlur);
@@ -64,7 +62,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Defaults()
     {
       var script = new TextCleanerScript();
@@ -93,7 +91,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       Test_Defaults(script);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_abbott2_g_none_f15_o20()
     {
       Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
@@ -105,7 +103,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "abbott2_g_none_f15_o20.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_abbott2_g_stretch_f15_o20()
     {
       Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
@@ -117,7 +115,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "abbott2_g_stretch_f15_o20.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_abbott2_g_stretch_f25_o20()
     {
       Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
@@ -129,7 +127,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "abbott2_g_stretch_f25_o20.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_abbott2_g_stretch_f25_o20_s1()
     {
       Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
@@ -142,7 +140,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "abbott2_g_stretch_f25_o20_s1.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_abbott2_g_stretch_f25_o20_t30_s1_u_T_p20()
     {
       Test_Execute("abbott2.jpg", (TextCleanerScript script) =>
@@ -158,7 +156,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "abbott2_g_stretch_f25_o20_t30_s1_u_T_p20.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_brscan_original_r90_g_none_f15_o10()
     {
       Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
@@ -170,7 +168,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "brscan_original_r90_g_none_f15_o10.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_brscan_original_r90_g_normalize_f15_o10()
     {
       Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
@@ -182,7 +180,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "brscan_original_r90_g_normalize_f15_o10.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_brscan_original_r90_g_normalize_f15_o10_s1()
     {
       Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
@@ -195,7 +193,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "brscan_original_r90_g_normalize_f15_o10_s1.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_brscan_original_r90_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20()
     {
       Test_Execute("brscan_original_r90.jpg", (TextCleanerScript script) =>
@@ -212,7 +210,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "brscan_original_r90_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_congress_norm_f15_o5_S200()
     {
       Test_Execute("congress.jpg", (TextCleanerScript script) =>
@@ -224,7 +222,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "congress_norm_f15_o5_S200.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_congress_norm_f15_o5_S200_s1()
     {
       Test_Execute("congress.jpg", (TextCleanerScript script) =>
@@ -237,7 +235,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "congress_norm_f15_o5_S200_s1.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_congress_norm_f15_o5_S400()
     {
       Test_Execute("congress.jpg", (TextCleanerScript script) =>
@@ -250,7 +248,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "congress_norm_f15_o5_S400.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_crankshaft_g_stretch_f25_o10_u_s1_T_p10()
     {
       Test_Execute("crankshaft.jpg", (TextCleanerScript script) =>
@@ -267,7 +265,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "crankshaft_g_stretch_f25_o10_u_s1_T_p10.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_railways_g_stretch_f25_o5_s1()
     {
       Test_Execute("railways.jpg", (TextCleanerScript script) =>
@@ -281,7 +279,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "railways_g_stretch_f25_o5_s1.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_rfid_g_stretch_f25_o5_s1()
     {
       Test_Execute("rfid.jpg", (TextCleanerScript script) =>
@@ -295,7 +293,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "rfid_g_stretch_f25_o5_s1.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_telegram_g_stretch_f15_o5_s1()
     {
       Test_Execute("telegram.jpg", (TextCleanerScript script) =>
@@ -308,7 +306,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "telegram_g_stretch_f15_o5_s1.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_twinkle_g_stretch_f25_o10_s1()
     {
       Test_Execute("twinkle.jpg", (TextCleanerScript script) =>
@@ -322,7 +320,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "twinkle_g_stretch_f25_o10_s1.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_Null()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
@@ -332,7 +330,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "input");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Settings()
     {
       var script = new TextCleanerScript();

@@ -25,8 +25,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
   [TestClass]
   public class TshirtScriptTests : ScriptTester
   {
-    private const string _Category = "TShirtScriptTests";
-
     private PointD _TopLeft = new PointD(10, 15);
     private PointD _TopRight = new PointD(630, 10);
     private PointD _BottomLeft = new PointD(25, 470);
@@ -85,7 +83,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Defaults()
     {
       var script = new TshirtScript();
@@ -104,7 +102,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       Test_Defaults(script);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tshirt_blue_flowers_none_r()
     {
       Test_Execute("tshirt_blue.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
@@ -113,7 +111,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }, "tshirt_blue_flowers_none_r.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tshirt_gray_flowers_none_r()
     {
       Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
@@ -127,7 +125,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }, "tshirt_gray_flowers_none_r.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tshirt_gray_flowers_none_r2()
     {
       Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
@@ -136,7 +134,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }, "tshirt_gray_flowers_none_r.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tshirt_gray_flowers_crop_north()
     {
       Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
@@ -147,7 +145,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }, "tshirt_gray_flowers_crop_north.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tshirt_gray_flowers_crop_center()
     {
       Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
@@ -158,7 +156,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }, "tshirt_gray_flowers_crop_center.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tshirt_gray_flowers_distort()
     {
       Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
@@ -168,7 +166,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }, "tshirt_gray_flowers_distort.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tshirt_gray_flowers_none_rm3()
     {
       Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", delegate (TshirtScript script)
@@ -178,7 +176,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }, "tshirt_gray_flowers_none_rm3.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tshirt_gray_mario_none_rm3()
     {
       Test_Execute("tshirt_gray.jpg", "Super_Mario.png", delegate (TshirtScript script)
@@ -188,7 +186,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }, "tshirt_gray_mario_none_rm3.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Excecute_Null()
     {
       using (var logo = Images.Logo)
@@ -207,7 +205,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Coordinates()
     {
       ExceptionAssert.Throws<InvalidOperationException>(delegate ()
@@ -234,7 +232,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Geometry
       }
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Settings()
     {
       var script = new TshirtScript();

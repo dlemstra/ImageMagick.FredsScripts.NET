@@ -25,8 +25,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
   [TestClass]
   public class UnperspectiveScriptTests : ScriptTester
   {
-    private const string _Category = "UnperspectiveScriptTests";
-
     private static void Test_Defaults(UnperspectiveScript script, UnperspectiveMethod method)
     {
       Assert.AreEqual(null, script.AspectRatio);
@@ -94,14 +92,14 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Defaults()
     {
       Test_Defaults(UnperspectiveMethod.Peak);
       Test_Defaults(UnperspectiveMethod.Derivative);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mandril2_p30_t30_out_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak()
     {
       Test_Execute("mandril2_p30_t30_out.jpg", delegate (UnperspectiveScript script)
@@ -110,7 +108,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
        }, "mandril2_p30_t30_out_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mandril2_p30_t30_r60_zc_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak()
     {
       Test_Execute("mandril2_p30_t30_r60_zc.jpg", delegate (UnperspectiveScript script)
@@ -119,7 +117,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "mandril2_p30_t30_r60_zc_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mandril2_p30_t30_r60_zc_unperspect_f20_a_t4_s1_S5_B0_r270_el_peak()
     {
       Test_Execute("mandril2_p30_t30_r60_zc.jpg", delegate (UnperspectiveScript script)
@@ -129,7 +127,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "mandril2_p30_t30_r60_zc_unperspect_f20_a_t4_s1_S5_B0_r270_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak()
     {
       Test_Execute("mandril2_pm30_t30_r30_zc.jpg", delegate (UnperspectiveScript script)
@@ -138,7 +136,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mandril2_pm30_t30_r30_zc_unperspect_f52_a_t8_s2_S5_B0_r0_el_peak()
     {
       Test_Execute("mandril2_pm30_t30_r30_zc.jpg", delegate (UnperspectiveScript script)
@@ -149,7 +147,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "mandril2_pm30_t30_r30_zc_unperspect_f52_a_t8_s2_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_bh_peak()
     {
       Test_Execute("mandril2_pm30_t30_r30_zc.jpg", delegate (UnperspectiveScript script)
@@ -159,7 +157,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_bh_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_h_peak()
     {
       Test_Execute("mandril2_pm30_t30_r30_zc.jpg", delegate (UnperspectiveScript script)
@@ -169,7 +167,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_h_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_mandril2_round30_p30_t30_out_unperspect_f20_a_t4_s2_S5_B0_r0_el_peak()
     {
       Test_Execute("mandril2_round30_p30_t30_out.jpg", delegate (UnperspectiveScript script)
@@ -180,7 +178,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "mandril2_round30_p30_t30_out_unperspect_f20_a_t4_s2_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_monet2_p30_t30_r30_out_unperspect_f10_a_t4_s1_S5_B0_r0_el_peak()
     {
       Test_Execute("monet2_p30_t30_r30_out.jpg", delegate (UnperspectiveScript script)
@@ -189,7 +187,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "monet2_p30_t30_r30_out_unperspect_f10_a_t4_s1_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_redcanoe_p30_t30_out_unperspect_f10_a_t4_s1_S5_B0_r0_el_peak()
     {
       Test_Execute("redcanoe_p30_t30_out.jpg", delegate (UnperspectiveScript script)
@@ -198,7 +196,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "redcanoe_p30_t30_out_unperspect_f10_a_t4_s1_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_receipt1_unperspect_f7_a_t4_s1_S5_B0_r0_el_peak()
     {
       Test_Execute("receipt1.jpg", delegate (UnperspectiveScript script)
@@ -208,7 +206,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "receipt1_unperspect_f7_a_t4_s1_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_receipt1_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak()
     {
       Test_Execute("receipt1.jpg", delegate (UnperspectiveScript script)
@@ -218,7 +216,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "receipt1_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_receipt1_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak_w500()
     {
       Test_Execute("receipt1.jpg", delegate (UnperspectiveScript script)
@@ -229,7 +227,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "receipt1_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak_w500.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_receipt2_unperspect_f50_a_t4_s1_S5_B0_r0_el_peak()
     {
       Test_Execute("receipt2.jpg", delegate (UnperspectiveScript script)
@@ -238,7 +236,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "receipt2_unperspect_f50_a_t4_s1_S5_B0_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_receipt2_unperspect_f50_a_t4_s1_S5_B0_r0_el_peak_w200()
     {
       Test_Execute("receipt2.jpg", delegate (UnperspectiveScript script)
@@ -248,7 +246,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "receipt2_unperspect_f50_a_t4_s1_S5_B0_r0_el_peak_w200.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out_unperspect27_f11_a_t10_s2_S0_B3_r0_el_peak()
     {
       Test_Execute("textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out.png", delegate (UnperspectiveScript script)
@@ -261,7 +259,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out_unperspect27_f11_a_t10_s2_S0_B3_r0_el_peak.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_Null()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
@@ -271,7 +269,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "input");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Settings()
     {
       var script = new UnperspectiveScript();

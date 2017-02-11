@@ -25,8 +25,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
   [TestClass]
   public class TwoColorThreshScriptTests : ScriptTester
   {
-    private const string _Category = "TwoColorThreshScript";
-
     private void Test_Execute(string input)
     {
       string inputFile = GetInputFile(input);
@@ -43,67 +41,67 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_blocks()
     {
       Test_Execute("blocks.gif");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_blood()
     {
       Test_Execute("blood.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_fingerprint()
     {
       Test_Execute("fingerprint.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_flower()
     {
       Test_Execute("flower.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_house()
     {
       Test_Execute("house.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_kanji()
     {
       Test_Execute("kanji.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_parts()
     {
       Test_Execute("parts.gif");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_rice()
     {
       Test_Execute("rice.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_tank()
     {
       Test_Execute("tank.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_textsample()
     {
       Test_Execute("textsample.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Excecute_Null()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>

@@ -25,8 +25,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
   [TestClass]
   public class WhiteboardScriptTests : ScriptTester
   {
-    private const string _Category = "WhiteboardScriptTests";
-
     private static void Test_Defaults(WhiteboardScript script)
     {
       ColorAssert.AreEqual(new MagickColor("white"), script.BackgroundColor);
@@ -79,7 +77,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, paramName);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Coordinates()
     {
       var topLeft = new PointD(10, 10);
@@ -102,7 +100,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Defaults()
     {
       var script = new WhiteboardScript();
@@ -119,7 +117,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       Test_Defaults(script);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Dimensions()
     {
       TestDimensions(0, 0);
@@ -128,7 +126,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       TestDimensions(0, -1);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard_a1p33_m2_S200_f25_o3_none()
     {
       Test_Execute("whiteboard.jpg", delegate (WhiteboardScript script)
@@ -143,7 +141,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard_a1p33_m2_S200_f25_o3_none.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard_a1p33_m2_S200_f25_o3_both()
     {
       Test_Execute("whiteboard.jpg", delegate (WhiteboardScript script)
@@ -158,7 +156,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard_a1p33_m2_S200_f25_o3_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard_a1p33_m2_S200_t60_f25_o3_both()
     {
       Test_Execute("whiteboard.jpg", delegate (WhiteboardScript script)
@@ -174,7 +172,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard_a1p33_m2_S200_t60_f25_o3_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard1_35pct_m1_S200_f12_o3_none()
     {
       Test_Execute("whiteboard1_35pct.jpg", delegate (WhiteboardScript script)
@@ -185,7 +183,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard1_35pct_m1_S200_f12_o3_none.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard1_35pct_m1_S200_f12_o3_both()
     {
       Test_Execute("whiteboard1_35pct.jpg", delegate (WhiteboardScript script)
@@ -196,7 +194,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard1_35pct_m1_S200_f12_o3_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard1_35pct_m1_S200_t30_f12_o3_both()
     {
       Test_Execute("whiteboard1_35pct.jpg", delegate (WhiteboardScript script)
@@ -208,7 +206,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard1_35pct_m1_S200_t30_f12_o3_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard1_35pct_m1_S200_s1_t30_f12_o3_both()
     {
       Test_Execute("whiteboard1_35pct.jpg", delegate (WhiteboardScript script)
@@ -221,7 +219,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard1_35pct_m1_S200_s1_t30_f12_o3_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard2_a1p5_m1_S200_t30_f12_o7_both()
     {
       Test_Execute("whiteboard2.gif", delegate (WhiteboardScript script)
@@ -236,7 +234,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard2_a1p5_m1_S200_t30_f12_o7_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboard2_a_m1_S200_t30_f12_o7_both()
     {
       Test_Execute("whiteboard2.gif", delegate (WhiteboardScript script)
@@ -250,7 +248,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboard2_a_m1_S200_t30_f12_o7_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_WhiteboardBlog_a0p75_m1_S200_t40_f12_o3_both()
     {
       Test_Execute("WhiteboardBlog.jpg", delegate (WhiteboardScript script)
@@ -265,7 +263,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "WhiteboardBlog_a0p75_m1_S200_t40_f12_o3_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_WhiteboardBlog_a_m1_S200_t40_f12_o3_both()
     {
       Test_Execute("WhiteboardBlog.jpg", delegate (WhiteboardScript script)
@@ -279,7 +277,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "WhiteboardBlog_a_m1_S200_t40_f12_o3_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_whiteboardScenario1_m1_S200_f12_o3_both()
     {
       Test_Execute("whiteboardScenario1.jpg", delegate (WhiteboardScript script)
@@ -290,7 +288,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
       }, "whiteboardScenario1_m1_S200_f12_o3_both.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_Null()
     {
       ExceptionAssert.Throws<ArgumentNullException>(delegate ()

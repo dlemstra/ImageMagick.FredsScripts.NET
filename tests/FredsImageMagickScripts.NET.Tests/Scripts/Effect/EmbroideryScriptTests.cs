@@ -25,8 +25,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
   [TestClass]
   public class EmbroideryScriptTests : ScriptTester
   {
-    private const string _Category = "EmbroideryScript";
-
     private static void Test_Defaults(EmbroideryScript script)
     {
       Assert.AreEqual(0, script.Angle);
@@ -68,7 +66,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       MagickNET.SetRandomSeed(100);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Defaults()
     {
       var script = new EmbroideryScript();
@@ -94,7 +92,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       Test_Defaults(script);
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -102,7 +100,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p1_t3_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -111,7 +109,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p1_t3_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p2_t2_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -120,7 +118,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p2_t2_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p2_t3_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -130,7 +128,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p2_t3_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p2_t5_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -140,7 +138,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p2_t5_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i0_e2_B4_A130_E30_C0_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -149,7 +147,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i0_e2_B4_A130_E30_C0_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i50_e2_B4_A130_E30_C0_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -158,7 +156,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i50_e2_B4_A130_E30_C0_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i0_e2_B4_A130_E30_C10_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -168,7 +166,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i0_e2_B4_A130_E30_C10_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_cnbc_embroidery_n8_p1_t2_g0_f0_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
     {
       Test_Execute("cnbc.jpg", (EmbroideryScript script) =>
@@ -178,7 +176,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "cnbc_embroidery_n8_p1_t2_g0_f0_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Execute_Null()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
@@ -188,7 +186,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       }, "input");
     }
 
-    [TestMethod, TestCategory(_Category)]
+    [TestMethod]
     public void Test_Settings()
     {
       var script = new EmbroideryScript();
