@@ -36,7 +36,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       script.EdgeThreshold = (Percentage)42;
       script.EdgeWidth = 15;
       script.Method = CartoonMethod.Method2;
-      script.Numlevels = 8;
+      script.NumberOflevels = 8;
       script.Pattern = (Percentage)42;
       script.Saturation = (Percentage)42;
 
@@ -65,7 +65,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 
         ExceptionAssert.Throws<InvalidOperationException>(() =>
         {
-          script.Numlevels = 1;
+          script.NumberOflevels = 1;
           script.Execute(logo);
         });
 
@@ -120,7 +120,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     private static void Test_Defaults(CartoonEffectScript script)
     {
       Assert.AreEqual((Percentage)70, script.Pattern);
-      Assert.AreEqual(6, script.Numlevels);
+      Assert.AreEqual(6, script.NumberOflevels);
       Assert.AreEqual(CartoonMethod.Method1, script.Method);
       Assert.AreEqual(4, script.EdgeAmount);
       Assert.AreEqual((Percentage)100, script.Brightness);

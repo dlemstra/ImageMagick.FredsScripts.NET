@@ -86,7 +86,7 @@ namespace FredsImageMagickScripts
     /// <summary>
     /// Number of levels, which must be &gt;= 2
     /// </summary>
-    public int Numlevels
+    public int NumberOflevels
     {
       get;
       set;
@@ -138,11 +138,9 @@ namespace FredsImageMagickScripts
     public MagickImage Execute(MagickImage input)
     {
       if (input == null)
-      {
         throw new ArgumentNullException("input");
-      }
 
-      CheckSettings(input);
+      CheckSettings();
 
       using (MagickImage tmpA1 = input.Clone())
       {
@@ -153,7 +151,7 @@ namespace FredsImageMagickScripts
           //convert $tmpA1 - level 0x$pattern % $setcspace - colorspace gray - posterize $numlevels - depth 8 $proc $tmpA2
           tmpA2.Level(0, (byte)Pattern);  // 450ms
           tmpA2.ColorSpace = ColorSpace.Gray;
-          tmpA2.Posterize(Numlevels);  //260ms
+          tmpA2.Posterize(NumberOflevels);  //260ms
           tmpA2.Depth = 8;
           tmpA2.GammaCorrect(2.2);
 
@@ -166,7 +164,7 @@ namespace FredsImageMagickScripts
               return ExecuteMethod2(tmpA1, tmpA2);
 
             default:
-              throw new InvalidOperationException($"Value of {nameof(Method)} property not supported");
+              throw new InvalidOperationException("Invalid cartoon method specified.");
           }
         }
       }
@@ -178,7 +176,7 @@ namespace FredsImageMagickScripts
     public void Reset()
     {
       Pattern = (Percentage)70;
-      Numlevels = 6;
+      NumberOflevels = 6;
       Method = CartoonMethod.Method1;
       EdgeAmount = 4;
       Brightness = (Percentage)100;
@@ -187,16 +185,16 @@ namespace FredsImageMagickScripts
       EdgeThreshold = (Percentage)90;
     }
 
-    private void CheckSettings(MagickImage image)
+    private void CheckSettings()
     {
-      if (Numlevels < 2)
-        throw new InvalidOperationException($"{nameof(Numlevels)} must be >=2");
+      if (NumberOflevels < 2)
+        throw new InvalidOperationException("Number of levels must be >= 2.");
 
       if (EdgeAmount < 0 || float.IsInfinity(EdgeAmount) || float.IsNaN(EdgeAmount))
-        throw new InvalidOperationException($"{nameof(EdgeAmount)} must be >= 0");
+        throw new InvalidOperationException("Edge amount must be >= 0.");
 
       if (EdgeWidth < 0)
-        throw new InvalidOperationException($"{nameof(EdgeWidth)} must be >= 0");
+        throw new InvalidOperationException("Edge width must be >= 0.");
     }
 
     private MagickImage ExecuteMethod2(MagickImage tmpA1, MagickImage tmpA2)
