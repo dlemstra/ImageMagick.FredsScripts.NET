@@ -35,7 +35,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
             script.Edgeamount = 5;
             script.Edgethresh = (Percentage)42;
             script.Edgewidth  = 15;
-            script.Method     = 2;
+            script.Method     = CartoonMethod.Method2;
             script.Numlevels  = 8;
             script.Pattern    = (Percentage)42;
             script.Saturation = (Percentage)42;
@@ -66,15 +66,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
                 ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
                 {
                     script.Numlevels = 1;
-                });
-
-                ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
-                {
-                    script.Method = -1;
-                });
-                ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
-                {
-                    script.Method = 3;
                 });
 
                 ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
@@ -114,7 +105,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
         {
             Assert.AreEqual((Percentage)70, script.Pattern);
             Assert.AreEqual(6, script.Numlevels);
-            Assert.AreEqual(1, script.Method);
+            Assert.AreEqual(CartoonMethod.Method1, script.Method);
             Assert.AreEqual(4, script.Edgeamount);
             Assert.AreEqual((Percentage)100, script.Brightness);
             Assert.AreEqual((Percentage)150, script.Saturation);
@@ -137,7 +128,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
                 TestOutput(scriptOutput, output);
 
                 // Test method 2 as well to execute different code path
-                script.Method = 2;
+                script.Method = CartoonMethod.Method2;
                 scriptOutput = script.Execute(image);
                 TestOutput(scriptOutput, output);
             }
