@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="CartoonEffectScriptTests.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,13 +15,13 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
+namespace FredsImageMagickScripts.NET.Tests
 {
   [TestClass]
   public class CartoonEffectScriptTests : ScriptTester
@@ -46,11 +47,11 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     [TestMethod]
     public void Test_Execute_Null()
     {
-      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
       {
         var script = new CartoonEffectScript();
         script.Execute(null);
-      }, "input");
+      });
     }
 
     [TestMethod]
@@ -102,7 +103,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
           script.EdgeWidth = -1;
           script.Execute(logo);
         });
-
 
         // Test that execution works fine after a reset
         script.Reset();

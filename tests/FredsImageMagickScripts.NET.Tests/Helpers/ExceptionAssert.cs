@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="ExceptionAssert.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,9 +15,10 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -25,6 +27,28 @@ namespace FredsImageMagickScripts.NET.Tests
   [ExcludeFromCodeCoverage]
   public static class ExceptionAssert
   {
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
+    public static void Throws<TException>(Action action)
+       where TException : Exception
+    {
+      Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
+    }
+
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
+    public static void Throws<TException>(string expectedMessage, Action action)
+       where TException : Exception
+    {
+      var message = Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
+      Assert.AreEqual(expectedMessage, message);
+    }
+
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
+    public static void ThrowsArgumentException<TException>(string paramName, Action action)
+      where TException : ArgumentException
+    {
+      Throws<TException>(action, "Exception of type {0} was not thrown for {1}.", typeof(TException).Name, paramName);
+    }
+
     private static void Fail(string message, params object[] arguments)
     {
       if (arguments != null && arguments.Length > 0)
@@ -55,25 +79,6 @@ namespace FredsImageMagickScripts.NET.Tests
       }
 
       return null;
-    }
-
-    public static void Throws<TException>(Action action)
-       where TException : Exception
-    {
-      Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
-    }
-
-    public static void Throws<TException>(Action action, string expectedMessage)
-       where TException : Exception
-    {
-      var message = Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
-      Assert.AreEqual(expectedMessage, message);
-    }
-
-    public static void ThrowsArgumentException<TException>(Action action, string paramName)
-      where TException : ArgumentException
-    {
-      Throws<TException>(action, "Exception of type {0} was not thrown for {1}.", typeof(TException).Name, paramName);
     }
   }
 }

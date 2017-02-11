@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="TestInitializer.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FredsImageMagickScripts.NET.Tests
 {
   [TestClass]
-  public sealed class TestInitializer
+  public static class TestInitializer
   {
     [AssemblyInitialize]
     public static void Initialize(TestContext context)

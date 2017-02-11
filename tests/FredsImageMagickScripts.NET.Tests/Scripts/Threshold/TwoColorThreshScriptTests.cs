@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="TwoColorThreshScriptTests.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,33 +15,17 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
+namespace FredsImageMagickScripts.NET.Tests
 {
   [TestClass]
   public class TwoColorThreshScriptTests : ScriptTester
   {
-    private void Test_Execute(string input)
-    {
-      string inputFile = GetInputFile(input);
-      //LosslessCompress(inputFile);
-
-      string output = input.Replace(".jpg", ".gif");
-
-      using (var image = new MagickImage(inputFile))
-      {
-        using (var scriptOutput = TwoColorThreshScript.Execute(image))
-        {
-          TestOutput(scriptOutput, output);
-        }
-      }
-    }
-
     [TestMethod]
     public void Test_Execute_blocks()
     {
@@ -104,10 +89,26 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Threshold
     [TestMethod]
     public void Test_Excecute_Null()
     {
-      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
       {
         TwoColorThreshScript.Execute(null);
-      }, "input");
+      });
+    }
+
+    private void Test_Execute(string input)
+    {
+      string inputFile = GetInputFile(input);
+      /* LosslessCompress(inputFile); */
+
+      string output = input.Replace(".jpg", ".gif");
+
+      using (var image = new MagickImage(inputFile))
+      {
+        using (var scriptOutput = TwoColorThreshScript.Execute(image))
+        {
+          TestOutput(scriptOutput, output);
+        }
+      }
     }
   }
 }

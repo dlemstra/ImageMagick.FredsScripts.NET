@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="DraganEffectScriptTests.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,40 +15,17 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
+namespace FredsImageMagickScripts.NET.Tests
 {
   [TestClass]
   public class DraganEffectScriptTests : ScriptTester
   {
-    private static void Test_Defaults(DraganEffectScript script)
-    {
-      Assert.AreEqual(1.0, script.Brightness);
-      Assert.AreEqual(0.0, script.Contrast);
-      Assert.AreEqual(1.0, script.Darkness);
-      Assert.AreEqual((Percentage)150, script.Saturation);
-    }
-
-    private void Test_Execute(string input, Action<DraganEffectScript> action, string output)
-    {
-      string inputFile = GetInputFile(input);
-      //LosslessCompress(inputFile);
-
-      using (var image = new MagickImage(inputFile))
-      {
-        var script = new DraganEffectScript();
-        action(script);
-
-        var scriptOutput = script.Execute(image);
-        TestOutput(scriptOutput, output);
-      }
-    }
-
     [TestMethod]
     public void Test_Defaults()
     {
@@ -66,118 +44,118 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     [TestMethod]
     public void Test_Execute_before1_draganeffect_b1_c0_d1_s150_r5()
     {
-      Test_Execute("before1.gif", (DraganEffectScript script) =>
+      Test_Execute("before1.gif", "before1_draganeffect_b1_c0_d1_s150_r5.jpg", (DraganEffectScript script) =>
       {
         script.Brightness = 1;
         script.Contrast = 0;
         script.Darkness = 1;
         script.Saturation = (Percentage)150;
-      }, "before1_draganeffect_b1_c0_d1_s150_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_before1_draganeffect_b1p5_cm5_d1_s175_r5()
     {
-      Test_Execute("before1.gif", (DraganEffectScript script) =>
+      Test_Execute("before1.gif", "before1_draganeffect_b1p5_cm5_d1_s175_r5.jpg", (DraganEffectScript script) =>
       {
         script.Brightness = 1.5;
         script.Contrast = -5;
         script.Darkness = 1;
         script.Saturation = (Percentage)175;
-      }, "before1_draganeffect_b1p5_cm5_d1_s175_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_before1_draganeffect_b1p5_cm5_d2_s175_r5()
     {
-      Test_Execute("before1.gif", (DraganEffectScript script) =>
+      Test_Execute("before1.gif", "before1_draganeffect_b1p5_cm5_d2_s175_r5.jpg", (DraganEffectScript script) =>
       {
         script.Brightness = 1.5;
         script.Contrast = -5;
         script.Darkness = 2;
         script.Saturation = (Percentage)175;
-      }, "before1_draganeffect_b1p5_cm5_d2_s175_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_bluehat_draganeffect_b1_c0_d1_s150_r5()
     {
-      Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
+      Test_Execute("bluehat.jpg", "bluehat_draganeffect_b1_c0_d1_s150_r5.jpg", (DraganEffectScript script) =>
       {
         script.Brightness = 1;
         script.Contrast = 0;
         script.Darkness = 1;
         script.Saturation = (Percentage)150;
-      }, "bluehat_draganeffect_b1_c0_d1_s150_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_bluehat_draganeffect_b1_cm7p5_d1_s200_r5()
     {
-      Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
+      Test_Execute("bluehat.jpg", "bluehat_draganeffect_b1_cm7p5_d1_s200_r5.jpg", (DraganEffectScript script) =>
       {
         script.Brightness = 1;
         script.Contrast = -7.5;
         script.Darkness = 1;
         script.Saturation = (Percentage)200;
-      }, "bluehat_draganeffect_b1_cm7p5_d1_s200_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_bluehat_draganeffect_b1_cm7p5_d1p25_s200_r5()
     {
-      Test_Execute("bluehat.jpg", (DraganEffectScript script) =>
+      Test_Execute("bluehat.jpg", "bluehat_draganeffect_b1_cm7p5_d1p25_s200_r5.jpg", (DraganEffectScript script) =>
       {
         script.Brightness = 1;
         script.Contrast = -7.5;
         script.Darkness = 1.25;
         script.Saturation = (Percentage)200;
-      }, "bluehat_draganeffect_b1_cm7p5_d1p25_s200_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_CHINA_715_4_small_draganeffect_b1_cm5_d1_s150_r5()
     {
-      Test_Execute("CHINA-715-4_small.jpg", (DraganEffectScript script) =>
+      Test_Execute("CHINA-715-4_small.jpg", "CHINA-715-4_small_draganeffect_b1_cm5_d1_s150_r5.jpg", (DraganEffectScript script) =>
       {
         script.Brightness = 1;
         script.Contrast = -5;
         script.Darkness = 1;
         script.Saturation = (Percentage)150;
-      }, "CHINA-715-4_small_draganeffect_b1_cm5_d1_s150_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_CHINA_715_4_small_draganeffect_b1_cm10_d1_s200_r5()
     {
-      Test_Execute("CHINA-715-4_small.jpg", (DraganEffectScript script) =>
+      Test_Execute("CHINA-715-4_small.jpg", "CHINA-715-4_small_draganeffect_b1_cm10_d1_s200_r5.jpg", (DraganEffectScript script) =>
       {
         script.Contrast = -10;
         script.Darkness = 1;
         script.Saturation = (Percentage)200;
-      }, "CHINA-715-4_small_draganeffect_b1_cm10_d1_s200_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_mustache_draganeffect_b1_cm5_d1p75_s175_r5()
     {
-      Test_Execute("mustache.jpg", (DraganEffectScript script) =>
+      Test_Execute("mustache.jpg", "mustache_draganeffect_b1_cm5_d1p75_s175_r5.jpg", (DraganEffectScript script) =>
       {
         script.Brightness = 1;
         script.Contrast = -5;
         script.Darkness = 1.75;
         script.Saturation = (Percentage)175;
-      }, "mustache_draganeffect_b1_cm5_d1p75_s175_r5.jpg");
+      });
     }
 
     [TestMethod]
     public void Test_Execute_Null()
     {
-      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>(() =>
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
       {
         var script = new DraganEffectScript();
         script.Execute(null);
-      }, "input");
+      });
     }
 
     [TestMethod]
@@ -222,6 +200,29 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
           script.Saturation = (Percentage)(-1);
           script.Execute(logo);
         });
+      }
+    }
+
+    private static void Test_Defaults(DraganEffectScript script)
+    {
+      Assert.AreEqual(1.0, script.Brightness);
+      Assert.AreEqual(0.0, script.Contrast);
+      Assert.AreEqual(1.0, script.Darkness);
+      Assert.AreEqual((Percentage)150, script.Saturation);
+    }
+
+    private void Test_Execute(string input, string output, Action<DraganEffectScript> action)
+    {
+      string inputFile = GetInputFile(input);
+      /* LosslessCompress(inputFile); */
+
+      using (var image = new MagickImage(inputFile))
+      {
+        var script = new DraganEffectScript();
+        action(script);
+
+        var scriptOutput = script.Execute(image);
+        TestOutput(scriptOutput, output);
       }
     }
   }

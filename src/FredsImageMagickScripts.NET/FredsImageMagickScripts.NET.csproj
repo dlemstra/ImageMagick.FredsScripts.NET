@@ -24,7 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\FredsImageMagickScripts.NET.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>..\..\FredsImageMagickScripts.NET.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\FredsImageMagickScripts.NET.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Release\FredsImageMagickScripts.NET.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>..\..\FredsImageMagickScripts.NET.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\FredsImageMagickScripts.NET.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x86</PlatformTarget>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
@@ -91,7 +91,7 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="..\..\FredsImageMagickScripts.NET.ruleset">
+    <AdditionalFiles Include="..\FredsImageMagickScripts.NET.ruleset">
       <Link>FredsImageMagickScripts.NET.ruleset</Link>
     </AdditionalFiles>
     <None Include="FredsImageMagickScripts.NET.snk" />

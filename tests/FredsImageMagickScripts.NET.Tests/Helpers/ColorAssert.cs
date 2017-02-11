@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="ColorAssert.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,8 +15,9 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
+using System;
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,6 +28,12 @@ namespace FredsImageMagickScripts.NET.Tests
   {
     public static void AreEqual(MagickColor expected, MagickColor actual)
     {
+      if (expected == null)
+        throw new InvalidOperationException();
+
+      if (actual == null)
+        throw new InvalidOperationException();
+
       Assert.AreEqual(expected.R, actual.R, "R is not equal");
       Assert.AreEqual(expected.G, actual.G, "G is not equal");
       Assert.AreEqual(expected.B, actual.B, "B is not equal");
