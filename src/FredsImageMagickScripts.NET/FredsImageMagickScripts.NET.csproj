@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effects\Cartoon\CartoonEffectScript.cs" />
+    <Compile Include="Effects\Cartoon\CartoonMethod.cs" />
     <Compile Include="Effects\DraganEffect\DraganEffectScript.cs" />
     <Compile Include="Effects\Embroidery\EmbroideryPattern.cs" />
     <Compile Include="Effects\Embroidery\EmbroideryScript.cs" />
