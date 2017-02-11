@@ -30,11 +30,24 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class CartoonEffectScript
   {
+    private CartoonMethod _method;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="CartoonEffectScript"/> class.
     /// </summary>
     public CartoonEffectScript()
+      : this(CartoonMethod.Method1)
     {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CartoonEffectScript"/> class.
+    /// </summary>
+    /// <param name="method">The cartoon method to use.</param>
+    public CartoonEffectScript(CartoonMethod method)
+    {
+      _method = method;
+
       Reset();
     }
 
@@ -70,15 +83,6 @@ namespace FredsImageMagickScripts
     /// Gets or sets the edge threshold
     /// </summary>
     public Percentage EdgeThreshold
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Gets or sets the cartoon method either 1 or 2.
-    /// </summary>
-    public CartoonMethod Method
     {
       get;
       set;
@@ -136,7 +140,7 @@ namespace FredsImageMagickScripts
           tmpA2.Depth = 8;
           tmpA2.GammaCorrect(2.2);
 
-          switch (Method)
+          switch (_method)
           {
             case CartoonMethod.Method1:
               return ExecuteMethod1(tmpA1, tmpA2);
@@ -158,7 +162,6 @@ namespace FredsImageMagickScripts
     {
       Pattern = (Percentage)70;
       NumberOflevels = 6;
-      Method = CartoonMethod.Method1;
       EdgeAmount = 4;
       Brightness = (Percentage)100;
       Saturation = (Percentage)150;

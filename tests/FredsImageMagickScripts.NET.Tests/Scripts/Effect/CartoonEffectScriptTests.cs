@@ -35,7 +35,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
       script.EdgeAmount = 5;
       script.EdgeThreshold = (Percentage)42;
       script.EdgeWidth = 15;
-      script.Method = CartoonMethod.Method2;
       script.NumberOflevels = 8;
       script.Pattern = (Percentage)42;
       script.Saturation = (Percentage)42;
@@ -111,7 +110,7 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
         Assert.IsNotNull(result);
 
         // Test method 2 as well to execute different code path
-        script.Method = CartoonMethod.Method2;
+        script = new CartoonEffectScript(CartoonMethod.Method2);
         result = script.Execute(logo);
         Assert.IsNotNull(result);
       }
@@ -121,7 +120,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
     {
       Assert.AreEqual((Percentage)70, script.Pattern);
       Assert.AreEqual(6, script.NumberOflevels);
-      Assert.AreEqual(CartoonMethod.Method1, script.Method);
       Assert.AreEqual(4, script.EdgeAmount);
       Assert.AreEqual((Percentage)100, script.Brightness);
       Assert.AreEqual((Percentage)150, script.Saturation);
