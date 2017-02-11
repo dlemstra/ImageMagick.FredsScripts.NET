@@ -135,6 +135,11 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 
                 var scriptOutput = script.Execute(image);
                 TestOutput(scriptOutput, output);
+
+                // Test method 2 as well to execute different code path
+                script.Method = 2;
+                scriptOutput = script.Execute(image);
+                TestOutput(scriptOutput, output);
             }
         }
 
