@@ -264,101 +264,98 @@ namespace FredsImageMagickScripts
                     switch (Method)
                     {
                         case CartoonMethod.Method1:
+
+                            //# process image
+                            //# multiply the blurred posterized graycale mask with the smoothed input
+                            //# convert smoothed input to grayscale
+                            //# negate and blur
+                            //# colordodge composite the grayscale and negated/blurred version to make edgewidth image
+                            //# use power to amplify and then threshold and median filter
+                            //# multiply composite the edgewidth with the blended image
+
+                            //  convert $tmpA1 \( $tmpA2 - blur 0x1 \) 
+                            tmpA2.Blur(0, 1); // 0x1 is default anyway but better be specific
+
+                            using (var second_0 = tmpA1.Clone())
                             {
-                                //# process image
-                                //# multiply the blurred posterized graycale mask with the smoothed input
-                                //# convert smoothed input to grayscale
-                                //# negate and blur
-                                //# colordodge composite the grayscale and negated/blurred version to make edgewidth image
-                                //# use power to amplify and then threshold and median filter
-                                //# multiply composite the edgewidth with the blended image
-
-                                //  convert $tmpA1 \( $tmpA2 - blur 0x1 \) 
-                                tmpA2.Blur(0, 1); // 0x1 is default anyway but better be specific
-
-                                using (var second_0 = tmpA1.Clone())
+                                using (var second_1 = tmpA2.Clone())
                                 {
-                                    using (var second_1 = tmpA2.Clone())
+                                    // \( -clone 0 -clone 1 -compose over -compose multiply -composite -modulate $brightness,$saturation,100 \) \
+                                    second_0.Composite(second_1, CompositeOperator.Multiply);
+                                    second_0.Modulate(Brightness, Saturation, (Percentage)100);
+
+                                    using (var third = tmpA1.Clone())
                                     {
-                                        // \( -clone 0 -clone 1 -compose over -compose multiply -composite -modulate $brightness,$saturation,100 \) \
-                                        second_0.Composite(second_1, CompositeOperator.Multiply);
-                                        second_0.Modulate(Brightness, Saturation, (Percentage)100);
+                                        // \( -clone 0 $setcspace -colorspace gray \) \
+                                        third.ColorSpace = ColorSpace.Gray;  // -clone 0 $setcspace -colorspace gray
 
-                                        using (var third = tmpA1.Clone())
+                                        using (var fourth = third.Clone())
                                         {
-                                            // \( -clone 0 $setcspace -colorspace gray \) \
-                                            third.ColorSpace = ColorSpace.Gray;  // -clone 0 $setcspace -colorspace gray
+                                            // \( -clone 3 -negate -blur 0x${edgewidth} \) \
+                                            fourth.Negate();
+                                            fourth.Blur(0, 2);   // very expensive but necessary
 
-                                            using (var fourth = third.Clone())
+                                            var fifth_0 = third.Clone();    // this will be the result -> do not wrap in using statement as we do not want to dispose it :)
+                                            using (var fifth_1 = fourth.Clone())
                                             {
-                                                // \( -clone 3 -negate -blur 0x${edgewidth} \) \
-                                                fourth.Negate();
-                                                fourth.Blur(0, 2);   // very expensive but necessary
+                                                // \(-clone 3 - clone 4 - compose over - compose colordodge - composite \
+                                                // -evaluate pow $edgeamount - threshold $edgethresh % $medproc \) \
+                                                fifth_0.Composite(fifth_1, CompositeOperator.ColorDodge);
+                                                fifth_0.Evaluate(Channels.All, EvaluateOperator.Pow, Edgeamount);
+                                                fifth_0.Threshold((Percentage)Edgethresh);
+                                                fifth_0.Statistic(StatisticType.Median, 3, 3);
 
-                                                var fifth_0 = third.Clone();    // this will be the result -> do not wrap in using statement as we do not want to dispose it :)
-                                                using (var fifth_1 = fourth.Clone())
-                                                {
-                                                    // \(-clone 3 - clone 4 - compose over - compose colordodge - composite \
-                                                    // -evaluate pow $edgeamount - threshold $edgethresh % $medproc \) \
-                                                    fifth_0.Composite(fifth_1, CompositeOperator.ColorDodge);
-                                                    fifth_0.Evaluate(Channels.All, EvaluateOperator.Pow, Edgeamount);
-                                                    fifth_0.Threshold((Percentage)Edgethresh);
-                                                    fifth_0.Statistic(StatisticType.Median, 3, 3);
+                                                //  -delete 0,1,3,4 -compose over -compose multiply -composite "$outfile"
+                                                fifth_0.Composite(second_0, CompositeOperator.Multiply);
 
-                                                    //  -delete 0,1,3,4 -compose over -compose multiply -composite "$outfile"
-                                                    fifth_0.Composite(second_0, CompositeOperator.Multiply);
-
-                                                    return fifth_0; // return copy as it will otherwise get disposed
-                                                }
+                                                return fifth_0; // return copy as it will otherwise get disposed
                                             }
                                         }
                                     }
                                 }
                             }
+
                         case CartoonMethod.Method2:
+                            //# process image
+                            //# multiply the blurred posterized graycale mask with the smoothed input
+                            //# convert smoothed input to grayscale
+                            //# apply high pass filter to grayscale, use power to amplify and threshold
+                            //# multiply composite the edge image with the smoothed color image
+
+                            //  convert $tmpA1 \( $tmpA2 - blur 0x1 \) 
+                            tmpA2.Blur(0, 1); // 0x1 is default anyway but better be specific
+
+                            using (var second_0 = tmpA1.Clone())
                             {
-                                //# process image
-                                //# multiply the blurred posterized graycale mask with the smoothed input
-                                //# convert smoothed input to grayscale
-                                //# apply high pass filter to grayscale, use power to amplify and threshold
-                                //# multiply composite the edge image with the smoothed color image
-
-                                //  convert $tmpA1 \( $tmpA2 - blur 0x1 \) 
-                                tmpA2.Blur(0, 1); // 0x1 is default anyway but better be specific
-
-                                using (var second_0 = tmpA1.Clone())
+                                using (var second_1 = tmpA2.Clone())
                                 {
-                                    using (var second_1 = tmpA2.Clone())
+                                    // \( -clone 0 - clone 1 - compose over - compose multiply - composite - modulate $brightness,$saturation,100 \) \
+                                    second_0.Composite(second_1, CompositeOperator.Multiply);
+                                    second_0.Modulate(Brightness, Saturation, (Percentage)100);
+
+                                    using (var third = tmpA1.Clone())
                                     {
-                                        // \( -clone 0 - clone 1 - compose over - compose multiply - composite - modulate $brightness,$saturation,100 \) \
-                                        second_0.Composite(second_1, CompositeOperator.Multiply);
-                                        second_0.Modulate(Brightness, Saturation, (Percentage)100);
+                                        // \(-clone 0 $setcspace - colorspace gray - negate - define convolve: scale =$edgegain \
+                                        //			-morphology Convolve DoG:0,0,${ edgewidth} -negate \
+                                        //			-evaluate pow $edgeamount - white - threshold $edgethresh % \) \
+                                        third.ColorSpace = ColorSpace.Gray;
+                                        third.Negate();
+                                        third.SetArtifact("convolve:scale", Edgegain.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                                        third.Morphology(MorphologyMethod.Convolve, Kernel.DoG, "0,0," + Edgewidth);
+                                        third.Negate();
+                                        third.Evaluate(Channels.All, EvaluateOperator.Pow, _Edgeamount);
+                                        third.WhiteThreshold(Edgethresh);
 
-                                        using (var third = tmpA1.Clone())
-                                        {
-                                            // \(-clone 0 $setcspace - colorspace gray - negate - define convolve: scale =$edgegain \
-                                            //			-morphology Convolve DoG:0,0,${ edgewidth} -negate \
-                                            //			-evaluate pow $edgeamount - white - threshold $edgethresh % \) \
-                                            third.ColorSpace = ColorSpace.Gray;
-                                            third.Negate();
-                                            third.SetArtifact("convolve:scale", Edgegain.ToString(System.Globalization.CultureInfo.InvariantCulture));
-                                            third.Morphology(MorphologyMethod.Convolve, Kernel.DoG, "0,0," + Edgewidth);
-                                            third.Negate();
-                                            third.Evaluate(Channels.All, EvaluateOperator.Pow, _Edgeamount);
-                                            third.WhiteThreshold(Edgethresh);
-
-                                            //  -delete 0,1 - compose over - compose multiply - composite "$outfile"
-                                            var result = second_0.Clone();
-                                            result.Composite(third, CompositeOperator.Multiply);
-                                            return result;
-                                        }
+                                        //  -delete 0,1 - compose over - compose multiply - composite "$outfile"
+                                        var result = second_0.Clone();
+                                        result.Composite(third, CompositeOperator.Multiply);
+                                        return result;
                                     }
                                 }
                             }
+
                         default:
-                            {
-                                throw new InvalidOperationException("Enum value of Method property not supported");
-                            }
+                            throw new InvalidOperationException("Enum value of Method property not supported");
                     }
                 }
             }
