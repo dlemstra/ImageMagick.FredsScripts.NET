@@ -39,6 +39,83 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class AutotrimScript
   {
+    /// <summary>
+    /// Creates a new instance of the AutotrimScript class.
+    /// </summary>
+    public AutotrimScript()
+    {
+      Reset();
+    }
+
+    /// <summary>
+    /// Any location within the border area for the algorithm to find the base border color.
+    /// </summary>
+    public PointD BorderColorLocation
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// The fuzz amount specified as a percent 0 to 100. The default is zero which indicates that
+    /// border is a uniform color. Larger values are needed when the border is not a uniform color
+    /// and to trim the border of the rotated area where the image data is a blend with the
+    /// border color.
+    /// </summary>
+    public Percentage ColorFuzz
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Mode of trim. Default is outer trim (false).
+    /// </summary>
+    public bool InnerTrim
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// The number of extra pixels to shift the trim of the image.
+    /// </summary>
+    public AutotrimPixelShift PixelShift
+    {
+      get;
+      private set;
+    }
+
+    /// <summary>
+    /// Automatically unrotates a rotated image and trims the surrounding border.
+    /// </summary>
+    /// <param name="input">The image to execute the script on.</param>
+    public MagickImage Execute(MagickImage input)
+    {
+      if (input == null)
+        throw new ArgumentNullException("input");
+
+      var output = input.Clone();
+      MagickColor borderColor = GetBorderColor(output);
+
+      if (InnerTrim)
+        ExecuteInnerTrim(output, borderColor);
+      else
+        ExecuteOuterTrim(output, borderColor);
+
+      return output;
+    }
+
+    /// <summary>
+    /// Resets the script to the default setttings.
+    /// </summary>
+    public void Reset()
+    {
+      BorderColorLocation = new PointD(0, 0);
+      ColorFuzz = (Percentage)0;
+      InnerTrim = false;
+      PixelShift = new AutotrimPixelShift();
+    }
     private class Line
     {
       public int X1;
@@ -219,84 +296,6 @@ namespace FredsImageMagickScripts
       var newGeometry = new MagickGeometry(x, y, width, height);
 
       return newGeometry > geometry ? newGeometry : geometry;
-    }
-
-    /// <summary>
-    /// Creates a new instance of the AutotrimScript class.
-    /// </summary>
-    public AutotrimScript()
-    {
-      Reset();
-    }
-
-    /// <summary>
-    /// Any location within the border area for the algorithm to find the base border color.
-    /// </summary>
-    public PointD BorderColorLocation
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// The fuzz amount specified as a percent 0 to 100. The default is zero which indicates that
-    /// border is a uniform color. Larger values are needed when the border is not a uniform color
-    /// and to trim the border of the rotated area where the image data is a blend with the
-    /// border color.
-    /// </summary>
-    public Percentage ColorFuzz
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Mode of trim. Default is outer trim (false).
-    /// </summary>
-    public bool InnerTrim
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// The number of extra pixels to shift the trim of the image.
-    /// </summary>
-    public AutotrimPixelShift PixelShift
-    {
-      get;
-      private set;
-    }
-
-    /// <summary>
-    /// Automatically unrotates a rotated image and trims the surrounding border.
-    /// </summary>
-    /// <param name="input">The image to execute the script on.</param>
-    public MagickImage Execute(MagickImage input)
-    {
-      if (input == null)
-        throw new ArgumentNullException("input");
-
-      var output = input.Clone();
-      MagickColor borderColor = GetBorderColor(output);
-
-      if (InnerTrim)
-        ExecuteInnerTrim(output, borderColor);
-      else
-        ExecuteOuterTrim(output, borderColor);
-
-      return output;
-    }
-
-    /// <summary>
-    /// Resets the script to the default setttings.
-    /// </summary>
-    public void Reset()
-    {
-      BorderColorLocation = new PointD(0, 0);
-      ColorFuzz = (Percentage)0;
-      InnerTrim = false;
-      PixelShift = new AutotrimPixelShift();
     }
   }
 }

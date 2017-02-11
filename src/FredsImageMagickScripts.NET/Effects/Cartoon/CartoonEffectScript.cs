@@ -38,21 +38,6 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Resets the script to the default setttings.
-    /// </summary>
-    public void Reset()
-    {
-      Pattern = (Percentage)70;
-      Numlevels = 6;
-      Method = CartoonMethod.Method1;
-      EdgeAmount = 4;
-      Brightness = (Percentage)100;
-      Saturation = (Percentage)150;
-      EdgeWidth = 2;
-      EdgeThreshold = (Percentage)90;
-    }
-
-    /// <summary>
     /// The brightness factor. Valid values are zero or higher. The default is 1. Increase
     /// brightness is larger than 1, decrease brightness is less than 1.
     /// </summary>
@@ -185,6 +170,21 @@ namespace FredsImageMagickScripts
           }
         }
       }
+    }
+
+    /// <summary>
+    /// Resets the script to the default setttings.
+    /// </summary>
+    public void Reset()
+    {
+      Pattern = (Percentage)70;
+      Numlevels = 6;
+      Method = CartoonMethod.Method1;
+      EdgeAmount = 4;
+      Brightness = (Percentage)100;
+      Saturation = (Percentage)150;
+      EdgeWidth = 2;
+      EdgeThreshold = (Percentage)90;
     }
 
     private void CheckSettings(MagickImage image)

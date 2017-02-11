@@ -34,271 +34,6 @@ namespace FredsImageMagickScripts
     private double _Height;
     private double _Width;
 
-    private void ApplyWhiteBalance(MagickImage image)
-    {
-      using (var mask = image.Clone())
-      {
-        mask.ColorSpace = ColorSpace.HSB;
-        mask.Negate(Channels.Green);
-
-        using (var newMask = mask.Separate(Channels.Green).First())
-        {
-          using (var maskBlue = mask.Separate(Channels.Blue).First())
-          {
-            newMask.Composite(maskBlue, CompositeOperator.Multiply);
-          }
-
-          newMask.ContrastStretch((Percentage)0, WhiteBalance);
-          newMask.InverseOpaque(new MagickColor("white"), new MagickColor("black"));
-
-          double maskMean = GetMean(newMask);
-
-          double redRatio = GetRatio(image, Channels.Red, newMask, maskMean);
-          double greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
-          double blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
-
-          var matrix = new MagickColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
-
-          image.ColorMatrix(matrix);
-        }
-      }
-    }
-
-    private void CalculateWidthAndHeight(MagickImage image)
-    {
-      if (_Coords != null)
-        CalculateWidthAndHeightWithCoords();
-      else if (Dimensions != null)
-        CalculateWidthAndHeightWithDimensions(image);
-      else
-        CalculateWidthAndHeightWithMagnification(image);
-    }
-
-    private void CheckSettings(MagickImage image)
-    {
-      if (_Coords == null)
-        return;
-
-      CheckCoordinate(image, "topLeft", _Coords[0]);
-      CheckCoordinate(image, "topRight", _Coords[1]);
-      CheckCoordinate(image, "bottomRight", _Coords[2]);
-      CheckCoordinate(image, "bottomLeft", _Coords[3]);
-    }
-
-    private void CalculateWidthAndHeightWithCoords()
-    {
-      var aspect = CalculateAspectRatio();
-
-      if (Dimensions != null)
-        CalculateWidthAndHeightWithDimensions(aspect);
-      else
-      {
-        _Height = GetMagnification() * Math.Sqrt(Math.Pow(_Coords[0].X - _Coords[3].X, 2) + Math.Pow(_Coords[0].Y - _Coords[3].Y, 2));
-        _Width = _Height * aspect;
-      }
-    }
-
-    private double CalculateAspectRatio()
-    {
-      if (AspectRatio.HasValue)
-        return AspectRatio.Value.X / AspectRatio.Value.Y;
-
-      // get centroid of quadrilateral
-      var centroidX = (_Coords[3].X + _Coords[2].X + _Coords[0].X + _Coords[1].X) / 4;
-      var centroidY = (_Coords[3].Y + _Coords[2].Y + _Coords[0].Y + _Coords[1].Y) / 4;
-
-      // convert to proper x,y coordinates relative to center
-      var m1x = _Coords[3].X - centroidX;
-      var m1y = centroidY - _Coords[3].Y;
-      var m2x = _Coords[2].X - centroidX;
-      var m2y = centroidY - _Coords[2].Y;
-      var m3x = _Coords[0].X - centroidX;
-      var m3y = centroidY - _Coords[0].Y;
-      var m4x = _Coords[1].X - centroidX;
-      var m4y = centroidY - _Coords[1].Y;
-
-      // simplified equations, assuming u0=0, v0=0, s=1
-      var k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x);
-      var k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x);
-      var ff = ((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1));
-      var f = Math.Sqrt(Math.Sqrt(ff * ff));
-      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + Math.Pow(k2 * m2y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k2 * m2x - m1x, 2) / Math.Pow(f, 2)) / (Math.Pow(k3 - 1, 2) + Math.Pow(k3 * m3y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k3 * m3x - m1x, 2) / Math.Pow(f, 2)));
-
-      return aspect;
-    }
-
-    private void CalculateWidthAndHeightWithDimensions(MagickImage image)
-    {
-      var aspect = image.Width / image.Height;
-
-      CalculateWidthAndHeightWithDimensions(aspect);
-    }
-
-    private void CalculateWidthAndHeightWithDimensions(double aspect)
-    {
-      if (Dimensions.Width > 0 && Dimensions.Height > 0)
-      {
-        _Width = Dimensions.Width;
-        _Height = Dimensions.Height;
-      }
-      else
-      {
-        if (Dimensions.Width > 0)
-        {
-          _Width = Dimensions.Width;
-          _Height = _Width * aspect;
-        }
-        else if (Dimensions.Height > 0)
-        {
-          _Height = Dimensions.Height;
-          _Width = _Height * aspect;
-        }
-        else
-          throw new InvalidOperationException("Invalid dimensions specified.");
-      }
-    }
-
-    private void CalculateWidthAndHeightWithMagnification(MagickImage image)
-    {
-      var magnification = GetMagnification();
-      _Width = image.Width * magnification;
-      _Height = image.Height * magnification;
-    }
-
-    private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
-    {
-      if (coord.X < 0 || coord.X > image.Width)
-        throw new ArgumentOutOfRangeException(paramName);
-
-      if (coord.Y < 0 || coord.Y > image.Height)
-        throw new ArgumentOutOfRangeException(paramName);
-    }
-
-    private void CopyOpacity(MagickImage image)
-    {
-      image.Alpha(AlphaOption.Off);
-
-      using (var gray = image.Clone())
-      {
-        gray.ColorSpace = ColorSpace.Gray;
-        gray.Negate();
-        gray.AdaptiveThreshold(FilterSize, FilterSize, FilterOffset);
-        gray.ContrastStretch((Percentage)0);
-        if (Threshold.HasValue)
-        {
-          gray.Blur((double)Threshold.Value / 100.0, Quantum.Max);
-          gray.Level(Threshold.Value, new Percentage(100));
-        }
-        image.Composite(gray, CompositeOperator.CopyAlpha);
-        image.Opaque(MagickColors.Transparent, BackgroundColor);
-        image.Alpha(AlphaOption.Off);
-      }
-    }
-
-    private void DistortImage(MagickImage input, MagickImage image)
-    {
-      if (_Coords != null)
-        DistortImageWithCoords(image);
-      else if (Dimensions != null)
-        DistortImageWithDimensions(input, image);
-      else if (Magnification.HasValue)
-        DistortImageWithMagnification(input, image);
-    }
-
-    private void DistortImageWithCoords(MagickImage image)
-    {
-      SetDistortViewport(image, 0, 0);
-
-      var arguments = new double[16]
-      {
-        _Coords[0].X, _Coords[0].Y, 0, 0, _Coords[1].X, _Coords[1].Y, _Width, 0,
-        _Coords[2].X, _Coords[2].Y, _Width, _Height, _Coords[3].X, _Coords[3].Y, 0, _Height
-      };
-
-      image.Distort(DistortMethod.Perspective, arguments);
-    }
-
-    private void DistortImageWithDimensions(MagickImage input, MagickImage image)
-    {
-      var delX = (input.Width - _Width) / 2;
-      var delY = (input.Height - _Height) / 2;
-      SetDistortViewport(image, (int)delX, (int)delY);
-
-      var cx = input.Width / 2;
-      var cy = input.Height / 2;
-      var magX = input.Width / _Width;
-      var magy = input.Height / _Height;
-
-      image.Distort(DistortMethod.ScaleRotateTranslate, cx, cy, magX, magy, 0);
-    }
-
-    private void DistortImageWithMagnification(MagickImage input, MagickImage image)
-    {
-      var delX = (input.Width - _Width) / 2;
-      var delY = (input.Height - _Height) / 2;
-      SetDistortViewport(image, (int)delX, (int)delY);
-
-      image.Distort(DistortMethod.ScaleRotateTranslate, Magnification.Value, 0);
-    }
-
-    private void EnhanceImage(MagickImage image)
-    {
-      if (Enhance == WhiteboardEnhancements.None)
-        return;
-
-      if (Enhance.HasFlag(WhiteboardEnhancements.Stretch))
-        image.ContrastStretch((Percentage)0, (Percentage)0);
-
-      if (Enhance.HasFlag(WhiteboardEnhancements.Whitebalance))
-        ApplyWhiteBalance(image);
-    }
-
-    private double GetMagnification()
-    {
-      return Magnification.HasValue ? Magnification.Value : 1;
-    }
-
-    private static double GetMean(MagickImage image)
-    {
-      var mean = image.Statistics().GetChannel(PixelChannel.Composite).Mean;
-      return mean * 100 / Quantum.Max;
-    }
-
-    private static double GetRatio(MagickImage image, Channels channel, MagickImage mask, double maskMean)
-    {
-      using (MagickImage channelImage = image.Separate(channel).First())
-      {
-        channelImage.Composite(mask, CompositeOperator.Multiply);
-        var channelMean = GetMean(channelImage);
-        var average = 100 * channelMean / maskMean;
-        return 100 / average;
-      }
-    }
-
-    private void Modulate(MagickImage image)
-    {
-      if (Saturation == (Percentage)100)
-        return;
-
-      image.Modulate((Percentage)100, Saturation);
-    }
-
-    private void SetDistortViewport(MagickImage image, int x, int y)
-    {
-      image.VirtualPixelMethod = VirtualPixelMethod.White;
-
-      var viewport = string.Format(CultureInfo.InvariantCulture, "{0}x{1}+{2}+{3}", (int)_Width, (int)_Height, x, y);
-      image.SetArtifact("distort:viewport", viewport);
-    }
-
-    private void Sharpen(MagickImage image)
-    {
-      if (!SharpeningAmount.HasValue || SharpeningAmount <= 0)
-        return;
-
-      image.Sharpen(0, SharpeningAmount.Value);
-    }
-
     /// <summary>
     /// Creates a new instance of the WhiteboardScript class using the specified image.
     /// </summary>
@@ -476,6 +211,271 @@ namespace FredsImageMagickScripts
     public void SetCoordinates(PointD topLeft, PointD topRight, PointD bottomRight, PointD bottomLeft)
     {
       _Coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
+    }
+
+    private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
+    {
+      if (coord.X < 0 || coord.X > image.Width)
+        throw new ArgumentOutOfRangeException(paramName);
+
+      if (coord.Y < 0 || coord.Y > image.Height)
+        throw new ArgumentOutOfRangeException(paramName);
+    }
+
+    private static double GetMean(MagickImage image)
+    {
+      var mean = image.Statistics().GetChannel(PixelChannel.Composite).Mean;
+      return mean * 100 / Quantum.Max;
+    }
+
+    private static double GetRatio(MagickImage image, Channels channel, MagickImage mask, double maskMean)
+    {
+      using (MagickImage channelImage = image.Separate(channel).First())
+      {
+        channelImage.Composite(mask, CompositeOperator.Multiply);
+        var channelMean = GetMean(channelImage);
+        var average = 100 * channelMean / maskMean;
+        return 100 / average;
+      }
+    }
+
+    private void ApplyWhiteBalance(MagickImage image)
+    {
+      using (var mask = image.Clone())
+      {
+        mask.ColorSpace = ColorSpace.HSB;
+        mask.Negate(Channels.Green);
+
+        using (var newMask = mask.Separate(Channels.Green).First())
+        {
+          using (var maskBlue = mask.Separate(Channels.Blue).First())
+          {
+            newMask.Composite(maskBlue, CompositeOperator.Multiply);
+          }
+
+          newMask.ContrastStretch((Percentage)0, WhiteBalance);
+          newMask.InverseOpaque(new MagickColor("white"), new MagickColor("black"));
+
+          double maskMean = GetMean(newMask);
+
+          double redRatio = GetRatio(image, Channels.Red, newMask, maskMean);
+          double greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
+          double blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
+
+          var matrix = new MagickColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
+
+          image.ColorMatrix(matrix);
+        }
+      }
+    }
+
+    private void CalculateWidthAndHeight(MagickImage image)
+    {
+      if (_Coords != null)
+        CalculateWidthAndHeightWithCoords();
+      else if (Dimensions != null)
+        CalculateWidthAndHeightWithDimensions(image);
+      else
+        CalculateWidthAndHeightWithMagnification(image);
+    }
+
+    private void CheckSettings(MagickImage image)
+    {
+      if (_Coords == null)
+        return;
+
+      CheckCoordinate(image, "topLeft", _Coords[0]);
+      CheckCoordinate(image, "topRight", _Coords[1]);
+      CheckCoordinate(image, "bottomRight", _Coords[2]);
+      CheckCoordinate(image, "bottomLeft", _Coords[3]);
+    }
+
+    private void CalculateWidthAndHeightWithCoords()
+    {
+      var aspect = CalculateAspectRatio();
+
+      if (Dimensions != null)
+        CalculateWidthAndHeightWithDimensions(aspect);
+      else
+      {
+        _Height = GetMagnification() * Math.Sqrt(Math.Pow(_Coords[0].X - _Coords[3].X, 2) + Math.Pow(_Coords[0].Y - _Coords[3].Y, 2));
+        _Width = _Height * aspect;
+      }
+    }
+
+    private double CalculateAspectRatio()
+    {
+      if (AspectRatio.HasValue)
+        return AspectRatio.Value.X / AspectRatio.Value.Y;
+
+      // get centroid of quadrilateral
+      var centroidX = (_Coords[3].X + _Coords[2].X + _Coords[0].X + _Coords[1].X) / 4;
+      var centroidY = (_Coords[3].Y + _Coords[2].Y + _Coords[0].Y + _Coords[1].Y) / 4;
+
+      // convert to proper x,y coordinates relative to center
+      var m1x = _Coords[3].X - centroidX;
+      var m1y = centroidY - _Coords[3].Y;
+      var m2x = _Coords[2].X - centroidX;
+      var m2y = centroidY - _Coords[2].Y;
+      var m3x = _Coords[0].X - centroidX;
+      var m3y = centroidY - _Coords[0].Y;
+      var m4x = _Coords[1].X - centroidX;
+      var m4y = centroidY - _Coords[1].Y;
+
+      // simplified equations, assuming u0=0, v0=0, s=1
+      var k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x);
+      var k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x);
+      var ff = ((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1));
+      var f = Math.Sqrt(Math.Sqrt(ff * ff));
+      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + Math.Pow(k2 * m2y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k2 * m2x - m1x, 2) / Math.Pow(f, 2)) / (Math.Pow(k3 - 1, 2) + Math.Pow(k3 * m3y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k3 * m3x - m1x, 2) / Math.Pow(f, 2)));
+
+      return aspect;
+    }
+
+    private void CalculateWidthAndHeightWithDimensions(MagickImage image)
+    {
+      var aspect = image.Width / image.Height;
+
+      CalculateWidthAndHeightWithDimensions(aspect);
+    }
+
+    private void CalculateWidthAndHeightWithDimensions(double aspect)
+    {
+      if (Dimensions.Width > 0 && Dimensions.Height > 0)
+      {
+        _Width = Dimensions.Width;
+        _Height = Dimensions.Height;
+      }
+      else
+      {
+        if (Dimensions.Width > 0)
+        {
+          _Width = Dimensions.Width;
+          _Height = _Width * aspect;
+        }
+        else if (Dimensions.Height > 0)
+        {
+          _Height = Dimensions.Height;
+          _Width = _Height * aspect;
+        }
+        else
+          throw new InvalidOperationException("Invalid dimensions specified.");
+      }
+    }
+
+    private void CalculateWidthAndHeightWithMagnification(MagickImage image)
+    {
+      var magnification = GetMagnification();
+      _Width = image.Width * magnification;
+      _Height = image.Height * magnification;
+    }
+
+    private void CopyOpacity(MagickImage image)
+    {
+      image.Alpha(AlphaOption.Off);
+
+      using (var gray = image.Clone())
+      {
+        gray.ColorSpace = ColorSpace.Gray;
+        gray.Negate();
+        gray.AdaptiveThreshold(FilterSize, FilterSize, FilterOffset);
+        gray.ContrastStretch((Percentage)0);
+        if (Threshold.HasValue)
+        {
+          gray.Blur((double)Threshold.Value / 100.0, Quantum.Max);
+          gray.Level(Threshold.Value, new Percentage(100));
+        }
+        image.Composite(gray, CompositeOperator.CopyAlpha);
+        image.Opaque(MagickColors.Transparent, BackgroundColor);
+        image.Alpha(AlphaOption.Off);
+      }
+    }
+
+    private void DistortImage(MagickImage input, MagickImage image)
+    {
+      if (_Coords != null)
+        DistortImageWithCoords(image);
+      else if (Dimensions != null)
+        DistortImageWithDimensions(input, image);
+      else if (Magnification.HasValue)
+        DistortImageWithMagnification(input, image);
+    }
+
+    private void DistortImageWithCoords(MagickImage image)
+    {
+      SetDistortViewport(image, 0, 0);
+
+      var arguments = new double[16]
+      {
+        _Coords[0].X, _Coords[0].Y, 0, 0, _Coords[1].X, _Coords[1].Y, _Width, 0,
+        _Coords[2].X, _Coords[2].Y, _Width, _Height, _Coords[3].X, _Coords[3].Y, 0, _Height
+      };
+
+      image.Distort(DistortMethod.Perspective, arguments);
+    }
+
+    private void DistortImageWithDimensions(MagickImage input, MagickImage image)
+    {
+      var delX = (input.Width - _Width) / 2;
+      var delY = (input.Height - _Height) / 2;
+      SetDistortViewport(image, (int)delX, (int)delY);
+
+      var cx = input.Width / 2;
+      var cy = input.Height / 2;
+      var magX = input.Width / _Width;
+      var magy = input.Height / _Height;
+
+      image.Distort(DistortMethod.ScaleRotateTranslate, cx, cy, magX, magy, 0);
+    }
+
+    private void DistortImageWithMagnification(MagickImage input, MagickImage image)
+    {
+      var delX = (input.Width - _Width) / 2;
+      var delY = (input.Height - _Height) / 2;
+      SetDistortViewport(image, (int)delX, (int)delY);
+
+      image.Distort(DistortMethod.ScaleRotateTranslate, Magnification.Value, 0);
+    }
+
+    private void EnhanceImage(MagickImage image)
+    {
+      if (Enhance == WhiteboardEnhancements.None)
+        return;
+
+      if (Enhance.HasFlag(WhiteboardEnhancements.Stretch))
+        image.ContrastStretch((Percentage)0, (Percentage)0);
+
+      if (Enhance.HasFlag(WhiteboardEnhancements.Whitebalance))
+        ApplyWhiteBalance(image);
+    }
+
+    private double GetMagnification()
+    {
+      return Magnification.HasValue ? Magnification.Value : 1;
+    }
+
+    private void Modulate(MagickImage image)
+    {
+      if (Saturation == (Percentage)100)
+        return;
+
+      image.Modulate((Percentage)100, Saturation);
+    }
+
+    private void SetDistortViewport(MagickImage image, int x, int y)
+    {
+      image.VirtualPixelMethod = VirtualPixelMethod.White;
+
+      var viewport = string.Format(CultureInfo.InvariantCulture, "{0}x{1}+{2}+{3}", (int)_Width, (int)_Height, x, y);
+      image.SetArtifact("distort:viewport", viewport);
+    }
+
+    private void Sharpen(MagickImage image)
+    {
+      if (!SharpeningAmount.HasValue || SharpeningAmount <= 0)
+        return;
+
+      image.Sharpen(0, SharpeningAmount.Value);
     }
   }
 }

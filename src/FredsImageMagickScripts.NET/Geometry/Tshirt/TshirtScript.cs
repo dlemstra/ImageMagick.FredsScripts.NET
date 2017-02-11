@@ -31,220 +31,6 @@ namespace FredsImageMagickScripts
   {
     private PointD[] _Coords;
 
-    private void ApplyBlur(MagickImage image)
-    {
-      if (Blur != 0)
-        image.Blur(0, Blur);
-    }
-
-    private void ApplyLighting(MagickImage image)
-    {
-      if (Lighting != 0)
-        image.SigmoidalContrast(true, Lighting / 3.0);
-    }
-
-    private void ApplySharpen(MagickImage image)
-    {
-      if (Sharpen != 0)
-        image.UnsharpMask(0, Sharpen);
-    }
-
-    private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
-    {
-      if (coord.X < 0 || coord.X > image.Width)
-        throw new ArgumentOutOfRangeException(paramName);
-
-      if (coord.Y < 0 || coord.Y > image.Height)
-        throw new ArgumentOutOfRangeException(paramName);
-    }
-
-    private void CheckSettings(MagickImage image)
-    {
-      if (_Coords == null)
-        throw new InvalidOperationException("No coordinates have been set.");
-
-      CheckCoordinate(image, "topLeft", _Coords[0]);
-      CheckCoordinate(image, "topRight", _Coords[1]);
-      CheckCoordinate(image, "bottomRight", _Coords[2]);
-      CheckCoordinate(image, "bottomLeft", _Coords[3]);
-
-      if (Gravity != Gravity.North && Gravity != Gravity.Center && Gravity != Gravity.South)
-        throw new InvalidOperationException("Invalid Gravity specified.");
-
-      if (Rotation < -360 || Rotation > 360)
-        throw new InvalidOperationException("Invalid Rotation specified.");
-
-      if (Lighting < 0 || Lighting > 30)
-        throw new InvalidOperationException("Invalid Lightning specified.");
-
-      if (Blur < 0)
-        throw new InvalidOperationException("Invalid Blur specified.");
-    }
-
-    private static double[] CreateArguments(PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
-    {
-      var result = new double[16];
-
-      int i = 0;
-      for (int j = 0; j < 4; j++)
-      {
-        result[i++] = overlayCoordinates[j].X;
-        result[i++] = overlayCoordinates[j].Y;
-
-        result[i++] = tshirtCoordinates[j].X;
-        result[i++] = tshirtCoordinates[j].Y;
-      }
-
-      return result;
-    }
-
-    private PointD[] CreateOverlayCoordinates(MagickImage overlay, double scale)
-    {
-      var angle = -Math.Atan2(_Coords[1].Y - _Coords[0].Y, _Coords[1].X - _Coords[0].X);
-      var xOffset = _Coords[0].X;
-      var yOffset = _Coords[0].Y;
-
-      PointD[] coords = new PointD[4];
-      for (int i = 0; i < 4; i++)
-      {
-        coords[i] = new PointD(
-          (int)Math.Round((_Coords[i].X - xOffset) * Math.Cos(angle) + (_Coords[i].Y - yOffset) * Math.Sin(angle)),
-          (int)Math.Round((_Coords[i].X - xOffset) * Math.Sin(angle) + (_Coords[i].Y - yOffset) * Math.Cos(angle)));
-      }
-
-      double ho = Math.Max(coords[3].Y - coords[0].Y, coords[2].Y - coords[1].Y);
-
-      coords[0] = new PointD(0, 0);
-      coords[1] = new PointD(overlay.Width - 1, 0);
-      if (Fit == TshirtFit.Distort)
-        coords[2] = new PointD(overlay.Width - 1, overlay.Height - 1);
-      else
-        coords[2] = new PointD(overlay.Width - 1, scale * ho);
-      coords[3] = new PointD(0, coords[2].Y);
-
-      return coords;
-    }
-
-    private PointD[] CreateTshirtCoordinates(MagickImage overlay, double scale, double topWidth)
-    {
-      if (Rotation == 0)
-        return _Coords;
-
-      var rotate = (Math.PI / 180) * Rotation;
-      var xcent = Math.Round(0.5 * topWidth) + _Coords[0].X;
-      var ycent = Math.Round(0.5 * (overlay.Height / scale) + _Coords[0].Y);
-
-      var coords = new PointD[4];
-      for (int i = 0; i < 4; i++)
-      {
-        coords[i] = new PointD(
-          (int)Math.Round(xcent + (_Coords[i].X - xcent) * Math.Cos(rotate) - (_Coords[i].Y - ycent) * Math.Sin(rotate)),
-          (int)Math.Round(ycent + (_Coords[i].X - xcent) * Math.Sin(rotate) + (_Coords[i].Y - ycent) * Math.Cos(rotate)));
-      }
-
-      return coords;
-    }
-
-    private MagickImage CropOverlay(MagickImage image, PointD[] coords)
-    {
-      var result = image.Clone();
-      if (Fit == TshirtFit.Crop)
-      {
-        int height = (int)coords[2].Y + 1;
-        if (image.Height > height)
-          result.Crop(image.Width, height, Gravity);
-      }
-
-      return result;
-    }
-
-    private MagickImage DisplaceOverlay(MagickImage overlay, MagickImage light, MagickImage blur)
-    {
-      var mergedAlpha = overlay.Clone();
-      mergedAlpha.Alpha(AlphaOption.Extract);
-
-      var output = overlay.Clone();
-      output.Composite(light, CompositeOperator.HardLight);
-
-      output.Alpha(AlphaOption.Off);
-      output.Composite(mergedAlpha, CompositeOperator.CopyAlpha);
-      mergedAlpha.Dispose();
-
-      var args = string.Format(CultureInfo.InvariantCulture, "{0},{0}", -Displace);
-      output.Composite(blur, 0, 0, CompositeOperator.Displace, args);
-
-      return output;
-    }
-
-    private MagickImage DistortOverlay(MagickImage grayShirt, MagickImage overlay, PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
-    {
-      using (var images = new MagickImageCollection())
-      {
-        grayShirt.Alpha(AlphaOption.Transparent);
-        grayShirt.BackgroundColor = MagickColors.Transparent;
-        images.Add(grayShirt);
-
-        var croppedOverlay = CropOverlay(overlay, overlayCoordinates);
-        croppedOverlay.VirtualPixelMethod = VirtualPixelMethod.Transparent;
-
-        var arguments = CreateArguments(overlayCoordinates, tshirtCoordinates);
-        croppedOverlay.Distort(DistortMethod.Perspective, true, arguments);
-        ApplySharpen(croppedOverlay);
-
-        images.Add(croppedOverlay);
-
-        return images.Merge();
-      }
-    }
-
-    private MagickImage ExtractAlpha(MagickImage image)
-    {
-      if (!image.HasAlpha)
-        return null;
-
-      using (var alpha = image.Clone())
-      {
-        alpha.Alpha(AlphaOption.Extract);
-        alpha.Blur(0, AntiAlias);
-        alpha.Level((Percentage)50, (Percentage)100);
-
-        return alpha;
-      }
-    }
-
-    private static MagickImage SubtractMean(MagickImage image, PointD[] coords)
-    {
-      using (var img = image.Clone())
-      {
-        int minX = (int)Math.Min(Math.Min(coords[0].X, coords[1].X), Math.Min(coords[2].X, coords[3].X));
-        int minY = (int)Math.Min(Math.Min(coords[0].Y, coords[1].Y), Math.Min(coords[2].Y, coords[3].Y));
-        int maxX = (int)Math.Max(Math.Max(coords[0].X, coords[1].X), Math.Max(coords[2].X, coords[3].X));
-        int maxY = (int)Math.Max(Math.Max(coords[0].Y, coords[1].Y), Math.Max(coords[2].Y, coords[3].Y));
-
-        int width = maxX - minX + 1;
-        int height = maxY - minY + 1;
-
-        img.Crop(minX, minY, width, height);
-        img.RePage();
-
-        var statistics = img.Statistics();
-        double mean = (statistics.Composite().Mean / Quantum.Max) - 0.5;
-
-        var result = image.Clone();
-        result.Evaluate(Channels.All, EvaluateOperator.Subtract, mean * Quantum.Max);
-        return result;
-      }
-    }
-
-    private static MagickImage ToGrayScale(MagickImage image)
-    {
-      var gray = image.Clone();
-      gray.Alpha(AlphaOption.Off);
-      gray.ColorSpace = ColorSpace.Gray;
-
-      return gray;
-    }
-
     /// <summary>
     /// Creates a new instance of the TshirtScript class.
     /// </summary>
@@ -448,6 +234,220 @@ namespace FredsImageMagickScripts
       var bottomRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y + geometry.Height - 1);
       var bottomLeft = new PointD(geometry.X, geometry.Y + geometry.Height - 1);
       SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
+    }
+
+    private void ApplyBlur(MagickImage image)
+    {
+      if (Blur != 0)
+        image.Blur(0, Blur);
+    }
+
+    private void ApplyLighting(MagickImage image)
+    {
+      if (Lighting != 0)
+        image.SigmoidalContrast(true, Lighting / 3.0);
+    }
+
+    private void ApplySharpen(MagickImage image)
+    {
+      if (Sharpen != 0)
+        image.UnsharpMask(0, Sharpen);
+    }
+
+    private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
+    {
+      if (coord.X < 0 || coord.X > image.Width)
+        throw new ArgumentOutOfRangeException(paramName);
+
+      if (coord.Y < 0 || coord.Y > image.Height)
+        throw new ArgumentOutOfRangeException(paramName);
+    }
+
+    private static double[] CreateArguments(PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
+    {
+      var result = new double[16];
+
+      int i = 0;
+      for (int j = 0; j < 4; j++)
+      {
+        result[i++] = overlayCoordinates[j].X;
+        result[i++] = overlayCoordinates[j].Y;
+
+        result[i++] = tshirtCoordinates[j].X;
+        result[i++] = tshirtCoordinates[j].Y;
+      }
+
+      return result;
+    }
+
+    private static MagickImage SubtractMean(MagickImage image, PointD[] coords)
+    {
+      using (var img = image.Clone())
+      {
+        int minX = (int)Math.Min(Math.Min(coords[0].X, coords[1].X), Math.Min(coords[2].X, coords[3].X));
+        int minY = (int)Math.Min(Math.Min(coords[0].Y, coords[1].Y), Math.Min(coords[2].Y, coords[3].Y));
+        int maxX = (int)Math.Max(Math.Max(coords[0].X, coords[1].X), Math.Max(coords[2].X, coords[3].X));
+        int maxY = (int)Math.Max(Math.Max(coords[0].Y, coords[1].Y), Math.Max(coords[2].Y, coords[3].Y));
+
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
+
+        img.Crop(minX, minY, width, height);
+        img.RePage();
+
+        var statistics = img.Statistics();
+        double mean = (statistics.Composite().Mean / Quantum.Max) - 0.5;
+
+        var result = image.Clone();
+        result.Evaluate(Channels.All, EvaluateOperator.Subtract, mean * Quantum.Max);
+        return result;
+      }
+    }
+
+    private static MagickImage ToGrayScale(MagickImage image)
+    {
+      var gray = image.Clone();
+      gray.Alpha(AlphaOption.Off);
+      gray.ColorSpace = ColorSpace.Gray;
+
+      return gray;
+    }
+
+    private void CheckSettings(MagickImage image)
+    {
+      if (_Coords == null)
+        throw new InvalidOperationException("No coordinates have been set.");
+
+      CheckCoordinate(image, "topLeft", _Coords[0]);
+      CheckCoordinate(image, "topRight", _Coords[1]);
+      CheckCoordinate(image, "bottomRight", _Coords[2]);
+      CheckCoordinate(image, "bottomLeft", _Coords[3]);
+
+      if (Gravity != Gravity.North && Gravity != Gravity.Center && Gravity != Gravity.South)
+        throw new InvalidOperationException("Invalid Gravity specified.");
+
+      if (Rotation < -360 || Rotation > 360)
+        throw new InvalidOperationException("Invalid Rotation specified.");
+
+      if (Lighting < 0 || Lighting > 30)
+        throw new InvalidOperationException("Invalid Lightning specified.");
+
+      if (Blur < 0)
+        throw new InvalidOperationException("Invalid Blur specified.");
+    }
+
+    private PointD[] CreateOverlayCoordinates(MagickImage overlay, double scale)
+    {
+      var angle = -Math.Atan2(_Coords[1].Y - _Coords[0].Y, _Coords[1].X - _Coords[0].X);
+      var xOffset = _Coords[0].X;
+      var yOffset = _Coords[0].Y;
+
+      PointD[] coords = new PointD[4];
+      for (int i = 0; i < 4; i++)
+      {
+        coords[i] = new PointD(
+          (int)Math.Round((_Coords[i].X - xOffset) * Math.Cos(angle) + (_Coords[i].Y - yOffset) * Math.Sin(angle)),
+          (int)Math.Round((_Coords[i].X - xOffset) * Math.Sin(angle) + (_Coords[i].Y - yOffset) * Math.Cos(angle)));
+      }
+
+      double ho = Math.Max(coords[3].Y - coords[0].Y, coords[2].Y - coords[1].Y);
+
+      coords[0] = new PointD(0, 0);
+      coords[1] = new PointD(overlay.Width - 1, 0);
+      if (Fit == TshirtFit.Distort)
+        coords[2] = new PointD(overlay.Width - 1, overlay.Height - 1);
+      else
+        coords[2] = new PointD(overlay.Width - 1, scale * ho);
+      coords[3] = new PointD(0, coords[2].Y);
+
+      return coords;
+    }
+
+    private PointD[] CreateTshirtCoordinates(MagickImage overlay, double scale, double topWidth)
+    {
+      if (Rotation == 0)
+        return _Coords;
+
+      var rotate = (Math.PI / 180) * Rotation;
+      var xcent = Math.Round(0.5 * topWidth) + _Coords[0].X;
+      var ycent = Math.Round(0.5 * (overlay.Height / scale) + _Coords[0].Y);
+
+      var coords = new PointD[4];
+      for (int i = 0; i < 4; i++)
+      {
+        coords[i] = new PointD(
+          (int)Math.Round(xcent + (_Coords[i].X - xcent) * Math.Cos(rotate) - (_Coords[i].Y - ycent) * Math.Sin(rotate)),
+          (int)Math.Round(ycent + (_Coords[i].X - xcent) * Math.Sin(rotate) + (_Coords[i].Y - ycent) * Math.Cos(rotate)));
+      }
+
+      return coords;
+    }
+
+    private MagickImage CropOverlay(MagickImage image, PointD[] coords)
+    {
+      var result = image.Clone();
+      if (Fit == TshirtFit.Crop)
+      {
+        int height = (int)coords[2].Y + 1;
+        if (image.Height > height)
+          result.Crop(image.Width, height, Gravity);
+      }
+
+      return result;
+    }
+
+    private MagickImage DisplaceOverlay(MagickImage overlay, MagickImage light, MagickImage blur)
+    {
+      var mergedAlpha = overlay.Clone();
+      mergedAlpha.Alpha(AlphaOption.Extract);
+
+      var output = overlay.Clone();
+      output.Composite(light, CompositeOperator.HardLight);
+
+      output.Alpha(AlphaOption.Off);
+      output.Composite(mergedAlpha, CompositeOperator.CopyAlpha);
+      mergedAlpha.Dispose();
+
+      var args = string.Format(CultureInfo.InvariantCulture, "{0},{0}", -Displace);
+      output.Composite(blur, 0, 0, CompositeOperator.Displace, args);
+
+      return output;
+    }
+
+    private MagickImage DistortOverlay(MagickImage grayShirt, MagickImage overlay, PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
+    {
+      using (var images = new MagickImageCollection())
+      {
+        grayShirt.Alpha(AlphaOption.Transparent);
+        grayShirt.BackgroundColor = MagickColors.Transparent;
+        images.Add(grayShirt);
+
+        var croppedOverlay = CropOverlay(overlay, overlayCoordinates);
+        croppedOverlay.VirtualPixelMethod = VirtualPixelMethod.Transparent;
+
+        var arguments = CreateArguments(overlayCoordinates, tshirtCoordinates);
+        croppedOverlay.Distort(DistortMethod.Perspective, true, arguments);
+        ApplySharpen(croppedOverlay);
+
+        images.Add(croppedOverlay);
+
+        return images.Merge();
+      }
+    }
+
+    private MagickImage ExtractAlpha(MagickImage image)
+    {
+      if (!image.HasAlpha)
+        return null;
+
+      using (var alpha = image.Clone())
+      {
+        alpha.Alpha(AlphaOption.Extract);
+        alpha.Blur(0, AntiAlias);
+        alpha.Level((Percentage)50, (Percentage)100);
+
+        return alpha;
+      }
     }
   }
 }

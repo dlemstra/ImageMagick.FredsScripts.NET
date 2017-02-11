@@ -26,46 +26,6 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class DraganEffectScript
   {
-    private void ApplyBrightness(MagickImage image)
-    {
-      if (Brightness == 1.0)
-        return;
-
-      image.Evaluate(Channels.All, EvaluateOperator.Multiply, Brightness);
-    }
-
-    private void ApplyContrast(MagickImage image)
-    {
-      if (Contrast == 0.0)
-        return;
-
-      var sharpen = Contrast >= 0.0;
-      image.SigmoidalContrast(sharpen, Math.Abs(Contrast), Quantum.Max / 2);
-    }
-
-    private void ApplySaturation(MagickImage result)
-    {
-      if (Saturation == (Percentage)100)
-        return;
-
-      result.Modulate((Percentage)100, Saturation, (Percentage)100);
-    }
-
-    private void CheckSettings()
-    {
-      if (Brightness < 0.0)
-        throw new InvalidOperationException("Invalid brightness specified, value must be zero or higher.");
-
-      if (Contrast < -10.0 || Contrast > 10.0)
-        throw new InvalidOperationException("Invalid contrast specified, the range is -10 to 10.");
-
-      if (Darkness < 1.0)
-        throw new InvalidOperationException("Invalid darkness specified, value must be 1 or higher.");
-
-      if (Saturation.ToDouble() < 0.0)
-        throw new InvalidOperationException("Invalid saturation specified, value must be zero or higher.");
-    }
-
     /// <summary>
     /// Creates a new instance of the DraganEffectScript class.
     /// </summary>
@@ -175,6 +135,46 @@ namespace FredsImageMagickScripts
       Contrast = 0;
       Darkness = 1;
       Saturation = (Percentage)150;
+    }
+
+    private void ApplyBrightness(MagickImage image)
+    {
+      if (Brightness == 1.0)
+        return;
+
+      image.Evaluate(Channels.All, EvaluateOperator.Multiply, Brightness);
+    }
+
+    private void ApplyContrast(MagickImage image)
+    {
+      if (Contrast == 0.0)
+        return;
+
+      var sharpen = Contrast >= 0.0;
+      image.SigmoidalContrast(sharpen, Math.Abs(Contrast), Quantum.Max / 2);
+    }
+
+    private void ApplySaturation(MagickImage result)
+    {
+      if (Saturation == (Percentage)100)
+        return;
+
+      result.Modulate((Percentage)100, Saturation, (Percentage)100);
+    }
+
+    private void CheckSettings()
+    {
+      if (Brightness < 0.0)
+        throw new InvalidOperationException("Invalid brightness specified, value must be zero or higher.");
+
+      if (Contrast < -10.0 || Contrast > 10.0)
+        throw new InvalidOperationException("Invalid contrast specified, the range is -10 to 10.");
+
+      if (Darkness < 1.0)
+        throw new InvalidOperationException("Invalid darkness specified, value must be 1 or higher.");
+
+      if (Saturation.ToDouble() < 0.0)
+        throw new InvalidOperationException("Invalid saturation specified, value must be zero or higher.");
     }
   }
 }
