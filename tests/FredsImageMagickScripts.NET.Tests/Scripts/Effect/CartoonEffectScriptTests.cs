@@ -96,7 +96,13 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
 
                 // Test that execution works fine after a reset
                 script.Reset();
-                script.Execute(logo);
+                var result = script.Execute(logo);
+                Assert.IsNotNull(result, "Result from Execute was null");
+
+                // Test method 2 as well to execute different code path
+                script.Method = CartoonMethod.Method2;
+                result = script.Execute(logo);
+                Assert.IsNotNull(result, "Result from Execute was null");
             }
         }
 
@@ -111,27 +117,6 @@ namespace FredsImageMagickScripts.NET.Tests.Scripts.Effect
             Assert.AreEqual((Percentage)150, script.Saturation);
             Assert.AreEqual(2, script.Edgewidth);
             Assert.AreEqual((Percentage)90, script.Edgethresh);
-        }
-
-
-        private void Test_Execute(string input, Action<CartoonEffectScript> action, string output)
-        {
-            string inputFile = GetInputFile(input);
-            //LosslessCompress(inputFile);
-
-            using (var image = new MagickImage(inputFile))
-            {
-                var script = new CartoonEffectScript();
-                action(script);
-
-                var scriptOutput = script.Execute(image);
-                TestOutput(scriptOutput, output);
-
-                // Test method 2 as well to execute different code path
-                script.Method = CartoonMethod.Method2;
-                scriptOutput = script.Execute(image);
-                TestOutput(scriptOutput, output);
-            }
         }
 
         private const string _Category = "CartoonEffectScript";
