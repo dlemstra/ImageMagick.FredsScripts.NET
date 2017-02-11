@@ -1,6 +1,7 @@
-﻿//=================================================================================================
-// Copyright 2015-2017 Christoph Bergmeister, Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
+﻿// <copyright file="CartoonMethod.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
+// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 namespace FredsImageMagickScripts
 {
@@ -28,6 +29,7 @@ namespace FredsImageMagickScripts
         /// First method, which is the default and yields the best results but is more expensive
         /// </summary>
         Method1,
+
         /// <summary>
         /// Second method, which is cheaper to compute
         /// </summary>

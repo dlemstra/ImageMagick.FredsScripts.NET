@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="TwoColorThreshScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using ImageMagick;
@@ -35,6 +36,8 @@ namespace FredsImageMagickScripts
     /// modification from Anthony's Examples at http://www.imagemagick.org/Usage/quantize/#two_color.
     /// For algorithm details, see http://www.imagemagick.org/script/quantize.php
     /// </summary>
+    /// <param name="input">The image to execute the script on.</param>
+    /// <returns>The resulting image.</returns>
     public static MagickImage Execute(MagickImage input)
     {
       if (input == null)

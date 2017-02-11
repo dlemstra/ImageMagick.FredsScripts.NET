@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="TshirtScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using System.Globalization;
@@ -29,10 +30,10 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class TshirtScript
   {
-    private PointD[] _Coords;
+    private PointD[] _coords;
 
     /// <summary>
-    /// Creates a new instance of the TshirtScript class.
+    /// Initializes a new instance of the <see cref="TshirtScript"/> class.
     /// </summary>
     public TshirtScript()
     {
@@ -40,8 +41,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// AntiAlias amount to apply to alpha channel of tshirt image.Values should be  higher than or equal to zero.
-    /// The default is 2.
+    /// Gets or sets the antialias amount to apply to alpha channel of tshirt image.Values should be
+    /// higher than or equal to zero. The default is 2.
     /// </summary>
     public double AntiAlias
     {
@@ -50,8 +51,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The blurring to apply to the displacement map to avoid jagged displacement. Values should be higher
-    /// than zero. The default is 1.
+    /// Gets or sets the blurring to apply to the displacement map to avoid jagged displacement.
+    /// Values should be higherthan zero. The default is 1.
     /// </summary>
     public double Blur
     {
@@ -60,8 +61,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The amount of displacement for the distortion of the overlay image. Values should be higher than
-    /// zero. The default is 10.
+    /// Gets or sets the amount of displacement for the distortion of the overlay image. Values should be
+    /// higher than zero. The default is 10.
     /// </summary>
     public int Displace
     {
@@ -70,10 +71,10 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// If Crop, then the overlay image will be cropped to make its vertical aspect ratio fit that
-    /// of coordinate area. This will not distort the image, only make it fit the size of the coordinate
-    /// area. The image will not be cropped, if its vertical aspect ratio is smaller than that of the
-    /// region. If Distort, the overlay image  will be fit to the coordinate area, if the aspect ratio
+    /// Gets or sets the fitting method. If Crop, then the overlay image will be cropped to make its vertical
+    /// aspect ratio fit that of coordinate area. This will not distort the image, only make it fit the size of
+    /// the coordinate area. The image will not be cropped, if its vertical aspect ratio is smaller than that
+    /// of the region. If Distort, the overlay image  will be fit to the coordinate area, if the aspect ratio
     /// of the overlay image  does not match that of the region or coordinate area. The default is None.
     /// </summary>
     public TshirtFit Fit
@@ -83,8 +84,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The contrast increase for highlights to apply to the overlay image. Valid values are between 0 and 30. The
-    /// default is 20.
+    /// Gets or sets the contrast increase for highlights to apply to the overlay image. Valid values are
+    /// between 0 and 30. The default is 20.
     /// </summary>
     public int Lighting
     {
@@ -93,7 +94,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Gravity for selecting the crop location. The choices are: North, South or Center. The default is Center.
+    /// Gets or sets the gravity for selecting the crop location. The choices are: North, South or Center.
+    /// The default is Center.
     /// </summary>
     public Gravity Gravity
     {
@@ -102,7 +104,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// An additional clockwise positive rotation in order to make orientational adjustments easier.
+    /// Gets or sets an additional clockwise positive rotation in order to make orientational adjustments easier.
     /// Values are betweneen -360 and 360. The default is 0.
     /// </summary>
     public double Rotation
@@ -112,7 +114,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Sharpening to apply to the overlay image. Values should be higher than or equal to than zero.
+    /// Gets or sets the sharpening to apply to the overlay image. Values should be higher than or equal to than zero.
     /// The default is 1.
     /// </summary>
     public double Sharpen
@@ -122,7 +124,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The vertical shift of the crop region with respect to the gravity setting. Negative is upward and
+    /// Gets or sets the vertical shift of the crop region with respect to the gravity setting. Negative is upward and
     /// positive is downward. The default is 0 (no shift).
     /// </summary>
     public int VerticalShift
@@ -138,6 +140,7 @@ namespace FredsImageMagickScripts
     /// </summary>
     /// <param name="tshirt">The image of the shirt to put the overlay on.</param>
     /// <param name="overlay">The overlay to put on top of the shirt.</param>
+    /// <returns>The resulting image.</returns>
     public MagickImage Execute(MagickImage tshirt, MagickImage overlay)
     {
       if (tshirt == null)
@@ -148,9 +151,9 @@ namespace FredsImageMagickScripts
 
       CheckSettings(tshirt);
 
-      var x = _Coords[1].X - _Coords[0].X;
-      var y = _Coords[1].Y - _Coords[0].Y;
-      var topWidth = Math.Sqrt(x * x + y * y);
+      var x = _coords[1].X - _coords[0].X;
+      var y = _coords[1].Y - _coords[0].Y;
+      var topWidth = Math.Sqrt((x * x) + (y * y));
       var scale = (overlay.Width - 1) / (topWidth / 1);
 
       var overlayCoordinates = CreateOverlayCoordinates(overlay, scale);
@@ -194,7 +197,7 @@ namespace FredsImageMagickScripts
     /// </summary>
     public void Reset()
     {
-      _Coords = null;
+      _coords = null;
       AntiAlias = 2.0;
       Blur = 1.0;
       Displace = 10;
@@ -213,11 +216,11 @@ namespace FredsImageMagickScripts
     /// </summary>
     /// <param name="topLeft">Top left coordinate</param>
     /// <param name="topRight">Top right coordinate</param>
-    /// <param name="bottomLeft">Bottom left coordinate</param>
     /// <param name="bottomRight">Bottom right coordinate</param>
+    /// <param name="bottomLeft">Bottom left coordinate</param>
     public void SetCoordinates(PointD topLeft, PointD topRight, PointD bottomRight, PointD bottomLeft)
     {
-      _Coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
+      _coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
     }
 
     /// <summary>
@@ -234,24 +237,6 @@ namespace FredsImageMagickScripts
       var bottomRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y + geometry.Height - 1);
       var bottomLeft = new PointD(geometry.X, geometry.Y + geometry.Height - 1);
       SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
-    }
-
-    private void ApplyBlur(MagickImage image)
-    {
-      if (Blur != 0)
-        image.Blur(0, Blur);
-    }
-
-    private void ApplyLighting(MagickImage image)
-    {
-      if (Lighting != 0)
-        image.SigmoidalContrast(true, Lighting / 3.0);
-    }
-
-    private void ApplySharpen(MagickImage image)
-    {
-      if (Sharpen != 0)
-        image.UnsharpMask(0, Sharpen);
     }
 
     private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
@@ -313,15 +298,33 @@ namespace FredsImageMagickScripts
       return gray;
     }
 
+    private void ApplyBlur(MagickImage image)
+    {
+      if (Blur != 0)
+        image.Blur(0, Blur);
+    }
+
+    private void ApplyLighting(MagickImage image)
+    {
+      if (Lighting != 0)
+        image.SigmoidalContrast(true, Lighting / 3.0);
+    }
+
+    private void ApplySharpen(MagickImage image)
+    {
+      if (Sharpen != 0)
+        image.UnsharpMask(0, Sharpen);
+    }
+
     private void CheckSettings(MagickImage image)
     {
-      if (_Coords == null)
+      if (_coords == null)
         throw new InvalidOperationException("No coordinates have been set.");
 
-      CheckCoordinate(image, "topLeft", _Coords[0]);
-      CheckCoordinate(image, "topRight", _Coords[1]);
-      CheckCoordinate(image, "bottomRight", _Coords[2]);
-      CheckCoordinate(image, "bottomLeft", _Coords[3]);
+      CheckCoordinate(image, "topLeft", _coords[0]);
+      CheckCoordinate(image, "topRight", _coords[1]);
+      CheckCoordinate(image, "bottomRight", _coords[2]);
+      CheckCoordinate(image, "bottomLeft", _coords[3]);
 
       if (Gravity != Gravity.North && Gravity != Gravity.Center && Gravity != Gravity.South)
         throw new InvalidOperationException("Invalid Gravity specified.");
@@ -338,16 +341,16 @@ namespace FredsImageMagickScripts
 
     private PointD[] CreateOverlayCoordinates(MagickImage overlay, double scale)
     {
-      var angle = -Math.Atan2(_Coords[1].Y - _Coords[0].Y, _Coords[1].X - _Coords[0].X);
-      var xOffset = _Coords[0].X;
-      var yOffset = _Coords[0].Y;
+      var angle = -Math.Atan2(_coords[1].Y - _coords[0].Y, _coords[1].X - _coords[0].X);
+      var xOffset = _coords[0].X;
+      var yOffset = _coords[0].Y;
 
       PointD[] coords = new PointD[4];
       for (int i = 0; i < 4; i++)
       {
         coords[i] = new PointD(
-          (int)Math.Round((_Coords[i].X - xOffset) * Math.Cos(angle) + (_Coords[i].Y - yOffset) * Math.Sin(angle)),
-          (int)Math.Round((_Coords[i].X - xOffset) * Math.Sin(angle) + (_Coords[i].Y - yOffset) * Math.Cos(angle)));
+          (int)Math.Round(((_coords[i].X - xOffset) * Math.Cos(angle)) + ((_coords[i].Y - yOffset) * Math.Sin(angle))),
+          (int)Math.Round(((_coords[i].X - xOffset) * Math.Sin(angle)) + ((_coords[i].Y - yOffset) * Math.Cos(angle))));
       }
 
       double ho = Math.Max(coords[3].Y - coords[0].Y, coords[2].Y - coords[1].Y);
@@ -366,18 +369,18 @@ namespace FredsImageMagickScripts
     private PointD[] CreateTshirtCoordinates(MagickImage overlay, double scale, double topWidth)
     {
       if (Rotation == 0)
-        return _Coords;
+        return _coords;
 
       var rotate = (Math.PI / 180) * Rotation;
-      var xcent = Math.Round(0.5 * topWidth) + _Coords[0].X;
-      var ycent = Math.Round(0.5 * (overlay.Height / scale) + _Coords[0].Y);
+      var xcent = Math.Round(0.5 * topWidth) + _coords[0].X;
+      var ycent = Math.Round((0.5 * (overlay.Height / scale)) + _coords[0].Y);
 
       var coords = new PointD[4];
       for (int i = 0; i < 4; i++)
       {
         coords[i] = new PointD(
-          (int)Math.Round(xcent + (_Coords[i].X - xcent) * Math.Cos(rotate) - (_Coords[i].Y - ycent) * Math.Sin(rotate)),
-          (int)Math.Round(ycent + (_Coords[i].X - xcent) * Math.Sin(rotate) + (_Coords[i].Y - ycent) * Math.Cos(rotate)));
+          (int)Math.Round(xcent + ((_coords[i].X - xcent) * Math.Cos(rotate)) - ((_coords[i].Y - ycent) * Math.Sin(rotate))),
+          (int)Math.Round(ycent + ((_coords[i].X - xcent) * Math.Sin(rotate)) + ((_coords[i].Y - ycent) * Math.Cos(rotate))));
       }
 
       return coords;

@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="UnperspectiveScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -39,10 +40,10 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed partial class UnperspectiveScript
   {
-    private UnperspectiveMethod _Method;
+    private UnperspectiveMethod _method;
 
     /// <summary>
-    /// Creates a new instance of the UnperspectiveScript class.
+    /// Initializes a new instance of the <see cref="UnperspectiveScript"/> class.
     /// </summary>
     public UnperspectiveScript()
       : this(UnperspectiveMethod.Peak)
@@ -50,19 +51,163 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Creates a new instance of the UnperspectiveScript class.
+    /// Initializes a new instance of the <see cref="UnperspectiveScript"/> class.
     /// </summary>
+    /// <param name="method">The unpersective method</param>
     public UnperspectiveScript(UnperspectiveMethod method)
     {
-      _Method = method;
+      _method = method;
 
       Reset();
+    }
+
+    /// <summary>
+    /// Gets or sets the desired output width/height aspect ratio.
+    /// Default is computed automatically.
+    /// </summary>
+    public double? AspectRatio
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets any location within the border area for the algorithm to find the base border color.
+    /// </summary>
+    public PointD BorderColorLocation
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the blurring amount for preprocessing images of text with no quadrilateral outline.
+    /// The default is 0.
+    /// </summary>
+    public double Blur
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the fuzz amount specified as a percent 0 to 100. It is used
+    /// 1) for trimming the image to bounding box about the quadrilaterls,
+    /// 2) for floodfilling the background to convert the quadrilateral into a binary mask and
+    /// 3) for trimming the output image.
+    /// The default=10. Use a value that will produce a mask that cleanly corresponds to the
+    /// distorted quadrilateral area of the image. Note that method=peak is fairly robust to
+    /// minor imperfections in the mask, but method=derivative is not.
+    /// </summary>
+    public Percentage ColorFuzz
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets default output dimension.
+    /// Default is EdgeLength.
+    /// </summary>
+    public UnperspectiveDefault Default
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the viewport crop of the output image should be disabled and allows
+    /// distort to compute a larger output image before doing a fuzzy trim.
+    /// </summary>
+    public bool DisableViewportCrop
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the desired height of output.
+    /// </summary>
+    public int? Height
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the trap for maximum number of false peaks before filtering to remove false peaks.
+    /// Default is 40.
+    /// </summary>
+    public int MaxPeaks
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the trap for minimum edge length.
+    /// Default is 10.
+    /// </summary>
+    public int MinLength
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the desired rotation of output image.
+    /// </summary>
+    public UnperspectiveRotation? Rotation
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the sharpening amount used to amplify true peaks.This is a filtering step applied after
+    /// the smoothing to the 1D polar images.
+    /// Default is 5 when method is Peak and 0 when method is Derivative.
+    /// </summary>
+    public double Sharpen
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the smoothing amount used to help remove false peaks.
+    /// Default is 1 when method is Peak and 5 when method is Derivative.
+    /// </summary>
+    public double Smooth
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the threshold value for removing false peaks.
+    /// Default is 4 when method is Peak and 10 when method is Derivative.
+    /// </summary>
+    public int Threshold
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets desired width of output.
+    /// </summary>
+    public int? Width
+    {
+      get;
+      set;
     }
 
     /// <summary>
     /// Automatically remove pespective distortion from an image.
     /// </summary>
     /// <param name="input">The image to execute the script on.</param>
+    /// <returns>The resulting image.</returns>
     public MagickImage Execute(MagickImage input)
     {
       if (input == null)
@@ -103,159 +248,17 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The desired output width/height aspect ratio.
-    /// Default is computed automatically.
-    /// </summary>
-    public double? AspectRatio
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Any location within the border area for the algorithm to find the base border color.
-    /// </summary>
-    public PointD BorderColorLocation
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Blurring amount for preprocessing images of text with no quadrilateral outline. The default
-    /// is 0.
-    /// </summary>
-    public double Blur
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// The fuzz amount specified as a percent 0 to 100. It is used
-    /// 1) for trimming the image to bounding box about the quadrilaterls, 
-    /// 2) for floodfilling the background to convert the quadrilateral into a binary mask and
-    /// 3) for trimming the output image.
-    /// The default=10. Use a value that will produce a mask that cleanly corresponds to the
-    /// distorted quadrilateral area of the image. Note that method=peak is fairly robust to
-    /// minor imperfections in the mask, but method=derivative is not.
-    /// </summary>
-    public Percentage ColorFuzz
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Default output dimension.
-    /// Default is EdgeLength.
-    /// </summary>
-    public UnperspectiveDefault Default
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Disables the viewport crop of the output image and allows distort to compute a larger
-    /// output image before doing a fuzzy trim.
-    /// </summary>
-    public bool DisableViewportCrop
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Desired height of output.
-    /// </summary>
-    public int? Height
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Trap for maximum number of false peaks before filtering to remove false peaks.
-    /// Default is 40.
-    /// </summary>
-    public int MaxPeaks
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Trap for minimum edge length.
-    /// Default is 10.
-    /// </summary>
-    public int MinLength
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Desired rotation of output image.
-    /// </summary>
-    public UnperspectiveRotation? Rotation
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// The sharpening amount used to amplify true peaks.This is a filtering step applied after
-    /// the smoothing to the 1D polar images.
-    /// Default is 5 when method is Peak and 0 when method is Derivative.
-    /// </summary>
-    public double Sharpen
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// The smoothing amount used to help remove false peaks.
-    /// Default is 1 when method is Peak and 5 when method is Derivative.
-    /// </summary>
-    public double Smooth
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// The threshold value for removing false peaks.
-    /// Default is 4 when method is Peak and 10 when method is Derivative.
-    /// </summary>
-    public int Threshold
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Desired width of output.
-    /// </summary>
-    public int? Width
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
     /// Resets the script to the default setttings.
     /// </summary>
     public void Reset()
     {
-      if (_Method == UnperspectiveMethod.Peak)
+      if (_method == UnperspectiveMethod.Peak)
       {
         Sharpen = 5.0;
         Smooth = 1.0;
         Threshold = 4;
       }
-      else if (_Method == UnperspectiveMethod.Derivative)
+      else if (_method == UnperspectiveMethod.Derivative)
       {
         Sharpen = 0.0;
         Smooth = 5.0;
@@ -273,6 +276,18 @@ namespace FredsImageMagickScripts
       MinLength = 10;
       Rotation = null;
       Width = null;
+    }
+
+    private static MagickImage CreateDepolar(MagickImage image, double maxRad)
+    {
+      var depolar = image.Clone();
+
+      depolar.VirtualPixelMethod = VirtualPixelMethod.Black;
+      depolar.Distort(DistortMethod.DePolar, maxRad);
+      depolar.Scale(new MagickGeometry(depolar.Width + "x" + 1 + "!"));
+      depolar.VirtualPixelMethod = VirtualPixelMethod.Undefined;
+
+      return depolar;
     }
 
     private static double[] GetCoefficients(double[] arguments)
@@ -341,18 +356,17 @@ namespace FredsImageMagickScripts
 
     private static PointD GetCorner(List<PixelValue> maxList, double[] coeff, int xOffset, int height, int index)
     {
-      double aa = (maxList[index].Position + 0.5) * coeff[6] + coeff[5];
-      double rr = (((maxList[index].Value * height) / 65535.0) + 0.5) * coeff[7] + coeff[1];
+      double aa = ((maxList[index].Position + 0.5) * coeff[6]) + coeff[5];
+      double rr = ((((maxList[index].Value * height) / 65535.0) + 0.5) * coeff[7]) + coeff[1];
 
-      return new PointD(rr * Math.Sin(aa) + coeff[2] - 0.5 - xOffset, rr * Math.Cos(aa) + coeff[3] - 0.5);
+      return new PointD((rr * Math.Sin(aa)) + coeff[2] - 0.5 - xOffset, (rr * Math.Cos(aa)) + coeff[3] - 0.5);
     }
 
     private static PointD GetPoint(double[] coeff, double x, double y)
     {
       return new PointD(
-        Math.Floor((coeff[0] * x + coeff[1] * y + coeff[2]) / (coeff[6] * x + coeff[7] * y + 1)),
-        Math.Floor((coeff[3] * x + coeff[4] * y + coeff[5]) / (coeff[6] * x + coeff[7] * y + 1))
-      );
+        Math.Floor(((coeff[0] * x) + (coeff[1] * y) + coeff[2]) / ((coeff[6] * x) + (coeff[7] * y) + 1)),
+        Math.Floor(((coeff[3] * x) + (coeff[4] * y) + coeff[5]) / ((coeff[6] * x) + (coeff[7] * y) + 1)));
     }
 
     private static MagickGeometry GetViewport(double[] arguments, PointD[] corners)
@@ -405,6 +419,7 @@ namespace FredsImageMagickScripts
             }
           }
         }
+
         pivots[column]++;
         if (row != column)
         {
@@ -412,6 +427,7 @@ namespace FredsImageMagickScripts
             GaussJordanSwap(ref matrix[row][k], ref matrix[column][k]);
           GaussJordanSwap(ref vectors[row], ref vectors[column]);
         }
+
         rows[i] = row;
         columns[i] = column;
         if (matrix[column][column] == 0.0)
@@ -448,22 +464,22 @@ namespace FredsImageMagickScripts
 
     private static double Hypot(double x, double y)
     {
-      return Math.Sqrt(x * x + y * y);
+      return Math.Sqrt((x * x) + (y * y));
     }
 
     private static double[] InvertPerspectiveCoefficients(double[] coeff)
     {
       double[] inverse = new double[8];
 
-      double determinant = PerceptibleReciprocal(coeff[0] * coeff[4] - coeff[3] * coeff[1]);
-      inverse[0] = determinant * (coeff[4] - coeff[7] * coeff[5]);
-      inverse[1] = determinant * (coeff[7] * coeff[2] - coeff[1]);
-      inverse[2] = determinant * (coeff[1] * coeff[5] - coeff[4] * coeff[2]);
-      inverse[3] = determinant * (coeff[6] * coeff[5] - coeff[3]);
-      inverse[4] = determinant * (coeff[0] - coeff[6] * coeff[2]);
-      inverse[5] = determinant * (coeff[3] * coeff[2] - coeff[0] * coeff[5]);
-      inverse[6] = determinant * (coeff[3] * coeff[7] - coeff[6] * coeff[4]);
-      inverse[7] = determinant * (coeff[6] * coeff[1] - coeff[0] * coeff[7]);
+      double determinant = PerceptibleReciprocal((coeff[0] * coeff[4]) - (coeff[3] * coeff[1]));
+      inverse[0] = determinant * (coeff[4] - (coeff[7] * coeff[5]));
+      inverse[1] = determinant * ((coeff[7] * coeff[2]) - coeff[1]);
+      inverse[2] = determinant * ((coeff[1] * coeff[5]) - (coeff[4] * coeff[2]));
+      inverse[3] = determinant * ((coeff[6] * coeff[5]) - coeff[3]);
+      inverse[4] = determinant * (coeff[0] - (coeff[6] * coeff[2]));
+      inverse[5] = determinant * ((coeff[3] * coeff[2]) - (coeff[0] * coeff[5]));
+      inverse[6] = determinant * ((coeff[3] * coeff[7]) - (coeff[6] * coeff[4]));
+      inverse[7] = determinant * ((coeff[6] * coeff[1]) - (coeff[0] * coeff[7]));
 
       return inverse;
     }
@@ -490,8 +506,8 @@ namespace FredsImageMagickScripts
 
       sign = value < 0.0 ? -1.0 : 1.0;
       if ((sign * value) >= double.Epsilon)
-        return (1.0 / value);
-      return (sign / double.Epsilon);
+        return 1.0 / value;
+      return sign / double.Epsilon;
     }
 
     private static void RemoveInvalidValues(List<PixelValue> list, int width)
@@ -545,11 +561,11 @@ namespace FredsImageMagickScripts
       var m4y = centroidY - corners[3].Y;
 
       // simplified equations, assuming u0=0, v0=0, s=1
-      var k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x);
-      var k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x);
-      var ff = ((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1));
+      var k2 = (((m1y - m4y) * m3x) - ((m1x - m4x) * m3y) + (m1x * m4y) - (m1y * m4x)) / (((m2y - m4y) * m3x) - ((m2x - m4x) * m3y) + (m2x * m4y) - (m2y * m4x));
+      var k3 = (((m1y - m4y) * m2x) - ((m1x - m4x) * m2y) + (m1x * m4y) - (m1y * m4x)) / (((m3y - m4y) * m2x) - ((m3x - m4x) * m2y) + (m3x * m4y) - (m3y * m4x));
+      var ff = ((((k3 * m3y) - m1y) * ((k2 * m2y) - m1y)) + (((k3 * m3x) - m1x) * ((k2 * m2x) - m1x))) / ((k3 - 1) * (k2 - 1));
       var f = Math.Sqrt(Math.Sqrt(ff * ff));
-      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + Math.Pow(k2 * m2y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k2 * m2x - m1x, 2) / Math.Pow(f, 2)) / (Math.Pow(k3 - 1, 2) + Math.Pow(k3 * m3y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k3 * m3x - m1x, 2) / Math.Pow(f, 2)));
+      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + (Math.Pow((k2 * m2y) - m1y, 2) / Math.Pow(f, 2)) + (Math.Pow((k2 * m2x) - m1x, 2) / Math.Pow(f, 2))) / (Math.Pow(k3 - 1, 2) + (Math.Pow((k3 * m3y) - m1y, 2) / Math.Pow(f, 2)) + (Math.Pow((k3 * m3x) - m1x, 2) / Math.Pow(f, 2))));
 
       return aspect;
     }
@@ -558,18 +574,6 @@ namespace FredsImageMagickScripts
     {
       if (Width != null && Height != null)
         throw new InvalidOperationException("Both width and height cannot be specified at the same time.");
-    }
-
-    private static MagickImage CreateDepolar(MagickImage image, double maxRad)
-    {
-      var depolar = image.Clone();
-
-      depolar.VirtualPixelMethod = VirtualPixelMethod.Black;
-      depolar.Distort(DistortMethod.DePolar, maxRad);
-      depolar.Scale(new MagickGeometry(depolar.Width + "x" + 1 + "!"));
-      depolar.VirtualPixelMethod = VirtualPixelMethod.Undefined;
-
-      return depolar;
     }
 
     private MagickImage CreateMask(MagickImage image)
@@ -687,14 +691,13 @@ namespace FredsImageMagickScripts
 
         using (var depolar = images.AppendHorizontally())
         {
-
           if (Smooth != 0.0)
             depolar.Blur(0, Smooth);
 
           if (Sharpen != 0.0)
             depolar.Sharpen(0, Sharpen);
 
-          if (_Method == UnperspectiveMethod.Derivative)
+          if (_method == UnperspectiveMethod.Derivative)
           {
             depolar.VirtualPixelMethod = VirtualPixelMethod.Tile;
             depolar.SetArtifact("convolve:scale", "50%!");
@@ -707,6 +710,7 @@ namespace FredsImageMagickScripts
             depolar.AutoLevel();
             depolar.Crop(image.Width, 1, Gravity.Center);
           }
+
           depolar.Depth = 16;
 
           using (var pixels = depolar.GetPixels())
@@ -757,7 +761,7 @@ namespace FredsImageMagickScripts
         }
       }
 
-      if (_Method == UnperspectiveMethod.Peak)
+      if (_method == UnperspectiveMethod.Peak)
       {
         RemoveInvalidValues(maxList, image.Width);
         RemoveInvalidValues(minList, image.Width);
@@ -799,7 +803,7 @@ namespace FredsImageMagickScripts
       if (Threshold == 0)
         return;
 
-      if (_Method == UnperspectiveMethod.Peak)
+      if (_method == UnperspectiveMethod.Peak)
       {
         double posThreshold = Math.Pow(Threshold, 2);
         double threshold = Math.Pow(Threshold * 255, 2);

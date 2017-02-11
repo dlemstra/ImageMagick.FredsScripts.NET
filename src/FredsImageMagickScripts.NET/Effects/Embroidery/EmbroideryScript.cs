@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="EmbroideryScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace FredsImageMagickScripts
   public sealed class EmbroideryScript
   {
     /// <summary>
-    /// Creates a new instance of the EmbroideryScript class.
+    /// Initializes a new instance of the <see cref="EmbroideryScript"/> class.
     /// </summary>
     public EmbroideryScript()
     {
@@ -40,7 +41,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Initial pattern angle for background color.
+    /// Gets or sets the initial pattern angle for background color.
     /// Default is 90.
     /// </summary>
     public int Angle
@@ -50,7 +51,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Bevel azimuth angle.
+    /// Gets or sets the bevel azimuth angle.
     /// Default is 130.
     /// </summary>
     public double Azimuth
@@ -60,7 +61,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Actual background color in image.
+    /// Gets or sets the actual background color in image.
     /// Default is most the frequent color.
     /// </summary>
     public MagickColor BackgroundColor
@@ -70,7 +71,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Pattern bevel amount.
+    /// Gets or sets the pattern bevel amount.
     /// Default is 4.
     /// </summary>
     public int Bevel
@@ -80,7 +81,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Fuzz value for recoloring near black and near white
+    /// Gets or sets the fuzz value for recoloring near black and near white
     /// Default is 20.
     /// </summary>
     public Percentage ColorFuzz
@@ -90,7 +91,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Bevel sigmoidal-contrast amount.
+    /// Gets or sets the bevel sigmoidal-contrast amount.
     /// Default is 0 (no added contrast).
     /// </summary>
     public double Contrast
@@ -100,7 +101,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Bevel elevation angle.
+    /// Gets or sets the bevel elevation angle.
     /// Default is 30.
     /// </summary>
     public double Elevation
@@ -110,7 +111,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Shadow extent.
+    /// Gets or sets the shadow extent.
     /// Default is 2.
     /// </summary>
     public double Extent
@@ -120,7 +121,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Limit colors near black and near white to gray(graylimit%) and gray(100%-graylimit%).
+    /// Gets or sets the value to limit colors near black and near white to gray(graylimit%) and gray(100%-graylimit%).
     /// Default is 20.
     /// </summary>
     public int GrayLimit
@@ -130,7 +131,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Shadow intensity (higher is darker).
+    /// Gets or sets the shadow intensity (higher is darker).
     /// Default is 25.
     /// </summary>
     public Percentage Intensity
@@ -140,7 +141,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Mixing between before and after spread result.
+    /// Gets or sets the mixing between before and after spread result.
     /// Default is 100.
     /// </summary>
     public int Mix
@@ -150,7 +151,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Number of desired or actual colors in image.
+    /// Gets or sets the number of desired or actual colors in image.
     /// Default is 8.
     /// </summary>
     public int NumberOfColors
@@ -160,7 +161,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The Wave pattern.
+    /// Gets or sets the wave pattern.
     /// Default is Linear.
     /// </summary>
     public EmbroideryPattern Pattern
@@ -170,7 +171,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The range of pattern angles over all the colors.
+    /// Gets or sets the range of pattern angles over all the colors.
     /// Default is 90.
     /// </summary>
     public int Range
@@ -180,7 +181,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Pattern spread (diffusion).
+    /// Gets or sets the pattern spread (diffusion).
     /// Default is 1
     /// </summary>
     public double Spread
@@ -190,7 +191,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The weave thickness.
+    /// Gets or sets the weave thickness.
     /// Default is 2.
     /// </summary>
     public int Thickness
@@ -205,6 +206,7 @@ namespace FredsImageMagickScripts
     /// pattern, but at different rotation angles.
     /// </summary>
     /// <param name="input">The image to execute the script on.</param>
+    /// <returns>The resulting image.</returns>
     public MagickImage Execute(MagickImage input)
     {
       if (input == null)
@@ -241,7 +243,7 @@ namespace FredsImageMagickScripts
                   }
                 }
 
-                angle += (Range / (double)colors.Length);
+                angle += Range / (double)colors.Length;
               }
 
               var result = images.Flatten();
@@ -275,6 +277,49 @@ namespace FredsImageMagickScripts
       Spread = 1.0;
       Thickness = 2;
     }
+
+    private static MagickImage CreateCroppedPattern(MagickImage image, MagickImage pattern, double angle)
+    {
+      var croppedPattern = pattern.Clone();
+      croppedPattern.Rotate(angle);
+      croppedPattern.RePage();
+      croppedPattern.Crop(image.Width, image.Height, Gravity.Center);
+      croppedPattern.RePage();
+      return croppedPattern;
+    }
+
+    private static MagickImage CreateRolled(MagickImage image, int thickness)
+    {
+      MagickImage rolled = image.Clone();
+      rolled.Roll(thickness, 0);
+      return rolled;
+    }
+
+    private static MagickImage ExtractAlpha(MagickImage image, MagickColor color)
+    {
+      var alpha = image.Clone();
+      alpha.InverseTransparent(color);
+      alpha.Alpha(AlphaOption.Extract);
+      return alpha;
+    }
+
+    private static void RemapColors(MagickImage image, IEnumerable<MagickColor> colors)
+    {
+      using (var images = new MagickImageCollection())
+      {
+        foreach (var color in colors)
+          images.Add(new MagickImage(color, 1, 1));
+
+        using (MagickImage colorMap = images.AppendHorizontally())
+        {
+          image.Map(colorMap, new QuantizeSettings()
+          {
+            DitherMethod = DitherMethod.No
+          });
+        }
+      }
+    }
+
     private void AddBevel(MagickImage image)
     {
       using (var alphaTexture = image.Clone())
@@ -335,16 +380,6 @@ namespace FredsImageMagickScripts
 
       if (Thickness <= 0)
         throw new InvalidOperationException("Invalid thickness specified, value must be higher than zero.");
-    }
-
-    private static MagickImage CreateCroppedPattern(MagickImage image, MagickImage pattern, double angle)
-    {
-      var croppedPattern = pattern.Clone();
-      croppedPattern.Rotate(angle);
-      croppedPattern.RePage();
-      croppedPattern.Crop(image.Width, image.Height, Gravity.Center);
-      croppedPattern.RePage();
-      return croppedPattern;
     }
 
     private MagickImage CreateColor(MagickImage alpha, MagickImage croppedPattern, MagickImage nearBlackWhite, bool useBevel)
@@ -429,13 +464,6 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private static MagickImage CreateRolled(MagickImage image, int thickness)
-    {
-      MagickImage rolled = image.Clone();
-      rolled.Roll(thickness, 0);
-      return rolled;
-    }
-
     private MagickImage CreateTexture()
     {
       if (Pattern == EmbroideryPattern.Linear)
@@ -445,31 +473,6 @@ namespace FredsImageMagickScripts
         return CreateCrosshatchTexture();
 
       throw new NotImplementedException();
-    }
-
-    private static MagickImage ExtractAlpha(MagickImage image, MagickColor color)
-    {
-      var alpha = image.Clone();
-      alpha.InverseTransparent(color);
-      alpha.Alpha(AlphaOption.Extract);
-      return alpha;
-    }
-
-    private static void RemapColors(MagickImage image, IEnumerable<MagickColor> colors)
-    {
-      using (var images = new MagickImageCollection())
-      {
-        foreach (var color in colors)
-          images.Add(new MagickImage(color, 1, 1));
-
-        using (MagickImage colorMap = images.AppendHorizontally())
-        {
-          image.Map(colorMap, new QuantizeSettings()
-          {
-            DitherMethod = DitherMethod.No
-          });
-        }
-      }
     }
 
     private MagickImage ToNearBlackWhite(MagickImage image)
@@ -485,6 +488,5 @@ namespace FredsImageMagickScripts
 
       return result;
     }
-
   }
 }

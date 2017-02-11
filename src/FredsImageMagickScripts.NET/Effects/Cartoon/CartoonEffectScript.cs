@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="CartoonEffectScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using ImageMagick;
@@ -22,7 +23,7 @@ using ImageMagick;
 namespace FredsImageMagickScripts
 {
   /// <summary>
-  /// creates a cartoon-like appearance to an image. The image is smoothed and then multiplied by
+  /// Creates a cartoon-like appearance to an image. The image is smoothed and then multiplied by
   /// a grayscale version of the image with the desired number of levels to produce the segmented
   /// appearance. The pattern parameter changes the shape of the segmentation for the given number
   /// of levels. Edges are then superimposed onto the image.
@@ -30,7 +31,7 @@ namespace FredsImageMagickScripts
   public sealed class CartoonEffectScript
   {
     /// <summary>
-    /// Constructor only sets default property values so that it is ready for a call to its <see cref="Execute(MagickImage)"/> method.
+    /// Initializes a new instance of the <see cref="CartoonEffectScript"/> class.
     /// </summary>
     public CartoonEffectScript()
     {
@@ -38,8 +39,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The brightness factor. Valid values are zero or higher. The default is 1. Increase
-    /// brightness is larger than 1, decrease brightness is less than 1.
+    /// Gets or sets the brightness factor. Valid values are zero or higher. The default is 1.
+    /// Increase brightness is larger than 1, decrease brightness is less than 1.
     /// </summary>
     public Percentage Brightness
     {
@@ -48,7 +49,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Edge amount, which must be &gt;= 0
+    /// Gets or sets the edge amount, which must be &gt;= 0
     /// </summary>
     public float EdgeAmount
     {
@@ -57,7 +58,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Edge width, which must be &gt;= 0
+    /// Gets or sets the edge width, which must be &gt;= 0
     /// </summary>
     public int EdgeWidth
     {
@@ -66,7 +67,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Edge threshold
+    /// Gets or sets the edge threshold
     /// </summary>
     public Percentage EdgeThreshold
     {
@@ -75,7 +76,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Either 1 or 2.
+    /// Gets or sets the cartoon method either 1 or 2.
     /// </summary>
     public CartoonMethod Method
     {
@@ -84,7 +85,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Number of levels, which must be &gt;= 2
+    /// Gets or sets the number of levels, which must be &gt;= 2
     /// </summary>
     public int NumberOflevels
     {
@@ -93,7 +94,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Segmentation pattern.
+    /// Gets or sets the segmentation pattern.
     /// </summary>
     public Percentage Pattern
     {
@@ -102,7 +103,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Saturation. Valid values are zero or higher. A value of 100 is no change. The default is 150.
+    /// Gets or sets the saturation. Valid values are zero or higher. A value of 100 is no change. The default is 150.
     /// </summary>
     public Percentage Saturation
     {
@@ -111,30 +112,13 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Applies the cartoon effect.
+    /// Creates a cartoon-like appearance to an image. The image is smoothed and then multiplied by
+    /// a grayscale version of the image with the desired number of levels to produce the segmented
+    /// appearance. The pattern parameter changes the shape of the segmentation for the given number
+    /// of levels. Edges are then superimposed onto the image.
     /// </summary>
-    /// <remarks>
-    /// What the script does is as follows (from Fred's original script http://www.fmwconcepts.com/imagemagick/cartoon/index.php)
-    /// (Optionally) applies a median filter to the image
-    /// Reduces the number of colors in the filtered image
-    /// Converts the original image to grayscale
-    /// (Optionally) applies a median filter to the grayscale image
-    /// Applies a gradient edge detector to the grayscale image
-    /// Thresholds the edge image to binary
-    /// Composites the edge image with the color reduced image
-    /// This is equivalent to the following IM commands:
-    /// Smooths the image
-    /// Converts a copy to grayscale, posterizes the levels and \
-    /// applied median filtering and a small amount of blur
-    /// Multiples the smoothed and grayscale images to create \
-    /// the cartoon appearance
-    /// Negates and blurs the previous image and colordodge \
-    /// composites to create an edge image
-    /// Raises the edge image to a power to amplify the edges, 
-    /// thresholds and median filters it to create a binary edge mask image
-    /// Multiplies the binary edge mask image with the cartoonish image
-    /// </remarks>
     /// <param name="input">The image to execute the script on.</param>
+    /// <returns>The resulting image.</returns>
     public MagickImage Execute(MagickImage input)
     {
       if (input == null)
@@ -146,12 +130,9 @@ namespace FredsImageMagickScripts
       {
         using (var tmpA2 = input.Clone())
         {
-          //# convert to grayscale and posterize to create mask image.
-          // Note that $setcSpace is empty for version >= 6.8.5.4 (which is assumed in this port
-          //convert $tmpA1 - level 0x$pattern % $setcspace - colorspace gray - posterize $numlevels - depth 8 $proc $tmpA2
-          tmpA2.Level(0, (byte)Pattern);  // 450ms
+          tmpA2.Level(0, (byte)Pattern);
           tmpA2.ColorSpace = ColorSpace.Gray;
-          tmpA2.Posterize(NumberOflevels);  //260ms
+          tmpA2.Posterize(NumberOflevels);
           tmpA2.Depth = 8;
           tmpA2.GammaCorrect(2.2);
 
@@ -199,28 +180,17 @@ namespace FredsImageMagickScripts
 
     private MagickImage ExecuteMethod2(MagickImage tmpA1, MagickImage tmpA2)
     {
-      //# process image
-      //# multiply the blurred posterized graycale mask with the smoothed input
-      //# convert smoothed input to grayscale
-      //# apply high pass filter to grayscale, use power to amplify and threshold
-      //# multiply composite the edge image with the smoothed color image
-
-      //  convert $tmpA1 \( $tmpA2 - blur 0x1 \) 
-      tmpA2.Blur(0, 1); // 0x1 is default anyway but better be specific
+      tmpA2.Blur(0, 1);
 
       using (var second_0 = tmpA1.Clone())
       {
         using (var second_1 = tmpA2.Clone())
         {
-          // \( -clone 0 - clone 1 - compose over - compose multiply - composite - modulate $brightness,$saturation,100 \) \
           second_0.Composite(second_1, CompositeOperator.Multiply);
           second_0.Modulate(Brightness, Saturation, (Percentage)100);
 
           using (var third = tmpA1.Clone())
           {
-            // \(-clone 0 $setcspace - colorspace gray - negate - define convolve: scale =$edgegain \
-            //			-morphology Convolve DoG:0,0,${ edgewidth} -negate \
-            //			-evaluate pow $edgeamount - white - threshold $edgethresh % \) \
             third.ColorSpace = ColorSpace.Gray;
             third.Negate();
             third.SetArtifact("convolve:scale", "4");
@@ -229,7 +199,6 @@ namespace FredsImageMagickScripts
             third.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
             third.WhiteThreshold(EdgeThreshold);
 
-            //  -delete 0,1 - compose over - compose multiply - composite "$outfile"
             var result = second_0.Clone();
             result.Composite(third, CompositeOperator.Multiply);
             return result;
@@ -240,50 +209,35 @@ namespace FredsImageMagickScripts
 
     private MagickImage ExecuteMethod1(MagickImage tmpA1, MagickImage tmpA2)
     {
-      //# process image
-      //# multiply the blurred posterized graycale mask with the smoothed input
-      //# convert smoothed input to grayscale
-      //# negate and blur
-      //# colordodge composite the grayscale and negated/blurred version to make edgewidth image
-      //# use power to amplify and then threshold and median filter
-      //# multiply composite the edgewidth with the blended image
-
-      //  convert $tmpA1 \( $tmpA2 - blur 0x1 \) 
-      tmpA2.Blur(0, 1); // 0x1 is default anyway but better be specific
+      tmpA2.Blur(0, 1);
 
       using (var second_0 = tmpA1.Clone())
       {
         using (var second_1 = tmpA2.Clone())
         {
-          // \( -clone 0 -clone 1 -compose over -compose multiply -composite -modulate $brightness,$saturation,100 \) \
           second_0.Composite(second_1, CompositeOperator.Multiply);
           second_0.Modulate(Brightness, Saturation, (Percentage)100);
 
           using (var third = tmpA1.Clone())
           {
-            // \( -clone 0 $setcspace -colorspace gray \) \
-            third.ColorSpace = ColorSpace.Gray;  // -clone 0 $setcspace -colorspace gray
+            third.ColorSpace = ColorSpace.Gray;
 
             using (var fourth = third.Clone())
             {
-              // \( -clone 3 -negate -blur 0x${edgewidth} \) \
               fourth.Negate();
-              fourth.Blur(0, 2);   // very expensive but necessary
+              fourth.Blur(0, 2);
 
-              var fifth_0 = third.Clone();    // this will be the result -> do not wrap in using statement as we do not want to dispose it :)
+              var fifth_0 = third.Clone();
               using (var fifth_1 = fourth.Clone())
               {
-                // \(-clone 3 - clone 4 - compose over - compose colordodge - composite \
-                // -evaluate pow $edgeamount - threshold $edgethresh % $medproc \) \
                 fifth_0.Composite(fifth_1, CompositeOperator.ColorDodge);
                 fifth_0.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
-                fifth_0.Threshold((Percentage)EdgeThreshold);
+                fifth_0.Threshold(EdgeThreshold);
                 fifth_0.Statistic(StatisticType.Median, 3, 3);
 
-                //  -delete 0,1,3,4 -compose over -compose multiply -composite "$outfile"
                 fifth_0.Composite(second_0, CompositeOperator.Multiply);
 
-                return fifth_0; // return copy as it will otherwise get disposed
+                return fifth_0;
               }
             }
           }

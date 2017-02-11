@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="TextCleanerScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using ImageMagick;
@@ -27,7 +28,7 @@ namespace FredsImageMagickScripts
   public sealed class TextCleanerScript
   {
     /// <summary>
-    /// Creates a new instance of the TextCleanerScript class.
+    /// Initializes a new instance of the <see cref="TextCleanerScript"/> class.
     /// </summary>
     public TextCleanerScript()
     {
@@ -35,8 +36,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    ///  Applies an alternate text smoothing using and adaptive blur. Valid values are zero or
-    ///  higher. The default value is zero.
+    ///  Gets or sets the value to apply for an alternate text smoothing using and adaptive blur.
+    ///  Valid values are zero or higher. The default value is zero.
     /// </summary>
     public double AdaptiveBlur
     {
@@ -45,7 +46,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    ///The desired background color after it has been cleaned up. The default is white.
+    /// Gets or sets the desired background color after it has been cleaned up. The default is white.
     /// </summary>
     public MagickColor BackgroundColor
     {
@@ -54,7 +55,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Image cropping offsets.
+    /// Gets or sets the image cropping offsets.
     /// </summary>
     public TextCleanerCropOffset CropOffset
     {
@@ -63,7 +64,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Enhance image brightness bearing cleaning, the default value is Stretch.
+    /// Gets or sets the enhance image brightness bearing cleaning, the default value is Stretch.
     /// </summary>
     public TextCleanerEnhance Enhance
     {
@@ -72,9 +73,9 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The offset threshold in percent used by the filter to eliminate noise. Valid values are
-    /// zero or higher. Values too small will leave much noise and artifacts in the result. Values
-    /// too large will remove too much text leaving gaps. The default value is 5.
+    /// Gets or sets the offset threshold in percent used by the filter to eliminate noise. Valid
+    /// values are zero or higher. Values too small will leave much noise and artifacts in the result.
+    /// Values too large will remove too much text leaving gaps. The default value is 5.
     /// </summary>
     public Percentage FilterOffset
     {
@@ -83,8 +84,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The size of the filter used to clean up the background. Valid values are zero or higher.
-    /// The filtersize needs to be larger than the thickness of the writing, but the smaller the
+    /// Gets or sets the size of the filter used to clean up the background. Valid values are zero or
+    /// higher. The filtersize needs to be larger than the thickness of the writing, but the smaller the
     /// better beyond this. Making it larger will increase the processing time and may lose text.
     /// The default value is 15.
     /// </summary>
@@ -95,7 +96,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Desired layout, the default is Portrait.
+    /// Gets or sets desired layout, the default is Portrait.
     /// </summary>
     public TextCleanerLayout Layout
     {
@@ -104,7 +105,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Convert document to grayscale before enhancing.
+    /// Gets or sets a value indicating whether to convert the document to grayscale before enhancing.
     /// </summary>
     public bool MakeGray
     {
@@ -113,8 +114,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Border pad amount around outer part of image. Valid values are zero or higher. The default
-    /// value is 0.
+    /// Gets or sets the border pad amount around outer part of image. Valid values are zero or higher.
+    /// The default value is 0.
     /// </summary>
     public int Padding
     {
@@ -123,8 +124,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Rotate image 90 degrees in direction specified if spect ratio does not match layout. The
-    /// default value is no rotation.
+    /// Gets or sets the image rotation. Rotate image 90 degrees in direction specified if spect ratio does
+    /// not match layout. The default value is no rotation.
     /// </summary>
     public TextCleanerRotation Rotation
     {
@@ -133,7 +134,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Color saturation. Only applicable if MakeGray is false. The default value is 200.
+    /// Gets or sets the color saturation. Only applicable if MakeGray is false. The default value is 200.
     /// </summary>
     public Percentage Saturation
     {
@@ -142,7 +143,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The amount of pixel sharpening to be applied to the resulting text. Valid values are zero
+    /// Gets or sets the amount of pixel sharpening to be applied to the resulting text. Valid values are zero
     /// or higher. If used, it should be small (suggested about 1). The default value is zero.
     /// </summary>
     public double Sharpen
@@ -152,7 +153,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The text smoothing threshold. Valid values are between 0 and 100. Smaller values
+    /// Gets or sets the text smoothing threshold. Valid values are between 0 and 100. Smaller values
     /// smooth/thicken the text more. Larger values thin, but can result in gaps in the text. Nominal
     /// value is in the middle at about 50. The default value is to disable smoothing.
     /// </summary>
@@ -163,7 +164,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Trim the border around the image. Effective only if background well-cleaned.
+    /// Gets or sets a value indicating whether the border around the image should be trimmed.
+    /// Effective only if background well-cleaned.
     /// </summary>
     public bool Trim
     {
@@ -172,7 +174,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Unrotate the image, the default value is false.
+    /// Gets or sets a value indicating whether the image will be unrotated, the default value is false.
     /// </summary>
     public bool Unrotate
     {
@@ -184,6 +186,7 @@ namespace FredsImageMagickScripts
     /// Processses a scanned document of text to clean the text background and enhance the text.
     /// </summary>
     /// <param name="input">The image to execute the script on.</param>
+    /// <returns>The resulting image.</returns>
     public MagickImage Execute(MagickImage input)
     {
       if (input == null)
@@ -228,6 +231,7 @@ namespace FredsImageMagickScripts
       Trim = false;
       Unrotate = false;
     }
+
     private void AdaptiveBlurImage(MagickImage image)
     {
       if (AdaptiveBlur == 0.0)

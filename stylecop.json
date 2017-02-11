@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings":
+  {
+    "documentationRules":
+    {
+      "companyName": "Dirk Lemstra, Fred Weinhaus",
+      "copyrightText": "https://github.com/dlemstra/FredsImageMagickScripts.NET\n\nCopyright 2015-2017 Dirk Lemstra, Fred Weinhaus\n\nThese scripts are available free of charge for non-commercial use, ONLY.\n\nFor use of these scripts in commercial (for-profit) environments or non-free applications,\nplease contact Fred Weinhaus (fmw at alink dot net) for licensing arrangements.\n\nIf you: 1) redistribute, 2) incorporate any of these scripts into other free applications or\n3) reprogram them in another scripting language, then you must contact Fred Weinhaus for\npermission, especially if the result might be used in a commercial or for-profit environment.\n\nUsage, whether stated or not in the script, is restricted to the above licensing arrangements.\nIt is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:\nhttp://www.imagemagick.org/script/license.php",
+      "documentInternalElements": false
+    },
+    "indentation":
+    {
+      "indentationSize": 2
+    },
+    "orderingRules":
+    {
+      "usingDirectivesPlacement": "outsideNamespace"
+    }
+  }
+}

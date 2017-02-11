@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="WhiteboardScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using System.Globalization;
@@ -30,12 +31,12 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class WhiteboardScript
   {
-    private PointD[] _Coords;
-    private double _Height;
-    private double _Width;
+    private PointD[] _coords;
+    private double _height;
+    private double _width;
 
     /// <summary>
-    /// Creates a new instance of the WhiteboardScript class using the specified image.
+    /// Initializes a new instance of the <see cref="WhiteboardScript"/> class.
     /// </summary>
     public WhiteboardScript()
     {
@@ -43,8 +44,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The width-to-height aspect ratio of actual whiteboard. Typical values are: (2:1), (3:2)
-    /// and (4:3). The default is computed automatically.
+    /// Gets or sets the width-to-height aspect ratio of actual whiteboard.
+    /// Typical values are: (2:1), (3:2) and (4:3). The default is computed automatically.
     /// </summary>
     public PointD? AspectRatio
     {
@@ -53,8 +54,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The desired background color of the whiteboard after it has been cleaned up. The default
-    /// is white.
+    /// Gets or sets the desired background color of the whiteboard after it has been cleaned up.
+    /// The default is white.
     /// </summary>
     public MagickColor BackgroundColor
     {
@@ -63,7 +64,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The desired dimension(s) of the output image. Choices are: WIDTH, xHEIGHT or WIDTHxHEIGHT;
+    /// Gets or sets the desired dimension(s) of the output image. Choices are: WIDTH, xHEIGHT or WIDTHxHEIGHT;
     /// if either of the first two options are selected, then the other dimension will be computed
     /// from the aspect ratio and magnify will be ignored. If the latter option is selected, then
     /// both aspect and magnify will be ignored. If no coordinates are supplied, then the input
@@ -77,7 +78,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Enhance the image brightness before cleaning the background. The default is Stretch.
+    /// Gets or sets the enhancement method for the image brightness before cleaning the background.
+    /// The default is Stretch.
     /// </summary>
     public WhiteboardEnhancements Enhance
     {
@@ -86,7 +88,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The size of the filter used to clean up the background. The filtersize needs to be larger
+    /// Gets or sets the size of the filter used to clean up the background. The filtersize needs to be larger
     /// than the thickness of the writing, but the smaller the better beyond this. Making it
     /// larger will increase the processing time and may lose text. The default is 15.
     /// </summary>
@@ -97,7 +99,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The output image magnification (or minification) factor. Values larger than 1 will
+    /// Gets or sets the output image magnification (or minification) factor. Values larger than 1 will
     /// magnify. Values less than 1 will minify. The default is 1 and will produce an output whose
     /// height is the length of the left edge as defined by the supplied coordinates and whose
     /// width=height*aspect. A value of 2 will be twice that size and a value of 0.5 will be half
@@ -111,7 +113,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The offset threshold in percent used by the filter to eliminate noise. Values too small
+    /// Gets or sets the offset threshold in percent used by the filter to eliminate noise. Values too small
     /// will leave much noise and artifacts in the result. Values too large will remove too much
     /// text leaving gaps. The default is 5.
     /// </summary>
@@ -122,7 +124,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The desired color saturation of the text expressed as a percentage. A value of 100 means
+    /// Gets or sets the desired color saturation of the text expressed as a percentage. A value of 100 means
     /// no change. The default=200. Larger values will make the text colors more saturated.
     /// </summary>
     public Percentage Saturation
@@ -132,7 +134,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Is the amount of sharpening to be applied to the resulting image in pixels. If used, it
+    /// Gets or sets the amount of sharpening to be applied to the resulting image in pixels. If used, it
     /// should be small (suggested about 1).
     /// </summary>
     public int? SharpeningAmount
@@ -142,7 +144,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The text smoothing threshold. Smaller values smooth/thicken the text more. Larger values
+    /// Gets or sets the text smoothing threshold. Smaller values smooth/thicken the text more. Larger values
     /// thin, but can result in gaps in the text. Nominal value is in the middle at about 50.
     /// The default is to disable smoothing.
     /// </summary>
@@ -153,7 +155,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// percent near white to use for white balancing. The default is 0.01.
+    /// Gets or sets percent near white to use for white balancing. The default is 0.01.
     /// </summary>
     public Percentage WhiteBalance
     {
@@ -167,6 +169,7 @@ namespace FredsImageMagickScripts
     /// picture must be supplied in order to correct the perspective.
     /// </summary>
     /// <param name="input">The image to execute the script on.</param>
+    /// <returns>The resulting image.</returns>
     public MagickImage Execute(MagickImage input)
     {
       if (input == null)
@@ -190,7 +193,7 @@ namespace FredsImageMagickScripts
     /// </summary>
     public void Reset()
     {
-      _Coords = null;
+      _coords = null;
       BackgroundColor = new MagickColor("white");
       Enhance = WhiteboardEnhancements.Stretch;
       FilterSize = 15;
@@ -206,11 +209,11 @@ namespace FredsImageMagickScripts
     /// </summary>
     /// <param name="topLeft">Top left coordinate</param>
     /// <param name="topRight">Top right coordinate</param>
-    /// <param name="bottomLeft">Bottom left coordinate</param>
     /// <param name="bottomRight">Bottom right coordinate</param>
+    /// <param name="bottomLeft">Bottom left coordinate</param>
     public void SetCoordinates(PointD topLeft, PointD topRight, PointD bottomRight, PointD bottomLeft)
     {
-      _Coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
+      _coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
     }
 
     private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
@@ -271,7 +274,7 @@ namespace FredsImageMagickScripts
 
     private void CalculateWidthAndHeight(MagickImage image)
     {
-      if (_Coords != null)
+      if (_coords != null)
         CalculateWidthAndHeightWithCoords();
       else if (Dimensions != null)
         CalculateWidthAndHeightWithDimensions(image);
@@ -281,13 +284,13 @@ namespace FredsImageMagickScripts
 
     private void CheckSettings(MagickImage image)
     {
-      if (_Coords == null)
+      if (_coords == null)
         return;
 
-      CheckCoordinate(image, "topLeft", _Coords[0]);
-      CheckCoordinate(image, "topRight", _Coords[1]);
-      CheckCoordinate(image, "bottomRight", _Coords[2]);
-      CheckCoordinate(image, "bottomLeft", _Coords[3]);
+      CheckCoordinate(image, "topLeft", _coords[0]);
+      CheckCoordinate(image, "topRight", _coords[1]);
+      CheckCoordinate(image, "bottomRight", _coords[2]);
+      CheckCoordinate(image, "bottomLeft", _coords[3]);
     }
 
     private void CalculateWidthAndHeightWithCoords()
@@ -295,11 +298,13 @@ namespace FredsImageMagickScripts
       var aspect = CalculateAspectRatio();
 
       if (Dimensions != null)
+      {
         CalculateWidthAndHeightWithDimensions(aspect);
+      }
       else
       {
-        _Height = GetMagnification() * Math.Sqrt(Math.Pow(_Coords[0].X - _Coords[3].X, 2) + Math.Pow(_Coords[0].Y - _Coords[3].Y, 2));
-        _Width = _Height * aspect;
+        _height = GetMagnification() * Math.Sqrt(Math.Pow(_coords[0].X - _coords[3].X, 2) + Math.Pow(_coords[0].Y - _coords[3].Y, 2));
+        _width = _height * aspect;
       }
     }
 
@@ -309,25 +314,25 @@ namespace FredsImageMagickScripts
         return AspectRatio.Value.X / AspectRatio.Value.Y;
 
       // get centroid of quadrilateral
-      var centroidX = (_Coords[3].X + _Coords[2].X + _Coords[0].X + _Coords[1].X) / 4;
-      var centroidY = (_Coords[3].Y + _Coords[2].Y + _Coords[0].Y + _Coords[1].Y) / 4;
+      var centroidX = (_coords[3].X + _coords[2].X + _coords[0].X + _coords[1].X) / 4;
+      var centroidY = (_coords[3].Y + _coords[2].Y + _coords[0].Y + _coords[1].Y) / 4;
 
       // convert to proper x,y coordinates relative to center
-      var m1x = _Coords[3].X - centroidX;
-      var m1y = centroidY - _Coords[3].Y;
-      var m2x = _Coords[2].X - centroidX;
-      var m2y = centroidY - _Coords[2].Y;
-      var m3x = _Coords[0].X - centroidX;
-      var m3y = centroidY - _Coords[0].Y;
-      var m4x = _Coords[1].X - centroidX;
-      var m4y = centroidY - _Coords[1].Y;
+      var m1x = _coords[3].X - centroidX;
+      var m1y = centroidY - _coords[3].Y;
+      var m2x = _coords[2].X - centroidX;
+      var m2y = centroidY - _coords[2].Y;
+      var m3x = _coords[0].X - centroidX;
+      var m3y = centroidY - _coords[0].Y;
+      var m4x = _coords[1].X - centroidX;
+      var m4y = centroidY - _coords[1].Y;
 
       // simplified equations, assuming u0=0, v0=0, s=1
-      var k2 = ((m1y - m4y) * m3x - (m1x - m4x) * m3y + m1x * m4y - m1y * m4x) / ((m2y - m4y) * m3x - (m2x - m4x) * m3y + m2x * m4y - m2y * m4x);
-      var k3 = ((m1y - m4y) * m2x - (m1x - m4x) * m2y + m1x * m4y - m1y * m4x) / ((m3y - m4y) * m2x - (m3x - m4x) * m2y + m3x * m4y - m3y * m4x);
-      var ff = ((k3 * m3y - m1y) * (k2 * m2y - m1y) + (k3 * m3x - m1x) * (k2 * m2x - m1x)) / ((k3 - 1) * (k2 - 1));
+      var k2 = (((m1y - m4y) * m3x) - ((m1x - m4x) * m3y) + (m1x * m4y) - (m1y * m4x)) / (((m2y - m4y) * m3x) - ((m2x - m4x) * m3y) + (m2x * m4y) - (m2y * m4x));
+      var k3 = (((m1y - m4y) * m2x) - ((m1x - m4x) * m2y) + (m1x * m4y) - (m1y * m4x)) / (((m3y - m4y) * m2x) - ((m3x - m4x) * m2y) + (m3x * m4y) - (m3y * m4x));
+      var ff = ((((k3 * m3y) - m1y) * ((k2 * m2y) - m1y)) + (((k3 * m3x) - m1x) * ((k2 * m2x) - m1x))) / ((k3 - 1) * (k2 - 1));
       var f = Math.Sqrt(Math.Sqrt(ff * ff));
-      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + Math.Pow(k2 * m2y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k2 * m2x - m1x, 2) / Math.Pow(f, 2)) / (Math.Pow(k3 - 1, 2) + Math.Pow(k3 * m3y - m1y, 2) / Math.Pow(f, 2) + Math.Pow(k3 * m3x - m1x, 2) / Math.Pow(f, 2)));
+      var aspect = Math.Sqrt((Math.Pow(k2 - 1, 2) + (Math.Pow((k2 * m2y) - m1y, 2) / Math.Pow(f, 2)) + (Math.Pow((k2 * m2x) - m1x, 2) / Math.Pow(f, 2))) / (Math.Pow(k3 - 1, 2) + (Math.Pow((k3 * m3y) - m1y, 2) / Math.Pow(f, 2)) + (Math.Pow((k3 * m3x) - m1x, 2) / Math.Pow(f, 2))));
 
       return aspect;
     }
@@ -343,31 +348,33 @@ namespace FredsImageMagickScripts
     {
       if (Dimensions.Width > 0 && Dimensions.Height > 0)
       {
-        _Width = Dimensions.Width;
-        _Height = Dimensions.Height;
+        _width = Dimensions.Width;
+        _height = Dimensions.Height;
       }
       else
       {
         if (Dimensions.Width > 0)
         {
-          _Width = Dimensions.Width;
-          _Height = _Width * aspect;
+          _width = Dimensions.Width;
+          _height = _width * aspect;
         }
         else if (Dimensions.Height > 0)
         {
-          _Height = Dimensions.Height;
-          _Width = _Height * aspect;
+          _height = Dimensions.Height;
+          _width = _height * aspect;
         }
         else
+        {
           throw new InvalidOperationException("Invalid dimensions specified.");
+        }
       }
     }
 
     private void CalculateWidthAndHeightWithMagnification(MagickImage image)
     {
       var magnification = GetMagnification();
-      _Width = image.Width * magnification;
-      _Height = image.Height * magnification;
+      _width = image.Width * magnification;
+      _height = image.Height * magnification;
     }
 
     private void CopyOpacity(MagickImage image)
@@ -385,6 +392,7 @@ namespace FredsImageMagickScripts
           gray.Blur((double)Threshold.Value / 100.0, Quantum.Max);
           gray.Level(Threshold.Value, new Percentage(100));
         }
+
         image.Composite(gray, CompositeOperator.CopyAlpha);
         image.Opaque(MagickColors.Transparent, BackgroundColor);
         image.Alpha(AlphaOption.Off);
@@ -393,7 +401,7 @@ namespace FredsImageMagickScripts
 
     private void DistortImage(MagickImage input, MagickImage image)
     {
-      if (_Coords != null)
+      if (_coords != null)
         DistortImageWithCoords(image);
       else if (Dimensions != null)
         DistortImageWithDimensions(input, image);
@@ -407,8 +415,8 @@ namespace FredsImageMagickScripts
 
       var arguments = new double[16]
       {
-        _Coords[0].X, _Coords[0].Y, 0, 0, _Coords[1].X, _Coords[1].Y, _Width, 0,
-        _Coords[2].X, _Coords[2].Y, _Width, _Height, _Coords[3].X, _Coords[3].Y, 0, _Height
+        _coords[0].X, _coords[0].Y, 0, 0, _coords[1].X, _coords[1].Y, _width, 0,
+        _coords[2].X, _coords[2].Y, _width, _height, _coords[3].X, _coords[3].Y, 0, _height
       };
 
       image.Distort(DistortMethod.Perspective, arguments);
@@ -416,22 +424,22 @@ namespace FredsImageMagickScripts
 
     private void DistortImageWithDimensions(MagickImage input, MagickImage image)
     {
-      var delX = (input.Width - _Width) / 2;
-      var delY = (input.Height - _Height) / 2;
+      var delX = (input.Width - _width) / 2;
+      var delY = (input.Height - _height) / 2;
       SetDistortViewport(image, (int)delX, (int)delY);
 
       var cx = input.Width / 2;
       var cy = input.Height / 2;
-      var magX = input.Width / _Width;
-      var magy = input.Height / _Height;
+      var magX = input.Width / _width;
+      var magy = input.Height / _height;
 
       image.Distort(DistortMethod.ScaleRotateTranslate, cx, cy, magX, magy, 0);
     }
 
     private void DistortImageWithMagnification(MagickImage input, MagickImage image)
     {
-      var delX = (input.Width - _Width) / 2;
-      var delY = (input.Height - _Height) / 2;
+      var delX = (input.Width - _width) / 2;
+      var delY = (input.Height - _height) / 2;
       SetDistortViewport(image, (int)delX, (int)delY);
 
       image.Distort(DistortMethod.ScaleRotateTranslate, Magnification.Value, 0);
@@ -466,7 +474,7 @@ namespace FredsImageMagickScripts
     {
       image.VirtualPixelMethod = VirtualPixelMethod.White;
 
-      var viewport = string.Format(CultureInfo.InvariantCulture, "{0}x{1}+{2}+{3}", (int)_Width, (int)_Height, x, y);
+      var viewport = string.Format(CultureInfo.InvariantCulture, "{0}x{1}+{2}+{3}", (int)_width, (int)_height, x, y);
       image.SetArtifact("distort:viewport", viewport);
     }
 

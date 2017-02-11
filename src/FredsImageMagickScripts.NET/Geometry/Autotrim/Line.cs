@@ -1,4 +1,4 @@
-﻿// <copyright file="TextCleanerLayout.cs" company="Dirk Lemstra, Fred Weinhaus">
+﻿// <copyright file="Line.cs" company="Dirk Lemstra, Fred Weinhaus">
 // https://github.com/dlemstra/FredsImageMagickScripts.NET
 //
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
@@ -19,19 +19,37 @@
 
 namespace FredsImageMagickScripts
 {
-  /// <summary>
-  /// Layout for the TextCleaner script.
-  /// </summary>
-  public enum TextCleanerLayout
+  /// <content>
+  /// The implementation of the private class <see cref="Line"/>.
+  /// </content>
+  public sealed partial class AutotrimScript
   {
-    /// <summary>
-    /// Portrait.
-    /// </summary>
-    Portrait,
+    private class Line
+    {
+      public Line(int x, int y)
+      {
+        X1 = x;
+        X2 = x;
+        Y = y;
+      }
 
-    /// <summary>
-    /// Landscape.
-    /// </summary>
-    Landscape
+      public int X1
+      {
+        get;
+        set;
+      }
+
+      public int X2
+      {
+        get;
+        set;
+      }
+
+      public int Y
+      {
+        get;
+        set;
+      }
+    }
   }
 }

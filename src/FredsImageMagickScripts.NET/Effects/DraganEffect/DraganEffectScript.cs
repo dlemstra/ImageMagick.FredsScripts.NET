@@ -1,6 +1,7 @@
-﻿//=================================================================================================
+﻿// <copyright file="DraganEffectScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+// https://github.com/dlemstra/FredsImageMagickScripts.NET
+//
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
-// <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -14,7 +15,7 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-//=================================================================================================
+// </copyright>
 
 using System;
 using ImageMagick;
@@ -27,7 +28,7 @@ namespace FredsImageMagickScripts
   public sealed class DraganEffectScript
   {
     /// <summary>
-    /// Creates a new instance of the DraganEffectScript class.
+    /// Initializes a new instance of the <see cref="DraganEffectScript"/> class.
     /// </summary>
     public DraganEffectScript()
     {
@@ -35,8 +36,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The brightness factor. Valid values are zero or higher. The default is 1. Increase
-    /// brightness is larger than 1, decrease brightness is less than 1.
+    /// Gets or sets the brightness factor. Valid values are zero or higher. The default is 1.
+    /// Increase brightness is larger than 1, decrease brightness is less than 1.
     /// </summary>
     public double Brightness
     {
@@ -45,8 +46,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Sigmoidal contrast. Valid values are nominally in the range of -10 to 10. Positive values
-    /// increase contrast and negative values decrease contrast. The default is 0.
+    /// Gets or sets the sigmoidal contrast. Valid values are nominally in the range of -10 to 10.
+    /// Positive values increase contrast and negative values decrease contrast. The default is 0.
     /// </summary>
     public double Contrast
     {
@@ -55,8 +56,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// The shadow darkening factor. Valid values are 1 or higher. The default is 1. Darker shadows
-    /// is larger than 1.
+    /// Gets or sets the shadow darkening factor. Valid values are 1 or higher. The default is 1.
+    /// Darker shadows is larger than 1.
     /// </summary>
     public double Darkness
     {
@@ -65,7 +66,8 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Saturation. Valid values are zero or higher. A value of 100 is no change. The default is 150.
+    /// Gets or sets saturation. Valid values are zero or higher. A value of 100 is no change.
+    /// The default is 150.
     /// </summary>
     public Percentage Saturation
     {
@@ -77,6 +79,7 @@ namespace FredsImageMagickScripts
     /// Applies a Dragan-like effect to an image to enhance wrinkles creating a "gritty" effect.
     /// </summary>
     /// <param name="input">The image to execute the script on.</param>
+    /// <returns>The resulting image.</returns>
     public MagickImage Execute(MagickImage input)
     {
       if (input == null)
