@@ -59,6 +59,15 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
+    public void Brightness_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Brightness must be >= 0.", (CartoonEffectScript script) =>
+      {
+        script.Brightness = (Percentage)(-1);
+      });
+    }
+
+    [TestMethod]
     public void EdgeAmount_BelowZero_ThrowsException()
     {
       AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
@@ -100,6 +109,15 @@ namespace FredsImageMagickScripts.NET.Tests
       AssertInvalidOperation("Number of levels must be >= 2.", (CartoonEffectScript script) =>
       {
         script.NumberOflevels = 1;
+      });
+    }
+
+    [TestMethod]
+    public void Saturation_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Saturation must be >= 0.", (CartoonEffectScript script) =>
+      {
+        script.Saturation = (Percentage)(-1);
       });
     }
 
