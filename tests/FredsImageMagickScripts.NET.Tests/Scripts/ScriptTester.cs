@@ -43,6 +43,21 @@ namespace FredsImageMagickScripts.NET.Tests
       return _root + @"Input\" + fileName;
     }
 
+    protected static string GetInputFile(string input, string methodName)
+    {
+      if (methodName == null)
+        throw new ArgumentNullException(nameof(methodName));
+
+      string fileName = Path.GetFileNameWithoutExtension(input);
+
+      int startOffset = "Execute_".Length;
+      int lastUnderscore = methodName.LastIndexOf('_');
+      fileName += "_" + methodName.Substring(startOffset, lastUnderscore - startOffset);
+      fileName += "." + methodName.Substring(lastUnderscore + 1);
+
+      return fileName;
+    }
+
     protected static void LosslessCompress(string fileName)
     {
       var optimizer = new ImageOptimizer();

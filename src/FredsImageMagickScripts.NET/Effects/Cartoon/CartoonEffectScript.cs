@@ -30,7 +30,7 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class CartoonEffectScript
   {
-    private static readonly string _edgeWidth = "2";
+    private static readonly int _edgeWidth = 2;
     private static readonly Percentage _edgeThreshold = new Percentage(90);
     private static readonly string _edgeGain = "4";
 
@@ -50,13 +50,16 @@ namespace FredsImageMagickScripts
     /// <param name="method">The cartoon method to use.</param>
     public CartoonEffectScript(CartoonMethod method)
     {
+      if (method != CartoonMethod.Method1 && method != CartoonMethod.Method2)
+        throw new ArgumentException("Invalid cartoon method specified.", nameof(method));
+
       _method = method;
 
       Reset();
     }
 
     /// <summary>
-    /// Gets or sets the brightness factor. Valid values are zero or higher. The default is 1.
+    /// Gets or sets the brightness factor. Valid values are zero or higher. The default is 100.
     /// Increase brightness is larger than 1, decrease brightness is less than 1.
     /// </summary>
     public Percentage Brightness
@@ -66,7 +69,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Gets or sets the edge amount, which must be &gt;= 0
+    /// Gets or sets the edge amount, which must be &gt;= 0. The default is 4.
     /// </summary>
     public double EdgeAmount
     {
@@ -75,7 +78,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Gets or sets the number of levels, which must be &gt;= 2
+    /// Gets or sets the number of levels, which must be &gt;= 2 The default is 6.
     /// </summary>
     public int NumberOflevels
     {
@@ -84,7 +87,7 @@ namespace FredsImageMagickScripts
     }
 
     /// <summary>
-    /// Gets or sets the segmentation pattern.
+    /// Gets or sets the segmentation pattern. The default is 70.
     /// </summary>
     public Percentage Pattern
     {
@@ -116,27 +119,20 @@ namespace FredsImageMagickScripts
 
       CheckSettings();
 
-      using (MagickImage tmpA1 = input.Clone())
+      using (MagickImage first = SelectiveBlur(input))
       {
-        using (var tmpA2 = input.Clone())
+        using (var second = first.Clone())
         {
-          tmpA2.Level(0, (byte)Pattern);
-          tmpA2.ColorSpace = ColorSpace.Gray;
-          tmpA2.Posterize(NumberOflevels);
-          tmpA2.Depth = 8;
-          tmpA2.GammaCorrect(2.2);
+          second.Level((Percentage)0, Pattern);
+          second.ColorSpace = ColorSpace.Gray;
+          second.Posterize(NumberOflevels);
+          second.GammaCorrect(2.2);
+          second.Blur(0, 1);
 
-          switch (_method)
-          {
-            case CartoonMethod.Method1:
-              return ExecuteMethod1(tmpA1, tmpA2);
+          if (_method == CartoonMethod.Method1)
+            return ExecuteMethod1(first, second);
 
-            case CartoonMethod.Method2:
-              return ExecuteMethod2(tmpA1, tmpA2);
-
-            default:
-              throw new InvalidOperationException("Invalid cartoon method specified.");
-          }
+          return ExecuteMethod2(first, second);
         }
       }
     }
@@ -153,6 +149,14 @@ namespace FredsImageMagickScripts
       Saturation = (Percentage)150;
     }
 
+    private static MagickImage SelectiveBlur(MagickImage image)
+    {
+      MagickImage result = image.Clone();
+      result.SelectiveBlur(0, 5, new Percentage(10));
+
+      return result;
+    }
+
     private void CheckSettings()
     {
       if (NumberOflevels < 2)
@@ -162,70 +166,54 @@ namespace FredsImageMagickScripts
         throw new InvalidOperationException("Edge amount must be >= 0.");
     }
 
-    private MagickImage ExecuteMethod2(MagickImage tmpA1, MagickImage tmpA2)
+    private MagickImage ExecuteMethod1(MagickImage first, MagickImage second)
     {
-      tmpA2.Blur(0, 1);
-
-      using (var second_0 = tmpA1.Clone())
+      using (var first_0 = first.Clone())
       {
-        using (var second_1 = tmpA2.Clone())
+        first_0.Composite(second, CompositeOperator.Multiply);
+        first_0.Modulate(Brightness, Saturation, (Percentage)100);
+
+        using (var third = first.Clone())
         {
-          second_0.Composite(second_1, CompositeOperator.Multiply);
-          second_0.Modulate(Brightness, Saturation, (Percentage)100);
+          third.ColorSpace = ColorSpace.Gray;
 
-          using (var third = tmpA1.Clone())
+          using (var fourth = third.Clone())
           {
-            third.ColorSpace = ColorSpace.Gray;
-            third.Negate();
-            third.SetArtifact("convolve:scale", _edgeGain);
-            third.Morphology(MorphologyMethod.Convolve, Kernel.DoG, "0,0," + _edgeWidth);
-            third.Negate();
-            third.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
-            third.WhiteThreshold(_edgeThreshold);
+            fourth.Negate();
+            fourth.Blur(0, _edgeWidth);
 
-            var result = second_0.Clone();
-            result.Composite(third, CompositeOperator.Multiply);
+            var result = third.Clone();
+            result.Composite(fourth, CompositeOperator.ColorDodge);
+            result.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
+            result.Threshold(_edgeThreshold);
+            result.Statistic(StatisticType.Median, 3, 3);
+
+            result.Composite(first_0, CompositeOperator.Multiply);
+
             return result;
           }
         }
       }
     }
 
-    private MagickImage ExecuteMethod1(MagickImage tmpA1, MagickImage tmpA2)
+    private MagickImage ExecuteMethod2(MagickImage first, MagickImage second)
     {
-      tmpA2.Blur(0, 1);
+      var result = first.Clone();
+      result.Composite(second, CompositeOperator.Multiply);
+      result.Modulate(Brightness, Saturation, (Percentage)100);
 
-      using (var second_0 = tmpA1.Clone())
+      using (var third = first.Clone())
       {
-        using (var second_1 = tmpA2.Clone())
-        {
-          second_0.Composite(second_1, CompositeOperator.Multiply);
-          second_0.Modulate(Brightness, Saturation, (Percentage)100);
+        third.ColorSpace = ColorSpace.Gray;
+        third.Negate();
+        third.SetArtifact("convolve:scale", _edgeGain);
+        third.Morphology(MorphologyMethod.Convolve, Kernel.DoG, "0,0," + _edgeWidth);
+        third.Negate();
+        third.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
+        third.WhiteThreshold(_edgeThreshold);
 
-          using (var third = tmpA1.Clone())
-          {
-            third.ColorSpace = ColorSpace.Gray;
-
-            using (var fourth = third.Clone())
-            {
-              fourth.Negate();
-              fourth.Blur(0, 2);
-
-              var fifth_0 = third.Clone();
-              using (var fifth_1 = fourth.Clone())
-              {
-                fifth_0.Composite(fifth_1, CompositeOperator.ColorDodge);
-                fifth_0.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
-                fifth_0.Threshold(_edgeThreshold);
-                fifth_0.Statistic(StatisticType.Median, 3, 3);
-
-                fifth_0.Composite(second_0, CompositeOperator.Multiply);
-
-                return fifth_0;
-              }
-            }
-          }
-        }
+        result.Composite(third, CompositeOperator.Multiply);
+        return result;
       }
     }
   }

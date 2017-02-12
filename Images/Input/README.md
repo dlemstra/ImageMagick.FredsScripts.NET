@@ -22,8 +22,12 @@ kanji.jpg | http://www.measurement.sk/2004/S1/Yong.pdf
 mandril2_*.jpg | Unknown
 monet2_p30_t30_r30_out | Unknown
 mustache.jpg | http://3rdelement.com/photography/dragan-effect/
+obama.jpg | Unknown
+oriental_lady.jpg | Unknown
 parts.gif | http://www.ph.tn.tudelft.nl/Courses/FIP/noframes/fip-Segmenta.html
+photo-1h.jpg | http://thoughtcatalog.com/tyler-vendetti/2013/01/what-your-favorite-instagram-filter-says-about-you/
 railways.jpg | Unknown
+redhat.jpg | Unknown
 receipt1.jpg | http://www.beechman.co.uk/receipt_paper/111mm_wide_receipt.jpg
 receipt2.jpg | http://www.forkparty.com/wp-content/uploads/2011/02/Funny-Receipt-Fail.jpg
 redcanoe_p30_t30_out.jpg | http://www.entheosweb.com/photoshop/glass_effects.asp
