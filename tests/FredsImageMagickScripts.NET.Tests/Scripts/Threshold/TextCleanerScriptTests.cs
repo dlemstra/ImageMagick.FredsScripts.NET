@@ -374,6 +374,31 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
+    public void Execute_a2_S100_st50_jpg()
+    {
+      Test_Execute("rfid.jpg", nameof(Execute_a2_S100_st50_jpg), (TextCleanerScript script) =>
+      {
+        script.AdaptiveBlur = 2;
+        script.Saturation = new Percentage(100);
+        script.SmoothingThreshold = new Percentage(50);
+      });
+    }
+
+    [TestMethod]
+    public void Execute_g_f25_o5_s1_rcc_jpg()
+    {
+      Test_Execute("rfid.jpg", nameof(Execute_g_f25_o5_s1_rcc_jpg), (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Stretch;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)5;
+        script.Rotation = TextCleanerRotation.Counterclockwise;
+        script.Sharpen = 1;
+      });
+    }
+
+    [TestMethod]
     public void Execute_g_stretch_f15_o5_s1_jpg()
     {
       Test_Execute("telegram.jpg", nameof(Execute_g_stretch_f15_o5_s1_jpg), (TextCleanerScript script) =>
