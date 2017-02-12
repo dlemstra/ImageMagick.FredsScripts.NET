@@ -27,11 +27,17 @@ namespace FredsImageMagickScripts.NET.Tests
   public class TextCleanerScriptTests : ScriptTester
   {
     [TestMethod]
-    public void Test_Defaults()
+    public void Constructor_SettingsSetToDefaults()
     {
       var script = new TextCleanerScript();
-      Test_Defaults(script);
 
+      AssertDefaults(script);
+    }
+
+    [TestMethod]
+    public void Reset_AllSettingsChanged_RestoredToDefault()
+    {
+      var script = new TextCleanerScript();
       script.AdaptiveBlur = 2;
       script.BackgroundColor = new MagickColor("yellow");
       script.CropOffset.Left = 1;
@@ -52,13 +58,123 @@ namespace FredsImageMagickScripts.NET.Tests
       script.Unrotate = true;
 
       script.Reset();
-      Test_Defaults(script);
+
+      AssertDefaults(script);
     }
 
     [TestMethod]
-    public void Test_Execute_abbott2_g_none_f15_o20()
+    public void AdaptiveBlur_BelowZero_ThrowsException()
     {
-      Test_Execute("abbott2.jpg", "abbott2_g_none_f15_o20.jpg", (TextCleanerScript script) =>
+      AssertInvalidOperation("Invalid adaptive blur specified, value must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.AdaptiveBlur = -1;
+      });
+    }
+
+    [TestMethod]
+    public void CropOffset_BottomBelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid crop offset specified, values must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.CropOffset.Bottom = -1;
+      });
+    }
+
+    [TestMethod]
+    public void CropOffset_LeftBelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid crop offset specified, values must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.CropOffset.Left = -1;
+      });
+    }
+
+    [TestMethod]
+    public void CropOffset_RightBelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid crop offset specified, values must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.CropOffset.Right = -1;
+      });
+    }
+
+    [TestMethod]
+    public void CropOffset_TopBelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid crop offset specified, values must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.CropOffset.Top = -1;
+      });
+    }
+
+    [TestMethod]
+    public void FilterSize_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid filter size specified, value must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.FilterSize = -1;
+      });
+    }
+
+    [TestMethod]
+    public void Padding_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid padding specified, value must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.Padding = -1;
+      });
+    }
+
+    [TestMethod]
+    public void Sharpen_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid sharpen specified, value must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.Sharpen = -1;
+      });
+    }
+
+    [TestMethod]
+    public void Saturation_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid saturation specified, value must be zero or higher.", (TextCleanerScript script) =>
+      {
+        script.Saturation = (Percentage)(-1);
+      });
+    }
+
+    [TestMethod]
+    public void SmoothingThreshold_Above100_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid smoothing threshold specified, value must be between zero and 100.", (TextCleanerScript script) =>
+      {
+        script.SmoothingThreshold = (Percentage)101;
+      });
+    }
+
+    [TestMethod]
+    public void SmoothingThreshold_MinusOneOrLower_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid smoothing threshold specified, value must be between zero and 100.", (TextCleanerScript script) =>
+      {
+        script.SmoothingThreshold = (Percentage)(-1);
+      });
+    }
+
+    [TestMethod]
+    public void Execute_InputNull_ThrowsException()
+    {
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
+      {
+        var script = new TextCleanerScript();
+        script.Execute(null);
+      });
+    }
+
+    [TestMethod]
+    public void Execute_g_none_f15_o20_jpg()
+    {
+      Test_Execute("abbott2.jpg", nameof(Execute_g_none_f15_o20_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.None;
@@ -68,9 +184,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_abbott2_g_stretch_f15_o20()
+    public void Execute_g_stretch_f15_o20_jpg()
     {
-      Test_Execute("abbott2.jpg", "abbott2_g_stretch_f15_o20.jpg", (TextCleanerScript script) =>
+      Test_Execute("abbott2.jpg", nameof(Execute_g_stretch_f15_o20_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -80,9 +196,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_abbott2_g_stretch_f25_o20()
+    public void Execute_g_stretch_f25_o20_jpg()
     {
-      Test_Execute("abbott2.jpg", "abbott2_g_stretch_f25_o20.jpg", (TextCleanerScript script) =>
+      Test_Execute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -92,9 +208,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_abbott2_g_stretch_f25_o20_s1()
+    public void Execute_g_stretch_f25_o20_s1_jpg()
     {
-      Test_Execute("abbott2.jpg", "abbott2_g_stretch_f25_o20_s1.jpg", (TextCleanerScript script) =>
+      Test_Execute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -105,9 +221,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_abbott2_g_stretch_f25_o20_t30_s1_u_T_p20()
+    public void Execute_g_stretch_f25_o20_t30_s1_u_T_p20_jpg()
     {
-      Test_Execute("abbott2.jpg", "abbott2_g_stretch_f25_o20_t30_s1_u_T_p20.jpg", (TextCleanerScript script) =>
+      Test_Execute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_t30_s1_u_T_p20_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -121,46 +237,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_brscan_original_r90_g_none_f15_o10()
+    public void Execute_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20_jpg()
     {
-      Test_Execute("brscan_original_r90.jpg", "brscan_original_r90_g_none_f15_o10.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.None;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)10;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_brscan_original_r90_g_normalize_f15_o10()
-    {
-      Test_Execute("brscan_original_r90.jpg", "brscan_original_r90_g_normalize_f15_o10.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Normalize;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)10;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_brscan_original_r90_g_normalize_f15_o10_s1()
-    {
-      Test_Execute("brscan_original_r90.jpg", "brscan_original_r90_g_normalize_f15_o10_s1.jpg", (TextCleanerScript script) =>
-      {
-        script.MakeGray = true;
-        script.Enhance = TextCleanerEnhance.Normalize;
-        script.FilterSize = 15;
-        script.FilterOffset = (Percentage)10;
-        script.Sharpen = 1;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_brscan_original_r90_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20()
-    {
-      Test_Execute("brscan_original_r90.jpg", "brscan_original_r90_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20.jpg", (TextCleanerScript script) =>
+      Test_Execute("brscan_original_r90.jpg", nameof(Execute_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20_jpg), (TextCleanerScript script) =>
       {
         script.CropOffset.Top = 50;
         script.MakeGray = true;
@@ -175,9 +254,46 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_congress_norm_f15_o5_S200()
+    public void Execute_g_none_f15_o10_jpg()
     {
-      Test_Execute("congress.jpg", "congress_norm_f15_o5_S200.jpg", (TextCleanerScript script) =>
+      Test_Execute("brscan_original_r90.jpg", nameof(Execute_g_none_f15_o10_jpg), (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.None;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)10;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_g_normalize_f15_o10_jpg()
+    {
+      Test_Execute("brscan_original_r90.jpg", nameof(Execute_g_normalize_f15_o10_jpg), (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Normalize;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)10;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_g_normalize_f15_o10_s1_jpg()
+    {
+      Test_Execute("brscan_original_r90.jpg", nameof(Execute_g_normalize_f15_o10_s1_jpg), (TextCleanerScript script) =>
+      {
+        script.MakeGray = true;
+        script.Enhance = TextCleanerEnhance.Normalize;
+        script.FilterSize = 15;
+        script.FilterOffset = (Percentage)10;
+        script.Sharpen = 1;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_norm_f15_o5_S200_jpg()
+    {
+      Test_Execute("congress.jpg", nameof(Execute_norm_f15_o5_S200_jpg), (TextCleanerScript script) =>
       {
         script.Enhance = TextCleanerEnhance.Normalize;
         script.FilterSize = 15;
@@ -187,9 +303,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_congress_norm_f15_o5_S200_s1()
+    public void Execute_norm_f15_o5_S200_s1_jpg()
     {
-      Test_Execute("congress.jpg", "congress_norm_f15_o5_S200_s1.jpg", (TextCleanerScript script) =>
+      Test_Execute("congress.jpg", nameof(Execute_norm_f15_o5_S200_s1_jpg), (TextCleanerScript script) =>
       {
         script.Enhance = TextCleanerEnhance.Normalize;
         script.FilterSize = 15;
@@ -200,9 +316,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_congress_norm_f15_o5_S400()
+    public void Execute_norm_f15_o5_S400_jpg()
     {
-      Test_Execute("congress.jpg", "congress_norm_f15_o5_S400.jpg", (TextCleanerScript script) =>
+      Test_Execute("congress.jpg", nameof(Execute_norm_f15_o5_S400_jpg), (TextCleanerScript script) =>
       {
         script.Enhance = TextCleanerEnhance.Normalize;
         script.FilterSize = 15;
@@ -213,9 +329,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_crankshaft_g_stretch_f25_o10_u_s1_T_p10()
+    public void Execute_g_stretch_f25_o10_u_s1_T_p10_jpg()
     {
-      Test_Execute("crankshaft.jpg", "crankshaft_g_stretch_f25_o10_u_s1_T_p10.jpg", (TextCleanerScript script) =>
+      Test_Execute("crankshaft.jpg", nameof(Execute_g_stretch_f25_o10_u_s1_T_p10_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -230,9 +346,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_railways_g_stretch_f25_o5_s1()
+    public void Execute_g_stretch_f25_o5_s1_jpg()
     {
-      Test_Execute("railways.jpg", "railways_g_stretch_f25_o5_s1.jpg", (TextCleanerScript script) =>
+      Test_Execute("railways.jpg", nameof(Execute_g_stretch_f25_o5_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -244,9 +360,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_rfid_g_stretch_f25_o5_s1()
+    public void Execute__g_stretch_f25_o5_s1_jpg()
     {
-      Test_Execute("rfid.jpg", "rfid_g_stretch_f25_o5_s1.jpg", (TextCleanerScript script) =>
+      Test_Execute("rfid.jpg", nameof(Execute__g_stretch_f25_o5_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -258,9 +374,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_telegram_g_stretch_f15_o5_s1()
+    public void Execute_g_stretch_f15_o5_s1_jpg()
     {
-      Test_Execute("telegram.jpg", "telegram_g_stretch_f15_o5_s1.jpg", (TextCleanerScript script) =>
+      Test_Execute("telegram.jpg", nameof(Execute_g_stretch_f15_o5_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -271,9 +387,9 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_twinkle_g_stretch_f25_o10_s1()
+    public void Execute_g_stretch_f25_o10_s1_jpg()
     {
-      Test_Execute("twinkle.jpg", "twinkle_g_stretch_f25_o10_s1.jpg", (TextCleanerScript script) =>
+      Test_Execute("twinkle.jpg", nameof(Execute_g_stretch_f25_o10_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -284,104 +400,7 @@ namespace FredsImageMagickScripts.NET.Tests
       });
     }
 
-    [TestMethod]
-    public void Test_Execute_Null()
-    {
-      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
-      {
-        var script = new TextCleanerScript();
-        script.Execute(null);
-      });
-    }
-
-    [TestMethod]
-    public void Test_Settings()
-    {
-      var script = new TextCleanerScript();
-
-      using (var logo = new MagickImage(Images.Logo))
-      {
-        script.Execute(logo);
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.AdaptiveBlur = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.CropOffset.Bottom = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.CropOffset.Left = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.CropOffset.Right = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.CropOffset.Top = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.FilterSize = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.Padding = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.Sharpen = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.Saturation = (Percentage)(-1);
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.SmoothingThreshold = (Percentage)150;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.SmoothingThreshold = (Percentage)(-50);
-          script.Execute(logo);
-        });
-      }
-    }
-
-    private static void Test_Defaults(TextCleanerScript script)
+    private static void AssertDefaults(TextCleanerScript script)
     {
       Assert.AreEqual(0.0, script.AdaptiveBlur);
       ColorAssert.AreEqual(new MagickColor("white"), script.BackgroundColor);
@@ -403,18 +422,36 @@ namespace FredsImageMagickScripts.NET.Tests
       Assert.AreEqual(false, script.Unrotate);
     }
 
-    private void Test_Execute(string input, string output, Action<TextCleanerScript> action)
+    private static void AssertInvalidOperation(string expectedMessage, Action<TextCleanerScript> initAction)
+    {
+      var script = new TextCleanerScript();
+
+      using (var logo = new MagickImage(Images.Logo))
+      {
+        initAction(script);
+
+        ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+        {
+          script.Execute(logo);
+        });
+      }
+    }
+
+    private void Test_Execute(string input, string methodName, Action<TextCleanerScript> action)
     {
       string inputFile = GetInputFile(input);
       /* LosslessCompress(inputFile); */
 
-      using (MagickImage image = new MagickImage(inputFile))
+      using (var image = new MagickImage(inputFile))
       {
         TextCleanerScript script = new TextCleanerScript();
         action(script);
 
-        MagickImage scriptOutput = script.Execute(image);
-        AssertOutput(scriptOutput, output);
+        using (var scriptOutput = script.Execute(image))
+        {
+          string outputFile = GetInputFile(input, methodName);
+          AssertOutput(scriptOutput, outputFile);
+        }
       }
     }
   }
