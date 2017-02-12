@@ -174,7 +174,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_none_f15_o20_jpg()
     {
-      Test_Execute("abbott2.jpg", nameof(Execute_g_none_f15_o20_jpg), (TextCleanerScript script) =>
+      AssertExecute("abbott2.jpg", nameof(Execute_g_none_f15_o20_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.None;
@@ -186,7 +186,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_stretch_f15_o20_jpg()
     {
-      Test_Execute("abbott2.jpg", nameof(Execute_g_stretch_f15_o20_jpg), (TextCleanerScript script) =>
+      AssertExecute("abbott2.jpg", nameof(Execute_g_stretch_f15_o20_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -198,7 +198,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_stretch_f25_o20_jpg()
     {
-      Test_Execute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_jpg), (TextCleanerScript script) =>
+      AssertExecute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -210,7 +210,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_stretch_f25_o20_s1_jpg()
     {
-      Test_Execute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_s1_jpg), (TextCleanerScript script) =>
+      AssertExecute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -223,7 +223,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_stretch_f25_o20_t30_s1_u_T_p20_jpg()
     {
-      Test_Execute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_t30_s1_u_T_p20_jpg), (TextCleanerScript script) =>
+      AssertExecute("abbott2.jpg", nameof(Execute_g_stretch_f25_o20_t30_s1_u_T_p20_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -239,7 +239,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20_jpg()
     {
-      Test_Execute("brscan_original_r90.jpg", nameof(Execute_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20_jpg), (TextCleanerScript script) =>
+      AssertExecute("brscan_original_r90.jpg", nameof(Execute_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20_jpg), (TextCleanerScript script) =>
       {
         script.CropOffset.Top = 50;
         script.MakeGray = true;
@@ -256,7 +256,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_none_f15_o10_jpg()
     {
-      Test_Execute("brscan_original_r90.jpg", nameof(Execute_g_none_f15_o10_jpg), (TextCleanerScript script) =>
+      AssertExecute("brscan_original_r90.jpg", nameof(Execute_g_none_f15_o10_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.None;
@@ -268,7 +268,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_normalize_f15_o10_jpg()
     {
-      Test_Execute("brscan_original_r90.jpg", nameof(Execute_g_normalize_f15_o10_jpg), (TextCleanerScript script) =>
+      AssertExecute("brscan_original_r90.jpg", nameof(Execute_g_normalize_f15_o10_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Normalize;
@@ -280,7 +280,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_normalize_f15_o10_s1_jpg()
     {
-      Test_Execute("brscan_original_r90.jpg", nameof(Execute_g_normalize_f15_o10_s1_jpg), (TextCleanerScript script) =>
+      AssertExecute("brscan_original_r90.jpg", nameof(Execute_g_normalize_f15_o10_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Normalize;
@@ -293,7 +293,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_norm_f15_o5_S200_jpg()
     {
-      Test_Execute("congress.jpg", nameof(Execute_norm_f15_o5_S200_jpg), (TextCleanerScript script) =>
+      AssertExecute("congress.jpg", nameof(Execute_norm_f15_o5_S200_jpg), (TextCleanerScript script) =>
       {
         script.Enhance = TextCleanerEnhance.Normalize;
         script.FilterSize = 15;
@@ -305,7 +305,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_norm_f15_o5_S200_s1_jpg()
     {
-      Test_Execute("congress.jpg", nameof(Execute_norm_f15_o5_S200_s1_jpg), (TextCleanerScript script) =>
+      AssertExecute("congress.jpg", nameof(Execute_norm_f15_o5_S200_s1_jpg), (TextCleanerScript script) =>
       {
         script.Enhance = TextCleanerEnhance.Normalize;
         script.FilterSize = 15;
@@ -318,7 +318,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_norm_f15_o5_S400_jpg()
     {
-      Test_Execute("congress.jpg", nameof(Execute_norm_f15_o5_S400_jpg), (TextCleanerScript script) =>
+      AssertExecute("congress.jpg", nameof(Execute_norm_f15_o5_S400_jpg), (TextCleanerScript script) =>
       {
         script.Enhance = TextCleanerEnhance.Normalize;
         script.FilterSize = 15;
@@ -331,7 +331,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_stretch_f25_o10_u_s1_T_p10_jpg()
     {
-      Test_Execute("crankshaft.jpg", nameof(Execute_g_stretch_f25_o10_u_s1_T_p10_jpg), (TextCleanerScript script) =>
+      AssertExecute("crankshaft.jpg", nameof(Execute_g_stretch_f25_o10_u_s1_T_p10_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -348,7 +348,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_stretch_f25_o5_s1_jpg()
     {
-      Test_Execute("railways.jpg", nameof(Execute_g_stretch_f25_o5_s1_jpg), (TextCleanerScript script) =>
+      AssertExecute("railways.jpg", nameof(Execute_g_stretch_f25_o5_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -362,7 +362,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute__g_stretch_f25_o5_s1_jpg()
     {
-      Test_Execute("rfid.jpg", nameof(Execute__g_stretch_f25_o5_s1_jpg), (TextCleanerScript script) =>
+      AssertExecute("rfid.jpg", nameof(Execute__g_stretch_f25_o5_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -376,7 +376,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_a2_S100_st50_jpg()
     {
-      Test_Execute("rfid.jpg", nameof(Execute_a2_S100_st50_jpg), (TextCleanerScript script) =>
+      AssertExecute("rfid.jpg", nameof(Execute_a2_S100_st50_jpg), (TextCleanerScript script) =>
       {
         script.AdaptiveBlur = 2;
         script.Saturation = new Percentage(100);
@@ -387,7 +387,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_f25_o5_s1_rcc_jpg()
     {
-      Test_Execute("rfid.jpg", nameof(Execute_g_f25_o5_s1_rcc_jpg), (TextCleanerScript script) =>
+      AssertExecute("rfid.jpg", nameof(Execute_g_f25_o5_s1_rcc_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -401,7 +401,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_stretch_f15_o5_s1_jpg()
     {
-      Test_Execute("telegram.jpg", nameof(Execute_g_stretch_f15_o5_s1_jpg), (TextCleanerScript script) =>
+      AssertExecute("telegram.jpg", nameof(Execute_g_stretch_f15_o5_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -414,7 +414,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_g_stretch_f25_o10_s1_jpg()
     {
-      Test_Execute("twinkle.jpg", nameof(Execute_g_stretch_f25_o10_s1_jpg), (TextCleanerScript script) =>
+      AssertExecute("twinkle.jpg", nameof(Execute_g_stretch_f25_o10_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
@@ -462,7 +462,7 @@ namespace FredsImageMagickScripts.NET.Tests
       }
     }
 
-    private void Test_Execute(string input, string methodName, Action<TextCleanerScript> action)
+    private void AssertExecute(string input, string methodName, Action<TextCleanerScript> action)
     {
       string inputFile = GetInputFile(input);
       /* LosslessCompress(inputFile); */
