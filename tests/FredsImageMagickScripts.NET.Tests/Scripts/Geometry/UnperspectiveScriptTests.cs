@@ -287,7 +287,7 @@ namespace FredsImageMagickScripts.NET.Tests
         action(script);
 
         var scriptOutput = script.Execute(inputImage);
-        TestOutput(scriptOutput, output);
+        AssertOutput(scriptOutput, output);
       }
     }
   }

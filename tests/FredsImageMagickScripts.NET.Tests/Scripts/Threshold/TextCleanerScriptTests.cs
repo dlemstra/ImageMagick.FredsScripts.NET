@@ -414,7 +414,7 @@ namespace FredsImageMagickScripts.NET.Tests
         action(script);
 
         MagickImage scriptOutput = script.Execute(image);
-        TestOutput(scriptOutput, output);
+        AssertOutput(scriptOutput, output);
       }
     }
   }

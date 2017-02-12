@@ -106,7 +106,7 @@ namespace FredsImageMagickScripts.NET.Tests
       {
         using (var scriptOutput = TwoColorThreshScript.Execute(image))
         {
-          TestOutput(scriptOutput, output);
+          AssertOutput(scriptOutput, output);
         }
       }
     }

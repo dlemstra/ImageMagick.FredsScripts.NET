@@ -19,7 +19,6 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FredsImageMagickScripts.NET.Tests
@@ -27,51 +26,24 @@ namespace FredsImageMagickScripts.NET.Tests
   [ExcludeFromCodeCoverage]
   public static class ExceptionAssert
   {
-    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
-    public static void Throws<TException>(Action action)
+    public static TException Throws<TException>(Action action)
        where TException : Exception
     {
-      Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
-    }
+      if (action == null)
+        throw new ArgumentNullException(nameof(action));
 
-    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
-    public static void Throws<TException>(string expectedMessage, Action action)
-       where TException : Exception
-    {
-      var message = Throws<TException>(action, "Exception of type {0} was not thrown.", typeof(TException).Name);
-      Assert.AreEqual(expectedMessage, message);
-    }
-
-    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
-    public static void ThrowsArgumentException<TException>(string paramName, Action action)
-      where TException : ArgumentException
-    {
-      Throws<TException>(action, "Exception of type {0} was not thrown for {1}.", typeof(TException).Name, paramName);
-    }
-
-    private static void Fail(string message, params object[] arguments)
-    {
-      if (arguments != null && arguments.Length > 0)
-        Assert.Fail(string.Format(CultureInfo.InvariantCulture, message, arguments));
-      else
-        Assert.Fail(message);
-    }
-
-    private static string Throws<TException>(Action action, string message, params object[] arguments)
-       where TException : Exception
-    {
       try
       {
         action();
-        Fail(message, arguments);
+        Assert.Fail("Exception of type {0} was not thrown.", typeof(TException).Name);
       }
       catch (TException exception)
       {
         var type = exception.GetType();
         if (type != typeof(TException))
-          Fail("Exception of type {0} was not thrown an exception of type {1} was thrown.", typeof(TException).Name, type.Name);
+          Assert.Fail("Exception of type {0} was not thrown an exception of type {1} was thrown.", typeof(TException).Name, type.Name);
 
-        return exception.Message;
+        return exception;
       }
       catch (Exception)
       {
@@ -79,6 +51,31 @@ namespace FredsImageMagickScripts.NET.Tests
       }
 
       return null;
+    }
+
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
+    public static void Throws<TException>(string expectedMessage, Action action)
+       where TException : Exception
+    {
+      var exception = Throws<TException>(action);
+      Assert.AreEqual(expectedMessage, exception.Message);
+    }
+
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
+    public static void ThrowsArgumentException<TException>(string paramName, Action action)
+      where TException : ArgumentException
+    {
+      var exception = Throws<TException>(action);
+      Assert.AreEqual(paramName, exception.ParamName);
+    }
+
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "False positive.")]
+    public static void ThrowsArgumentException<TException>(string paramName, string expectedMessage, Action action)
+      where TException : ArgumentException
+    {
+      var exception = Throws<ArgumentException>(action);
+      Assert.AreEqual(expectedMessage, exception.Message.Split(Environment.NewLine.ToCharArray())[0]);
+      Assert.AreEqual(paramName, exception.ParamName);
     }
   }
 }

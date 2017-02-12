@@ -44,8 +44,8 @@ namespace FredsImageMagickScripts.NET.Tests
       {
         Test_SetCoordinates("topLeft", invalid[i], topRight, bottomLeft, bottomRight);
         Test_SetCoordinates("topRight", topLeft, invalid[i], bottomLeft, bottomRight);
-        Test_SetCoordinates("bottomLeft", topLeft, topRight, invalid[i], bottomRight);
-        Test_SetCoordinates("bottomRight", topLeft, topRight, bottomLeft, invalid[i]);
+        Test_SetCoordinates("bottomRight", topLeft, topRight, invalid[i], bottomRight);
+        Test_SetCoordinates("bottomLeft", topLeft, topRight, bottomLeft, invalid[i]);
       }
     }
 
@@ -287,7 +287,7 @@ namespace FredsImageMagickScripts.NET.Tests
 
         using (var scriptOutput = script.Execute(image))
         {
-          TestOutput(scriptOutput, output);
+          AssertOutput(scriptOutput, output);
         }
       }
     }

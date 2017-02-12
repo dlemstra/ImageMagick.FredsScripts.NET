@@ -50,7 +50,7 @@ namespace FredsImageMagickScripts.NET.Tests
       optimizer.LosslessCompress(fileName);
     }
 
-    protected void TestOutput(MagickImage image, string expectedOutput)
+    protected void AssertOutput(MagickImage image, string expectedOutput)
     {
       if (image == null)
         throw new InvalidOperationException();

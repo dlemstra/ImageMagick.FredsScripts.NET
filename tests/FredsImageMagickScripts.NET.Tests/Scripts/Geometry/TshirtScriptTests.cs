@@ -175,8 +175,8 @@ namespace FredsImageMagickScripts.NET.Tests
       {
         Test_SetCoordinates("topLeft", invalid[i], _topRight, _bottomLeft, _bottomRight);
         Test_SetCoordinates("topRight", _topLeft, invalid[i], _bottomLeft, _bottomRight);
-        Test_SetCoordinates("bottomLeft", _topLeft, _topRight, invalid[i], _bottomRight);
-        Test_SetCoordinates("bottomRight", _topLeft, _topRight, _bottomLeft, invalid[i]);
+        Test_SetCoordinates("bottomRight", _topLeft, _topRight, invalid[i], _bottomRight);
+        Test_SetCoordinates("bottomLeft", _topLeft, _topRight, _bottomLeft, invalid[i]);
       }
     }
 
@@ -282,7 +282,7 @@ namespace FredsImageMagickScripts.NET.Tests
           action(script);
 
           var scriptOutput = script.Execute(tshirtImage, overlayImage);
-          TestOutput(scriptOutput, output);
+          AssertOutput(scriptOutput, output);
         }
       }
     }
