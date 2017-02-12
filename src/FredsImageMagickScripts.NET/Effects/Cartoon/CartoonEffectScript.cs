@@ -160,16 +160,16 @@ namespace FredsImageMagickScripts
     private void CheckSettings()
     {
       if (Brightness.ToDouble() < 0.0)
-        throw new InvalidOperationException("Brightness must be >= 0.");
+        throw new InvalidOperationException("Invalid brightness specified, value must be zero or higher.");
 
       if (EdgeAmount < 0 || double.IsInfinity(EdgeAmount) || double.IsNaN(EdgeAmount))
-        throw new InvalidOperationException("Edge amount must be >= 0.");
+        throw new InvalidOperationException("Invalid edge amount specified, value must be zero or higher.");
 
       if (NumberOflevels < 2)
-        throw new InvalidOperationException("Number of levels must be >= 2.");
+        throw new InvalidOperationException("Invalid number of levels specified, value must be two or higher.");
 
       if (Saturation.ToDouble() < 0.0)
-        throw new InvalidOperationException("Saturation must be >= 0.");
+        throw new InvalidOperationException("Invalid saturation specified, value must be zero or higher.");
     }
 
     private MagickImage ExecuteMethod1(MagickImage first, MagickImage second)

@@ -61,7 +61,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Brightness_BelowZero_ThrowsException()
     {
-      AssertInvalidOperation("Brightness must be >= 0.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid brightness specified, value must be zero or higher.", (CartoonEffectScript script) =>
       {
         script.Brightness = (Percentage)(-1);
       });
@@ -70,7 +70,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void EdgeAmount_BelowZero_ThrowsException()
     {
-      AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonEffectScript script) =>
       {
         script.EdgeAmount = -1;
       });
@@ -79,7 +79,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void EdgeAmount_IsNan_ThrowsException()
     {
-      AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonEffectScript script) =>
       {
         script.EdgeAmount = double.NaN;
       });
@@ -88,7 +88,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void EdgeAmount_IsNegativeInfinity_ThrowsException()
     {
-      AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonEffectScript script) =>
       {
         script.EdgeAmount = double.NegativeInfinity;
       });
@@ -97,7 +97,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void EdgeAmount_IsPositiveInfinity_ThrowsException()
     {
-      AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonEffectScript script) =>
       {
         script.EdgeAmount = double.PositiveInfinity;
       });
@@ -106,7 +106,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void NumberOflevels_BelowTwo_ThrowsException()
     {
-      AssertInvalidOperation("Number of levels must be >= 2.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid number of levels specified, value must be two or higher.", (CartoonEffectScript script) =>
       {
         script.NumberOflevels = 1;
       });
@@ -115,7 +115,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Saturation_BelowZero_ThrowsException()
     {
-      AssertInvalidOperation("Saturation must be >= 0.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid saturation specified, value must be zero or higher.", (CartoonEffectScript script) =>
       {
         script.Saturation = (Percentage)(-1);
       });
