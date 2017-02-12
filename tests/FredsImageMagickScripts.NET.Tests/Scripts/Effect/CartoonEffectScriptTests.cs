@@ -27,25 +27,75 @@ namespace FredsImageMagickScripts.NET.Tests
   public class CartoonEffectScriptTests : ScriptTester
   {
     [TestMethod]
-    public void Test_Defaults()
+    public void Constructor_SettingsSetToDefaults()
     {
       var script = new CartoonEffectScript();
-      Test_Defaults(script);
 
+      AssertDefaults(script);
+    }
+
+    [TestMethod]
+    public void Reset_AllSettingsChanged_RestoredToDefault()
+    {
+      var script = new CartoonEffectScript();
       script.Brightness = (Percentage)42;
       script.EdgeAmount = 5;
-      script.EdgeThreshold = (Percentage)42;
-      script.EdgeWidth = 15;
       script.NumberOflevels = 8;
       script.Pattern = (Percentage)42;
       script.Saturation = (Percentage)42;
 
       script.Reset();
-      Test_Defaults(script);
+
+      AssertDefaults(script);
     }
 
     [TestMethod]
-    public void Test_Execute_Null()
+    public void EdgeAmount_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
+      {
+        script.EdgeAmount = -1;
+      });
+    }
+
+    [TestMethod]
+    public void EdgeAmount_IsNan_ThrowsException()
+    {
+      AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
+      {
+        script.EdgeAmount = double.NaN;
+      });
+    }
+
+    [TestMethod]
+    public void EdgeAmount_IsNegativeInfinity_ThrowsException()
+    {
+      AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
+      {
+        script.EdgeAmount = double.NegativeInfinity;
+      });
+    }
+
+    [TestMethod]
+    public void EdgeAmount_IsPositiveInfinity_ThrowsException()
+    {
+      AssertInvalidOperation("Edge amount must be >= 0.", (CartoonEffectScript script) =>
+      {
+        script.EdgeAmount = double.PositiveInfinity;
+      });
+    }
+
+    [TestMethod]
+    public void NumberOflevels_BelowTwo_ThrowsException()
+    {
+      AssertInvalidOperation("Number of levels must be >= 2.", (CartoonEffectScript script) =>
+      {
+        script.NumberOflevels = 1;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_InputNull_ThrowsException()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
       {
@@ -54,77 +104,28 @@ namespace FredsImageMagickScripts.NET.Tests
       });
     }
 
-    [TestMethod]
-    public void Test_Settings()
-    {
-      var script = new CartoonEffectScript();
-
-      using (var logo = new MagickImage(Images.Logo))
-      {
-        script.Execute(logo);
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.NumberOflevels = 1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.EdgeAmount = -1;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.EdgeAmount = float.NaN;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.EdgeAmount = float.NegativeInfinity;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.EdgeAmount = float.PositiveInfinity;
-          script.Execute(logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Reset();
-          script.EdgeWidth = -1;
-          script.Execute(logo);
-        });
-
-        // Test that execution works fine after a reset
-        script.Reset();
-        var result = script.Execute(logo);
-        Assert.IsNotNull(result);
-
-        // Test method 2 as well to execute different code path
-        script = new CartoonEffectScript(CartoonMethod.Method2);
-        result = script.Execute(logo);
-        Assert.IsNotNull(result);
-      }
-    }
-
-    private static void Test_Defaults(CartoonEffectScript script)
+    private static void AssertDefaults(CartoonEffectScript script)
     {
       Assert.AreEqual((Percentage)70, script.Pattern);
       Assert.AreEqual(6, script.NumberOflevels);
       Assert.AreEqual(4, script.EdgeAmount);
       Assert.AreEqual((Percentage)100, script.Brightness);
       Assert.AreEqual((Percentage)150, script.Saturation);
-      Assert.AreEqual(2, script.EdgeWidth);
-      Assert.AreEqual((Percentage)90, script.EdgeThreshold);
+    }
+
+    private void AssertInvalidOperation(string expectedMessage, Action<CartoonEffectScript> initAction)
+    {
+      var script = new CartoonEffectScript();
+
+      using (var logo = new MagickImage(Images.Logo))
+      {
+        initAction(script);
+
+        ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+        {
+          script.Execute(logo);
+        });
+      }
     }
   }
 }

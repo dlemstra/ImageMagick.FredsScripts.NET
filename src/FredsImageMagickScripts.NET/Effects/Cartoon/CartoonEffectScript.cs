@@ -30,6 +30,10 @@ namespace FredsImageMagickScripts
   /// </summary>
   public sealed class CartoonEffectScript
   {
+    private static readonly string _edgeWidth = "2";
+    private static readonly Percentage _edgeThreshold = new Percentage(90);
+    private static readonly string _edgeGain = "4";
+
     private CartoonMethod _method;
 
     /// <summary>
@@ -64,25 +68,7 @@ namespace FredsImageMagickScripts
     /// <summary>
     /// Gets or sets the edge amount, which must be &gt;= 0
     /// </summary>
-    public float EdgeAmount
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Gets or sets the edge width, which must be &gt;= 0
-    /// </summary>
-    public int EdgeWidth
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Gets or sets the edge threshold
-    /// </summary>
-    public Percentage EdgeThreshold
+    public double EdgeAmount
     {
       get;
       set;
@@ -160,13 +146,11 @@ namespace FredsImageMagickScripts
     /// </summary>
     public void Reset()
     {
-      Pattern = (Percentage)70;
-      NumberOflevels = 6;
-      EdgeAmount = 4;
       Brightness = (Percentage)100;
+      EdgeAmount = 4;
+      NumberOflevels = 6;
+      Pattern = (Percentage)70;
       Saturation = (Percentage)150;
-      EdgeWidth = 2;
-      EdgeThreshold = (Percentage)90;
     }
 
     private void CheckSettings()
@@ -174,11 +158,8 @@ namespace FredsImageMagickScripts
       if (NumberOflevels < 2)
         throw new InvalidOperationException("Number of levels must be >= 2.");
 
-      if (EdgeAmount < 0 || float.IsInfinity(EdgeAmount) || float.IsNaN(EdgeAmount))
+      if (EdgeAmount < 0 || double.IsInfinity(EdgeAmount) || double.IsNaN(EdgeAmount))
         throw new InvalidOperationException("Edge amount must be >= 0.");
-
-      if (EdgeWidth < 0)
-        throw new InvalidOperationException("Edge width must be >= 0.");
     }
 
     private MagickImage ExecuteMethod2(MagickImage tmpA1, MagickImage tmpA2)
@@ -196,11 +177,11 @@ namespace FredsImageMagickScripts
           {
             third.ColorSpace = ColorSpace.Gray;
             third.Negate();
-            third.SetArtifact("convolve:scale", "4");
-            third.Morphology(MorphologyMethod.Convolve, Kernel.DoG, "0,0," + EdgeWidth);
+            third.SetArtifact("convolve:scale", _edgeGain);
+            third.Morphology(MorphologyMethod.Convolve, Kernel.DoG, "0,0," + _edgeWidth);
             third.Negate();
             third.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
-            third.WhiteThreshold(EdgeThreshold);
+            third.WhiteThreshold(_edgeThreshold);
 
             var result = second_0.Clone();
             result.Composite(third, CompositeOperator.Multiply);
@@ -235,7 +216,7 @@ namespace FredsImageMagickScripts
               {
                 fifth_0.Composite(fifth_1, CompositeOperator.ColorDodge);
                 fifth_0.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
-                fifth_0.Threshold(EdgeThreshold);
+                fifth_0.Threshold(_edgeThreshold);
                 fifth_0.Statistic(StatisticType.Median, 3, 3);
 
                 fifth_0.Composite(second_0, CompositeOperator.Multiply);
