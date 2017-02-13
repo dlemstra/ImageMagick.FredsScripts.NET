@@ -27,7 +27,31 @@ namespace FredsImageMagickScripts.NET.Tests
   public class WhiteboardScriptTests : ScriptTester
   {
     [TestMethod]
-    public void Test_Coordinates()
+    public void Constructor_SettingsSetToDefaults()
+    {
+      var script = new WhiteboardScript();
+
+      AssertDefaults(script);
+    }
+
+    [TestMethod]
+    public void Reset_AllSettingsChanged_RestoredToDefault()
+    {
+      var script = new WhiteboardScript();
+      script.BackgroundColor = new MagickColor("purple");
+      script.Enhance = WhiteboardEnhancements.None;
+      script.FilterOffset = (Percentage)5;
+      script.FilterSize = 10;
+      script.Saturation = (Percentage)100;
+      script.WhiteBalance = (Percentage)0.1;
+
+      script.Reset();
+
+      AssertDefaults(script);
+    }
+
+    [TestMethod]
+    public void Execute_InvalidCoordinates_ThrowsException()
     {
       var topLeft = new PointD(10, 10);
       var topRight = new PointD(630, 10);
@@ -42,196 +66,24 @@ namespace FredsImageMagickScripts.NET.Tests
 
       for (int i = 0; i < invalid.Length; i++)
       {
-        Test_SetCoordinates("topLeft", invalid[i], topRight, bottomLeft, bottomRight);
-        Test_SetCoordinates("topRight", topLeft, invalid[i], bottomLeft, bottomRight);
-        Test_SetCoordinates("bottomRight", topLeft, topRight, invalid[i], bottomRight);
-        Test_SetCoordinates("bottomLeft", topLeft, topRight, bottomLeft, invalid[i]);
+        AssertSetCoordinates("topLeft", invalid[i], topRight, bottomLeft, bottomRight);
+        AssertSetCoordinates("topRight", topLeft, invalid[i], bottomLeft, bottomRight);
+        AssertSetCoordinates("bottomRight", topLeft, topRight, invalid[i], bottomRight);
+        AssertSetCoordinates("bottomLeft", topLeft, topRight, bottomLeft, invalid[i]);
       }
     }
 
     [TestMethod]
-    public void Test_Defaults()
+    public void Execute_InvalidDimensions_ThrowsException()
     {
-      var script = new WhiteboardScript();
-      Test_Defaults(script);
-
-      script.BackgroundColor = new MagickColor("purple");
-      script.Enhance = WhiteboardEnhancements.None;
-      script.FilterOffset = (Percentage)5;
-      script.FilterSize = 10;
-      script.Saturation = (Percentage)100;
-      script.WhiteBalance = (Percentage)0.1;
-
-      script.Reset();
-      Test_Defaults(script);
+      AssertDimensions(0, 0);
+      AssertDimensions(-1, -1);
+      AssertDimensions(-1, 0);
+      AssertDimensions(0, -1);
     }
 
     [TestMethod]
-    public void Test_Dimensions()
-    {
-      Test_Dimensions(0, 0);
-      Test_Dimensions(-1, -1);
-      Test_Dimensions(-1, 0);
-      Test_Dimensions(0, -1);
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard_a1p33_m2_S200_f25_o3_none()
-    {
-      Test_Execute("whiteboard.jpg", "whiteboard_a1p33_m2_S200_f25_o3_none.jpg", (WhiteboardScript script) =>
-      {
-        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31), new PointD(313, 218), new PointD(101, 200));
-        script.Enhance = WhiteboardEnhancements.None;
-        script.AspectRatio = new PointD(4, 3);
-        script.Magnification = 2;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)3;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard_a1p33_m2_S200_f25_o3_both()
-    {
-      Test_Execute("whiteboard.jpg", "whiteboard_a1p33_m2_S200_f25_o3_both.jpg", (WhiteboardScript script) =>
-      {
-        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31), new PointD(313, 218), new PointD(101, 200));
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.AspectRatio = new PointD(4, 3);
-        script.Magnification = 2;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)3;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard_a1p33_m2_S200_t60_f25_o3_both()
-    {
-      Test_Execute("whiteboard.jpg", "whiteboard_a1p33_m2_S200_t60_f25_o3_both.jpg", (WhiteboardScript script) =>
-      {
-        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31), new PointD(313, 218), new PointD(101, 200));
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.AspectRatio = new PointD(4, 3);
-        script.Magnification = 2;
-        script.FilterSize = 25;
-        script.FilterOffset = (Percentage)3;
-        script.Threshold = (Percentage)60;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard1_35pct_m1_S200_f12_o3_none()
-    {
-      Test_Execute("whiteboard1_35pct.jpg", "whiteboard1_35pct_m1_S200_f12_o3_none.jpg", (WhiteboardScript script) =>
-      {
-        script.Enhance = WhiteboardEnhancements.None;
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)3;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard1_35pct_m1_S200_f12_o3_both()
-    {
-      Test_Execute("whiteboard1_35pct.jpg", "whiteboard1_35pct_m1_S200_f12_o3_both.jpg", (WhiteboardScript script) =>
-      {
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)3;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard1_35pct_m1_S200_t30_f12_o3_both()
-    {
-      Test_Execute("whiteboard1_35pct.jpg", "whiteboard1_35pct_m1_S200_t30_f12_o3_both.jpg", (WhiteboardScript script) =>
-      {
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)3;
-        script.Threshold = (Percentage)30;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard1_35pct_m1_S200_s1_t30_f12_o3_both()
-    {
-      Test_Execute("whiteboard1_35pct.jpg", "whiteboard1_35pct_m1_S200_s1_t30_f12_o3_both.jpg", (WhiteboardScript script) =>
-      {
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)3;
-        script.Threshold = (Percentage)30;
-        script.SharpeningAmount = 1;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard2_a1p5_m1_S200_t30_f12_o7_both()
-    {
-      Test_Execute("whiteboard2.gif", "whiteboard2_a1p5_m1_S200_t30_f12_o7_both.jpg", (WhiteboardScript script) =>
-      {
-        script.SetCoordinates(new PointD(55, 60), new PointD(420, 76), new PointD(416, 277), new PointD(75, 345));
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.AspectRatio = new PointD(4, 3);
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)7;
-        script.Threshold = (Percentage)30;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboard2_a_m1_S200_t30_f12_o7_both()
-    {
-      Test_Execute("whiteboard2.gif", "whiteboard2_a_m1_S200_t30_f12_o7_both.jpg", (WhiteboardScript script) =>
-      {
-        script.SetCoordinates(new PointD(55, 60), new PointD(420, 76), new PointD(416, 277), new PointD(75, 345));
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)7;
-        script.Threshold = (Percentage)30;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_WhiteboardBlog_a0p75_m1_S200_t40_f12_o3_both()
-    {
-      Test_Execute("WhiteboardBlog.jpg", "WhiteboardBlog_a0p75_m1_S200_t40_f12_o3_both.jpg", (WhiteboardScript script) =>
-      {
-        script.SetCoordinates(new PointD(13, 3), new PointD(342, 6), new PointD(331, 467), new PointD(38, 482));
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.AspectRatio = new PointD(3, 4);
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)3;
-        script.Threshold = (Percentage)40;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_WhiteboardBlog_a_m1_S200_t40_f12_o3_both()
-    {
-      Test_Execute("WhiteboardBlog.jpg", "WhiteboardBlog_a_m1_S200_t40_f12_o3_both.jpg", (WhiteboardScript script) =>
-      {
-        script.SetCoordinates(new PointD(13, 3), new PointD(342, 6), new PointD(331, 467), new PointD(38, 482));
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)3;
-        script.Threshold = (Percentage)40;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_whiteboardScenario1_m1_S200_f12_o3_both()
-    {
-      Test_Execute("whiteboardScenario1.jpg", "whiteboardScenario1_m1_S200_f12_o3_both.jpg", (WhiteboardScript script) =>
-      {
-        script.Enhance = WhiteboardEnhancements.Both;
-        script.FilterSize = 12;
-        script.FilterOffset = (Percentage)3;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_Null()
+    public void Execute_InputNull_ThrowsException()
     {
       ExceptionAssert.Throws<ArgumentNullException>(() =>
       {
@@ -240,7 +92,169 @@ namespace FredsImageMagickScripts.NET.Tests
       });
     }
 
-    private static void Test_Defaults(WhiteboardScript script)
+    [TestMethod]
+    public void Execute_coords_a_m2_f25_o3_none_jpg()
+    {
+      AssertExecute("whiteboard.jpg", nameof(Execute_coords_a_m2_f25_o3_none_jpg), (WhiteboardScript script) =>
+      {
+        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31), new PointD(313, 218), new PointD(101, 200));
+        script.AspectRatio = new PointD(4, 3);
+
+        script.Magnification = 2;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)3;
+        script.Enhance = WhiteboardEnhancements.None;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_coords_a_m2_f25_o3_both_jpg()
+    {
+      AssertExecute("whiteboard.jpg", nameof(Execute_coords_a_m2_f25_o3_both_jpg), (WhiteboardScript script) =>
+      {
+        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31), new PointD(313, 218), new PointD(101, 200));
+        script.AspectRatio = new PointD(4, 3);
+
+        script.Magnification = 2;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)3;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_coords_a_m2_f25_t60_o3_both_jpg()
+    {
+      AssertExecute("whiteboard.jpg", nameof(Execute_coords_a_m2_f25_t60_o3_both_jpg), (WhiteboardScript script) =>
+      {
+        script.SetCoordinates(new PointD(101, 53), new PointD(313, 31), new PointD(313, 218), new PointD(101, 200));
+        script.AspectRatio = new PointD(4, 3);
+
+        script.Magnification = 2;
+        script.FilterSize = 25;
+        script.FilterOffset = (Percentage)3;
+        script.Threshold = (Percentage)60;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f12_o3_none_jpg()
+    {
+      AssertExecute("whiteboard1_35pct.jpg", nameof(Execute_f12_o3_none_jpg), (WhiteboardScript script) =>
+      {
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)3;
+        script.Enhance = WhiteboardEnhancements.None;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f12_o3_both_jpg()
+    {
+      AssertExecute("whiteboard1_35pct.jpg", nameof(Execute_f12_o3_both_jpg), (WhiteboardScript script) =>
+      {
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)3;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f12_o3_t30_both_jpg()
+    {
+      AssertExecute("whiteboard1_35pct.jpg", nameof(Execute_f12_o3_t30_both_jpg), (WhiteboardScript script) =>
+      {
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)3;
+        script.Threshold = (Percentage)30;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f12_o3_t30_s1_both_jpg()
+    {
+      AssertExecute("whiteboard1_35pct.jpg", nameof(Execute_f12_o3_t30_s1_both_jpg), (WhiteboardScript script) =>
+      {
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)3;
+        script.Threshold = (Percentage)30;
+        script.SharpeningAmount = 1;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_coords_a_f12_o7_t30_both_jpg()
+    {
+      AssertExecute("whiteboard2.gif", nameof(Execute_coords_a_f12_o7_t30_both_jpg), (WhiteboardScript script) =>
+      {
+        script.SetCoordinates(new PointD(55, 60), new PointD(420, 76), new PointD(416, 277), new PointD(75, 345));
+        script.AspectRatio = new PointD(4, 3);
+
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)7;
+        script.Threshold = (Percentage)30;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_coords_f12_o7_t30_both_jpg()
+    {
+      AssertExecute("whiteboard2.gif", nameof(Execute_coords_f12_o7_t30_both_jpg), (WhiteboardScript script) =>
+      {
+        script.SetCoordinates(new PointD(55, 60), new PointD(420, 76), new PointD(416, 277), new PointD(75, 345));
+
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)7;
+        script.Threshold = (Percentage)30;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_coords_a_f12_o3_t40_both_jpg()
+    {
+      AssertExecute("WhiteboardBlog.jpg", nameof(Execute_coords_a_f12_o3_t40_both_jpg), (WhiteboardScript script) =>
+      {
+        script.SetCoordinates(new PointD(13, 3), new PointD(342, 6), new PointD(331, 467), new PointD(38, 482));
+        script.AspectRatio = new PointD(3, 4);
+
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)3;
+        script.Threshold = (Percentage)40;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_coords_f12_o3_t40_both_jpg()
+    {
+      AssertExecute("WhiteboardBlog.jpg", nameof(Execute_coords_f12_o3_t40_both_jpg), (WhiteboardScript script) =>
+      {
+        script.SetCoordinates(new PointD(13, 3), new PointD(342, 6), new PointD(331, 467), new PointD(38, 482));
+
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)3;
+        script.Threshold = (Percentage)40;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f12_o4_both_jpg()
+    {
+      AssertExecute("whiteboardScenario1.jpg", nameof(Execute_f12_o4_both_jpg), (WhiteboardScript script) =>
+      {
+        script.FilterSize = 12;
+        script.FilterOffset = (Percentage)4;
+        script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    private static void AssertDefaults(WhiteboardScript script)
     {
       ColorAssert.AreEqual(new MagickColor("white"), script.BackgroundColor);
       Assert.AreEqual(WhiteboardEnhancements.Stretch, script.Enhance);
@@ -250,7 +264,7 @@ namespace FredsImageMagickScripts.NET.Tests
       Assert.AreEqual((Percentage)0.01, script.WhiteBalance);
     }
 
-    private static void Test_Dimensions(int width, int height)
+    private static void AssertDimensions(int width, int height)
     {
       ExceptionAssert.Throws<InvalidOperationException>(() =>
       {
@@ -263,7 +277,7 @@ namespace FredsImageMagickScripts.NET.Tests
       });
     }
 
-    private static void Test_SetCoordinates(string paramName, PointD topLeft, PointD topRight, PointD bottomLeft, PointD bottomRight)
+    private static void AssertSetCoordinates(string paramName, PointD topLeft, PointD topRight, PointD bottomLeft, PointD bottomRight)
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>(paramName, () =>
       {
@@ -276,7 +290,7 @@ namespace FredsImageMagickScripts.NET.Tests
       });
     }
 
-    private void Test_Execute(string input, string output, Action<WhiteboardScript> action)
+    private void AssertExecute(string input, string methodName, Action<WhiteboardScript> action)
     {
       string inputFile = GetInputFile(input);
 
@@ -287,7 +301,8 @@ namespace FredsImageMagickScripts.NET.Tests
 
         using (var scriptOutput = script.Execute(image))
         {
-          AssertOutput(scriptOutput, output);
+          string outputFile = GetOutputFile(input, methodName);
+          AssertOutput(scriptOutput, outputFile);
         }
       }
     }
