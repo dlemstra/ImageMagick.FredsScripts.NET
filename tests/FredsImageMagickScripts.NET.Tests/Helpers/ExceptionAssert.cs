@@ -73,7 +73,7 @@ namespace FredsImageMagickScripts.NET.Tests
     public static void ThrowsArgumentException<TException>(string paramName, string expectedMessage, Action action)
       where TException : ArgumentException
     {
-      var exception = Throws<ArgumentException>(action);
+      var exception = Throws<TException>(action);
       Assert.AreEqual(expectedMessage, exception.Message.Split(Environment.NewLine.ToCharArray())[0]);
       Assert.AreEqual(paramName, exception.ParamName);
     }
