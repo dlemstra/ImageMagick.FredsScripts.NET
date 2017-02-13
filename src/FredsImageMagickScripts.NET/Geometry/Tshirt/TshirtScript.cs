@@ -327,16 +327,16 @@ namespace FredsImageMagickScripts
       CheckCoordinate(image, "bottomLeft", _coords[3]);
 
       if (Gravity != Gravity.North && Gravity != Gravity.Center && Gravity != Gravity.South)
-        throw new InvalidOperationException("Invalid Gravity specified.");
+        throw new InvalidOperationException("Invalid gravity specified.");
 
       if (Rotation < -360 || Rotation > 360)
-        throw new InvalidOperationException("Invalid Rotation specified.");
+        throw new InvalidOperationException("Invalid rotation specified, value must be between -360 and 360.");
 
       if (Lighting < 0 || Lighting > 30)
-        throw new InvalidOperationException("Invalid Lightning specified.");
+        throw new InvalidOperationException("Invalid lighting specified, value must be between 0 and 30.");
 
       if (Blur < 0)
-        throw new InvalidOperationException("Invalid Blur specified.");
+        throw new InvalidOperationException("Invalid blur specified, value should be zero or higher.");
     }
 
     private PointD[] CreateOverlayCoordinates(MagickImage overlay, double scale)

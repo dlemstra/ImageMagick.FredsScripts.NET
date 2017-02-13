@@ -32,11 +32,17 @@ namespace FredsImageMagickScripts.NET.Tests
     private PointD _bottomRight = new PointD(630, 470);
 
     [TestMethod]
-    public void Test_Defaults()
+    public void Constructor_SettingsSetToDefaults()
     {
       var script = new TshirtScript();
-      Test_Defaults(script);
 
+      AssertDefaults(script);
+    }
+
+    [TestMethod]
+    public void Reset_AllSettingsChanged_RestoredToDefault()
+    {
+      var script = new TshirtScript();
       script.AntiAlias = 1.0;
       script.Blur = 5;
       script.Displace = 59;
@@ -47,114 +53,76 @@ namespace FredsImageMagickScripts.NET.Tests
       script.VerticalShift = -10;
 
       script.Reset();
-      Test_Defaults(script);
+
+      AssertDefaults(script);
     }
 
     [TestMethod]
-    public void Test_Execute_tshirt_blue_flowers_none_r()
+    public void Blur_BelowZero_ThrowsException()
     {
-      Test_Execute("tshirt_blue.jpg", "flowers_van_gogh.jpg", "tshirt_blue_flowers_none_r.jpg", (TshirtScript script) =>
+      AssertInvalidOperation("Invalid blur specified, value should be zero or higher.", (TshirtScript script) =>
       {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Blur = -1;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_tshirt_gray_flowers_none_r()
+    public void Gravity_InvalidValue_ThrowsException()
     {
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", "tshirt_gray_flowers_none_r.jpg", (TshirtScript script) =>
+      AssertInvalidOperation("Invalid gravity specified.", (TshirtScript script) =>
       {
-        var topLeft = new PointD(275, 175);
-        var topRight = new PointD(404, 175);
-        var bottomRight = new PointD(404, 304);
-        var bottomLeft = new PointD(275, 304);
-
-        script.SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
+        script.Gravity = Gravity.Forget;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_tshirt_gray_flowers_none_r2()
+    public void Lighting_BelowZero_ThrowsException()
     {
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", "tshirt_gray_flowers_none_r.jpg", (TshirtScript script) =>
+      AssertInvalidOperation("Invalid lighting specified, value must be between 0 and 30.", (TshirtScript script) =>
       {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Lighting = -1;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_tshirt_gray_flowers_crop_north()
+    public void Lighting_Above30_ThrowsException()
     {
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", "tshirt_gray_flowers_crop_north.jpg", (TshirtScript script) =>
+      AssertInvalidOperation("Invalid lighting specified, value must be between 0 and 30.", (TshirtScript script) =>
       {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Fit = TshirtFit.Crop;
-        script.Gravity = Gravity.North;
+        script.Lighting = 31;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_tshirt_gray_flowers_crop_center()
+    public void Rotation_BelowMinus360_ThrowsException()
     {
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", "tshirt_gray_flowers_crop_center.jpg", (TshirtScript script) =>
+      AssertInvalidOperation("Invalid rotation specified, value must be between -360 and 360.", (TshirtScript script) =>
       {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Fit = TshirtFit.Crop;
-        script.Gravity = Gravity.Center;
+        script.Rotation = -361;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_tshirt_gray_flowers_distort()
+    public void Rotation_AboveMinus360_ThrowsException()
     {
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", "tshirt_gray_flowers_distort.jpg", (TshirtScript script) =>
+      AssertInvalidOperation("Invalid rotation specified, value must be between -360 and 360.", (TshirtScript script) =>
       {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Fit = TshirtFit.Distort;
+        script.Rotation = 361;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_tshirt_gray_flowers_none_rm3()
+    public void SetCoordinates_GeometryNull_ThrowsException()
     {
-      Test_Execute("tshirt_gray.jpg", "flowers_van_gogh.jpg", "tshirt_gray_flowers_none_rm3.jpg", (TshirtScript script) =>
+      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("geometry", () =>
       {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Rotation = -3;
+        TshirtScript script = new TshirtScript();
+        script.SetCoordinates(null);
       });
     }
 
     [TestMethod]
-    public void Test_Execute_tshirt_gray_mario_none_rm3()
-    {
-      Test_Execute("tshirt_gray.jpg", "Super_Mario.png", "tshirt_gray_mario_none_rm3.jpg", (TshirtScript script) =>
-      {
-        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
-        script.Rotation = -3;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Excecute_Null()
-    {
-      using (var logo = Images.Logo)
-      {
-        ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("tshirt", () =>
-        {
-          TshirtScript script = new TshirtScript();
-          script.Execute(null, logo);
-        });
-
-        ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("overlay", () =>
-        {
-          TshirtScript script = new TshirtScript();
-          script.Execute(logo, null);
-        });
-      }
-    }
-
-    [TestMethod]
-    public void Test_Coordinates()
+    public void Execute_NoCoordinatesSet_ThrowsException()
     {
       ExceptionAssert.Throws<InvalidOperationException>("No coordinates have been set.", () =>
       {
@@ -164,7 +132,37 @@ namespace FredsImageMagickScripts.NET.Tests
           script.Execute(logo, logo);
         }
       });
+    }
 
+    [TestMethod]
+    public void Excecute_OverlayNull_ThrowsException()
+    {
+      using (var logo = Images.Logo)
+      {
+        ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("overlay", () =>
+        {
+          TshirtScript script = new TshirtScript();
+          script.Execute(logo, null);
+        });
+      }
+    }
+
+    [TestMethod]
+    public void Excecute_TshirtNull_ThrowsException()
+    {
+      using (var logo = Images.Logo)
+      {
+        ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("tshirt", () =>
+        {
+          TshirtScript script = new TshirtScript();
+          script.Execute(null, logo);
+        });
+      }
+    }
+
+    [TestMethod]
+    public void Execute_InvalidCoordinates_ThrowsException()
+    {
       var invalid = new PointD[]
       {
         new PointD(-10, 10), new PointD(10, -10),
@@ -173,68 +171,90 @@ namespace FredsImageMagickScripts.NET.Tests
 
       for (int i = 0; i < invalid.Length; i++)
       {
-        Test_SetCoordinates("topLeft", invalid[i], _topRight, _bottomLeft, _bottomRight);
-        Test_SetCoordinates("topRight", _topLeft, invalid[i], _bottomLeft, _bottomRight);
-        Test_SetCoordinates("bottomRight", _topLeft, _topRight, invalid[i], _bottomRight);
-        Test_SetCoordinates("bottomLeft", _topLeft, _topRight, _bottomLeft, invalid[i]);
+        AssertCoordinates("topLeft", invalid[i], _topRight, _bottomLeft, _bottomRight);
+        AssertCoordinates("topRight", _topLeft, invalid[i], _bottomLeft, _bottomRight);
+        AssertCoordinates("bottomRight", _topLeft, _topRight, invalid[i], _bottomRight);
+        AssertCoordinates("bottomLeft", _topLeft, _topRight, _bottomLeft, invalid[i]);
       }
     }
 
     [TestMethod]
-    public void Test_Settings()
+    public void Execute_blue_jpg()
     {
-      var script = new TshirtScript();
-
-      using (var logo = Images.Logo)
+      AssertExecute("tshirt_blue.jpg", "flowers_van_gogh.jpg", nameof(Execute_blue_jpg), (TshirtScript script) =>
       {
-        Reset(script);
-        script.Execute(logo, logo);
-
-        ExceptionAssert.Throws<InvalidOperationException>("Invalid Gravity specified.", () =>
-        {
-          Reset(script);
-          script.Gravity = Gravity.Forget;
-          script.Execute(logo, logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>("Invalid Rotation specified.", () =>
-        {
-          Reset(script);
-          script.Rotation = -361;
-          script.Execute(logo, logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>("Invalid Rotation specified.", () =>
-        {
-          Reset(script);
-          script.Rotation = 361;
-          script.Execute(logo, logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>("Invalid Lightning specified.", () =>
-        {
-          Reset(script);
-          script.Lighting = -1;
-          script.Execute(logo, logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>("Invalid Lightning specified.", () =>
-        {
-          Reset(script);
-          script.Lighting = 31;
-          script.Execute(logo, logo);
-        });
-
-        ExceptionAssert.Throws<InvalidOperationException>("Invalid Blur specified.", () =>
-        {
-          Reset(script);
-          script.Blur = -1;
-          script.Execute(logo, logo);
-        });
-      }
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+      });
     }
 
-    private static void Test_Defaults(TshirtScript script)
+    [TestMethod]
+    public void Execute_gray_jpg()
+    {
+      AssertExecute("tshirt_gray.jpg", "flowers_van_gogh.jpg", nameof(Execute_gray_jpg), (TshirtScript script) =>
+      {
+        var topLeft = new PointD(275, 175);
+        var topRight = new PointD(404, 175);
+        var bottomRight = new PointD(404, 304);
+        var bottomLeft = new PointD(275, 304);
+
+        script.SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
+      });
+
+      AssertExecute("tshirt_gray.jpg", "flowers_van_gogh.jpg", nameof(Execute_gray_jpg), (TshirtScript script) =>
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+      });
+    }
+
+    [TestMethod]
+    public void Execute_gray_fc_gn_jpg()
+    {
+      AssertExecute("tshirt_gray.jpg", "flowers_van_gogh.jpg", nameof(Execute_gray_fc_gn_jpg), (TshirtScript script) =>
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Fit = TshirtFit.Crop;
+        script.Gravity = Gravity.North;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_gray_fc_gc_jpg()
+    {
+      AssertExecute("tshirt_gray.jpg", "flowers_van_gogh.jpg", nameof(Execute_gray_fc_gc_jpg), (TshirtScript script) =>
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Fit = TshirtFit.Crop;
+        script.Gravity = Gravity.Center;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_gray_fd_jpg()
+    {
+      AssertExecute("tshirt_gray.jpg", "flowers_van_gogh.jpg", nameof(Execute_gray_fd_jpg), (TshirtScript script) =>
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Fit = TshirtFit.Distort;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_gray_rm3_jpg()
+    {
+      AssertExecute("tshirt_gray.jpg", "flowers_van_gogh.jpg", nameof(Execute_gray_rm3_jpg), (TshirtScript script) =>
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Rotation = -3;
+      });
+
+      AssertExecute("tshirt_gray.jpg", "Super_Mario.png", nameof(Execute_gray_rm3_jpg), (TshirtScript script) =>
+      {
+        script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+        script.Rotation = -3;
+      });
+    }
+
+    private static void AssertDefaults(TshirtScript script)
     {
       Assert.AreEqual(2.0, script.AntiAlias);
       Assert.AreEqual(1.0, script.Blur);
@@ -247,7 +267,7 @@ namespace FredsImageMagickScripts.NET.Tests
       Assert.AreEqual(0, script.VerticalShift);
     }
 
-    private static void Test_SetCoordinates(string paramName, PointD topLeft, PointD topRight, PointD bottomLeft, PointD bottomRight)
+    private static void AssertCoordinates(string paramName, PointD topLeft, PointD topRight, PointD bottomLeft, PointD bottomRight)
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>(paramName, () =>
       {
@@ -260,13 +280,23 @@ namespace FredsImageMagickScripts.NET.Tests
       });
     }
 
-    private void Reset(TshirtScript script)
+    private void AssertInvalidOperation(string expectedMessage, Action<TshirtScript> initAction)
     {
-      script.Reset();
-      script.SetCoordinates(_topLeft, _topRight, _bottomLeft, _bottomRight);
+      var script = new TshirtScript();
+
+      using (var logo = new MagickImage(Images.Logo))
+      {
+        initAction(script);
+
+        ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+        {
+          script.SetCoordinates(_topLeft, _topRight, _bottomLeft, _bottomRight);
+          script.Execute(logo, logo);
+        });
+      }
     }
 
-    private void Test_Execute(string tshirt, string overlay, string output, Action<TshirtScript> action)
+    private void AssertExecute(string tshirt, string overlay, string methodName, Action<TshirtScript> action)
     {
       var tshirtFile = GetInputFile(tshirt);
       /* LosslessCompress(tshirtFile); */
@@ -281,8 +311,11 @@ namespace FredsImageMagickScripts.NET.Tests
           var script = new TshirtScript();
           action(script);
 
-          var scriptOutput = script.Execute(tshirtImage, overlayImage);
-          AssertOutput(scriptOutput, output);
+          using (var scriptOutput = script.Execute(tshirtImage, overlayImage))
+          {
+            string outputFile = GetOutputFile(overlay, methodName);
+            AssertOutput(scriptOutput, outputFile);
+          }
         }
       }
     }
