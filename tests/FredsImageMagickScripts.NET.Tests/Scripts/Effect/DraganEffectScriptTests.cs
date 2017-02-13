@@ -113,6 +113,14 @@ namespace FredsImageMagickScripts.NET.Tests
         script.Darkness = 1;
         script.Saturation = (Percentage)150;
       });
+
+      AssertExecute("bluehat.jpg", nameof(Execute_b1_c0_d1_s150_r5_jpg), (DraganEffectScript script) =>
+      {
+        script.Brightness = 1;
+        script.Contrast = 0;
+        script.Darkness = 1;
+        script.Saturation = (Percentage)150;
+      });
     }
 
     [TestMethod]
@@ -136,18 +144,6 @@ namespace FredsImageMagickScripts.NET.Tests
         script.Contrast = -5;
         script.Darkness = 2;
         script.Saturation = (Percentage)175;
-      });
-    }
-
-    [TestMethod]
-    public void Execute__b1_c0_d1_s150_r5_jpg()
-    {
-      AssertExecute("bluehat.jpg", nameof(Execute__b1_c0_d1_s150_r5_jpg), (DraganEffectScript script) =>
-      {
-        script.Brightness = 1;
-        script.Contrast = 0;
-        script.Darkness = 1;
-        script.Saturation = (Percentage)150;
       });
     }
 

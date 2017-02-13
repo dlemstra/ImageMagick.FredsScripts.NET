@@ -357,12 +357,8 @@ namespace FredsImageMagickScripts.NET.Tests
         script.Sharpen = 1;
         script.Layout = TextCleanerLayout.Landscape;
       });
-    }
 
-    [TestMethod]
-    public void Execute__g_stretch_f25_o5_s1_jpg()
-    {
-      AssertExecute("rfid.jpg", nameof(Execute__g_stretch_f25_o5_s1_jpg), (TextCleanerScript script) =>
+      AssertExecute("rfid.jpg", nameof(Execute_g_stretch_f25_o5_s1_jpg), (TextCleanerScript script) =>
       {
         script.MakeGray = true;
         script.Enhance = TextCleanerEnhance.Stretch;
