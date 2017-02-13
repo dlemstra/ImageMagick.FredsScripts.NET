@@ -443,14 +443,12 @@ namespace FredsImageMagickScripts
       if (!image.HasAlpha)
         return null;
 
-      using (var alpha = image.Clone())
-      {
-        alpha.Alpha(AlphaOption.Extract);
-        alpha.Blur(0, AntiAlias);
-        alpha.Level((Percentage)50, (Percentage)100);
+      var alpha = image.Clone();
+      alpha.Alpha(AlphaOption.Extract);
+      alpha.Blur(0, AntiAlias);
+      alpha.Level((Percentage)50, (Percentage)100);
 
-        return alpha;
-      }
+      return alpha;
     }
   }
 }

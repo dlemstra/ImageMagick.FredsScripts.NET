@@ -179,6 +179,39 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
+    public void Execute_ImageWithAlpha_AlphaIsRestored()
+    {
+      var tshirtFile = GetInputFile("tshirt_gray.jpg");
+      /* LosslessCompress(tshirtFile); */
+
+      var overlayFile = GetInputFile("flowers_van_gogh.jpg");
+      /* LosslessCompress(overlayFile); */
+
+      using (var tshirtImage = new MagickImage(tshirtFile))
+      {
+        tshirtImage.Opaque(MagickColors.White, MagickColors.None);
+
+        using (var overlayImage = new MagickImage(overlayFile))
+        {
+          overlayImage.Crop(479, 479);
+
+          var script = new TshirtScript();
+          script.Fit = TshirtFit.Crop;
+          script.Blur = 0;
+          script.Lighting = 0;
+          script.Sharpen = 0;
+
+          script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
+
+          using (var scriptOutput = script.Execute(tshirtImage, overlayImage))
+          {
+            AssertOutput(scriptOutput, "flowers_van_gogh_alpha.jpg");
+          }
+        }
+      }
+    }
+
+    [TestMethod]
     public void Execute_blue_jpg()
     {
       AssertExecute("tshirt_blue.jpg", "flowers_van_gogh.jpg", nameof(Execute_blue_jpg), (TshirtScript script) =>
