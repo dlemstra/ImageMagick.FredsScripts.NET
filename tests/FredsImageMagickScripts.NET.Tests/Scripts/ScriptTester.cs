@@ -43,7 +43,7 @@ namespace FredsImageMagickScripts.NET.Tests
       return _root + @"Input\" + fileName;
     }
 
-    protected static string GetInputFile(string input, string methodName)
+    protected static string GetOutputFile(string input, string methodName)
     {
       if (methodName == null)
         throw new ArgumentNullException(nameof(methodName));

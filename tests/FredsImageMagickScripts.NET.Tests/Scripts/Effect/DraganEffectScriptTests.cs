@@ -255,7 +255,7 @@ namespace FredsImageMagickScripts.NET.Tests
 
         using (var scriptOutput = script.Execute(image))
         {
-          string outputFile = GetInputFile(input, methodName);
+          string outputFile = GetOutputFile(input, methodName);
           AssertOutput(scriptOutput, outputFile);
         }
       }
