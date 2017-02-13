@@ -27,11 +27,17 @@ namespace FredsImageMagickScripts.NET.Tests
   public class AutotrimScriptTests : ScriptTester
   {
     [TestMethod]
-    public void Test_Defaults()
+    public void Constructor_SettingsSetToDefaults()
     {
       var script = new AutotrimScript();
-      Test_Defaults(script);
 
+      AssertDefaults(script);
+    }
+
+    [TestMethod]
+    public void Reset_AllSettingsChanged_RestoredToDefault()
+    {
+      var script = new AutotrimScript();
       script.BorderColorLocation = new PointD(10, 10);
       script.ColorFuzz = (Percentage)6;
       script.InnerTrim = true;
@@ -41,171 +47,12 @@ namespace FredsImageMagickScripts.NET.Tests
       script.PixelShift.Bottom = 2;
 
       script.Reset();
-      Test_Defaults(script);
+
+      AssertDefaults(script);
     }
 
     [TestMethod]
-    public void Test_Execute_zelda3_border2w()
-    {
-      Test_Execute("zelda3_border2w.png", "zelda3_border_crop.png", (AutotrimScript script) =>
-      {
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_border2b()
-    {
-      Test_Execute("zelda3_border2b.png", "zelda3_border_crop.png", (AutotrimScript script) =>
-      {
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_border2wrt()
-    {
-      Test_Execute("zelda3_border2wrt.png", "zelda3_border_crop.png", (AutotrimScript script) =>
-      {
-        script.BorderColorLocation = new PointD(129, 0);
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_border2brt()
-    {
-      Test_Execute("zelda3_border2brt.png", "zelda3_border_crop.png", (AutotrimScript script) =>
-      {
-        script.BorderColorLocation = new PointD(129, 0);
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_radborder_crop_fuzz30r()
-    {
-      Test_Execute("zelda3_radborder.png", "zelda3_radborder_crop_fuzz30.png", (AutotrimScript script) =>
-      {
-        script.ColorFuzz = (Percentage)30;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_radborder_crop_fuzz35()
-    {
-      Test_Execute("zelda3_radborder.png", "zelda3_radborder_crop_fuzz35.png", (AutotrimScript script) =>
-      {
-        script.ColorFuzz = (Percentage)35;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_radborder_crop_fuzz40()
-    {
-      Test_Execute("zelda3_radborder.png", "zelda3_radborder_crop_fuzz40.png", (AutotrimScript script) =>
-      {
-        script.ColorFuzz = (Percentage)40;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_radborder_crop_fuzz60()
-    {
-      Test_Execute("zelda3_radborder.png", "zelda3_radborder_crop_fuzz60.png", (AutotrimScript script) =>
-      {
-        script.ColorFuzz = (Percentage)60;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_rot20_border10_crop()
-    {
-      Test_Execute("zelda3_rot20_border10.png", "zelda3_rot20_border10_crop.png", (AutotrimScript script) =>
-      {
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_rot45_crop()
-    {
-      Test_Execute("zelda3_rot45.png", "zelda3_rot45_crop.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_rotm20_crop_fuzz1()
-    {
-      Test_Execute("zelda3_rotm20.png", "zelda3_rotm20_crop_fuzz1.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-        script.ColorFuzz = (Percentage)1;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_rot10_crop()
-    {
-      Test_Execute("zelda3_rot10.png", "zelda3_rot10_crop.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_rotm5_crop()
-    {
-      Test_Execute("zelda3_rotm5.png", "zelda3_rotm5_crop.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_zelda3_rot2_crop()
-    {
-      Test_Execute("zelda3_rot2.png", "zelda3_rot2_crop.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_image3s_rot45_crop()
-    {
-      Test_Execute("image3s_rot45.png", "image3s_rot45_crop.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_image3s_rotm20_crop()
-    {
-      Test_Execute("image3s_rotm20.png", "image3s_rotm20_crop.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_image3s_rot10_crop()
-    {
-      Test_Execute("image3s_rot10.png", "image3s_rot10_crop.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_image3s_rotm5_crop()
-    {
-      Test_Execute("image3s_rotm5.png", "image3s_rotm5_crop.png", (AutotrimScript script) =>
-      {
-        script.InnerTrim = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_Null()
+    public void Execute_InputNull_ThrowsException()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
       {
@@ -215,27 +62,141 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Settings()
+    public void Execute_zelda3_border()
     {
-      var script = new AutotrimScript();
-
-      using (var logo = new MagickImage(Images.Logo))
+      AssertExecuteWithFilename("zelda3_border2w.png", "zelda3_border.png", (AutotrimScript script) =>
       {
-        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
-        {
-          script.BorderColorLocation = new PointD(-1, -1);
-          script.Execute(logo);
-        });
+      });
 
-        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
+      AssertExecuteWithFilename("zelda3_border2b.png", "zelda3_border.png", (AutotrimScript script) =>
+      {
+      });
+
+      AssertExecuteWithFilename("zelda3_border2wrt.png", "zelda3_border.png", (AutotrimScript script) =>
+      {
+        script.BorderColorLocation = new PointD(129, 0);
+      });
+
+      AssertExecuteWithFilename("zelda3_border2brt.png", "zelda3_border.png", (AutotrimScript script) =>
+      {
+        script.BorderColorLocation = new PointD(129, 0);
+      });
+    }
+
+    [TestMethod]
+    public void Execute_zelda3_rot20_border10()
+    {
+      AssertExecuteWithFilename("zelda3_rot20_border10.png", "zelda3_rot20_border10.png", (AutotrimScript script) =>
+      {
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f30_png()
+    {
+      AssertExecute("zelda3_radborder.png", nameof(Execute_f30_png), (AutotrimScript script) =>
+      {
+        script.ColorFuzz = (Percentage)30;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f35_png()
+    {
+      AssertExecute("zelda3_radborder.png", nameof(Execute_f35_png), (AutotrimScript script) =>
+      {
+        script.ColorFuzz = (Percentage)35;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f40_png()
+    {
+      AssertExecute("zelda3_radborder.png", nameof(Execute_f40_png), (AutotrimScript script) =>
+      {
+        script.ColorFuzz = (Percentage)40;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f60_png()
+    {
+      AssertExecute("zelda3_radborder.png", nameof(Execute_f60_png), (AutotrimScript script) =>
+      {
+        script.ColorFuzz = (Percentage)60;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_i_png()
+    {
+      AssertExecute("zelda3_rot10.png", nameof(Execute_i_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      });
+
+      AssertExecute("zelda3_rotm5.png", nameof(Execute_i_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      });
+
+      AssertExecute("zelda3_rot2.png", nameof(Execute_i_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      });
+
+      AssertExecute("zelda3_rot45.png", nameof(Execute_i_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      });
+
+      AssertExecute("image3s_rot45.png", nameof(Execute_i_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      });
+
+      AssertExecute("image3s_rotm20.png", nameof(Execute_i_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      });
+
+      AssertExecute("image3s_rot10.png", nameof(Execute_i_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      });
+
+      AssertExecute("image3s_rotm5.png", nameof(Execute_i_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_i_f1_png()
+    {
+      AssertExecute("zelda3_rotm20.png", nameof(Execute_i_f1_png), (AutotrimScript script) =>
+      {
+        script.InnerTrim = true;
+        script.ColorFuzz = (Percentage)1;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_logo_png()
+    {
+      using (var image = new MagickImage(Images.Logo))
+      {
+        var script = new AutotrimScript();
+        script.InnerTrim = true;
+
+        using (var scriptOutput = script.Execute(image))
         {
-          script.BorderColorLocation = new PointD(logo.Width, logo.Height);
-          script.Execute(logo);
-        });
+          AssertOutput(scriptOutput, "logo.png");
+        }
       }
     }
 
-    private static void Test_Defaults(AutotrimScript script)
+    private static void AssertDefaults(AutotrimScript script)
     {
       Assert.AreEqual(0, script.BorderColorLocation.X);
       Assert.AreEqual(0, script.BorderColorLocation.Y);
@@ -247,7 +208,13 @@ namespace FredsImageMagickScripts.NET.Tests
       Assert.AreEqual(0, script.PixelShift.Bottom);
     }
 
-    private void Test_Execute(string input, string output, Action<AutotrimScript> action)
+    private void AssertExecute(string input, string methodName, Action<AutotrimScript> action)
+    {
+      string outputFile = GetOutputFile(input, methodName);
+      AssertExecuteWithFilename(input, outputFile, action);
+    }
+
+    private void AssertExecuteWithFilename(string input, string output, Action<AutotrimScript> action)
     {
       string inputFile = GetInputFile(input);
       /* LosslessCompress(inputFile); */
@@ -257,8 +224,10 @@ namespace FredsImageMagickScripts.NET.Tests
         var script = new AutotrimScript();
         action(script);
 
-        var scriptOutput = script.Execute(image);
-        AssertOutput(scriptOutput, output);
+        using (var scriptOutput = script.Execute(image))
+        {
+          AssertOutput(scriptOutput, output);
+        }
       }
     }
   }
