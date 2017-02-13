@@ -27,170 +27,89 @@ namespace FredsImageMagickScripts.NET.Tests
   public class UnperspectiveScriptTests : ScriptTester
   {
     [TestMethod]
-    public void Test_Defaults()
+    public void Constructor_Peak_SettingsSetToDefaults()
     {
-      Test_Defaults(UnperspectiveMethod.Peak);
-      Test_Defaults(UnperspectiveMethod.Derivative);
+      Constructor_SettingsSetToDefaults(UnperspectiveMethod.Peak);
     }
 
     [TestMethod]
-    public void Test_Execute_mandril2_p30_t30_out_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak()
+    public void Constructor_Derivative_SettingsSetToDefaults()
     {
-      Test_Execute("mandril2_p30_t30_out.jpg", "mandril2_p30_t30_out_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
-       {
-         script.ColorFuzz = (Percentage)20;
-       });
+      Constructor_SettingsSetToDefaults(UnperspectiveMethod.Derivative);
     }
 
     [TestMethod]
-    public void Test_Execute_mandril2_p30_t30_r60_zc_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak()
+    public void Constructor_InvalidUnperspectiveMethod_ThrowsException()
     {
-      Test_Execute("mandril2_p30_t30_r60_zc.jpg", "mandril2_p30_t30_r60_zc_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
+      ExceptionAssert.ThrowsArgumentException<ArgumentException>("method", "Invalid unperspective method specified.", () =>
       {
-        script.ColorFuzz = (Percentage)20;
+        new UnperspectiveScript((UnperspectiveMethod)42);
       });
     }
 
     [TestMethod]
-    public void Test_Execute_mandril2_p30_t30_r60_zc_unperspect_f20_a_t4_s1_S5_B0_r270_el_peak()
+    public void Reset_ConstructedWithPeakAllSettingsChanged_RestoredToDefault()
     {
-      Test_Execute("mandril2_p30_t30_r60_zc.jpg", "mandril2_p30_t30_r60_zc_unperspect_f20_a_t4_s1_S5_B0_r270_el_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)20;
-        script.Rotation = UnperspectiveRotation.Rotate270;
-      });
+      Reset_AllSettingsChanged_RestoredToDefault(UnperspectiveMethod.Peak);
     }
 
     [TestMethod]
-    public void Test_Execute_mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak()
+    public void Reset_ConstructedWithDerivativeAllSettingsChanged_RestoredToDefault()
     {
-      Test_Execute("mandril2_pm30_t30_r30_zc.jpg", "mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)20;
-      });
+      Reset_AllSettingsChanged_RestoredToDefault(UnperspectiveMethod.Derivative);
     }
 
     [TestMethod]
-    public void Test_Execute_mandril2_pm30_t30_r30_zc_unperspect_f52_a_t8_s2_S5_B0_r0_el_peak()
+    public void BorderColorLocation_BeforeLeftTop_ThrowsException()
     {
-      Test_Execute("mandril2_pm30_t30_r30_zc.jpg", "mandril2_pm30_t30_r30_zc_unperspect_f52_a_t8_s2_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
+      var script = new UnperspectiveScript();
+
+      using (var logo = new MagickImage(Images.Logo))
       {
-        script.ColorFuzz = (Percentage)52;
-        script.Threshold = 8;
-        script.Smooth = 2;
-      });
+        script.BorderColorLocation = new PointD(-1, -1);
+
+        // TODO: Fix this after the next release of Magick.NET
+        // ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>("x", "Invalid X coordinate: -1", () =>
+        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+          script.Execute(logo);
+        });
+      }
     }
 
     [TestMethod]
-    public void Test_Execute_mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_bh_peak()
+    public void BorderColorLocation_AfterBottomRight_ThrowsException()
     {
-      Test_Execute("mandril2_pm30_t30_r30_zc.jpg", "mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_bh_peak.jpg", (UnperspectiveScript script) =>
+      var script = new UnperspectiveScript();
+
+      using (var logo = new MagickImage(Images.Logo))
       {
-        script.ColorFuzz = (Percentage)15;
-        script.Default = UnperspectiveDefault.BoundingBoxHeight;
-      });
+        script.BorderColorLocation = new PointD(logo.Width, logo.Height);
+
+        // TODO: Fix this after the next release of Magick.NET
+        // ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>("x", "Invalid X coordinate: " + logo.Width, () =>
+        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+          script.Execute(logo);
+        });
+      }
     }
 
     [TestMethod]
-    public void Test_Execute_mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_h_peak()
+    public void WidthHeight_BothSet_ThrowsException()
     {
-      Test_Execute("mandril2_pm30_t30_r30_zc.jpg", "mandril2_pm30_t30_r30_zc_unperspect_f20_a_t4_s1_S5_B0_r0_h_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)20;
-        script.Default = UnperspectiveDefault.Height;
-      });
-    }
+      var script = new UnperspectiveScript();
 
-    [TestMethod]
-    public void Test_Execute_mandril2_round30_p30_t30_out_unperspect_f20_a_t4_s2_S5_B0_r0_el_peak()
-    {
-      Test_Execute("mandril2_round30_p30_t30_out.jpg", "mandril2_round30_p30_t30_out_unperspect_f20_a_t4_s2_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
+      using (var logo = new MagickImage(Images.Logo))
       {
-        script.ColorFuzz = (Percentage)20;
-        script.Smooth = 2;
-        script.DisableViewportCrop = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_monet2_p30_t30_r30_out_unperspect_f10_a_t4_s1_S5_B0_r0_el_peak()
-    {
-      Test_Execute("monet2_p30_t30_r30_out.jpg", "monet2_p30_t30_r30_out_unperspect_f10_a_t4_s1_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)10;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_redcanoe_p30_t30_out_unperspect_f10_a_t4_s1_S5_B0_r0_el_peak()
-    {
-      Test_Execute("redcanoe_p30_t30_out.jpg", "redcanoe_p30_t30_out_unperspect_f10_a_t4_s1_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)10;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_receipt1_unperspect_f7_a_t4_s1_S5_B0_r0_el_peak()
-    {
-      Test_Execute("receipt1.jpg", "receipt1_unperspect_f7_a_t4_s1_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)7;
-        script.DisableViewportCrop = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_receipt1_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak()
-    {
-      Test_Execute("receipt1.jpg", "receipt1_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)20;
-        script.DisableViewportCrop = true;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_receipt1_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak_w500()
-    {
-      Test_Execute("receipt1.jpg", "receipt1_unperspect_f20_a_t4_s1_S5_B0_r0_el_peak_w500.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)20;
         script.Width = 500;
-        script.DisableViewportCrop = true;
-      });
-    }
+        script.Height = 500;
 
-    [TestMethod]
-    public void Test_Execute_receipt2_unperspect_f50_a_t4_s1_S5_B0_r0_el_peak()
-    {
-      Test_Execute("receipt2.jpg", "receipt2_unperspect_f50_a_t4_s1_S5_B0_r0_el_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)50;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_receipt2_unperspect_f50_a_t4_s1_S5_B0_r0_el_peak_w200()
-    {
-      Test_Execute("receipt2.jpg", "receipt2_unperspect_f50_a_t4_s1_S5_B0_r0_el_peak_w200.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)50;
-        script.Width = 200;
-      });
-    }
-
-    [TestMethod]
-    public void Test_Execute_textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out_unperspect27_f11_a_t10_s2_S0_B3_r0_el_peak()
-    {
-      Test_Execute("textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out.png", "textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out_unperspect27_f11_a_t10_s2_S0_B3_r0_el_peak.jpg", (UnperspectiveScript script) =>
-      {
-        script.ColorFuzz = (Percentage)11;
-        script.Threshold = 10;
-        script.Smooth = 2;
-        script.Sharpen = 0;
-        script.Blur = 3;
-      });
+        ExceptionAssert.Throws<InvalidOperationException>("Both width and height cannot be specified at the same time.", () =>
+        {
+          script.Execute(logo);
+        });
+      }
     }
 
     [TestMethod]
@@ -204,27 +123,163 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Settings()
+    public void Execute_f20_jpg()
     {
-      var script = new UnperspectiveScript();
+      AssertExecute("mandril2_p30_t30_out.jpg", nameof(Execute_f20_jpg), (UnperspectiveScript script) =>
+       {
+         script.ColorFuzz = (Percentage)20;
+       });
 
-      using (var logo = new MagickImage(Images.Logo))
+      AssertExecute("mandril2_p30_t30_r60_zc.jpg", nameof(Execute_f20_jpg), (UnperspectiveScript script) =>
       {
-        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
-        {
-          script.BorderColorLocation = new PointD(-1, -1);
-          script.Execute(logo);
-        });
+        script.ColorFuzz = (Percentage)20;
+      });
 
-        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
-        {
-          script.BorderColorLocation = new PointD(logo.Width, logo.Height);
-          script.Execute(logo);
-        });
-      }
+      AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(Execute_f20_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)20;
+      });
     }
 
-    private static void Test_Defaults(UnperspectiveScript script, UnperspectiveMethod method)
+    [TestMethod]
+    public void Execute_f20_r270_jpg()
+    {
+      AssertExecute("mandril2_p30_t30_r60_zc.jpg", nameof(Execute_f20_r270_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)20;
+        script.Rotation = UnperspectiveRotation.Rotate270;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f52_t8_s2_jpg()
+    {
+      AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(Execute_f52_t8_s2_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)52;
+        script.Threshold = 8;
+        script.Smooth = 2;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f15_bh_jpg()
+    {
+      AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(Execute_f15_bh_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)15;
+        script.Default = UnperspectiveDefault.BoundingBoxHeight;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f20_h_jpg()
+    {
+      AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(Execute_f20_h_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)20;
+        script.Default = UnperspectiveDefault.Height;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f20_s2_vc_jpg()
+    {
+      AssertExecute("mandril2_round30_p30_t30_out.jpg", nameof(Execute_f20_s2_vc_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)20;
+        script.Smooth = 2;
+        script.DisableViewportCrop = true;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f10_jpg()
+    {
+      AssertExecute("monet2_p30_t30_r30_out.jpg", nameof(Execute_f10_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)10;
+      });
+
+      AssertExecute("redcanoe_p30_t30_out.jpg", nameof(Execute_f10_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)10;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f7_vc_jpg()
+    {
+      AssertExecute("receipt1.jpg", nameof(Execute_f7_vc_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)7;
+        script.DisableViewportCrop = true;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f20_vc_jpg()
+    {
+      AssertExecute("receipt1.jpg", nameof(Execute_f20_vc_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)20;
+        script.DisableViewportCrop = true;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f20_vc_w500_jpg()
+    {
+      AssertExecute("receipt1.jpg", nameof(Execute_f20_vc_w500_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)20;
+        script.Width = 500;
+        script.DisableViewportCrop = true;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f50_jpg()
+    {
+      AssertExecute("receipt2.jpg", nameof(Execute_f50_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)50;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f50_w200_jpg()
+    {
+      AssertExecute("receipt2.jpg", nameof(Execute_f50_w200_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)50;
+        script.Width = 200;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f11_t10_s2_S0_B3_jpg()
+    {
+      AssertExecute("textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out.png", nameof(Execute_f11_t10_s2_S0_B3_jpg), (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)11;
+        script.Threshold = 10;
+        script.Smooth = 2;
+        script.Sharpen = 0;
+        script.Blur = 3;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_f10_derivative_jpg()
+    {
+      AssertExecute("redcanoe_p30_t30_out.jpg", nameof(Execute_f10_derivative_jpg), UnperspectiveMethod.Derivative, (UnperspectiveScript script) =>
+      {
+        script.ColorFuzz = (Percentage)10;
+      });
+    }
+
+    private static void AssertDefaults(UnperspectiveScript script, UnperspectiveMethod method)
     {
       Assert.AreEqual(null, script.AspectRatio);
       Assert.AreEqual(0, script.BorderColorLocation.X);
@@ -252,11 +307,16 @@ namespace FredsImageMagickScripts.NET.Tests
       }
     }
 
-    private static void Test_Defaults(UnperspectiveMethod method)
+    private static void Constructor_SettingsSetToDefaults(UnperspectiveMethod method)
     {
       var script = new UnperspectiveScript(method);
-      Test_Defaults(script, method);
 
+      AssertDefaults(script, method);
+    }
+
+    private static void Reset_AllSettingsChanged_RestoredToDefault(UnperspectiveMethod method)
+    {
+      var script = new UnperspectiveScript(method);
       script.AspectRatio = 1.5;
       script.BorderColorLocation = new PointD(10, 10);
       script.Blur = 15.0;
@@ -273,21 +333,30 @@ namespace FredsImageMagickScripts.NET.Tests
       script.Width = 50;
 
       script.Reset();
-      Test_Defaults(script, method);
+
+      AssertDefaults(script, method);
     }
 
-    private void Test_Execute(string fileName, string output, Action<UnperspectiveScript> action)
+    private void AssertExecute(string input, string methodName, Action<UnperspectiveScript> action)
     {
-      var input = GetInputFile(fileName);
+      AssertExecute(input, methodName, UnperspectiveMethod.Peak, action);
+    }
+
+    private void AssertExecute(string input, string methodName, UnperspectiveMethod method, Action<UnperspectiveScript> action)
+    {
+      var inputFile = GetInputFile(input);
       /* LosslessCompress(input); */
 
-      using (var inputImage = new MagickImage(input))
+      using (var image = new MagickImage(inputFile))
       {
-        var script = new UnperspectiveScript();
+        var script = new UnperspectiveScript(method);
         action(script);
 
-        var scriptOutput = script.Execute(inputImage);
-        AssertOutput(scriptOutput, output);
+        using (var scriptOutput = script.Execute(image))
+        {
+          string outputFile = GetOutputFile(inputFile, methodName);
+          AssertOutput(scriptOutput, outputFile);
+        }
       }
     }
   }

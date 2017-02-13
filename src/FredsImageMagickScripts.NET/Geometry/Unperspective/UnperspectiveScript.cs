@@ -56,6 +56,9 @@ namespace FredsImageMagickScripts
     /// <param name="method">The unpersective method</param>
     public UnperspectiveScript(UnperspectiveMethod method)
     {
+      if (method != UnperspectiveMethod.Peak && method != UnperspectiveMethod.Derivative)
+        throw new ArgumentException("Invalid unperspective method specified.", nameof(method));
+
       _method = method;
 
       Reset();
@@ -258,7 +261,7 @@ namespace FredsImageMagickScripts
         Smooth = 1.0;
         Threshold = 4;
       }
-      else if (_method == UnperspectiveMethod.Derivative)
+      else
       {
         Sharpen = 0.0;
         Smooth = 5.0;
