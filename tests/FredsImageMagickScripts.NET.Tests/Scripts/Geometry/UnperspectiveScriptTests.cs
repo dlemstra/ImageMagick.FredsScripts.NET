@@ -18,6 +18,7 @@
 // </copyright>
 
 using System;
+using System.Reflection;
 using ImageMagick;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -96,14 +97,27 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
+    public void Default_InvalidValue_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid default output dimension specified.", (UnperspectiveScript script) =>
+      {
+        script.Default = (UnperspectiveDefault)42;
+      });
+    }
+
+    [TestMethod]
+    public void MaxPeaks_ToLow_ThrowsException()
+    {
+      AssertInvalidOperation("Unable to continue, the number of peaks is higher than 4.", (UnperspectiveScript script) =>
+      {
+        script.MaxPeaks = 4;
+      });
+    }
+
+    [TestMethod]
     public void Threshold_Zero_ThrowsException()
     {
       AssertInvalidOperation("Unable to continue, the number of peaks should be 4.", (UnperspectiveScript script) =>
-      {
-        script.Threshold = 0;
-      });
-
-      AssertInvalidOperation("Unable to continue, the number of peaks should be 4.", UnperspectiveMethod.Derivative, (UnperspectiveScript script) =>
       {
         script.Threshold = 0;
       });
@@ -134,7 +148,84 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Execute_Null()
+    public void MinLength_ValueToHigh_ThrowsException()
+    {
+      AssertMinLength(0, 209);
+      AssertMinLength(0, 276);
+      AssertMinLength(25, 354);
+      AssertMinLength(25, 427);
+    }
+
+    [TestMethod]
+    public void GetCoefficients_UnsolvableMatrix_ThrowsException()
+    {
+      GetCoefficients_UnsolvableMatrix_ThrowsException(new double[] { 1, 2, 3, 4 });
+      GetCoefficients_UnsolvableMatrix_ThrowsException(new double[] { -4, double.NaN, double.NaN, double.NaN });
+    }
+
+    [TestMethod]
+    public void GetDimensions_UnperspectiveEdgeLength_ReturnsCorrectGeometry()
+    {
+      MagickGeometry geometry = GetDimensions(UnperspectiveDefault.EdgeLength);
+
+      Assert.AreEqual(new MagickGeometry(1006, 670), geometry);
+    }
+
+    [TestMethod]
+    public void GetDimensions_UnperspectiveBoundingBoxHeight_ReturnsCorrectGeometry()
+    {
+      MagickGeometry geometry = GetDimensions(UnperspectiveDefault.BoundingBoxHeight);
+
+      Assert.AreEqual(new MagickGeometry(1200, 800), geometry);
+    }
+
+    [TestMethod]
+    public void GetDimensions_UnperspectiveBoundingBoxWidth_ReturnsCorrectGeometry()
+    {
+      MagickGeometry geometry = GetDimensions(UnperspectiveDefault.BoundingBoxWidth);
+
+      Assert.AreEqual(new MagickGeometry(800, 533), geometry);
+    }
+
+    [TestMethod]
+    public void GetDimensions_UnperspectiveHeight_ReturnsCorrectGeometry()
+    {
+      MagickGeometry geometry = GetDimensions(UnperspectiveDefault.Height);
+
+      Assert.AreEqual(new MagickGeometry(1500, 1000), geometry);
+    }
+
+    [TestMethod]
+    public void GetDimensions_UnperspectiveWidth_ReturnsCorrectGeometry()
+    {
+      MagickGeometry geometry = GetDimensions(UnperspectiveDefault.Width);
+
+      Assert.AreEqual(new MagickGeometry(1000, 666), geometry);
+    }
+
+    [TestMethod]
+    public void GetRotation_Geometry10x10_ReturnsCorrectRotation()
+    {
+      GetRotation_Geometry10x10_ReturnsCorrectRotation(4, 6, UnperspectiveRotation.Rotate270);
+      GetRotation_Geometry10x10_ReturnsCorrectRotation(6, 6, UnperspectiveRotation.Rotate180);
+      GetRotation_Geometry10x10_ReturnsCorrectRotation(6, 4, UnperspectiveRotation.Rotate90);
+      GetRotation_Geometry10x10_ReturnsCorrectRotation(4, 4, UnperspectiveRotation.None);
+    }
+
+    [TestMethod]
+    public void PerceptibleReciprocal_NegativeNan_ReturnsPositiveInfinity()
+    {
+      var script = new UnperspectiveScript();
+
+      Type type = script.GetType();
+      MethodInfo method = type.GetMethod("PerceptibleReciprocal", BindingFlags.Static | BindingFlags.NonPublic);
+
+      var result = method.Invoke(null, new object[] { -double.NaN });
+      Assert.AreEqual(result, double.PositiveInfinity);
+    }
+
+    [TestMethod]
+    public void Execute_InputNull_ThrowsException()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
       {
@@ -300,6 +391,20 @@ namespace FredsImageMagickScripts.NET.Tests
       });
     }
 
+    [TestMethod]
+    public void Execute_a1_b3_h500_S0_t175_m150_jpg()
+    {
+      AssertExecute("redcanoe_p30_t30_out.jpg", nameof(Execute_a1_b3_h500_S0_t175_m150_jpg), UnperspectiveMethod.Derivative, (UnperspectiveScript script) =>
+      {
+        script.AspectRatio = 1;
+        script.Blur = 3;
+        script.Height = 500;
+        script.Smooth = 0;
+        script.Threshold = 175;
+        script.MaxPeaks = 150;
+      });
+    }
+
     private static void AssertDefaults(UnperspectiveScript script, UnperspectiveMethod method)
     {
       Assert.AreEqual(null, script.AspectRatio);
@@ -348,6 +453,23 @@ namespace FredsImageMagickScripts.NET.Tests
       }
     }
 
+    private static void AssertMinLength(int rotation, int minLength)
+    {
+      var script = new UnperspectiveScript();
+      script.MinLength = minLength;
+
+      var inputFile = GetInputFile("monet2_p30_t30_r30_out.jpg");
+      using (var image = new MagickImage(inputFile))
+      {
+        image.Rotate(rotation);
+
+        ExceptionAssert.Throws<InvalidOperationException>("Unable to continue, the edge length is less than 40.", () =>
+        {
+          script.Execute(image);
+        });
+      }
+    }
+
     private static void Constructor_SettingsSetToDefaults(UnperspectiveMethod method)
     {
       var script = new UnperspectiveScript(method);
@@ -376,6 +498,62 @@ namespace FredsImageMagickScripts.NET.Tests
       script.Reset();
 
       AssertDefaults(script, method);
+    }
+
+    private static void GetCoefficients_UnsolvableMatrix_ThrowsException(double[] arguments)
+    {
+      var script = new UnperspectiveScript();
+
+      Type type = script.GetType();
+      MethodInfo method = type.GetMethod("GetCoefficients", BindingFlags.Static | BindingFlags.NonPublic, null, new Type[] { typeof(double[]) }, null);
+
+      ExceptionAssert.Throws<InvalidOperationException>("Unsolvable matrix detected.", () =>
+      {
+        try
+        {
+          method.Invoke(null, new object[] { arguments });
+        }
+        catch (TargetInvocationException ex)
+        {
+          throw ex.InnerException;
+        }
+      });
+    }
+
+    private static MagickGeometry GetDimensions(UnperspectiveDefault value)
+    {
+      var script = new UnperspectiveScript();
+      script.AspectRatio = 1.5;
+      script.Default = value;
+
+      Type type = script.GetType();
+      MethodInfo method = type.GetMethod("GetDimensions", BindingFlags.Instance | BindingFlags.NonPublic);
+
+      PointD[] corners = new PointD[4]
+      {
+        new PointD(0, 0),
+        new PointD(300, 600),
+        new PointD(10, 10),
+        new PointD(290, 490)
+      };
+      MagickGeometry inputDimensions = new MagickGeometry(1000, 1000);
+      MagickGeometry trimmedDimensions = new MagickGeometry(800, 800);
+
+      return (MagickGeometry)method.Invoke(script, new object[] { null, corners, inputDimensions, trimmedDimensions });
+    }
+
+    private static void GetRotation_Geometry10x10_ReturnsCorrectRotation(int x, int y, UnperspectiveRotation expectedRotation)
+    {
+      var script = new UnperspectiveScript();
+
+      Type type = script.GetType();
+      MethodInfo method = type.GetMethod("GetRotation", BindingFlags.Instance | BindingFlags.NonPublic);
+
+      using (MagickImage image = new MagickImage(MagickColors.Fuchsia, 10, 10))
+      {
+        var result = method.Invoke(script, new object[] { new PointD[] { new PointD(x, y) }, image });
+        Assert.AreEqual(expectedRotation, result);
+      }
     }
 
     private void AssertExecute(string input, string methodName, Action<UnperspectiveScript> action)

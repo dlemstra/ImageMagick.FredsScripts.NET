@@ -577,6 +577,10 @@ namespace FredsImageMagickScripts
     {
       if (Width != null && Height != null)
         throw new InvalidOperationException("Both width and height cannot be specified at the same time.");
+
+      if (Default != UnperspectiveDefault.BoundingBoxHeight && Default != UnperspectiveDefault.BoundingBoxWidth &&
+          Default != UnperspectiveDefault.EdgeLength && Default != UnperspectiveDefault.Height && Default != UnperspectiveDefault.Width)
+        throw new InvalidOperationException("Invalid default output dimension specified.");
     }
 
     private MagickImage CreateMask(MagickImage image)
@@ -648,7 +652,7 @@ namespace FredsImageMagickScripts
       }
     }
 
-    private MagickGeometry GetDimensions(MagickImage output, PointD[] corners, MagickGeometry inputDimensions, MagickGeometry trimmedDimensions)
+    private MagickGeometry GetDimensions(MagickImage image, PointD[] corners, MagickGeometry inputDimensions, MagickGeometry trimmedDimensions)
     {
       double left = Hypot(corners[0].X - corners[1].X, corners[0].Y - corners[1].Y);
       double bottom = Hypot(corners[1].X - corners[2].X, corners[1].Y - corners[2].Y);
@@ -658,7 +662,7 @@ namespace FredsImageMagickScripts
       if (left < MinLength || bottom < MinLength || right < MinLength || top < MinLength)
         throw new InvalidOperationException("Unable to continue, the edge length is less than " + MaxPeaks + ".");
 
-      double aspectRatio = CalculateAspectRation(output, corners);
+      double aspectRatio = CalculateAspectRation(image, corners);
 
       if (Height != null)
         return new MagickGeometry((int)Math.Floor(aspectRatio * Height.Value), Height.Value);
@@ -667,21 +671,19 @@ namespace FredsImageMagickScripts
         return new MagickGeometry(Width.Value, (int)Math.Floor(Width.Value / aspectRatio));
 
       if (Default == UnperspectiveDefault.EdgeLength)
-        return new MagickGeometry((int)Math.Floor(aspectRatio * left), (int)left);
+        return new MagickGeometry((int)Math.Floor(left * aspectRatio), (int)left);
 
       if (Default == UnperspectiveDefault.BoundingBoxHeight)
-        return new MagickGeometry((int)Math.Floor(aspectRatio * trimmedDimensions.Height), trimmedDimensions.Height);
+        return new MagickGeometry((int)Math.Floor(trimmedDimensions.Height * aspectRatio), trimmedDimensions.Height);
 
       if (Default == UnperspectiveDefault.BoundingBoxWidth)
         return new MagickGeometry(trimmedDimensions.Width, (int)Math.Floor(trimmedDimensions.Width / aspectRatio));
 
       if (Default == UnperspectiveDefault.Height)
-        return new MagickGeometry((int)Math.Floor(aspectRatio * inputDimensions.Height), inputDimensions.Height);
+        return new MagickGeometry((int)Math.Floor(inputDimensions.Height * aspectRatio), inputDimensions.Height);
 
-      if (Default == UnperspectiveDefault.Width)
-        return new MagickGeometry(inputDimensions.Width, (int)Math.Floor(inputDimensions.Width / aspectRatio));
-
-      throw new NotImplementedException();
+      // Default == UnperspectiveDefault.Width
+      return new MagickGeometry(inputDimensions.Width, (int)Math.Floor(inputDimensions.Width / aspectRatio));
     }
 
     private ushort[] GetGrayChannel(MagickImage image)
@@ -783,13 +785,13 @@ namespace FredsImageMagickScripts
       return maxList;
     }
 
-    private UnperspectiveRotation GetRotation(PointD[] corners, MagickImage output)
+    private UnperspectiveRotation GetRotation(PointD[] corners, MagickImage image)
     {
       if (Rotation != null)
         return Rotation.Value;
 
-      var m3x = corners[0].X - (output.Width / 2.0);
-      var m3y = (output.Height / 2.0) - corners[0].Y;
+      var m3x = corners[0].X - (image.Width / 2.0);
+      var m3y = (image.Height / 2.0) - corners[0].Y;
 
       if (m3x < 0 && m3y < 0)
         return UnperspectiveRotation.Rotate270;
