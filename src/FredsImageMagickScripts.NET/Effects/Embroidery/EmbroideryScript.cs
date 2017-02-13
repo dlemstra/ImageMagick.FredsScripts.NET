@@ -352,13 +352,13 @@ namespace FredsImageMagickScripts
         throw new InvalidOperationException("Invalid color fuzz specified, value must be between 0 and 100.");
 
       if (Contrast < 0.0)
-        throw new InvalidOperationException("Invalid contrast specified, value must be higher than zero.");
+        throw new InvalidOperationException("Invalid contrast specified, value must be zero or higher.");
 
       if (Elevation < 0.0 || Elevation > 90.0)
-        throw new InvalidOperationException("Invalid range specified, value must be between 0 and 90.");
+        throw new InvalidOperationException("Invalid elevation specified, value must be between 0 and 90.");
 
       if (Extent < 0.0)
-        throw new InvalidOperationException("Invalid spread specified, value must be higher than zero.");
+        throw new InvalidOperationException("Invalid extent specified, value must be zero or higher.");
 
       if (GrayLimit < 0 || GrayLimit > 100)
         throw new InvalidOperationException("Invalid gray limit specified, value must be between 0 and 100.");
@@ -372,11 +372,14 @@ namespace FredsImageMagickScripts
       if (NumberOfColors <= 0)
         throw new InvalidOperationException("Invalid number of colors specified, value must be higher than zero.");
 
+      if (Pattern != EmbroideryPattern.Crosshatch && Pattern != EmbroideryPattern.Linear)
+        throw new InvalidOperationException("Invalid pattern specified.");
+
       if (Range < 0 || Range > 360)
         throw new InvalidOperationException("Invalid range specified, value must be between 0 and 360.");
 
       if (Spread < 0.0)
-        throw new InvalidOperationException("Invalid spread specified, value must be higher than zero.");
+        throw new InvalidOperationException("Invalid spread specified, value must be zero or higher.");
 
       if (Thickness <= 0)
         throw new InvalidOperationException("Invalid thickness specified, value must be higher than zero.");
@@ -469,10 +472,7 @@ namespace FredsImageMagickScripts
       if (Pattern == EmbroideryPattern.Linear)
         return CreateLinearTexture();
 
-      if (Pattern == EmbroideryPattern.Crosshatch)
-        return CreateCrosshatchTexture();
-
-      throw new NotImplementedException();
+      return CreateCrosshatchTexture();
     }
 
     private MagickImage ToNearBlackWhite(MagickImage image)

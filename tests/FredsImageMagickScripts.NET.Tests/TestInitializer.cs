@@ -29,6 +29,7 @@ namespace FredsImageMagickScripts.NET.Tests
     public static void Initialize(TestContext context)
     {
       OpenCL.IsEnabled = false;
+      MagickNET.SetRandomSeed(100);
     }
   }
 }

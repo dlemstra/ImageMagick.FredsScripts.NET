@@ -26,18 +26,18 @@ namespace FredsImageMagickScripts.NET.Tests
   [TestClass]
   public class EmbroideryScriptTests : ScriptTester
   {
-    [TestInitialize]
-    public void Initialize()
+    [TestMethod]
+    public void Constructor_SettingsSetToDefaults()
     {
-      MagickNET.SetRandomSeed(100);
+      var script = new EmbroideryScript();
+
+      AssertDefaults(script);
     }
 
     [TestMethod]
-    public void Test_Defaults()
+    public void Constructor_InvalidCartoonMethod_ThrowsException()
     {
       var script = new EmbroideryScript();
-      Test_Defaults(script);
-
       script.Angle = 10;
       script.Azimuth = 150.3;
       script.BackgroundColor = MagickColors.Pink;
@@ -55,90 +55,205 @@ namespace FredsImageMagickScripts.NET.Tests
       script.Thickness = 1;
 
       script.Reset();
-      Test_Defaults(script);
+
+      AssertDefaults(script);
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
+    public void Angle_BelowMinus360_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid angle specified, value must be between -360 and 360.", (EmbroideryScript script) =>
       {
+        script.Angle = -361;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p1_t3_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
+    public void Angle_Above360_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p1_t3_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid angle specified, value must be between -360 and 360.", (EmbroideryScript script) =>
       {
-        script.Thickness = 3;
+        script.Angle = 361;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p2_t2_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
+    public void Azimuth_BelowMinus360_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p2_t2_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid azimuth specified, value must be between -360 and 360.", (EmbroideryScript script) =>
       {
-        script.Pattern = EmbroideryPattern.Crosshatch;
+        script.Azimuth = -361;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p2_t3_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
+    public void Azimuth_Above360_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p2_t3_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid azimuth specified, value must be between -360 and 360.", (EmbroideryScript script) =>
       {
-        script.Pattern = EmbroideryPattern.Crosshatch;
-        script.Thickness = 3;
+        script.Azimuth = 361;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p2_t5_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
+    public void ColorFuzz_BelowZero_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p2_t5_g20_f20_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid color fuzz specified, value must be between 0 and 100.", (EmbroideryScript script) =>
       {
-        script.Pattern = EmbroideryPattern.Crosshatch;
-        script.Thickness = 5;
+        script.ColorFuzz = new Percentage(-1);
       });
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i0_e2_B4_A130_E30_C0_S1_N100_M100()
+    public void ColorFuzz_Above100_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i0_e2_B4_A130_E30_C0_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid color fuzz specified, value must be between 0 and 100.", (EmbroideryScript script) =>
       {
-        script.Intensity = (Percentage)0;
+        script.ColorFuzz = new Percentage(101);
       });
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i50_e2_B4_A130_E30_C0_S1_N100_M100()
+    public void Contrast_BelowZero_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i50_e2_B4_A130_E30_C0_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid contrast specified, value must be zero or higher.", (EmbroideryScript script) =>
       {
-        script.Intensity = (Percentage)50;
+        script.Contrast = -0.99;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i0_e2_B4_A130_E30_C10_S1_N100_M100()
+    public void Elevation_BelowZero_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p1_t2_g20_f20_a0_r90_i0_e2_B4_A130_E30_C10_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid elevation specified, value must be between 0 and 90.", (EmbroideryScript script) =>
       {
-        script.Intensity = (Percentage)0;
-        script.Contrast = 10;
+        script.Elevation = -0.99;
       });
     }
 
     [TestMethod]
-    public void Test_Execute_cnbc_embroidery_n8_p1_t2_g0_f0_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100()
+    public void Elevation_Above90_ThrowsException()
     {
-      Test_Execute("cnbc.jpg", "cnbc_embroidery_n8_p1_t2_g0_f0_a0_r90_i25_e2_B4_A130_E30_C0_S1_N100_M100.jpg", (EmbroideryScript script) =>
+      AssertInvalidOperation("Invalid elevation specified, value must be between 0 and 90.", (EmbroideryScript script) =>
       {
-        script.ColorFuzz = (Percentage)0;
-        script.GrayLimit = 0;
+        script.Elevation = 90.01;
+      });
+    }
+
+    [TestMethod]
+    public void Extent_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid extent specified, value must be zero or higher.", (EmbroideryScript script) =>
+      {
+        script.Extent = -1;
+      });
+    }
+
+    [TestMethod]
+    public void GrayLimit_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid gray limit specified, value must be between 0 and 100.", (EmbroideryScript script) =>
+      {
+        script.GrayLimit = -1;
+      });
+    }
+
+    [TestMethod]
+    public void GrayLimit_Above100_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid gray limit specified, value must be between 0 and 100.", (EmbroideryScript script) =>
+      {
+        script.GrayLimit = 101;
+      });
+    }
+
+    [TestMethod]
+    public void Intensity_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid intensity specified, value must be between 0 and 100.", (EmbroideryScript script) =>
+      {
+        script.Intensity = new Percentage(-1);
+      });
+    }
+
+    [TestMethod]
+    public void Intensity_Above100_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid intensity specified, value must be between 0 and 100.", (EmbroideryScript script) =>
+      {
+        script.Intensity = new Percentage(101);
+      });
+    }
+
+    [TestMethod]
+    public void Mix_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid mix specified, value must be between 0 and 100.", (EmbroideryScript script) =>
+      {
+        script.Mix = -1;
+      });
+    }
+
+    [TestMethod]
+    public void Mix_Above100_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid mix specified, value must be between 0 and 100.", (EmbroideryScript script) =>
+      {
+        script.Mix = 101;
+      });
+    }
+
+    [TestMethod]
+    public void NumberOfColors_Zero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid number of colors specified, value must be higher than zero.", (EmbroideryScript script) =>
+      {
+        script.NumberOfColors = 0;
+      });
+    }
+
+    [TestMethod]
+    public void Pattern_InvalidValue_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid pattern specified.", (EmbroideryScript script) =>
+      {
+        script.Pattern = (EmbroideryPattern)42;
+      });
+    }
+
+    [TestMethod]
+    public void Range_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid range specified, value must be between 0 and 360.", (EmbroideryScript script) =>
+      {
+        script.Range = -1;
+      });
+    }
+
+    [TestMethod]
+    public void Range_Above360_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid range specified, value must be between 0 and 360.", (EmbroideryScript script) =>
+      {
+        script.Range = 361;
+      });
+    }
+
+    [TestMethod]
+    public void Spread_BelowZero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid spread specified, value must be zero or higher.", (EmbroideryScript script) =>
+      {
+        script.Spread = -0.99;
+      });
+    }
+
+    [TestMethod]
+    public void Thickness_Zero_ThrowsException()
+    {
+      AssertInvalidOperation("Invalid thickness specified, value must be higher than zero.", (EmbroideryScript script) =>
+      {
+        script.Thickness = 0;
       });
     }
 
@@ -153,161 +268,100 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Test_Settings()
+    public void Execute_default_jpg()
     {
-      var script = new EmbroideryScript();
-
-      using (var logo = new MagickImage(Images.Logo))
+      AssertExecute("cnbc.jpg", nameof(Execute_default_jpg), (EmbroideryScript script) =>
       {
-        script.Angle = -361;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Angle = 361;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Azimuth = -361.0;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Azimuth = 361.0;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.ColorFuzz = new Percentage(-1);
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.ColorFuzz = new Percentage(101);
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Contrast = -0.99;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Elevation = -0.99;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Elevation = 90.01;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Extent = -1;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.GrayLimit = -1;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.GrayLimit = 101;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Intensity = new Percentage(-1);
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Intensity = new Percentage(101);
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Mix = -1;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Mix = 101;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.NumberOfColors = 0;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Range = -1;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Range = 361;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Spread = -0.99;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-
-        script.Reset();
-        script.Thickness = 0;
-        ExceptionAssert.Throws<InvalidOperationException>(() =>
-        {
-          script.Execute(logo);
-        });
-      }
+      });
     }
 
-    private static void Test_Defaults(EmbroideryScript script)
+    [TestMethod]
+    public void Execute_f0_g0_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_f0_g0_jpg), (EmbroideryScript script) =>
+      {
+        script.ColorFuzz = (Percentage)0;
+        script.GrayLimit = 0;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_i0_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_i0_jpg), (EmbroideryScript script) =>
+      {
+        script.Intensity = (Percentage)0;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_i0_C10_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_i0_C10_jpg), (EmbroideryScript script) =>
+      {
+        script.Intensity = (Percentage)0;
+        script.Contrast = 10;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_i50_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_i50_jpg), (EmbroideryScript script) =>
+      {
+        script.Intensity = (Percentage)50;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_p2_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_p2_jpg), (EmbroideryScript script) =>
+      {
+        script.Pattern = EmbroideryPattern.Crosshatch;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_p2_t3_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_p2_t3_jpg), (EmbroideryScript script) =>
+      {
+        script.Pattern = EmbroideryPattern.Crosshatch;
+        script.Thickness = 3;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_p2_t5_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_p2_t5_jpg), (EmbroideryScript script) =>
+      {
+        script.Pattern = EmbroideryPattern.Crosshatch;
+        script.Thickness = 5;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_s100_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_s100_jpg), (EmbroideryScript script) =>
+      {
+        script.Spread = 100;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_s0_t3_jpg()
+    {
+      AssertExecute("cnbc.jpg", nameof(Execute_s0_t3_jpg), (EmbroideryScript script) =>
+      {
+        script.Spread = 0;
+        script.Thickness = 3;
+      });
+    }
+
+    private static void AssertDefaults(EmbroideryScript script)
     {
       Assert.AreEqual(0, script.Angle);
       Assert.AreEqual(130, script.Azimuth);
@@ -327,7 +381,22 @@ namespace FredsImageMagickScripts.NET.Tests
       Assert.AreEqual(2, script.Thickness);
     }
 
-    private void Test_Execute(string input, string output, Action<EmbroideryScript> action)
+    private static void AssertInvalidOperation(string expectedMessage, Action<EmbroideryScript> initAction)
+    {
+      var script = new EmbroideryScript();
+
+      using (var logo = new MagickImage(Images.Logo))
+      {
+        initAction(script);
+
+        ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+        {
+          script.Execute(logo);
+        });
+      }
+    }
+
+    private void AssertExecute(string input, string methodName, Action<EmbroideryScript> action)
     {
       string inputFile = GetInputFile(input);
       /* LosslessCompress(inputFile); */
@@ -337,8 +406,11 @@ namespace FredsImageMagickScripts.NET.Tests
         var script = new EmbroideryScript();
         action(script);
 
-        var scriptOutput = script.Execute(image);
-        AssertOutput(scriptOutput, output);
+        using (var scriptOutput = script.Execute(image))
+        {
+          string outputFile = GetInputFile(input, methodName);
+          AssertOutput(scriptOutput, outputFile);
+        }
       }
     }
   }
