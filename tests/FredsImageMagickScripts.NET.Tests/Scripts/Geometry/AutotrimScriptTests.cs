@@ -52,6 +52,42 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
+    public void BorderColorLocation_BeforeLeftTop_ThrowsException()
+    {
+      var script = new AutotrimScript();
+
+      using (var logo = new MagickImage(Images.Logo))
+      {
+        script.BorderColorLocation = new PointD(-1, -1);
+
+        // TODO: Fix this after the next release of Magick.NET
+        // ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>("x", "Invalid X coordinate: -1", () =>
+        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+          script.Execute(logo);
+        });
+      }
+    }
+
+    [TestMethod]
+    public void BorderColorLocation_AfterBottomRight_ThrowsException()
+    {
+      var script = new AutotrimScript();
+
+      using (var logo = new MagickImage(Images.Logo))
+      {
+        script.BorderColorLocation = new PointD(logo.Width, logo.Height);
+
+        // TODO: Fix this after the next release of Magick.NET
+        // ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>("x", "Invalid X coordinate: " + logo.Width, () =>
+        ExceptionAssert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+          script.Execute(logo);
+        });
+      }
+    }
+
+    [TestMethod]
     public void Execute_InputNull_ThrowsException()
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
