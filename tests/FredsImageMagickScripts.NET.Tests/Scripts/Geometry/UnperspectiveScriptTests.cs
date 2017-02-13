@@ -96,20 +96,41 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
+    public void Threshold_Zero_ThrowsException()
+    {
+      AssertInvalidOperation("Unable to continue, the number of peaks should be 4.", (UnperspectiveScript script) =>
+      {
+        script.Threshold = 0;
+      });
+
+      AssertInvalidOperation("Unable to continue, the number of peaks should be 4.", UnperspectiveMethod.Derivative, (UnperspectiveScript script) =>
+      {
+        script.Threshold = 0;
+      });
+    }
+
+    [TestMethod]
+    public void Threshold_ToHigh_ThrowsException()
+    {
+      AssertInvalidOperation("Unable to continue, the number of peaks should be 4.", (UnperspectiveScript script) =>
+      {
+        script.Threshold = 20000;
+      });
+
+      AssertInvalidOperation("Unable to continue, the number of peaks should be 4.", UnperspectiveMethod.Derivative, (UnperspectiveScript script) =>
+      {
+        script.Threshold = 20000;
+      });
+    }
+
+    [TestMethod]
     public void WidthHeight_BothSet_ThrowsException()
     {
-      var script = new UnperspectiveScript();
-
-      using (var logo = new MagickImage(Images.Logo))
+      AssertInvalidOperation("Both width and height cannot be specified at the same time.", (UnperspectiveScript script) =>
       {
         script.Width = 500;
         script.Height = 500;
-
-        ExceptionAssert.Throws<InvalidOperationException>("Both width and height cannot be specified at the same time.", () =>
-        {
-          script.Execute(logo);
-        });
-      }
+      });
     }
 
     [TestMethod]
@@ -304,6 +325,26 @@ namespace FredsImageMagickScripts.NET.Tests
         Assert.AreEqual(0.0, script.Sharpen);
         Assert.AreEqual(5.0, script.Smooth);
         Assert.AreEqual(10, script.Threshold);
+      }
+    }
+
+    private static void AssertInvalidOperation(string expectedMessage, Action<UnperspectiveScript> initAction)
+    {
+      AssertInvalidOperation(expectedMessage, UnperspectiveMethod.Peak, initAction);
+    }
+
+    private static void AssertInvalidOperation(string expectedMessage, UnperspectiveMethod method, Action<UnperspectiveScript> initAction)
+    {
+      var script = new UnperspectiveScript(method);
+
+      using (var logo = new MagickImage(Images.Logo))
+      {
+        initAction(script);
+
+        ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+        {
+          script.Execute(logo);
+        });
       }
     }
 
