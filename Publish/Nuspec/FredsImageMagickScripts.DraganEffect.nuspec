@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.DraganEffect</id>
-    <version>1.0.5769.34750</version>
+    <version>1.0.6256.40977</version>
     <title>Fred's ImageMagick Script DraganEffect</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
@@ -14,10 +14,10 @@
     <summary>Fred's ImageMagick Script DraganEffect (requires Magick.NET)</summary>
     <releaseNotes />
     <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
-    <tags>Fred Weinhaus ImageMagick</tags>
+    <tags>Fred Weinhaus ImageMagick DraganEffect</tags>
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
-    <file src="..\..\FredsImageMagickScripts.NET\Effects\DraganEffect\DraganEffectScript.cs" target="Content\FredsImageMagickScripts\Effects\DraganEffect\DraganEffectScript.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Effects\DraganEffect\DraganEffectScript.cs" target="Content\FredsImageMagickScripts\Effects\DraganEffect\DraganEffectScript.cs" />
   </files>
 </package>

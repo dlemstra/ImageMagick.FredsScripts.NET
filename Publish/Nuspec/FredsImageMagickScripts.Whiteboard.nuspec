@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.Whiteboard</id>
-    <version>1.0.5769.34750</version>
+    <version>1.0.6256.40977</version>
     <title>Fred's ImageMagick Script Whiteboard</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
@@ -14,11 +14,11 @@
     <summary>Fred's ImageMagick Script Whiteboard (requires Magick.NET)</summary>
     <releaseNotes />
     <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
-    <tags>Fred Weinhaus ImageMagick</tags>
+    <tags>Fred Weinhaus ImageMagick Whiteboard</tags>
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\Whiteboard\WhiteboardEnhancements.cs" target="Content\FredsImageMagickScripts\Threshold\Whiteboard\WhiteboardEnhancements.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\Whiteboard\WhiteboardScript.cs" target="Content\FredsImageMagickScripts\Threshold\Whiteboard\WhiteboardScript.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\Whiteboard\WhiteboardEnhancements.cs" target="Content\FredsImageMagickScripts\Threshold\Whiteboard\WhiteboardEnhancements.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\Whiteboard\WhiteboardScript.cs" target="Content\FredsImageMagickScripts\Threshold\Whiteboard\WhiteboardScript.cs" />
   </files>
 </package>

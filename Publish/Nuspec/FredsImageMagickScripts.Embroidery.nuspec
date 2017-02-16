@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.Embroidery</id>
-    <version>1.0.5985.26145</version>
+    <version>1.0.6256.40977</version>
     <title>Fred's ImageMagick Script Embroidery</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
@@ -14,11 +14,11 @@
     <summary>Fred's ImageMagick Script Embroidery (requires Magick.NET)</summary>
     <releaseNotes />
     <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
-    <tags>Fred Weinhaus ImageMagick</tags>
+    <tags>Fred Weinhaus ImageMagick Embroidery</tags>
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
-    <file src="..\..\FredsImageMagickScripts.NET\Effects\Embroidery\EmbroideryPattern.cs" target="Content\FredsImageMagickScripts\Effects\Embroidery\EmbroideryPattern.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Effects\Embroidery\EmbroideryScript.cs" target="Content\FredsImageMagickScripts\Effects\Embroidery\EmbroideryScript.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Effects\Embroidery\EmbroideryPattern.cs" target="Content\FredsImageMagickScripts\Effects\Embroidery\EmbroideryPattern.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Effects\Embroidery\EmbroideryScript.cs" target="Content\FredsImageMagickScripts\Effects\Embroidery\EmbroideryScript.cs" />
   </files>
 </package>

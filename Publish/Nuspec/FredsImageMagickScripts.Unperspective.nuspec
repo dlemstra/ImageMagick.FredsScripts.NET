@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.Unperspective</id>
-    <version>1.0.5966.38598</version>
+    <version>1.0.6256.40977</version>
     <title>Fred's ImageMagick Script Unperspective</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
@@ -14,13 +14,13 @@
     <summary>Fred's ImageMagick Script Unperspective (requires Magick.NET)</summary>
     <releaseNotes />
     <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
-    <tags>Fred Weinhaus ImageMagick</tags>
+    <tags>Fred Weinhaus ImageMagick Unperspective</tags>
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
-    <file src="..\..\FredsImageMagickScripts.NET\Geometry\Unperspective\UnperspectiveDefault.cs" target="Content\FredsImageMagickScripts\Geometry\Unperspective\UnperspectiveDefault.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Geometry\Unperspective\UnperspectiveMethod.cs" target="Content\FredsImageMagickScripts\Geometry\Unperspective\UnperspectiveMethod.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Geometry\Unperspective\UnperspectiveRotation.cs" target="Content\FredsImageMagickScripts\Geometry\Unperspective\UnperspectiveRotation.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Geometry\Unperspective\UnperspectiveScript.cs" target="Content\FredsImageMagickScripts\Geometry\Unperspective\UnperspectiveScript.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Geometry\Unperspective\UnperspectiveDefault.cs" target="Content\FredsImageMagickScripts\Geometry\Unperspective\UnperspectiveDefault.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Geometry\Unperspective\UnperspectiveMethod.cs" target="Content\FredsImageMagickScripts\Geometry\Unperspective\UnperspectiveMethod.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Geometry\Unperspective\UnperspectiveRotation.cs" target="Content\FredsImageMagickScripts\Geometry\Unperspective\UnperspectiveRotation.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Geometry\Unperspective\UnperspectiveScript.cs" target="Content\FredsImageMagickScripts\Geometry\Unperspective\UnperspectiveScript.cs" />
   </files>
 </package>

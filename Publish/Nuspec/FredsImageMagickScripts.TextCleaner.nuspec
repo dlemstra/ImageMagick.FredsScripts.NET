@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.TextCleaner</id>
-    <version>1.0.5769.34750</version>
+    <version>1.0.6256.40977</version>
     <title>Fred's ImageMagick Script TextCleaner</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
@@ -14,14 +14,14 @@
     <summary>Fred's ImageMagick Script TextCleaner (requires Magick.NET)</summary>
     <releaseNotes />
     <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
-    <tags>Fred Weinhaus ImageMagick</tags>
+    <tags>Fred Weinhaus ImageMagick TextCleaner</tags>
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerCropOffset.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerCropOffset.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerEnhance.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerEnhance.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerLayout.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerLayout.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerRotation.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerRotation.cs" />
-    <file src="..\..\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerScript.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerScript.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerCropOffset.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerCropOffset.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerEnhance.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerEnhance.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerLayout.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerLayout.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerRotation.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerRotation.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerScript.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerScript.cs" />
   </files>
 </package>
