@@ -1,4 +1,4 @@
-﻿// <copyright file="CartoonEffectScript.cs" company="Dirk Lemstra, Fred Weinhaus">
+﻿// <copyright file="CartoonScript.cs" company="Dirk Lemstra, Fred Weinhaus">
 // https://github.com/dlemstra/FredsImageMagickScripts.NET
 //
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
@@ -28,7 +28,7 @@ namespace FredsImageMagickScripts
   /// appearance. The pattern parameter changes the shape of the segmentation for the given number
   /// of levels. Edges are then superimposed onto the image.
   /// </summary>
-  public sealed class CartoonEffectScript
+  public sealed class CartoonScript
   {
     private static readonly int _edgeWidth = 2;
     private static readonly Percentage _edgeThreshold = new Percentage(90);
@@ -37,18 +37,18 @@ namespace FredsImageMagickScripts
     private CartoonMethod _method;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CartoonEffectScript"/> class.
+    /// Initializes a new instance of the <see cref="CartoonScript"/> class.
     /// </summary>
-    public CartoonEffectScript()
+    public CartoonScript()
       : this(CartoonMethod.Method1)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CartoonEffectScript"/> class.
+    /// Initializes a new instance of the <see cref="CartoonScript"/> class.
     /// </summary>
     /// <param name="method">The cartoon method to use.</param>
-    public CartoonEffectScript(CartoonMethod method)
+    public CartoonScript(CartoonMethod method)
     {
       if (method != CartoonMethod.Method1 && method != CartoonMethod.Method2)
         throw new ArgumentException("Invalid cartoon method specified.", nameof(method));

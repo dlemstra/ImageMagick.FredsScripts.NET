@@ -1,4 +1,4 @@
-﻿// <copyright file="CartoonEffectScriptTests.cs" company="Dirk Lemstra, Fred Weinhaus">
+﻿// <copyright file="CartoonScriptTests.cs" company="Dirk Lemstra, Fred Weinhaus">
 // https://github.com/dlemstra/FredsImageMagickScripts.NET
 //
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
@@ -24,12 +24,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FredsImageMagickScripts.NET.Tests
 {
   [TestClass]
-  public class CartoonEffectScriptTests : ScriptTester
+  public class CartoonScriptTests : ScriptTester
   {
     [TestMethod]
     public void Constructor_SettingsSetToDefaults()
     {
-      var script = new CartoonEffectScript();
+      var script = new CartoonScript();
 
       AssertDefaults(script);
     }
@@ -39,14 +39,14 @@ namespace FredsImageMagickScripts.NET.Tests
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentException>("method", "Invalid cartoon method specified.", () =>
       {
-        new CartoonEffectScript((CartoonMethod)42);
+        new CartoonScript((CartoonMethod)42);
       });
     }
 
     [TestMethod]
     public void Reset_AllSettingsChanged_RestoredToDefault()
     {
-      var script = new CartoonEffectScript();
+      var script = new CartoonScript();
       script.Brightness = (Percentage)42;
       script.EdgeAmount = 5;
       script.NumberOflevels = 8;
@@ -61,7 +61,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Brightness_BelowZero_ThrowsException()
     {
-      AssertInvalidOperation("Invalid brightness specified, value must be zero or higher.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid brightness specified, value must be zero or higher.", (CartoonScript script) =>
       {
         script.Brightness = (Percentage)(-1);
       });
@@ -70,7 +70,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void EdgeAmount_BelowZero_ThrowsException()
     {
-      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonScript script) =>
       {
         script.EdgeAmount = -1;
       });
@@ -79,7 +79,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void EdgeAmount_IsNan_ThrowsException()
     {
-      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonScript script) =>
       {
         script.EdgeAmount = double.NaN;
       });
@@ -88,7 +88,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void EdgeAmount_IsNegativeInfinity_ThrowsException()
     {
-      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonScript script) =>
       {
         script.EdgeAmount = double.NegativeInfinity;
       });
@@ -97,7 +97,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void EdgeAmount_IsPositiveInfinity_ThrowsException()
     {
-      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonScript script) =>
       {
         script.EdgeAmount = double.PositiveInfinity;
       });
@@ -106,7 +106,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void NumberOflevels_BelowTwo_ThrowsException()
     {
-      AssertInvalidOperation("Invalid number of levels specified, value must be two or higher.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid number of levels specified, value must be two or higher.", (CartoonScript script) =>
       {
         script.NumberOflevels = 1;
       });
@@ -115,7 +115,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Saturation_BelowZero_ThrowsException()
     {
-      AssertInvalidOperation("Invalid saturation specified, value must be zero or higher.", (CartoonEffectScript script) =>
+      AssertInvalidOperation("Invalid saturation specified, value must be zero or higher.", (CartoonScript script) =>
       {
         script.Saturation = (Percentage)(-1);
       });
@@ -126,7 +126,7 @@ namespace FredsImageMagickScripts.NET.Tests
     {
       ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
       {
-        var script = new CartoonEffectScript();
+        var script = new CartoonScript();
         script.Execute(null);
       });
     }
@@ -134,7 +134,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_p60_jpg()
     {
-      AssertExecute("photo-1h.jpg", nameof(Execute_p60_jpg), (CartoonEffectScript script) =>
+      AssertExecute("photo-1h.jpg", nameof(Execute_p60_jpg), (CartoonScript script) =>
       {
         script.Pattern = new Percentage(60);
       });
@@ -143,7 +143,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_p70_jpg()
     {
-      AssertExecute("photo-1h.jpg", nameof(Execute_p70_jpg), (CartoonEffectScript script) =>
+      AssertExecute("photo-1h.jpg", nameof(Execute_p70_jpg), (CartoonScript script) =>
       {
         script.Pattern = new Percentage(70);
       });
@@ -152,7 +152,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_p80_jpg()
     {
-      AssertExecute("photo-1h.jpg", nameof(Execute_p80_jpg), (CartoonEffectScript script) =>
+      AssertExecute("photo-1h.jpg", nameof(Execute_p80_jpg), (CartoonScript script) =>
       {
         script.Pattern = new Percentage(80);
       });
@@ -161,7 +161,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_n4_p70_jpg()
     {
-      AssertExecute("photo-1h.jpg", nameof(Execute_n4_p70_jpg), (CartoonEffectScript script) =>
+      AssertExecute("photo-1h.jpg", nameof(Execute_n4_p70_jpg), (CartoonScript script) =>
       {
         script.NumberOflevels = 4;
         script.Pattern = new Percentage(70);
@@ -171,7 +171,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_n5_p70_jpg()
     {
-      AssertExecute("photo-1h.jpg", nameof(Execute_n5_p70_jpg), (CartoonEffectScript script) =>
+      AssertExecute("photo-1h.jpg", nameof(Execute_n5_p70_jpg), (CartoonScript script) =>
       {
         script.NumberOflevels = 5;
         script.Pattern = new Percentage(70);
@@ -181,7 +181,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_e3_p70_jpg()
     {
-      AssertExecute("photo-1h.jpg", nameof(Execute_e3_p70_jpg), (CartoonEffectScript script) =>
+      AssertExecute("photo-1h.jpg", nameof(Execute_e3_p70_jpg), (CartoonScript script) =>
       {
         script.EdgeAmount = 3;
         script.Pattern = new Percentage(70);
@@ -191,7 +191,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_e5_p70_jpg()
     {
-      AssertExecute("photo-1h.jpg", nameof(Execute_e5_p70_jpg), (CartoonEffectScript script) =>
+      AssertExecute("photo-1h.jpg", nameof(Execute_e5_p70_jpg), (CartoonScript script) =>
       {
         script.EdgeAmount = 5;
         script.Pattern = new Percentage(70);
@@ -201,7 +201,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_m2_jpg()
     {
-      AssertExecute("photo-1h.jpg", nameof(Execute_m2_jpg), CartoonMethod.Method2, (CartoonEffectScript script) =>
+      AssertExecute("photo-1h.jpg", nameof(Execute_m2_jpg), CartoonMethod.Method2, (CartoonScript script) =>
       {
       });
     }
@@ -209,7 +209,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_e3_n6_p70_jpg()
     {
-      AssertExecute("oriental_lady.jpg", nameof(Execute_e3_n6_p70_jpg), (CartoonEffectScript script) =>
+      AssertExecute("oriental_lady.jpg", nameof(Execute_e3_n6_p70_jpg), (CartoonScript script) =>
       {
         script.EdgeAmount = 3;
         script.NumberOflevels = 6;
@@ -220,7 +220,7 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_b120_e3_p80_jpg()
     {
-      AssertExecute("redhat.jpg", nameof(Execute_b120_e3_p80_jpg), (CartoonEffectScript script) =>
+      AssertExecute("redhat.jpg", nameof(Execute_b120_e3_p80_jpg), (CartoonScript script) =>
       {
         script.Brightness = new Percentage(120);
         script.EdgeAmount = 3;
@@ -231,12 +231,12 @@ namespace FredsImageMagickScripts.NET.Tests
     [TestMethod]
     public void Execute_m1_jpg()
     {
-      AssertExecute("obama.jpg", nameof(Execute_m1_jpg), (CartoonEffectScript script) =>
+      AssertExecute("obama.jpg", nameof(Execute_m1_jpg), (CartoonScript script) =>
       {
       });
     }
 
-    private static void AssertDefaults(CartoonEffectScript script)
+    private static void AssertDefaults(CartoonScript script)
     {
       Assert.AreEqual((Percentage)70, script.Pattern);
       Assert.AreEqual(6, script.NumberOflevels);
@@ -245,9 +245,9 @@ namespace FredsImageMagickScripts.NET.Tests
       Assert.AreEqual((Percentage)150, script.Saturation);
     }
 
-    private static void AssertInvalidOperation(string expectedMessage, Action<CartoonEffectScript> initAction)
+    private static void AssertInvalidOperation(string expectedMessage, Action<CartoonScript> initAction)
     {
-      var script = new CartoonEffectScript();
+      var script = new CartoonScript();
 
       using (var logo = new MagickImage(Images.Logo))
       {
@@ -260,19 +260,19 @@ namespace FredsImageMagickScripts.NET.Tests
       }
     }
 
-    private void AssertExecute(string input, string methodName, Action<CartoonEffectScript> action)
+    private void AssertExecute(string input, string methodName, Action<CartoonScript> action)
     {
       AssertExecute(input, methodName, CartoonMethod.Method1, action);
     }
 
-    private void AssertExecute(string input, string methodName, CartoonMethod method, Action<CartoonEffectScript> action)
+    private void AssertExecute(string input, string methodName, CartoonMethod method, Action<CartoonScript> action)
     {
       string inputFile = GetInputFile(input);
       /* LosslessCompress(inputFile); */
 
       using (var image = new MagickImage(inputFile))
       {
-        var script = new CartoonEffectScript(method);
+        var script = new CartoonScript(method);
         action(script);
 
         using (var scriptOutput = script.Execute(image))
