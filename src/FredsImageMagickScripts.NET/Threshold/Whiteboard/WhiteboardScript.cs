@@ -339,7 +339,7 @@ namespace FredsImageMagickScripts
 
     private void CalculateWidthAndHeightWithDimensions(MagickImage image)
     {
-      var aspect = image.Width / image.Height;
+      var aspect = image.Width / (double)image.Height;
 
       CalculateWidthAndHeightWithDimensions(aspect);
     }
@@ -356,7 +356,7 @@ namespace FredsImageMagickScripts
         if (Dimensions.Width > 0)
         {
           _width = Dimensions.Width;
-          _height = _width * aspect;
+          _height = _width / aspect;
         }
         else if (Dimensions.Height > 0)
         {
@@ -428,12 +428,12 @@ namespace FredsImageMagickScripts
       var delY = (input.Height - _height) / 2;
       SetDistortViewport(image, (int)delX, (int)delY);
 
-      var cx = input.Width / 2;
-      var cy = input.Height / 2;
-      var magX = input.Width / _width;
-      var magy = input.Height / _height;
+      var cX = input.Width / 2;
+      var cY = input.Height / 2;
+      var magX = _width / input.Width;
+      var magY = _height / input.Height;
 
-      image.Distort(DistortMethod.ScaleRotateTranslate, cx, cy, magX, magy, 0);
+      image.Distort(DistortMethod.ScaleRotateTranslate, cX, cY, magX, magY, 0);
     }
 
     private void DistortImageWithMagnification(MagickImage input, MagickImage image)

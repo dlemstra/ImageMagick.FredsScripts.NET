@@ -244,6 +244,16 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
+    public void Execute_coords_d300x_jpg()
+    {
+      AssertExecute("WhiteboardBlog.jpg", nameof(Execute_coords_d300x_jpg), (WhiteboardScript script) =>
+      {
+        script.SetCoordinates(new PointD(13, 3), new PointD(342, 6), new PointD(331, 467), new PointD(38, 482));
+        script.Dimensions = new MagickGeometry(300, 0);
+      });
+    }
+
+    [TestMethod]
     public void Execute_f12_o4_both_jpg()
     {
       AssertExecute("whiteboardScenario1.jpg", nameof(Execute_f12_o4_both_jpg), (WhiteboardScript script) =>
@@ -251,6 +261,46 @@ namespace FredsImageMagickScripts.NET.Tests
         script.FilterSize = 12;
         script.FilterOffset = (Percentage)4;
         script.Enhance = WhiteboardEnhancements.Both;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_d300x_S100_stretch_jpg()
+    {
+      AssertExecute("whiteboardScenario1.jpg", nameof(Execute_d300x_S100_stretch_jpg), (WhiteboardScript script) =>
+      {
+        script.Dimensions = new MagickGeometry("300x");
+        script.Saturation = new Percentage(100);
+        script.Enhance = WhiteboardEnhancements.Stretch;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_dx300_sm1_whiteBalance_jpg()
+    {
+      AssertExecute("whiteboardScenario1.jpg", nameof(Execute_dx300_sm1_whiteBalance_jpg), (WhiteboardScript script) =>
+      {
+        script.Dimensions = new MagickGeometry("x300");
+        script.SharpeningAmount = -1;
+        script.Enhance = WhiteboardEnhancements.Whitebalance;
+      });
+    }
+
+    [TestMethod]
+    public void Execute_d300x300_jpg()
+    {
+      AssertExecute("whiteboardScenario1.jpg", nameof(Execute_d300x300_jpg), (WhiteboardScript script) =>
+      {
+        script.Dimensions = new MagickGeometry("300x300");
+      });
+    }
+
+    [TestMethod]
+    public void Execute_m0_75_jpg()
+    {
+      AssertExecute("whiteboardScenario1.jpg", nameof(Execute_m0_75_jpg), (WhiteboardScript script) =>
+      {
+        script.Magnification = 0.75;
       });
     }
 
