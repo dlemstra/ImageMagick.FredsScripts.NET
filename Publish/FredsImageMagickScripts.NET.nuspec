@@ -4,7 +4,7 @@
     <id/>
     <version/>
     <title/>
-    <authors>Dirk Lemstra, Fred Weinhaus</authors>
+    <authors></authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
     <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
@@ -13,7 +13,7 @@
     <description></description>
     <summary></summary>
     <releaseNotes/>
-    <copyright>Copyright 2015 Dirk Lemstra, Fred Weinhaus</copyright>
+    <copyright></copyright>
     <tags>Fred Weinhaus ImageMagick Magick.NET</tags>
   </metadata>
   <files>

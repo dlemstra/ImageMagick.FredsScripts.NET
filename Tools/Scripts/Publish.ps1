@@ -81,20 +81,50 @@ function CreateNuspecFiles()
     $xml.package.metadata.id = $script.id
     $xml.package.metadata.version = $script.version
     $xml.package.metadata.title = $title
+    $xml.package.metadata.authors = "Dirk Lemstra, Fred Weinhaus"
+    foreach ($collaborator in $collaborators)
+    {
+      if ($collaborator.script -eq $script.name)
+      {
+        $xml.package.metadata.authors += ", " + $collaborator.name
+      }
+    }
     $xml.package.metadata.summary = $title + " (requires Magick.NET)"
     $xml.package.metadata.description = $script.description
-    $xml.package.metadata.tags = "Fred Weinhaus ImageMagick " + $name
+    $xml.package.metadata.copyright = "Copyright $((Get-Date).year) Dirk Lemstra, Fred Weinhaus"
+    $xml.package.metadata.tags = "Fred Weinhaus ImageMagick " + $script.name
 
-    $path = FullPath "FredsImageMagickScripts.NET\$($script.path)"
+    $path = FullPath "src\FredsImageMagickScripts.NET\$($script.path)"
     foreach ($file in Get-ChildItem $path -Filter "$($script.name)*")
     {
       $file = "$($script.path)\$file"
-      AddFileElement $xml "..\..\FredsImageMagickScripts.NET\$file" "Content\FredsImageMagickScripts\$file"
+      AddFileElement $xml "..\..\src\FredsImageMagickScripts.NET\$file" "Content\FredsImageMagickScripts\$file"
     }
 
     $xml.Save($nuspecFile)
     Write-Host "Created: $nuspecFile"
   }
+}
+
+function LoadCollaborators()
+{
+  $path = FullPath "Publish\Collaborators.txt"
+  $lines = Get-Content $path
+
+  $collaborators = @()
+
+  foreach ($line in $lines)
+  {
+    $info = $line.Split("|")
+
+    $collaborators += [pscustomobject]@{
+      script = $info[0]
+      name = $info[1]
+      link = $info[2]
+    }
+  }
+
+  return $collaborators | Sort-Object name
 }
 
 function LoadScripts()
@@ -115,13 +145,13 @@ function LoadScripts()
   {
     $name = $type.Name.Replace("Script", "")
     $file = Get-ChildItem -Filter "$($type.Name).cs" -Recurse
-    $path = FullPath "FredsImageMagickScripts.NET"
+    $path = FullPath "src\FredsImageMagickScripts.NET"
     $path = $file.FullName.SubString($path.Length + 1)
     $path = Split-Path -parent $path
     $summary = $documentation.SelectSingleNode("member[@name='T:FredsImageMagickScripts.$($type.Name)']").summary.Trim()
     $summary = [System.Text.RegularExpressions.Regex]::Replace($summary, '\s+', ' ')
 
-    $scripts +=	[pscustomobject]@{
+    $scripts += [pscustomobject]@{
       id = "FredsImageMagickScripts.$name"
       version = "1.0.$build.$revision"
       name = $name
@@ -144,7 +174,12 @@ function Test()
 function UpdateReadme()
 {
 $content = @"
-#FredsImageMagickScripts.NET
+# FredsImageMagickScripts.NET
+
+[![GitHub license](https://img.shields.io/badge/license-Fred%20Weinhaus-green.svg)](https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md)
+[![Build status](https://ci.appveyor.com/api/projects/status/vcag7ygwmamyl33d?svg=true)](https://ci.appveyor.com/project/dlemstra/fredsimagemagickscripts-net)
+[![codecov](https://codecov.io/gh/dlemstra/FredsImageMagickScripts.NET/branch/master/graph/badge.svg)](https://codecov.io/gh/dlemstra/FredsImageMagickScripts.NET)
+
 This projects goal is to port most of the scripts for ImageMagick that are created by [Fred Weinhaus](http://www.fmwconcepts.com/imagemagick/) to C#. With the help of [Magick.NET](https://magick.codeplex.com) a library will be created that will make it easy to use Fred's scripts in .NET.
 
 ## License
@@ -157,11 +192,41 @@ Script | Download | Original
 --- | --- | ---
 "@
 
-  foreach($script in $scripts)
+  foreach ($script in $scripts)
   {
     $content += "`r`n" + "[" + $script.name + "](" + $script.url + ")"
     $content += "|[download](https://www.nuget.org/packages/" + $script.id + "/)"
     $content += "|[original](http://www.fmwconcepts.com/imagemagick/" + $script.name.toLower() + "/)"
+  }
+
+$content += @"
+
+
+## Collaborators
+Script | Name
+--- | --- | ---
+"@
+  foreach ($script in $scripts)
+  {
+    $first = $true
+
+    foreach ($collaborator in $collaborators)
+    {
+      if ($collaborator.script -eq $script.name)
+      {
+        if ($first)
+        {
+          $content += "`r`n" + "[" + $script.name + "](" + $script.url + ")|"
+          $first = $false
+        }
+        else
+        {
+          $content += "<br>"
+        }
+
+        $content += "[" + $collaborator.name + "](" + $collaborator.link + ")"
+      }
+    }
   }
 
   $path = FullPath "README.md"
@@ -172,6 +237,7 @@ Build
 Test
 
 $scripts = LoadScripts
+$collaborators = LoadCollaborators
 
 CreateNuspecFiles
 UpdateReadme
