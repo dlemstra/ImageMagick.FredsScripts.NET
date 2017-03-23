@@ -330,6 +330,8 @@ namespace FredsImageMagickScripts
 
     private void RotateImage(MagickImage image)
     {
+      if (Rotation == TextCleanerRotation.None)
+        return;
       if ((Layout == TextCleanerLayout.Portrait && image.Height < image.Width) ||
         (Layout == TextCleanerLayout.Landscape && image.Height > image.Width))
       {
