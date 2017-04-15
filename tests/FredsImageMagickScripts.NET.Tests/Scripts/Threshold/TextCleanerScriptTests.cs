@@ -370,11 +370,12 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
-    public void Execute_a2_S100_st50_jpg()
+    public void Execute_a2_S100_st50_rc_jpg()
     {
-      AssertExecute("rfid.jpg", nameof(Execute_a2_S100_st50_jpg), (TextCleanerScript script) =>
+      AssertExecute("rfid.jpg", nameof(Execute_a2_S100_st50_rc_jpg), (TextCleanerScript script) =>
       {
         script.AdaptiveBlur = 2;
+        script.Rotation = TextCleanerRotation.Clockwise;
         script.Saturation = new Percentage(100);
         script.SmoothingThreshold = new Percentage(50);
       });
