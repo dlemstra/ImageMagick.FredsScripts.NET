@@ -207,6 +207,22 @@ namespace FredsImageMagickScripts.NET.Tests
     }
 
     [TestMethod]
+    public void Execute_m3_jpg()
+    {
+        AssertExecute("photo-1h.jpg", nameof(Execute_m3_jpg), CartoonMethod.Method3, (CartoonScript script) =>
+        {
+        });
+    }
+
+    [TestMethod]
+    public void Execute_m4_jpg()
+    {
+        AssertExecute("photo-1h.jpg", nameof(Execute_m4_jpg), CartoonMethod.Method4, (CartoonScript script) =>
+        {
+        });
+    }
+
+        [TestMethod]
     public void Execute_e3_n6_p70_jpg()
     {
       AssertExecute("oriental_lady.jpg", nameof(Execute_e3_n6_p70_jpg), (CartoonScript script) =>
