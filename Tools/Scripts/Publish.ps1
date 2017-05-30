@@ -204,7 +204,7 @@ $content += @"
 
 ## Collaborators
 Script | Name
---- | --- | ---
+--- | ---
 "@
   foreach ($script in $scripts)
   {
