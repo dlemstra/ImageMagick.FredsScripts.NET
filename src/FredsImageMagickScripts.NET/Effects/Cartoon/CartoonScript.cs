@@ -50,7 +50,7 @@ namespace FredsImageMagickScripts
     /// <param name="method">The cartoon method to use.</param>
     public CartoonScript(CartoonMethod method)
     {
-      if (method != CartoonMethod.Method1 && method != CartoonMethod.Method2)
+      if (method != CartoonMethod.Method1 && method != CartoonMethod.Method2 && method != CartoonMethod.Method3 && method != CartoonMethod.Method4)
         throw new ArgumentException("Invalid cartoon method specified.", nameof(method));
 
       _method = method;
@@ -131,8 +131,12 @@ namespace FredsImageMagickScripts
 
           if (_method == CartoonMethod.Method1)
             return ExecuteMethod1(first, second);
-
-          return ExecuteMethod2(first, second);
+          else if (_method == CartoonMethod.Method2)
+            return ExecuteMethod2(first, second);
+          else if (_method == CartoonMethod.Method3)
+            return ExecuteMethod3(first, second);
+          else
+            return ExecuteMethod4(first, second);
         }
       }
     }
@@ -214,6 +218,47 @@ namespace FredsImageMagickScripts
         third.Negate();
         third.SetArtifact("convolve:scale", _edgeGain);
         third.Morphology(MorphologyMethod.Convolve, Kernel.DoG, "0,0," + _edgeWidth);
+        third.Negate();
+        third.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
+        third.WhiteThreshold(_edgeThreshold);
+
+        result.Composite(third, CompositeOperator.Multiply);
+        return result;
+      }
+    }
+
+    private MagickImage ExecuteMethod3(MagickImage first, MagickImage second)
+    {
+      var result = first.Clone();
+      result.Composite(second, CompositeOperator.Multiply);
+      result.Modulate(Brightness, Saturation, (Percentage)100);
+
+      using (var third = first.Clone())
+      {
+        third.ColorSpace = ColorSpace.Gray;
+        third.SetArtifact("convolve:scale", "!");
+        third.SetArtifact("morphology:scale", "compose=Lighten");
+        third.Morphology(MorphologyMethod.Convolve, "Sobel:>");
+        third.Negate();
+        third.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
+        third.WhiteThreshold(_edgeThreshold);
+
+        result.Composite(third, CompositeOperator.Multiply);
+        return result;
+      }
+    }
+
+    private MagickImage ExecuteMethod4(MagickImage first, MagickImage second)
+    {
+      var result = first.Clone();
+      result.Composite(second, CompositeOperator.Multiply);
+      result.Modulate(Brightness, Saturation, (Percentage)100);
+
+      using (var third = first.Clone())
+      {
+        third.ColorSpace = ColorSpace.Gray;
+        third.SetArtifact("convolve:scale", "!");
+        third.Morphology(MorphologyMethod.Edge, "diamond:1");
         third.Negate();
         third.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
         third.WhiteThreshold(_edgeThreshold);
