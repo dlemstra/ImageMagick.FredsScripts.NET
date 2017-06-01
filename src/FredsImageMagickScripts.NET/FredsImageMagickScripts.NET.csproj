@@ -69,10 +69,10 @@
     <Compile Include="Effects\Embroidery\EmbroideryScript.cs" />
     <Compile Include="Geometry\Autotrim\AutotrimPixelShift.cs" />
     <Compile Include="Geometry\Autotrim\AutotrimScript.cs" />
-    <Compile Include="Geometry\Autotrim\Line.cs" />
+    <Compile Include="Geometry\Autotrim\AutotrimScript.Line.cs" />
     <Compile Include="Geometry\Tshirt\TshirtFit.cs" />
     <Compile Include="Geometry\Tshirt\TshirtScript.cs" />
-    <Compile Include="Geometry\Unperspective\PixelValue.cs" />
+    <Compile Include="Geometry\Unperspective\UnperspectiveScript.PixelValue.cs" />
     <Compile Include="Geometry\Unperspective\UnperspectiveRotation.cs" />
     <Compile Include="Geometry\Unperspective\UnperspectiveDefault.cs" />
     <Compile Include="Geometry\Unperspective\UnperspectiveMethod.cs" />

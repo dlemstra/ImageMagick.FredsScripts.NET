@@ -1,4 +1,4 @@
-﻿// <copyright file="Line.cs" company="Dirk Lemstra, Fred Weinhaus">
+﻿// <copyright file="AutotrimScript.Line.cs" company="Dirk Lemstra, Fred Weinhaus">
 // https://github.com/dlemstra/FredsImageMagickScripts.NET
 //
 // Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
