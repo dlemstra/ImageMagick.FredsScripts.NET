@@ -1,7 +1,4 @@
-﻿// <copyright file="AssemblyInfo.cs" company="Dirk Lemstra, Fred Weinhaus">
-// https://github.com/dlemstra/FredsImageMagickScripts.NET
-//
-// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
+﻿// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -15,7 +12,6 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-// </copyright>
 
 using System;
 using System.Reflection;
@@ -25,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("FredsImageMagickScripts.NET")]
 [assembly: AssemblyDescription("FredsImageMagickScripts.NET.Tests")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright © 2015 Dirk Lemstra, Fred Weinhaus")]
+[assembly: AssemblyCopyright("Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus")]
 [assembly: AssemblyTrademark("")]
 
 [assembly: AssemblyConfiguration("Release")]

@@ -1,7 +1,4 @@
-﻿// <copyright file="TextCleanerRotation.cs" company="Dirk Lemstra, Fred Weinhaus">
-// https://github.com/dlemstra/FredsImageMagickScripts.NET
-//
-// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
+﻿// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -15,28 +12,27 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-// </copyright>
 
 namespace FredsImageMagickScripts
 {
-  /// <summary>
-  /// Rotation for the TextCleaner script.
-  /// </summary>
-  public enum TextCleanerRotation
-  {
     /// <summary>
-    /// No rotation.
+    /// Rotation for the TextCleaner script.
     /// </summary>
-    None,
+    public enum TextCleanerRotation
+    {
+        /// <summary>
+        /// No rotation.
+        /// </summary>
+        None,
 
-    /// <summary>
-    /// Clockwise rotation.
-    /// </summary>
-    Clockwise,
+        /// <summary>
+        /// Clockwise rotation.
+        /// </summary>
+        Clockwise,
 
-    /// <summary>
-    /// Counterclockwise rotation.
-    /// </summary>
-    Counterclockwise
-  }
+        /// <summary>
+        /// Counterclockwise rotation.
+        /// </summary>
+        Counterclockwise
+    }
 }

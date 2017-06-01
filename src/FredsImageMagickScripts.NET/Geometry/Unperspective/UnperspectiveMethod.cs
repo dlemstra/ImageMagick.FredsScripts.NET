@@ -1,7 +1,4 @@
-﻿// <copyright file="UnperspectiveMethod.cs" company="Dirk Lemstra, Fred Weinhaus">
-// https://github.com/dlemstra/FredsImageMagickScripts.NET
-//
-// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
+﻿// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -15,23 +12,22 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-// </copyright>
 
 namespace FredsImageMagickScripts
 {
-  /// <summary>
-  /// Method of determining quadrilateral corners in depolar image.
-  /// </summary>
-  public enum UnperspectiveMethod
-  {
     /// <summary>
-    /// Derivative
+    /// Method of determining quadrilateral corners in depolar image.
     /// </summary>
-    Derivative,
+    public enum UnperspectiveMethod
+    {
+        /// <summary>
+        /// Derivative
+        /// </summary>
+        Derivative,
 
-    /// <summary>
-    /// Peak
-    /// </summary>
-    Peak
-  }
+        /// <summary>
+        /// Peak
+        /// </summary>
+        Peak
+    }
 }

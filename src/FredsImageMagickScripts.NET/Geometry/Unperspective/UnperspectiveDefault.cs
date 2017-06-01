@@ -1,7 +1,4 @@
-﻿// <copyright file="UnperspectiveDefault.cs" company="Dirk Lemstra, Fred Weinhaus">
-// https://github.com/dlemstra/FredsImageMagickScripts.NET
-//
-// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
+﻿// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -15,38 +12,37 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-// </copyright>
 
 namespace FredsImageMagickScripts
 {
-  /// <summary>
-  ///  Default output dimension
-  /// </summary>
-  public enum UnperspectiveDefault
-  {
     /// <summary>
-    /// Quadrilateral bounding box height.
+    ///  Default output dimension
     /// </summary>
-    BoundingBoxHeight,
+    public enum UnperspectiveDefault
+    {
+        /// <summary>
+        /// Quadrilateral bounding box height.
+        /// </summary>
+        BoundingBoxHeight,
 
-    /// <summary>
-    /// Quadrilateral bounding box width.
-    /// </summary>
-    BoundingBoxWidth,
+        /// <summary>
+        /// Quadrilateral bounding box width.
+        /// </summary>
+        BoundingBoxWidth,
 
-    /// <summary>
-    /// Length of first edge of quadrilateral used as height.
-    /// </summary>
-    EdgeLength,
+        /// <summary>
+        /// Length of first edge of quadrilateral used as height.
+        /// </summary>
+        EdgeLength,
 
-    /// <summary>
-    /// Input image height.
-    /// </summary>
-    Height,
+        /// <summary>
+        /// Input image height.
+        /// </summary>
+        Height,
 
-    /// <summary>
-    /// Input image width.
-    /// </summary>
-    Width
-  }
+        /// <summary>
+        /// Input image width.
+        /// </summary>
+        Width
+    }
 }

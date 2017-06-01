@@ -1,7 +1,4 @@
-﻿// <copyright file="TextCleanerCropOffset.cs" company="Dirk Lemstra, Fred Weinhaus">
-// https://github.com/dlemstra/FredsImageMagickScripts.NET
-//
-// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
+﻿// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -15,73 +12,72 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-// </copyright>
 
 namespace FredsImageMagickScripts
 {
-  /// <summary>
-  /// Crop offsets for the TextCleaner script.
-  /// </summary>
-  public sealed class TextCleanerCropOffset
-  {
-    internal TextCleanerCropOffset()
-    {
-      Bottom = 0;
-      Left = 0;
-      Right = 0;
-      Top = 0;
-    }
-
     /// <summary>
-    /// Gets or sets the width, in pixels, of the lower side of the bounding rectangle.
+    /// Crop offsets for the TextCleaner script.
     /// </summary>
-    public int Bottom
+    public sealed class TextCleanerCropOffset
     {
-      get;
-      set;
-    }
+        internal TextCleanerCropOffset()
+        {
+            Bottom = 0;
+            Left = 0;
+            Right = 0;
+            Top = 0;
+        }
 
-    /// <summary>
-    /// Gets or sets the width, in pixels, of the left side of the bounding rectangle.
-    /// </summary>
-    public int Left
-    {
-      get;
-      set;
-    }
+        /// <summary>
+        /// Gets or sets the width, in pixels, of the lower side of the bounding rectangle.
+        /// </summary>
+        public int Bottom
+        {
+            get;
+            set;
+        }
 
-    /// <summary>
-    /// Gets or sets the width, in pixels, of the right side of the bounding rectangle.
-    /// </summary>
-    public int Right
-    {
-      get;
-      set;
-    }
+        /// <summary>
+        /// Gets or sets the width, in pixels, of the left side of the bounding rectangle.
+        /// </summary>
+        public int Left
+        {
+            get;
+            set;
+        }
 
-    /// <summary>
-    /// Gets or sets the width, in pixels, of the upper side of the bounding rectangle.
-    /// </summary>
-    public int Top
-    {
-      get;
-      set;
-    }
+        /// <summary>
+        /// Gets or sets the width, in pixels, of the right side of the bounding rectangle.
+        /// </summary>
+        public int Right
+        {
+            get;
+            set;
+        }
 
-    internal bool IsSet
-    {
-      get
-      {
-        return Bottom != 0 || Left != 0 || Right != 0 || Top != 0;
-      }
-    }
+        /// <summary>
+        /// Gets or sets the width, in pixels, of the upper side of the bounding rectangle.
+        /// </summary>
+        public int Top
+        {
+            get;
+            set;
+        }
 
-    internal bool IsValid
-    {
-      get
-      {
-        return Bottom >= 0 && Left >= 0 && Right >= 0 && Top >= 0;
-      }
+        internal bool IsSet
+        {
+            get
+            {
+                return Bottom != 0 || Left != 0 || Right != 0 || Top != 0;
+            }
+        }
+
+        internal bool IsValid
+        {
+            get
+            {
+                return Bottom >= 0 && Left >= 0 && Right >= 0 && Top >= 0;
+            }
+        }
     }
-  }
 }

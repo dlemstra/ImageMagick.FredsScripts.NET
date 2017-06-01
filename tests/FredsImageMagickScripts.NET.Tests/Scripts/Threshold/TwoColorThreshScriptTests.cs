@@ -1,7 +1,4 @@
-﻿// <copyright file="TwoColorThreshScriptTests.cs" company="Dirk Lemstra, Fred Weinhaus">
-// https://github.com/dlemstra/FredsImageMagickScripts.NET
-//
-// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus
+﻿// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -15,7 +12,6 @@
 // Usage, whether stated or not in the script, is restricted to the above licensing arrangements.
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
-// </copyright>
 
 using System;
 using ImageMagick;
@@ -23,92 +19,92 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FredsImageMagickScripts.NET.Tests
 {
-  [TestClass]
-  public class TwoColorThreshScriptTests : ScriptTester
-  {
-    [TestMethod]
-    public void Test_Execute_blocks()
+    [TestClass]
+    public class TwoColorThreshScriptTests : ScriptTester
     {
-      Test_Execute("blocks.gif");
-    }
-
-    [TestMethod]
-    public void Test_Execute_blood()
-    {
-      Test_Execute("blood.jpg");
-    }
-
-    [TestMethod]
-    public void Test_Execute_fingerprint()
-    {
-      Test_Execute("fingerprint.jpg");
-    }
-
-    [TestMethod]
-    public void Test_Execute_flower()
-    {
-      Test_Execute("flower.jpg");
-    }
-
-    [TestMethod]
-    public void Test_Execute_house()
-    {
-      Test_Execute("house.jpg");
-    }
-
-    [TestMethod]
-    public void Test_Execute_kanji()
-    {
-      Test_Execute("kanji.jpg");
-    }
-
-    [TestMethod]
-    public void Test_Execute_parts()
-    {
-      Test_Execute("parts.gif");
-    }
-
-    [TestMethod]
-    public void Test_Execute_rice()
-    {
-      Test_Execute("rice.jpg");
-    }
-
-    [TestMethod]
-    public void Test_Execute_tank()
-    {
-      Test_Execute("tank.jpg");
-    }
-
-    [TestMethod]
-    public void Test_Execute_textsample()
-    {
-      Test_Execute("textsample.jpg");
-    }
-
-    [TestMethod]
-    public void Test_Excecute_Null()
-    {
-      ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
-      {
-        TwoColorThreshScript.Execute(null);
-      });
-    }
-
-    private void Test_Execute(string input)
-    {
-      string inputFile = GetInputFile(input);
-      /* LosslessCompress(inputFile); */
-
-      string output = input.Replace(".jpg", ".gif");
-
-      using (var image = new MagickImage(inputFile))
-      {
-        using (var scriptOutput = TwoColorThreshScript.Execute(image))
+        [TestMethod]
+        public void Test_Execute_blocks()
         {
-          AssertOutput(scriptOutput, output);
+            Test_Execute("blocks.gif");
         }
-      }
+
+        [TestMethod]
+        public void Test_Execute_blood()
+        {
+            Test_Execute("blood.jpg");
+        }
+
+        [TestMethod]
+        public void Test_Execute_fingerprint()
+        {
+            Test_Execute("fingerprint.jpg");
+        }
+
+        [TestMethod]
+        public void Test_Execute_flower()
+        {
+            Test_Execute("flower.jpg");
+        }
+
+        [TestMethod]
+        public void Test_Execute_house()
+        {
+            Test_Execute("house.jpg");
+        }
+
+        [TestMethod]
+        public void Test_Execute_kanji()
+        {
+            Test_Execute("kanji.jpg");
+        }
+
+        [TestMethod]
+        public void Test_Execute_parts()
+        {
+            Test_Execute("parts.gif");
+        }
+
+        [TestMethod]
+        public void Test_Execute_rice()
+        {
+            Test_Execute("rice.jpg");
+        }
+
+        [TestMethod]
+        public void Test_Execute_tank()
+        {
+            Test_Execute("tank.jpg");
+        }
+
+        [TestMethod]
+        public void Test_Execute_textsample()
+        {
+            Test_Execute("textsample.jpg");
+        }
+
+        [TestMethod]
+        public void Test_Excecute_Null()
+        {
+            ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
+            {
+                TwoColorThreshScript.Execute(null);
+            });
+        }
+
+        private void Test_Execute(string input)
+        {
+            string inputFile = GetInputFile(input);
+            /* LosslessCompress(inputFile); */
+
+            string output = input.Replace(".jpg", ".gif");
+
+            using (var image = new MagickImage(inputFile))
+            {
+                using (var scriptOutput = TwoColorThreshScript.Execute(image))
+                {
+                    AssertOutput(scriptOutput, output);
+                }
+            }
+        }
     }
-  }
 }
