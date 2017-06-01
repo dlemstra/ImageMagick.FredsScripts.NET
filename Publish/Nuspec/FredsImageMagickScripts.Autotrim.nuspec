@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.Autotrim</id>
-    <version>1.0.6256.40977</version>
+    <version>1.0.6361.37081</version>
     <title>Fred's ImageMagick Script Autotrim</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
@@ -20,5 +20,6 @@
     <file src="Readme.txt" target="" />
     <file src="..\..\src\FredsImageMagickScripts.NET\Geometry\Autotrim\AutotrimPixelShift.cs" target="Content\FredsImageMagickScripts\Geometry\Autotrim\AutotrimPixelShift.cs" />
     <file src="..\..\src\FredsImageMagickScripts.NET\Geometry\Autotrim\AutotrimScript.cs" target="Content\FredsImageMagickScripts\Geometry\Autotrim\AutotrimScript.cs" />
+    <file src="..\..\src\FredsImageMagickScripts.NET\Geometry\Autotrim\AutotrimScript.Line.cs" target="Content\FredsImageMagickScripts\Geometry\Autotrim\AutotrimScript.Line.cs" />
   </files>
 </package>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.Cartoon</id>
-    <version>1.0.6256.40977</version>
+    <version>1.0.6361.37081</version>
     <title>Fred's ImageMagick Script Cartoon</title>
     <authors>Dirk Lemstra, Fred Weinhaus, Christoph Bergmeister</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
