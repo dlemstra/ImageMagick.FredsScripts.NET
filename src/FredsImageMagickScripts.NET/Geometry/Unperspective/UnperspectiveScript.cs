@@ -207,7 +207,7 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public MagickImage Execute(MagickImage input)
+        public IMagickImage Execute(IMagickImage input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -226,10 +226,10 @@ namespace FredsImageMagickScripts
 
             int xOffset;
 
-            using (MagickImage paddedMask = CreatePaddedMask(output, out xOffset))
+            using (IMagickImage paddedMask = CreatePaddedMask(output, out xOffset))
             {
                 double maxRad = 0.5 * Hypot(output.Width, output.Height);
-                MagickImage depolar = CreateDepolar(paddedMask, maxRad);
+                IMagickImage depolar = CreateDepolar(paddedMask, maxRad);
 
                 ushort[] pixels = GetGrayChannel(depolar);
 
@@ -277,7 +277,7 @@ namespace FredsImageMagickScripts
             Width = null;
         }
 
-        private static MagickImage CreateDepolar(MagickImage image, double maxRad)
+        private static IMagickImage CreateDepolar(IMagickImage image, double maxRad)
         {
             var depolar = image.Clone();
 
@@ -327,7 +327,7 @@ namespace FredsImageMagickScripts
             return InvertPerspectiveCoefficients(vectors);
         }
 
-        private static double[] GetCoefficients(MagickImage image, double maxRad)
+        private static double[] GetCoefficients(IMagickImage image, double maxRad)
         {
             double[] coeff = new double[8];
             coeff[0] = maxRad;
@@ -341,7 +341,7 @@ namespace FredsImageMagickScripts
             return coeff;
         }
 
-        private static PointD[] GetCorners(MagickImage paddedMask, List<PixelValue> maxList, double maxRad, int xOffset)
+        private static PointD[] GetCorners(IMagickImage paddedMask, List<PixelValue> maxList, double maxRad, int xOffset)
         {
             double[] coeff = GetCoefficients(paddedMask, maxRad);
 
@@ -493,7 +493,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private static void PadImage(MagickImage image, int borderSize)
+        private static void PadImage(IMagickImage image, int borderSize)
         {
             image.Border(borderSize);
         }
@@ -523,7 +523,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private static void ResetMaxList(List<PixelValue> maxList, MagickImage image)
+        private static void ResetMaxList(List<PixelValue> maxList, IMagickImage image)
         {
             using (var pixels = image.GetPixels())
             {
@@ -535,13 +535,13 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private static void Rotate(MagickImage output, UnperspectiveRotation rotation)
+        private static void Rotate(IMagickImage output, UnperspectiveRotation rotation)
         {
             if (rotation != UnperspectiveRotation.None)
                 output.Rotate((int)rotation);
         }
 
-        private double CalculateAspectRation(MagickImage image, PointD[] corners)
+        private double CalculateAspectRation(IMagickImage image, PointD[] corners)
         {
             if (AspectRatio.HasValue)
                 return AspectRatio.Value;
@@ -579,7 +579,7 @@ namespace FredsImageMagickScripts
                 throw new InvalidOperationException("Invalid default output dimension specified.");
         }
 
-        private MagickImage CreateMask(MagickImage image)
+        private IMagickImage CreateMask(IMagickImage image)
         {
             var mask = image.Clone();
             mask.Alpha(AlphaOption.Off);
@@ -600,7 +600,7 @@ namespace FredsImageMagickScripts
             return mask;
         }
 
-        private MagickImage CreatePaddedMask(MagickImage image, out int xOffset)
+        private IMagickImage CreatePaddedMask(IMagickImage image, out int xOffset)
         {
             xOffset = 0;
             int minWidth = 500;
@@ -616,7 +616,7 @@ namespace FredsImageMagickScripts
             return paddedMask;
         }
 
-        private void Distort(MagickImage output, PointD[] corners, MagickGeometry inputDimensions, MagickGeometry trimmedDimensions, MagickColor backgroundColor)
+        private void Distort(IMagickImage output, PointD[] corners, MagickGeometry inputDimensions, MagickGeometry trimmedDimensions, MagickColor backgroundColor)
         {
             MagickGeometry outputDimensions = GetDimensions(output, corners, inputDimensions, trimmedDimensions);
 
@@ -640,7 +640,7 @@ namespace FredsImageMagickScripts
             output.RePage();
         }
 
-        private MagickColor GetBorderColor(MagickImage image)
+        private MagickColor GetBorderColor(IMagickImage image)
         {
             using (var pixels = image.GetPixels())
             {
@@ -648,7 +648,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickGeometry GetDimensions(MagickImage image, PointD[] corners, MagickGeometry inputDimensions, MagickGeometry trimmedDimensions)
+        private MagickGeometry GetDimensions(IMagickImage image, PointD[] corners, MagickGeometry inputDimensions, MagickGeometry trimmedDimensions)
         {
             double left = Hypot(corners[0].X - corners[1].X, corners[0].Y - corners[1].Y);
             double bottom = Hypot(corners[1].X - corners[2].X, corners[1].Y - corners[2].Y);
@@ -682,7 +682,7 @@ namespace FredsImageMagickScripts
             return new MagickGeometry(inputDimensions.Width, (int)Math.Floor(inputDimensions.Width / aspectRatio));
         }
 
-        private ushort[] GetGrayChannel(MagickImage image)
+        private ushort[] GetGrayChannel(IMagickImage image)
         {
             using (var images = new MagickImageCollection())
             {
@@ -722,7 +722,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private List<PixelValue> GetPeaks(ushort[] pixels, MagickImage image)
+        private List<PixelValue> GetPeaks(ushort[] pixels, IMagickImage image)
         {
             ushort min = ushort.MaxValue;
             ushort max = ushort.MinValue;
@@ -781,7 +781,7 @@ namespace FredsImageMagickScripts
             return maxList;
         }
 
-        private UnperspectiveRotation GetRotation(PointD[] corners, MagickImage image)
+        private UnperspectiveRotation GetRotation(PointD[] corners, IMagickImage image)
         {
             if (Rotation != null)
                 return Rotation.Value;
@@ -832,7 +832,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickGeometry TrimImage(MagickImage image, MagickColor backgroundColor, int borderSize)
+        private MagickGeometry TrimImage(IMagickImage image, MagickColor backgroundColor, int borderSize)
         {
             image.BorderColor = backgroundColor;
             image.Border(borderSize);

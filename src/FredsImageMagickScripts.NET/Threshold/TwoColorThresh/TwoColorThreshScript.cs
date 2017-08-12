@@ -34,7 +34,7 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public static MagickImage Execute(MagickImage input)
+        public static IMagickImage Execute(IMagickImage input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");

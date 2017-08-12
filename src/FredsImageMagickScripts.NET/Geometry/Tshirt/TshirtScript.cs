@@ -137,7 +137,7 @@ namespace FredsImageMagickScripts
         /// <param name="tshirt">The image of the shirt to put the overlay on.</param>
         /// <param name="overlay">The overlay to put on top of the shirt.</param>
         /// <returns>The resulting image.</returns>
-        public MagickImage Execute(MagickImage tshirt, MagickImage overlay)
+        public IMagickImage Execute(IMagickImage tshirt, IMagickImage overlay)
         {
             if (tshirt == null)
                 throw new ArgumentNullException("tshirt");
@@ -235,7 +235,7 @@ namespace FredsImageMagickScripts
             SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
         }
 
-        private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
+        private static void CheckCoordinate(IMagickImage image, string paramName, PointD coord)
         {
             if (coord.X < 0 || coord.X > image.Width)
                 throw new ArgumentOutOfRangeException(paramName);
@@ -261,7 +261,7 @@ namespace FredsImageMagickScripts
             return result;
         }
 
-        private static MagickImage SubtractMean(MagickImage image, PointD[] coords)
+        private static IMagickImage SubtractMean(IMagickImage image, PointD[] coords)
         {
             using (var img = image.Clone())
             {
@@ -285,7 +285,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private static MagickImage ToGrayScale(MagickImage image)
+        private static IMagickImage ToGrayScale(IMagickImage image)
         {
             var gray = image.Clone();
             gray.Alpha(AlphaOption.Off);
@@ -294,25 +294,25 @@ namespace FredsImageMagickScripts
             return gray;
         }
 
-        private void ApplyBlur(MagickImage image)
+        private void ApplyBlur(IMagickImage image)
         {
             if (Blur != 0)
                 image.Blur(0, Blur);
         }
 
-        private void ApplyLighting(MagickImage image)
+        private void ApplyLighting(IMagickImage image)
         {
             if (Lighting != 0)
                 image.SigmoidalContrast(true, Lighting / 3.0);
         }
 
-        private void ApplySharpen(MagickImage image)
+        private void ApplySharpen(IMagickImage image)
         {
             if (Sharpen != 0)
                 image.UnsharpMask(0, Sharpen);
         }
 
-        private void CheckSettings(MagickImage image)
+        private void CheckSettings(IMagickImage image)
         {
             if (_coords == null)
                 throw new InvalidOperationException("No coordinates have been set.");
@@ -335,7 +335,7 @@ namespace FredsImageMagickScripts
                 throw new InvalidOperationException("Invalid blur specified, value should be zero or higher.");
         }
 
-        private PointD[] CreateOverlayCoordinates(MagickImage overlay, double scale)
+        private PointD[] CreateOverlayCoordinates(IMagickImage overlay, double scale)
         {
             var angle = -Math.Atan2(_coords[1].Y - _coords[0].Y, _coords[1].X - _coords[0].X);
             var xOffset = _coords[0].X;
@@ -362,7 +362,7 @@ namespace FredsImageMagickScripts
             return coords;
         }
 
-        private PointD[] CreateTshirtCoordinates(MagickImage overlay, double scale, double topWidth)
+        private PointD[] CreateTshirtCoordinates(IMagickImage overlay, double scale, double topWidth)
         {
             if (Rotation == 0)
                 return _coords;
@@ -382,7 +382,7 @@ namespace FredsImageMagickScripts
             return coords;
         }
 
-        private MagickImage CropOverlay(MagickImage image, PointD[] coords)
+        private IMagickImage CropOverlay(IMagickImage image, PointD[] coords)
         {
             var result = image.Clone();
             if (Fit == TshirtFit.Crop)
@@ -395,7 +395,7 @@ namespace FredsImageMagickScripts
             return result;
         }
 
-        private MagickImage DisplaceOverlay(MagickImage overlay, MagickImage light, MagickImage blur)
+        private IMagickImage DisplaceOverlay(IMagickImage overlay, IMagickImage light, IMagickImage blur)
         {
             var mergedAlpha = overlay.Clone();
             mergedAlpha.Alpha(AlphaOption.Extract);
@@ -413,7 +413,7 @@ namespace FredsImageMagickScripts
             return output;
         }
 
-        private MagickImage DistortOverlay(MagickImage grayShirt, MagickImage overlay, PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
+        private IMagickImage DistortOverlay(IMagickImage grayShirt, IMagickImage overlay, PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
         {
             using (var images = new MagickImageCollection())
             {
@@ -434,7 +434,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickImage ExtractAlpha(MagickImage image)
+        private IMagickImage ExtractAlpha(IMagickImage image)
         {
             if (!image.HasAlpha)
                 return null;

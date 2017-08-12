@@ -76,7 +76,7 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public MagickImage Execute(MagickImage input)
+        public IMagickImage Execute(IMagickImage input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -136,7 +136,7 @@ namespace FredsImageMagickScripts
             Saturation = (Percentage)150;
         }
 
-        private void ApplyBrightness(MagickImage image)
+        private void ApplyBrightness(IMagickImage image)
         {
             if (Brightness == 1.0)
                 return;
@@ -144,7 +144,7 @@ namespace FredsImageMagickScripts
             image.Evaluate(Channels.All, EvaluateOperator.Multiply, Brightness);
         }
 
-        private void ApplyContrast(MagickImage image)
+        private void ApplyContrast(IMagickImage image)
         {
             if (Contrast == 0.0)
                 return;
@@ -153,7 +153,7 @@ namespace FredsImageMagickScripts
             image.SigmoidalContrast(sharpen, Math.Abs(Contrast), Quantum.Max / 2);
         }
 
-        private void ApplySaturation(MagickImage result)
+        private void ApplySaturation(IMagickImage result)
         {
             if (Saturation == (Percentage)100)
                 return;

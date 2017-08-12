@@ -166,7 +166,7 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public MagickImage Execute(MagickImage input)
+        public IMagickImage Execute(IMagickImage input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -212,7 +212,7 @@ namespace FredsImageMagickScripts
             _coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
         }
 
-        private static void CheckCoordinate(MagickImage image, string paramName, PointD coord)
+        private static void CheckCoordinate(IMagickImage image, string paramName, PointD coord)
         {
             if (coord.X < 0 || coord.X > image.Width)
                 throw new ArgumentOutOfRangeException(paramName);
@@ -221,15 +221,15 @@ namespace FredsImageMagickScripts
                 throw new ArgumentOutOfRangeException(paramName);
         }
 
-        private static double GetMean(MagickImage image)
+        private static double GetMean(IMagickImage image)
         {
             var mean = image.Statistics().GetChannel(PixelChannel.Composite).Mean;
             return mean * 100 / Quantum.Max;
         }
 
-        private static double GetRatio(MagickImage image, Channels channel, MagickImage mask, double maskMean)
+        private static double GetRatio(IMagickImage image, Channels channel, IMagickImage mask, double maskMean)
         {
-            using (MagickImage channelImage = image.Separate(channel).First())
+            using (IMagickImage channelImage = image.Separate(channel).First())
             {
                 channelImage.Composite(mask, CompositeOperator.Multiply);
                 var channelMean = GetMean(channelImage);
@@ -238,7 +238,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void ApplyWhiteBalance(MagickImage image)
+        private void ApplyWhiteBalance(IMagickImage image)
         {
             using (var mask = image.Clone())
             {
@@ -268,7 +268,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void CalculateWidthAndHeight(MagickImage image)
+        private void CalculateWidthAndHeight(IMagickImage image)
         {
             if (_coords != null)
                 CalculateWidthAndHeightWithCoords();
@@ -278,7 +278,7 @@ namespace FredsImageMagickScripts
                 CalculateWidthAndHeightWithMagnification(image);
         }
 
-        private void CheckSettings(MagickImage image)
+        private void CheckSettings(IMagickImage image)
         {
             if (_coords == null)
                 return;
@@ -333,7 +333,7 @@ namespace FredsImageMagickScripts
             return aspect;
         }
 
-        private void CalculateWidthAndHeightWithDimensions(MagickImage image)
+        private void CalculateWidthAndHeightWithDimensions(IMagickImage image)
         {
             var aspect = image.Width / (double)image.Height;
 
@@ -366,14 +366,14 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void CalculateWidthAndHeightWithMagnification(MagickImage image)
+        private void CalculateWidthAndHeightWithMagnification(IMagickImage image)
         {
             var magnification = GetMagnification();
             _width = image.Width * magnification;
             _height = image.Height * magnification;
         }
 
-        private void CopyOpacity(MagickImage image)
+        private void CopyOpacity(IMagickImage image)
         {
             image.Alpha(AlphaOption.Off);
 
@@ -395,7 +395,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void DistortImage(MagickImage input, MagickImage image)
+        private void DistortImage(IMagickImage input, IMagickImage image)
         {
             if (_coords != null)
                 DistortImageWithCoords(image);
@@ -405,7 +405,7 @@ namespace FredsImageMagickScripts
                 DistortImageWithMagnification(input, image);
         }
 
-        private void DistortImageWithCoords(MagickImage image)
+        private void DistortImageWithCoords(IMagickImage image)
         {
             SetDistortViewport(image, 0, 0);
 
@@ -418,7 +418,7 @@ namespace FredsImageMagickScripts
             image.Distort(DistortMethod.Perspective, arguments);
         }
 
-        private void DistortImageWithDimensions(MagickImage input, MagickImage image)
+        private void DistortImageWithDimensions(IMagickImage input, IMagickImage image)
         {
             var delX = (input.Width - _width) / 2;
             var delY = (input.Height - _height) / 2;
@@ -432,7 +432,7 @@ namespace FredsImageMagickScripts
             image.Distort(DistortMethod.ScaleRotateTranslate, cX, cY, magX, magY, 0);
         }
 
-        private void DistortImageWithMagnification(MagickImage input, MagickImage image)
+        private void DistortImageWithMagnification(IMagickImage input, IMagickImage image)
         {
             var delX = (input.Width - _width) / 2;
             var delY = (input.Height - _height) / 2;
@@ -441,7 +441,7 @@ namespace FredsImageMagickScripts
             image.Distort(DistortMethod.ScaleRotateTranslate, Magnification.Value, 0);
         }
 
-        private void EnhanceImage(MagickImage image)
+        private void EnhanceImage(IMagickImage image)
         {
             if (Enhance == WhiteboardEnhancements.None)
                 return;
@@ -458,7 +458,7 @@ namespace FredsImageMagickScripts
             return Magnification.HasValue ? Magnification.Value : 1;
         }
 
-        private void Modulate(MagickImage image)
+        private void Modulate(IMagickImage image)
         {
             if (Saturation == (Percentage)100)
                 return;
@@ -466,7 +466,7 @@ namespace FredsImageMagickScripts
             image.Modulate((Percentage)100, Saturation);
         }
 
-        private void SetDistortViewport(MagickImage image, int x, int y)
+        private void SetDistortViewport(IMagickImage image, int x, int y)
         {
             image.VirtualPixelMethod = VirtualPixelMethod.White;
 
@@ -474,7 +474,7 @@ namespace FredsImageMagickScripts
             image.SetArtifact("distort:viewport", viewport);
         }
 
-        private void Sharpen(MagickImage image)
+        private void Sharpen(IMagickImage image)
         {
             if (!SharpeningAmount.HasValue || SharpeningAmount <= 0)
                 return;

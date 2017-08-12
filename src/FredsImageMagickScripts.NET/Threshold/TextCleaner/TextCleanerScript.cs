@@ -183,7 +183,7 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public MagickImage Execute(MagickImage input)
+        public IMagickImage Execute(IMagickImage input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -228,7 +228,7 @@ namespace FredsImageMagickScripts
             Unrotate = false;
         }
 
-        private void AdaptiveBlurImage(MagickImage image)
+        private void AdaptiveBlurImage(IMagickImage image)
         {
             if (AdaptiveBlur == 0.0)
                 return;
@@ -264,7 +264,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void ConvertToGrayscale(MagickImage image)
+        private void ConvertToGrayscale(IMagickImage image)
         {
             if (!MakeGray)
                 return;
@@ -273,7 +273,7 @@ namespace FredsImageMagickScripts
             image.ColorType = ColorType.Grayscale;
         }
 
-        private void CropImage(MagickImage image)
+        private void CropImage(IMagickImage image)
         {
             if (!CropOffset.IsSet)
                 return;
@@ -284,7 +284,7 @@ namespace FredsImageMagickScripts
             image.Crop(new MagickGeometry(CropOffset.Left, CropOffset.Top, width, height));
         }
 
-        private void EnhanceImage(MagickImage image)
+        private void EnhanceImage(IMagickImage image)
         {
             if (Enhance == TextCleanerEnhance.Stretch)
                 image.ContrastStretch((Percentage)0);
@@ -292,7 +292,7 @@ namespace FredsImageMagickScripts
                 image.Normalize();
         }
 
-        private void PadImage(MagickImage image)
+        private void PadImage(IMagickImage image)
         {
             if (Padding == 0)
                 return;
@@ -302,7 +302,7 @@ namespace FredsImageMagickScripts
             image.Border(Padding);
         }
 
-        private void RemoveNoise(MagickImage image)
+        private void RemoveNoise(IMagickImage image)
         {
             using (var second = image.Clone())
             {
@@ -324,7 +324,7 @@ namespace FredsImageMagickScripts
             image.Alpha(AlphaOption.Off);
         }
 
-        private void RotateImage(MagickImage image)
+        private void RotateImage(IMagickImage image)
         {
             if (Rotation == TextCleanerRotation.None)
                 return;
@@ -338,7 +338,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void SaturateImage(MagickImage image)
+        private void SaturateImage(IMagickImage image)
         {
             if (Saturation == (Percentage)100)
                 return;
@@ -346,7 +346,7 @@ namespace FredsImageMagickScripts
             image.Modulate((Percentage)100, Saturation, (Percentage)100);
         }
 
-        private void SharpenImage(MagickImage image)
+        private void SharpenImage(IMagickImage image)
         {
             if (Sharpen == 0.0)
                 return;
@@ -354,7 +354,7 @@ namespace FredsImageMagickScripts
             image.Sharpen(0.0, Sharpen);
         }
 
-        private void TrimImage(MagickImage result)
+        private void TrimImage(IMagickImage result)
         {
             if (!Trim)
                 return;
@@ -363,7 +363,7 @@ namespace FredsImageMagickScripts
             result.RePage();
         }
 
-        private void UnrotateImage(MagickImage image)
+        private void UnrotateImage(IMagickImage image)
         {
             if (!Unrotate)
                 return;

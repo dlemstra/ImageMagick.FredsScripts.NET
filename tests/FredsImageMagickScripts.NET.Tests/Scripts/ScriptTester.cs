@@ -61,7 +61,7 @@ namespace FredsImageMagickScripts.NET.Tests
             optimizer.LosslessCompress(fileName);
         }
 
-        protected void AssertOutput(MagickImage image, string expectedOutput)
+        protected void AssertOutput(IMagickImage image, string expectedOutput)
         {
             if (image == null)
                 throw new InvalidOperationException();
@@ -101,9 +101,9 @@ namespace FredsImageMagickScripts.NET.Tests
         {
             string[] paths =
             {
-        @"..\..\..\", // Code coverage
-        @"..\..\..\..\",
-      };
+                @"..\..\..\", // Code coverage
+                @"..\..\..\..\",
+            };
 
             foreach (string path in paths)
             {

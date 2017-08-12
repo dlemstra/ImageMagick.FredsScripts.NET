@@ -203,7 +203,7 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public MagickImage Execute(MagickImage input)
+        public IMagickImage Execute(IMagickImage input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -220,7 +220,7 @@ namespace FredsImageMagickScripts
                 {
                     var pattern = CreatePattern(image.Width * 2, image.Height * 2, texture);
 
-                    using (MagickImage nearBlackWhite = ToNearBlackWhite(image))
+                    using (IMagickImage nearBlackWhite = ToNearBlackWhite(image))
                     {
                         using (var images = new MagickImageCollection())
                         {
@@ -274,7 +274,7 @@ namespace FredsImageMagickScripts
             Thickness = 2;
         }
 
-        private static MagickImage CreateCroppedPattern(MagickImage image, MagickImage pattern, double angle)
+        private static IMagickImage CreateCroppedPattern(IMagickImage image, IMagickImage pattern, double angle)
         {
             var croppedPattern = pattern.Clone();
             croppedPattern.Rotate(angle);
@@ -284,14 +284,14 @@ namespace FredsImageMagickScripts
             return croppedPattern;
         }
 
-        private static MagickImage CreateRolled(MagickImage image, int thickness)
+        private static IMagickImage CreateRolled(IMagickImage image, int thickness)
         {
-            MagickImage rolled = image.Clone();
+            IMagickImage rolled = image.Clone();
             rolled.Roll(thickness, 0);
             return rolled;
         }
 
-        private static MagickImage ExtractAlpha(MagickImage image, MagickColor color)
+        private static IMagickImage ExtractAlpha(IMagickImage image, MagickColor color)
         {
             var alpha = image.Clone();
             alpha.InverseTransparent(color);
@@ -299,14 +299,14 @@ namespace FredsImageMagickScripts
             return alpha;
         }
 
-        private static void RemapColors(MagickImage image, IEnumerable<MagickColor> colors)
+        private static void RemapColors(IMagickImage image, IEnumerable<MagickColor> colors)
         {
             using (var images = new MagickImageCollection())
             {
                 foreach (var color in colors)
                     images.Add(new MagickImage(color, 1, 1));
 
-                using (MagickImage colorMap = images.AppendHorizontally())
+                using (IMagickImage colorMap = images.AppendHorizontally())
                 {
                     image.Map(colorMap, new QuantizeSettings()
                     {
@@ -316,7 +316,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void AddBevel(MagickImage image)
+        private void AddBevel(IMagickImage image)
         {
             using (var alphaTexture = image.Clone())
             {
@@ -381,7 +381,7 @@ namespace FredsImageMagickScripts
                 throw new InvalidOperationException("Invalid thickness specified, value must be higher than zero.");
         }
 
-        private MagickImage CreateColor(MagickImage alpha, MagickImage croppedPattern, MagickImage nearBlackWhite, bool useBevel)
+        private IMagickImage CreateColor(IMagickImage alpha, IMagickImage croppedPattern, IMagickImage nearBlackWhite, bool useBevel)
         {
             using (var alphaCopy = nearBlackWhite.Clone())
             {
@@ -403,12 +403,12 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickImage CreateCrosshatchTexture()
+        private IMagickImage CreateCrosshatchTexture()
         {
-            MagickImage gradient = new MagickImage("gradient:", Thickness + 3, Thickness + 3);
+            var gradient = new MagickImage("gradient:", Thickness + 3, Thickness + 3);
             gradient.Rotate(270);
 
-            MagickImage flopped = gradient.Clone();
+            IMagickImage flopped = gradient.Clone();
             flopped.Flop();
 
             using (MagickImageCollection images = new MagickImageCollection())
@@ -420,14 +420,14 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickImage CreateLinearTexture()
+        private IMagickImage CreateLinearTexture()
         {
-            MagickImage gradient = new MagickImage("gradient:", Thickness, Thickness * 4);
+            var gradient = new MagickImage("gradient:", Thickness, Thickness * 4);
             gradient.Rotate(270);
 
-            MagickImage thick1 = CreateRolled(gradient, Thickness);
-            MagickImage thick2 = CreateRolled(gradient, Thickness * 2);
-            MagickImage thick3 = CreateRolled(gradient, Thickness * 3);
+            IMagickImage thick1 = CreateRolled(gradient, Thickness);
+            IMagickImage thick2 = CreateRolled(gradient, Thickness * 2);
+            IMagickImage thick3 = CreateRolled(gradient, Thickness * 3);
 
             using (MagickImageCollection images = new MagickImageCollection())
             {
@@ -440,9 +440,9 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickImage CreatePattern(int width, int height, MagickImage texture)
+        private IMagickImage CreatePattern(int width, int height, IMagickImage texture)
         {
-            MagickImage pattern = new MagickImage(MagickColors.None, width, height);
+            var pattern = new MagickImage(MagickColors.None, width, height);
             pattern.Texture(texture);
 
             if (Spread == 0.0)
@@ -454,7 +454,7 @@ namespace FredsImageMagickScripts
                 return pattern;
             }
 
-            using (MagickImage mix = pattern.Clone())
+            using (IMagickImage mix = pattern.Clone())
             {
                 mix.Spread(Spread);
 
@@ -463,7 +463,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickImage CreateTexture()
+        private IMagickImage CreateTexture()
         {
             if (Pattern == EmbroideryPattern.Linear)
                 return CreateLinearTexture();
@@ -471,9 +471,9 @@ namespace FredsImageMagickScripts
             return CreateCrosshatchTexture();
         }
 
-        private MagickImage ToNearBlackWhite(MagickImage image)
+        private IMagickImage ToNearBlackWhite(IMagickImage image)
         {
-            MagickImage result = image.Clone();
+            IMagickImage result = image.Clone();
             if (GrayLimit == 0 && ColorFuzz == (Percentage)0)
                 return result;
 

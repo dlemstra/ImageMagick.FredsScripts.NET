@@ -88,7 +88,7 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public MagickImage Execute(MagickImage input)
+        public IMagickImage Execute(IMagickImage input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -146,14 +146,14 @@ namespace FredsImageMagickScripts
             return newGeometry > geometry ? newGeometry : geometry;
         }
 
-        private void Crop(MagickImage image, MagickGeometry area)
+        private void Crop(IMagickImage image, MagickGeometry area)
         {
             ShiftGeometry(area);
             image.Crop(area.X, area.Y, area.Width, area.Height);
             image.RePage();
         }
 
-        private MagickColor GetBorderColor(MagickImage image)
+        private MagickColor GetBorderColor(IMagickImage image)
         {
             using (PixelCollection pixels = image.GetPixels())
             {
@@ -161,7 +161,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickGeometry GetLargestArea(MagickImage image, MagickColor borderColor)
+        private MagickGeometry GetLargestArea(IMagickImage image, MagickColor borderColor)
         {
             var points = new Line[4];
 
@@ -236,7 +236,7 @@ namespace FredsImageMagickScripts
             return geometry;
         }
 
-        private void ExecuteInnerTrim(MagickImage image, MagickColor borderColor)
+        private void ExecuteInnerTrim(IMagickImage image, MagickColor borderColor)
         {
             var area = GetLargestArea(image, borderColor);
 
@@ -255,7 +255,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void ExecuteOuterTrim(MagickImage image, MagickColor borderColor)
+        private void ExecuteOuterTrim(IMagickImage image, MagickColor borderColor)
         {
             image.BackgroundColor = borderColor;
             image.ColorFuzz = ColorFuzz;

@@ -108,14 +108,14 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public MagickImage Execute(MagickImage input)
+        public IMagickImage Execute(IMagickImage input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
 
             CheckSettings();
 
-            using (MagickImage first = SelectiveBlur(input))
+            using (IMagickImage first = SelectiveBlur(input))
             {
                 using (var second = first.Clone())
                 {
@@ -149,9 +149,9 @@ namespace FredsImageMagickScripts
             Saturation = (Percentage)150;
         }
 
-        private static MagickImage SelectiveBlur(MagickImage image)
+        private static IMagickImage SelectiveBlur(IMagickImage image)
         {
-            MagickImage result = image.Clone();
+            IMagickImage result = image.Clone();
             result.SelectiveBlur(0, 5, new Percentage(10));
 
             return result;
@@ -172,7 +172,7 @@ namespace FredsImageMagickScripts
                 throw new InvalidOperationException("Invalid saturation specified, value must be zero or higher.");
         }
 
-        private MagickImage ExecuteMethod1(MagickImage first, MagickImage second)
+        private IMagickImage ExecuteMethod1(IMagickImage first, IMagickImage second)
         {
             using (var first_0 = first.Clone())
             {
@@ -202,7 +202,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickImage ExecuteMethod2(MagickImage first, MagickImage second)
+        private IMagickImage ExecuteMethod2(IMagickImage first, IMagickImage second)
         {
             var result = first.Clone();
             result.Composite(second, CompositeOperator.Multiply);
@@ -223,7 +223,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickImage ExecuteMethod3(MagickImage first, MagickImage second)
+        private IMagickImage ExecuteMethod3(IMagickImage first, IMagickImage second)
         {
             var result = first.Clone();
             result.Composite(second, CompositeOperator.Multiply);
@@ -244,7 +244,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickImage ExecuteMethod4(MagickImage first, MagickImage second)
+        private IMagickImage ExecuteMethod4(IMagickImage first, IMagickImage second)
         {
             var result = first.Clone();
             result.Composite(second, CompositeOperator.Multiply);
