@@ -1,4 +1,4 @@
-This script requires Magick.NET (https://magick.codeplex.com/) but this is not set as a dependency
+This script requires Magick.NET (https://github.com/dlemstra/Magick.NET) but this is not set as a dependency
 to give you the freedom to decide the version of Magick.NET yourself.
 
 These scripts are available free of charge for non-commercial use, ONLY.

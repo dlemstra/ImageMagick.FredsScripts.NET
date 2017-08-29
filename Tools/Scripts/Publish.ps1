@@ -180,7 +180,7 @@ $content = @"
 [![Build status](https://ci.appveyor.com/api/projects/status/vcag7ygwmamyl33d?svg=true)](https://ci.appveyor.com/project/dlemstra/fredsimagemagickscripts-net)
 [![codecov](https://codecov.io/gh/dlemstra/FredsImageMagickScripts.NET/branch/master/graph/badge.svg)](https://codecov.io/gh/dlemstra/FredsImageMagickScripts.NET)
 
-This projects goal is to port most of the scripts for ImageMagick that are created by [Fred Weinhaus](http://www.fmwconcepts.com/imagemagick/) to C#. With the help of [Magick.NET](https://magick.codeplex.com) a library will be created that will make it easy to use Fred's scripts in .NET.
+This projects goal is to port most of the scripts for ImageMagick that are created by [Fred Weinhaus](http://www.fmwconcepts.com/imagemagick/) to C#. With the help of [Magick.NET](https://github.com/dlemstra/Magick.NET) a library will be created that will make it easy to use Fred's scripts in .NET.
 
 ## License
 This project uses the same license as Fred's ImageMagick Scripts. You can find the license in the [LICENSE.md]($github/blob/master/LICENSE.md) file.
