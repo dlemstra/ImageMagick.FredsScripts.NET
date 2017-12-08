@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>FredsImageMagickScripts.Autotrim</id>
-    <version>1.0.6436.32248</version>
+    <version>1.0.6551.11423</version>
     <title>Fred's ImageMagick Script Autotrim</title>
     <authors>Dirk Lemstra, Fred Weinhaus</authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
