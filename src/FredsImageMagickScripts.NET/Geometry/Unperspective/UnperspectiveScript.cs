@@ -632,7 +632,11 @@ namespace FredsImageMagickScripts
             output.BackgroundColor = backgroundColor;
             if (!DisableViewportCrop)
                 output.SetArtifact("distort:viewport", GetViewport(arguments, corners).ToString());
-            output.Distort(DistortMethod.Perspective, true, arguments);
+            var distortSettings = new DistortSettings()
+            {
+                Bestfit = true
+            };
+            output.Distort(DistortMethod.Perspective, distortSettings, arguments);
             output.BorderColor = backgroundColor;
             output.Border(2);
             output.ColorFuzz = ColorFuzz;

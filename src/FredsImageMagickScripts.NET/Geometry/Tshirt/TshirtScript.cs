@@ -425,7 +425,11 @@ namespace FredsImageMagickScripts
                 croppedOverlay.VirtualPixelMethod = VirtualPixelMethod.Transparent;
 
                 var arguments = CreateArguments(overlayCoordinates, tshirtCoordinates);
-                croppedOverlay.Distort(DistortMethod.Perspective, true, arguments);
+                var distortSettings = new DistortSettings()
+                {
+                    Bestfit = true
+                };
+                croppedOverlay.Distort(DistortMethod.Perspective, distortSettings, arguments);
                 ApplySharpen(croppedOverlay);
 
                 images.Add(croppedOverlay);

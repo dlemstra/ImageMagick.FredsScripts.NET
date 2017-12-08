@@ -155,7 +155,7 @@ namespace FredsImageMagickScripts
 
         private MagickColor GetBorderColor(IMagickImage image)
         {
-            using (PixelCollection pixels = image.GetPixels())
+            using (IPixelCollection pixels = image.GetPixels())
             {
                 return pixels.GetPixel((int)BorderColorLocation.X, (int)BorderColorLocation.Y).ToColor();
             }
@@ -165,7 +165,7 @@ namespace FredsImageMagickScripts
         {
             var points = new Line[4];
 
-            using (PixelCollection pixels = image.GetPixels())
+            using (IPixelCollection pixels = image.GetPixels())
             {
                 var line = new Line(0, 0);
 
@@ -267,7 +267,7 @@ namespace FredsImageMagickScripts
             Crop(image, geometry);
         }
 
-        private bool IsBorderColor(PixelCollection pixels, int x, int y, MagickColor borderColor)
+        private bool IsBorderColor(IPixelCollection pixels, int x, int y, MagickColor borderColor)
         {
             var color = pixels.GetPixel(x, y).ToColor();
             return color.FuzzyEquals(borderColor, ColorFuzz);
