@@ -13,7 +13,7 @@
     <description>Processses a picture of a whiteboard with writing on it to clean up the background and correct the perspective. The four corners of the actual interior of the whiteboard in the picture must be supplied in order to correct the perspective.</description>
     <summary>Fred's ImageMagick Script Whiteboard (requires Magick.NET)</summary>
     <releaseNotes />
-    <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
+    <copyright>Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus</copyright>
     <tags>Fred Weinhaus ImageMagick Whiteboard</tags>
   </metadata>
   <files>

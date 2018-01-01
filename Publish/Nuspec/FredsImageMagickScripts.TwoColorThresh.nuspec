@@ -13,7 +13,7 @@
     <description>Automatically thresholds an image to binary (b/w) format using an adaptive spatial subdivision color reduction technique. This is the -colors IM operator as implemented with slight modification from Anthony's Examples at http://www.imagemagick.org/Usage/quantize/#two_color. For algorithm details, see http://www.imagemagick.org/script/quantize.php</description>
     <summary>Fred's ImageMagick Script TwoColorThresh (requires Magick.NET)</summary>
     <releaseNotes />
-    <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
+    <copyright>Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus</copyright>
     <tags>Fred Weinhaus ImageMagick TwoColorThresh</tags>
   </metadata>
   <files>

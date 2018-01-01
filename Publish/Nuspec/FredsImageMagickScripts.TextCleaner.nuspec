@@ -13,7 +13,7 @@
     <description>Processses a scanned document of text to clean the text background and enhance the text.</description>
     <summary>Fred's ImageMagick Script TextCleaner (requires Magick.NET)</summary>
     <releaseNotes />
-    <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
+    <copyright>Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus</copyright>
     <tags>Fred Weinhaus ImageMagick TextCleaner</tags>
   </metadata>
   <files>

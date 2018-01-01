@@ -13,7 +13,7 @@
     <description>Attempts to automatically remove pespective distortion from an image without the need to manually pick control points. This technique is limited and relies upon the ability to isolate the outline or boundary of the distorted quadrilateral in the input image from its surrounding background. This technique will not look for internal edges or other details to assess the distortion. This technique also works to correct affine distortions such as rotation and/or skew. The basic principal is to isolate the quadrilateral of the distorted region from its background to form a binary mask. The mask is converted from cartesian coordinates to polar coordinates and averaged down to one row. This row is then processed either to find the highest peaks or the highest second derivative peaks. The four peaks identified are then converted back to cartesian coordinates and used with the ouput dimensions determined from the user specified (or computed) aspect ratio and user specified dimension.</description>
     <summary>Fred's ImageMagick Script Unperspective (requires Magick.NET)</summary>
     <releaseNotes />
-    <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
+    <copyright>Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus</copyright>
     <tags>Fred Weinhaus ImageMagick Unperspective</tags>
   </metadata>
   <files>

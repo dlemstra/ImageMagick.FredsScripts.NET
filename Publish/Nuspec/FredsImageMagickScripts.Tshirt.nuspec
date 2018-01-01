@@ -13,7 +13,7 @@
     <description>Transforms an image to place it in a region of a tshirt image. The transformed image will display hightlights from the tshirt image and be distorted to match the wrinkles in the tshirt image.</description>
     <summary>Fred's ImageMagick Script Tshirt (requires Magick.NET)</summary>
     <releaseNotes />
-    <copyright>Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus</copyright>
+    <copyright>Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus</copyright>
     <tags>Fred Weinhaus ImageMagick Tshirt</tags>
   </metadata>
   <files>

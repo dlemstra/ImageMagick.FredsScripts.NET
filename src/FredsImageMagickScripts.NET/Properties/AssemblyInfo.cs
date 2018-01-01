@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("FredsImageMagickScripts.NET")]
 [assembly: AssemblyDescription("FredsImageMagickScripts.NET")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright 2015-2017 Dirk Lemstra, Fred Weinhaus")]
+[assembly: AssemblyCopyright("Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus")]
 [assembly: AssemblyTrademark("")]
 
 [assembly: AssemblyConfiguration("Release")]
