@@ -216,10 +216,8 @@ namespace FredsImageMagickScripts
 
                 RemapColors(image, colors);
 
-                using (var texture = CreateTexture())
+                using (var pattern = CreatePattern(image.Width * 2, image.Height * 2))
                 {
-                    var pattern = CreatePattern(image.Width * 2, image.Height * 2, texture);
-
                     using (IMagickImage nearBlackWhite = ToNearBlackWhite(image))
                     {
                         using (var images = new MagickImageCollection())
@@ -440,26 +438,29 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private IMagickImage CreatePattern(int width, int height, IMagickImage texture)
+        private IMagickImage CreatePattern(int width, int height)
         {
-            var pattern = new MagickImage(MagickColors.None, width, height);
-            pattern.Texture(texture);
-
-            if (Spread == 0.0)
-                return pattern;
-
-            if (Spread == 100.0)
+            using (var texture = CreateTexture())
             {
-                pattern.Spread(Spread);
-                return pattern;
-            }
+                var pattern = new MagickImage(MagickColors.None, width, height);
+                pattern.Texture(texture);
 
-            using (IMagickImage mix = pattern.Clone())
-            {
-                mix.Spread(Spread);
+                if (Spread == 0.0)
+                    return pattern;
 
-                pattern.Composite(mix, CompositeOperator.Blend, Mix.ToString(CultureInfo.InvariantCulture));
-                return pattern;
+                if (Spread == 100.0)
+                {
+                    pattern.Spread(Spread);
+                    return pattern;
+                }
+
+                using (IMagickImage mix = pattern.Clone())
+                {
+                    mix.Spread(Spread);
+
+                    pattern.Composite(mix, CompositeOperator.Blend, Mix.ToString(CultureInfo.InvariantCulture));
+                    return pattern;
+                }
             }
         }
 
