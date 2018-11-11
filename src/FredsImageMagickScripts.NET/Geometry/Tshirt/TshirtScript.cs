@@ -210,10 +210,10 @@ namespace FredsImageMagickScripts
         /// Coordinates are not restricted to a rectangle and the region defined by the coordinates can
         /// have rotation.
         /// </summary>
-        /// <param name="topLeft">Top left coordinate</param>
-        /// <param name="topRight">Top right coordinate</param>
-        /// <param name="bottomRight">Bottom right coordinate</param>
-        /// <param name="bottomLeft">Bottom left coordinate</param>
+        /// <param name="topLeft">Top left coordinate.</param>
+        /// <param name="topRight">Top right coordinate.</param>
+        /// <param name="bottomRight">Bottom right coordinate.</param>
+        /// <param name="bottomLeft">Bottom left coordinate.</param>
         public void SetCoordinates(PointD topLeft, PointD topRight, PointD bottomRight, PointD bottomLeft)
         {
             _coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
@@ -222,7 +222,7 @@ namespace FredsImageMagickScripts
         /// <summary>
         /// Sets the four x,y corners of the region in the tshirt where the overlay image will be placed.
         /// </summary>
-        /// <param name="geometry">The geometry</param>
+        /// <param name="geometry">The geometry.</param>
         public void SetCoordinates(MagickGeometry geometry)
         {
             if (geometry == null)

@@ -38,7 +38,7 @@ namespace FredsImageMagickScripts
         }
 
         /// <summary>
-        /// Gets or sets the number of extra pixels to shift the trim of the left edge of the image
+        /// Gets or sets the number of extra pixels to shift the trim of the left edge of the image.
         /// </summary>
         public int Left
         {

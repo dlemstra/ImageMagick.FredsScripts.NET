@@ -16,7 +16,7 @@
 namespace FredsImageMagickScripts
 {
     /// <summary>
-    ///  Default output dimension
+    ///  Default output dimension.
     /// </summary>
     public enum UnperspectiveDefault
     {

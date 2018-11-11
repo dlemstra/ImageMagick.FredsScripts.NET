@@ -203,10 +203,10 @@ namespace FredsImageMagickScripts
         /// four corners of the input image and thus will not trim any existing border or area outside
         /// the whiteboard, nor will it correct any perspective distortion.
         /// </summary>
-        /// <param name="topLeft">Top left coordinate</param>
-        /// <param name="topRight">Top right coordinate</param>
-        /// <param name="bottomRight">Bottom right coordinate</param>
-        /// <param name="bottomLeft">Bottom left coordinate</param>
+        /// <param name="topLeft">Top left coordinate.</param>
+        /// <param name="topRight">Top right coordinate.</param>
+        /// <param name="bottomRight">Bottom right coordinate.</param>
+        /// <param name="bottomLeft">Bottom left coordinate.</param>
         public void SetCoordinates(PointD topLeft, PointD topRight, PointD bottomRight, PointD bottomLeft)
         {
             _coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };

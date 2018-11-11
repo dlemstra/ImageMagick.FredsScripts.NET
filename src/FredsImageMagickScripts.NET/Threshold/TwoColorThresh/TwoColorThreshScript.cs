@@ -22,7 +22,7 @@ namespace FredsImageMagickScripts
     /// Automatically thresholds an image to binary (b/w) format using an adaptive spatial subdivision
     /// color reduction technique. This is the -colors IM operator as implemented with slight
     /// modification from Anthony's Examples at http://www.imagemagick.org/Usage/quantize/#two_color.
-    /// For algorithm details, see http://www.imagemagick.org/script/quantize.php
+    /// For algorithm details, see http://www.imagemagick.org/script/quantize.php.
     /// </summary>
     public static class TwoColorThreshScript
     {
@@ -30,7 +30,7 @@ namespace FredsImageMagickScripts
         /// Automatically thresholds an image to binary (b/w) format using an adaptive spatial subdivision
         /// color reduction technique. This is the -colors IM operator as implemented with slight
         /// modification from Anthony's Examples at http://www.imagemagick.org/Usage/quantize/#two_color.
-        /// For algorithm details, see http://www.imagemagick.org/script/quantize.php
+        /// For algorithm details, see http://www.imagemagick.org/script/quantize.php.
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>

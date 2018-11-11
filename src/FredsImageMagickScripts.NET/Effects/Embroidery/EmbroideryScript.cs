@@ -178,7 +178,7 @@ namespace FredsImageMagickScripts
 
         /// <summary>
         /// Gets or sets the pattern spread (diffusion).
-        /// Default is 1
+        /// Default is 1.
         /// </summary>
         public double Spread
         {

@@ -17,7 +17,7 @@ namespace FredsImageMagickScripts
 {
     /// <summary>
     /// The algorithm to be used.
-    /// The second method is faster but the results are also not that good (the edge lines are e.g. thinner and therefore less outstanding)
+    /// The second method is faster but the results are also not that good (the edge lines are e.g. thinner and therefore less outstanding).
     /// </summary>
     public enum CartoonMethod
     {

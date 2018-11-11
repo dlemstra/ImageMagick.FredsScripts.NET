@@ -16,7 +16,7 @@
 namespace FredsImageMagickScripts
 {
     /// <summary>
-    /// Weave pattern
+    /// Weave pattern.
     /// </summary>
     public enum EmbroideryPattern
     {

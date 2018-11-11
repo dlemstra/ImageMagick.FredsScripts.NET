@@ -49,7 +49,7 @@ namespace FredsImageMagickScripts
         /// <summary>
         /// Initializes a new instance of the <see cref="UnperspectiveScript"/> class.
         /// </summary>
-        /// <param name="method">The unpersective method</param>
+        /// <param name="method">The unpersective method.</param>
         public UnperspectiveScript(UnperspectiveMethod method)
         {
             if (method != UnperspectiveMethod.Peak && method != UnperspectiveMethod.Derivative)

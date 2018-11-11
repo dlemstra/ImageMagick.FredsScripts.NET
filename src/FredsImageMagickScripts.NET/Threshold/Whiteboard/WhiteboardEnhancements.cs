@@ -18,7 +18,7 @@ using System;
 namespace FredsImageMagickScripts
 {
     /// <summary>
-    /// Whiteboard enhancement
+    /// Whiteboard enhancement.
     /// </summary>
     [Flags]
     public enum WhiteboardEnhancements
