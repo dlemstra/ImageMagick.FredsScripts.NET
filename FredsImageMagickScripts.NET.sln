@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredsImageMagickScripts.NET", "src\FredsImageMagickScripts.NET\FredsImageMagickScripts.NET.csproj", "{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FredsImageMagickScripts.NET", "src\FredsImageMagickScripts.NET\FredsImageMagickScripts.NET.csproj", "{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredsImageMagickScripts.NET.Tests", "Tests\FredsImageMagickScripts.NET.Tests\FredsImageMagickScripts.NET.Tests.csproj", "{6C392642-0CFB-4296-AFED-14E63943C4E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FredsImageMagickScripts.NET.Tests", "Tests\FredsImageMagickScripts.NET.Tests\FredsImageMagickScripts.NET.Tests.csproj", "{6C392642-0CFB-4296-AFED-14E63943C4E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{9B260F88-85D3-44B8-BDED-3279DDEEF8E9}"
 EndProject
@@ -33,18 +33,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppVeyor", "AppVeyor", "{73
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C392642-0CFB-4296-AFED-14E63943C4E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C392642-0CFB-4296-AFED-14E63943C4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C392642-0CFB-4296-AFED-14E63943C4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C392642-0CFB-4296-AFED-14E63943C4E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}.Debug|x86.ActiveCfg = Debug|x86
+		{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}.Debug|x86.Build.0 = Debug|x86
+		{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}.Release|x86.ActiveCfg = Release|x86
+		{7BFF53D0-7D83-444B-A061-BDBFE35F4F1E}.Release|x86.Build.0 = Release|x86
+		{6C392642-0CFB-4296-AFED-14E63943C4E3}.Debug|x86.ActiveCfg = Debug|x86
+		{6C392642-0CFB-4296-AFED-14E63943C4E3}.Debug|x86.Build.0 = Debug|x86
+		{6C392642-0CFB-4296-AFED-14E63943C4E3}.Release|x86.ActiveCfg = Release|x86
+		{6C392642-0CFB-4296-AFED-14E63943C4E3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +54,8 @@ Global
 		{27E023F4-67BB-4C92-91B8-3510D52E2914} = {9B260F88-85D3-44B8-BDED-3279DDEEF8E9}
 		{05BBF0EA-2A49-42A6-9F6C-B7757378390E} = {27E023F4-67BB-4C92-91B8-3510D52E2914}
 		{7365D183-9D27-47B4-89FC-73B82D27D6EB} = {27E023F4-67BB-4C92-91B8-3510D52E2914}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9764ADD2-BFE7-4056-A065-57C5742ABA0B}
 	EndGlobalSection
 EndGlobal

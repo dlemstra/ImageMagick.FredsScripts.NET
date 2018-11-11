@@ -102,7 +102,7 @@ namespace FredsImageMagickScripts.NET.Tests
             string[] paths =
             {
                 @"..\..\..\", // Code coverage
-                @"..\..\..\..\",
+                @"..\..\..\..\..\..\",
             };
 
             foreach (string path in paths)
