@@ -12,7 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppVeyor", "AppVeyor", "{B00B1601-C840-4244-8E3B-DE80359D92DE}"
 	ProjectSection(SolutionItems) = preProject
 		Tools\AppVeyor\Build.cmd = Tools\AppVeyor\Build.cmd
+		Tools\AppVeyor\packages.config = Tools\AppVeyor\packages.config
 		Tools\AppVeyor\Test.cmd = Tools\AppVeyor\Test.cmd
+		Tools\AppVeyor\VsDevCmd.cmd = Tools\AppVeyor\VsDevCmd.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{27E023F4-67BB-4C92-91B8-3510D52E2914}"
