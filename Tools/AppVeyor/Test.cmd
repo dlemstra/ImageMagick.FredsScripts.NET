@@ -1,7 +1,7 @@
 @echo off
 call "%vs140comntools%vsvars32.bat"
 
-NuGet.exe restore packages.config -PackagesDirectory ..\..\packages
+..\Programs\NuGet.exe restore packages.config -PackagesDirectory ..\..\packages
 
 cd ..\..\
 
