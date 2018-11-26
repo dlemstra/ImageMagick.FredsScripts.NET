@@ -16,6 +16,6 @@ function Build()
 {
   $solution = "FredsImageMagickScripts.NET.sln"
   .\Tools\Programs\nuget.exe restore $solution
-  msbuild /m:4 $solution /t:Rebuild ("/p:Configuration=Release,Platform=x86")
+  msbuild /m:4 $solution /t:Rebuild ("/p:Configuration=Test,Platform=x86")
   CheckExitCode "Failed to build: $solution"
 }

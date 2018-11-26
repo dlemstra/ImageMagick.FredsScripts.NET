@@ -2,9 +2,15 @@
   <PropertyGroup>
     <TargetFrameworks>net45</TargetFrameworks>
     <Platforms>x86</Platforms>
+    <Configurations>Debug;Test</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)' == 'Test'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
