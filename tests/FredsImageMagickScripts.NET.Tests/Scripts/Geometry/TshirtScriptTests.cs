@@ -161,8 +161,8 @@ namespace FredsImageMagickScripts.NET.Tests
         {
             var invalid = new PointD[]
             {
-        new PointD(-10, 10), new PointD(10, -10),
-        new PointD(650, 10), new PointD(630, 490)
+                new PointD(-10, 10), new PointD(10, -10),
+                new PointD(650, 10), new PointD(630, 490)
             };
 
             for (int i = 0; i < invalid.Length; i++)
@@ -178,24 +178,24 @@ namespace FredsImageMagickScripts.NET.Tests
         public void Execute_ImageWithAlpha_AlphaIsRestored()
         {
             var tshirtFile = GetInputFile("tshirt_gray.jpg");
-            /* LosslessCompress(tshirtFile); */
 
             var overlayFile = GetInputFile("flowers_van_gogh.jpg");
-            /* LosslessCompress(overlayFile); */
 
             using (var tshirtImage = new MagickImage(tshirtFile))
             {
-                tshirtImage.Opaque(MagickColors.White, MagickColors.None);
+                tshirtImage.Opaque(new MagickColor("#FEFEFE"), MagickColors.None);
 
                 using (var overlayImage = new MagickImage(overlayFile))
                 {
                     overlayImage.Crop(479, 479);
 
-                    var script = new TshirtScript();
-                    script.Fit = TshirtFit.Crop;
-                    script.Blur = 0;
-                    script.Lighting = 0;
-                    script.Sharpen = 0;
+                    var script = new TshirtScript
+                    {
+                        Fit = TshirtFit.Crop,
+                        Blur = 0,
+                        Lighting = 0,
+                        Sharpen = 0
+                    };
 
                     script.SetCoordinates(new MagickGeometry(275, 175, 130, 130));
 

@@ -31,6 +31,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppVeyor", "AppVeyor", "{73
 		Tools\Scripts\AppVeyor\Build.ps1 = Tools\Scripts\AppVeyor\Build.ps1
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{11815932-3A48-430D-AF05-9FF7AF41DE29}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.cmd = build\build.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86

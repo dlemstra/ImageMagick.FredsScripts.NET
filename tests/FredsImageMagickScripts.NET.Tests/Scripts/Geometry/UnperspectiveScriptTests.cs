@@ -271,11 +271,11 @@ namespace FredsImageMagickScripts.NET.Tests
         }
 
         [TestMethod]
-        public void Execute_f15_bh_jpg()
+        public void Execute_f14_bh_jpg()
         {
-            AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(Execute_f15_bh_jpg), (UnperspectiveScript script) =>
+            AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(Execute_f14_bh_jpg), (UnperspectiveScript script) =>
             {
-                script.ColorFuzz = (Percentage)15;
+                script.ColorFuzz = (Percentage)14;
                 script.Default = UnperspectiveDefault.BoundingBoxHeight;
             });
         }

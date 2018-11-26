@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Magick.NET-Q16-x86" version="7.4.3" />
+    <PackageReference Include="Magick.NET-Q16-x86" version="7.9.0.2" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta009" PrivateAssets="All" />
   </ItemGroup>
 
