@@ -1,6 +1,6 @@
 version: FredsImageMagickScripts.NET-{branch}.{build}
 
-os: Windows Server 2012 R2
+image: Visual Studio 2017
 
 clone_folder: C:\FredsImageMagickScripts.NET
 shallow_clone: true
