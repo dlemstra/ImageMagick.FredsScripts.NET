@@ -15,12 +15,14 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="Scripts\Geometry\**" />
     <None Remove="Scripts\Threshold\**" />
-    <Compile Remove="Scripts\Geometry\**" />
     <Compile Remove="Scripts\Threshold\**" />
-    <EmbeddedResource Remove="Scripts\Geometry\**" />
     <EmbeddedResource Remove="Scripts\Threshold\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Scripts\Geometry\AutotrimScriptTests.cs" />
+    <Compile Remove="Scripts\Geometry\UnperspectiveScriptTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
