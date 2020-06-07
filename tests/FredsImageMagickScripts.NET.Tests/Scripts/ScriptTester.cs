@@ -29,15 +29,13 @@ namespace FredsImageMagickScripts.NET.Tests
         {
             get
             {
-                var scriptName = GetType().Name;
+                var scriptName = GetType().BaseType.Name;
                 return scriptName.Substring(0, scriptName.Length - 5); // Remove 'Tests'
             }
         }
 
         protected static string GetInputFile(string fileName)
-        {
-            return _root + @"Input\" + fileName;
-        }
+            => _root + @"Input\" + fileName;
 
         protected static string GetOutputFile(string input, string methodName)
         {
@@ -46,7 +44,7 @@ namespace FredsImageMagickScripts.NET.Tests
 
             string fileName = Path.GetFileNameWithoutExtension(input);
 
-            int startOffset = "Execute_".Length;
+            int startOffset = "ShouldExecute_".Length;
             int lastUnderscore = methodName.LastIndexOf('_');
             fileName += "_" + methodName.Substring(startOffset, lastUnderscore - startOffset);
             fileName += "." + methodName.Substring(lastUnderscore + 1);
@@ -92,7 +90,7 @@ namespace FredsImageMagickScripts.NET.Tests
                     if (distortion != 0)
                         LosslessCompress(actualOutputFile.FullName);
 
-                    Assert.AreEqual(0.0, distortion, actualImage.FileName);
+                    Assert.AreEqual(0.0, distortion, new FileInfo(actualImage.FileName).Name);
                 }
             }
         }

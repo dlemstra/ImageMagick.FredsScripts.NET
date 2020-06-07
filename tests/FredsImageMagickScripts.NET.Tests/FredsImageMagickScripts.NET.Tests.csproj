@@ -15,15 +15,17 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="Scripts\Effect\**" />
     <None Remove="Scripts\Geometry\**" />
     <None Remove="Scripts\Threshold\**" />
-    <Compile Remove="Scripts\Effect\**" />
     <Compile Remove="Scripts\Geometry\**" />
     <Compile Remove="Scripts\Threshold\**" />
-    <EmbeddedResource Remove="Scripts\Effect\**" />
     <EmbeddedResource Remove="Scripts\Geometry\**" />
     <EmbeddedResource Remove="Scripts\Threshold\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Scripts\Effect\DraganEffectScriptTests.cs" />
+    <Compile Remove="Scripts\Effect\EmbroideryScriptTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
