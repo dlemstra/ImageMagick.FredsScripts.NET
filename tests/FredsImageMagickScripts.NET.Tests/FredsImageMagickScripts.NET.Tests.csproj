@@ -24,7 +24,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Remove="Scripts\Effect\DraganEffectScriptTests.cs" />
     <Compile Remove="Scripts\Effect\EmbroideryScriptTests.cs" />
   </ItemGroup>
 
