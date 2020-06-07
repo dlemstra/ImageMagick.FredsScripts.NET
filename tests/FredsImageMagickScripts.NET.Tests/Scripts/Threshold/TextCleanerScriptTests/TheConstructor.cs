@@ -19,21 +19,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FredsImageMagickScripts.NET.Tests
 {
-    [ExcludeFromCodeCoverage]
-    public static class ColorAssert
+    public partial class TextCleanerScriptTests
     {
-        public static void AreEqual(IMagickColor<ushort> expected, IMagickColor<ushort> actual)
+        [TestClass]
+        public class TheConstructor : TextCleanerScriptTests
         {
-            if (expected == null)
-                throw new InvalidOperationException();
+            [TestMethod]
+            public void ShouldThrowExceptionWhenFactoryIsNull()
+            {
+                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("factory", () => new TextCleanerScript<ushort>(null));
+            }
 
-            if (actual == null)
-                throw new InvalidOperationException();
+            [TestMethod]
+            public void ShouldSetTheDefaults()
+            {
+                var factory = new MagickFactory();
+                var script = new TextCleanerScript<ushort>(factory);
 
-            Assert.AreEqual(expected.R, actual.R, "R is not equal");
-            Assert.AreEqual(expected.G, actual.G, "G is not equal");
-            Assert.AreEqual(expected.B, actual.B, "B is not equal");
-            Assert.AreEqual(expected.A, actual.A, "A is not equal");
+                AssertDefaults(script);
+            }
         }
     }
 }

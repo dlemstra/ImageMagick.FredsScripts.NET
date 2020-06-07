@@ -15,9 +15,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="Scripts\Threshold\**" />
-    <Compile Remove="Scripts\Threshold\**" />
-    <EmbeddedResource Remove="Scripts\Threshold\**" />
+    <Compile Remove="Scripts\Threshold\TwoColorThreshScriptTests.cs" />
+    <Compile Remove="Scripts\Threshold\WhiteboardScriptTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
