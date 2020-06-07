@@ -63,6 +63,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{2F39F8
 		publish\nuspec\Readme.txt = publish\nuspec\Readme.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E1FF85AD-B1E5-4517-BA74-D40E2EEE8B22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{729B4B94-DE79-47E2-A1F5-6DFF46B44893}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\master.yml = .github\workflows\master.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2682E7CF-3D15-4235-94B3-013DCEC98186}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows", "windows", "{F04387ED-E4D9-414B-A8F6-2F62F4E86982}"
+	ProjectSection(SolutionItems) = preProject
+		build\windows\build.FredsImageMagickScripts.NET.cmd = build\windows\build.FredsImageMagickScripts.NET.cmd
+		build\windows\build.FredsImageMagickScripts.NET.ps1 = build\windows\build.FredsImageMagickScripts.NET.ps1
+		build\windows\install.dependencies.cmd = build\windows\install.dependencies.cmd
+		build\windows\install.dependencies.ps1 = build\windows\install.dependencies.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows", "windows", "{D8EB21A8-C239-44BC-824B-FC68141360A3}"
+	ProjectSection(SolutionItems) = preProject
+		tools\windows\init.visualstudio.cmd = tools\windows\init.visualstudio.cmd
+		tools\windows\utils.ps1 = tools\windows\utils.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +130,9 @@ Global
 		{27E43A39-27F8-4B3C-826D-88B551A15201} = {EB9E5423-2B70-4BC0-A06F-E9D47B9B971E}
 		{26CDE18C-5ACA-40DD-B22E-DF63E438392E} = {271BF560-4B6B-4C6A-94E3-76CC1AA2AC19}
 		{2F39F8B4-AEAB-4586-BAE5-49AC0C9853C8} = {271BF560-4B6B-4C6A-94E3-76CC1AA2AC19}
+		{729B4B94-DE79-47E2-A1F5-6DFF46B44893} = {E1FF85AD-B1E5-4517-BA74-D40E2EEE8B22}
+		{F04387ED-E4D9-414B-A8F6-2F62F4E86982} = {2682E7CF-3D15-4235-94B3-013DCEC98186}
+		{D8EB21A8-C239-44BC-824B-FC68141360A3} = {9B260F88-85D3-44B8-BDED-3279DDEEF8E9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9764ADD2-BFE7-4056-A065-57C5742ABA0B}
