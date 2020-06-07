@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata minClientVersion="2.5">
+  <metadata>
     <id>FredsImageMagickScripts.DraganEffect</id>
     <version>1.0.6436.32248</version>
     <title>Fred's ImageMagick Script DraganEffect</title>
@@ -8,6 +8,7 @@
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
     <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
+    <repository type="git" url="https://github.com/dlemstra/FredsImageMagickScripts.NET" branch="master" />
     <iconUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/raw/master/Images/FredsImageMagickScripts.Logo.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Applies a Dragan-like effect to an image to enhance wrinkles creating a "gritty" effect.</description>
