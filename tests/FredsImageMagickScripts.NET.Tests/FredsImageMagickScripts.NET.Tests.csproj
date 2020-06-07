@@ -22,10 +22,6 @@
     <EmbeddedResource Remove="Scripts\Geometry\**" />
     <EmbeddedResource Remove="Scripts\Threshold\**" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Remove="Scripts\Effect\EmbroideryScriptTests.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Magick.NET-Q16-x64" version="7.19.0.0" />
