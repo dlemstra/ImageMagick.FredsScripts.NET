@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+name: master
+jobs:
+  windows:
+    name: Windows
+    runs-on: windows-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Install dependencies
+      run: ./install.dependencies.cmd
+      working-directory: build/windows
+
+    - name: Build FredsImageMagickScripts.NET (Test)
+      run: './build.FredsImageMagickScripts.NET Test'
+      working-directory: build/windows
