@@ -9,7 +9,7 @@
     <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
     <repository type="git" url="https://github.com/dlemstra/FredsImageMagickScripts.NET" branch="master" />
-    <iconUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/raw/master/Images/FredsImageMagickScripts.Logo.png</iconUrl>
+    <icon>FredsImageMagickScripts.Logo.png</icon>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description></description>
     <summary></summary>
@@ -19,5 +19,6 @@
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
+    <file src="..\..\Images\FredsImageMagickScripts.Logo.png" target="FredsImageMagickScripts.Logo.png" />
   </files>
 </package>

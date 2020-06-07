@@ -9,7 +9,7 @@
     <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
     <repository type="git" url="https://github.com/dlemstra/FredsImageMagickScripts.NET" branch="master" />
-    <iconUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/raw/master/Images/FredsImageMagickScripts.Logo.png</iconUrl>
+    <icon>FredsImageMagickScripts.Logo.png</icon>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Processses a scanned document of text to clean the text background and enhance the text.</description>
     <summary>Fred's ImageMagick Script TextCleaner (requires Magick.NET)</summary>
@@ -19,6 +19,7 @@
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
+    <file src="..\..\Images\FredsImageMagickScripts.Logo.png" target="FredsImageMagickScripts.Logo.png" />
     <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerCropOffset.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerCropOffset.cs" />
     <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerEnhance.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerEnhance.cs" />
     <file src="..\..\src\FredsImageMagickScripts.NET\Threshold\TextCleaner\TextCleanerLayout.cs" target="Content\FredsImageMagickScripts\Threshold\TextCleaner\TextCleanerLayout.cs" />
