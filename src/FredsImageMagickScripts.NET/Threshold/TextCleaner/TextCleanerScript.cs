@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -21,13 +21,19 @@ namespace FredsImageMagickScripts
     /// <summary>
     /// Processses a scanned document of text to clean the text background and enhance the text.
     /// </summary>
-    public sealed class TextCleanerScript
+    /// <typeparam name="TQuantumType">The quantum type.</typeparam>
+    public sealed class TextCleanerScript<TQuantumType>
+        where TQuantumType : struct
     {
+        private readonly IMagickFactory<TQuantumType> _factory;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextCleanerScript"/> class.
+        /// Initializes a new instance of the <see cref="TextCleanerScript{TQuantumType}"/> class.
         /// </summary>
-        public TextCleanerScript()
+        /// <param name="factory">The magick factory.</param>
+        public TextCleanerScript(IMagickFactory<TQuantumType> factory)
         {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
             Reset();
         }
 
@@ -35,49 +41,29 @@ namespace FredsImageMagickScripts
         ///  Gets or sets the value to apply for an alternate text smoothing using and adaptive blur.
         ///  Valid values are zero or higher. The default value is zero.
         /// </summary>
-        public double AdaptiveBlur
-        {
-            get;
-            set;
-        }
+        public double AdaptiveBlur { get; set; }
 
         /// <summary>
         /// Gets or sets the desired background color after it has been cleaned up. The default is white.
         /// </summary>
-        public MagickColor BackgroundColor
-        {
-            get;
-            set;
-        }
+        public IMagickColor<TQuantumType> BackgroundColor { get; set; }
 
         /// <summary>
         /// Gets or sets the image cropping offsets.
         /// </summary>
-        public TextCleanerCropOffset CropOffset
-        {
-            get;
-            set;
-        }
+        public TextCleanerCropOffset CropOffset { get; set; }
 
         /// <summary>
         /// Gets or sets the enhance image brightness bearing cleaning, the default value is Stretch.
         /// </summary>
-        public TextCleanerEnhance Enhance
-        {
-            get;
-            set;
-        }
+        public TextCleanerEnhance Enhance { get; set; }
 
         /// <summary>
         /// Gets or sets the offset threshold in percent used by the filter to eliminate noise. Valid
         /// values are zero or higher. Values too small will leave much noise and artifacts in the result.
         /// Values too large will remove too much text leaving gaps. The default value is 5.
         /// </summary>
-        public Percentage FilterOffset
-        {
-            get;
-            set;
-        }
+        public Percentage FilterOffset { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the filter used to clean up the background. Valid values are zero or
@@ -85,108 +71,68 @@ namespace FredsImageMagickScripts
         /// better beyond this. Making it larger will increase the processing time and may lose text.
         /// The default value is 15.
         /// </summary>
-        public int FilterSize
-        {
-            get;
-            set;
-        }
+        public int FilterSize { get; set; }
 
         /// <summary>
         /// Gets or sets desired layout, the default is Portrait.
         /// </summary>
-        public TextCleanerLayout Layout
-        {
-            get;
-            set;
-        }
+        public TextCleanerLayout Layout { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to convert the document to grayscale before enhancing.
         /// </summary>
-        public bool MakeGray
-        {
-            get;
-            set;
-        }
+        public bool MakeGray { get; set; }
 
         /// <summary>
         /// Gets or sets the border pad amount around outer part of image. Valid values are zero or higher.
         /// The default value is 0.
         /// </summary>
-        public int Padding
-        {
-            get;
-            set;
-        }
+        public int Padding { get; set; }
 
         /// <summary>
         /// Gets or sets the image rotation. Rotate image 90 degrees in direction specified if spect ratio does
         /// not match layout. The default value is no rotation.
         /// </summary>
-        public TextCleanerRotation Rotation
-        {
-            get;
-            set;
-        }
+        public TextCleanerRotation Rotation { get; set; }
 
         /// <summary>
         /// Gets or sets the color saturation. Only applicable if MakeGray is false. The default value is 200.
         /// </summary>
-        public Percentage Saturation
-        {
-            get;
-            set;
-        }
+        public Percentage Saturation { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of pixel sharpening to be applied to the resulting text. Valid values are zero
         /// or higher. If used, it should be small (suggested about 1). The default value is zero.
         /// </summary>
-        public double Sharpen
-        {
-            get;
-            set;
-        }
+        public double Sharpen { get; set; }
 
         /// <summary>
         /// Gets or sets the text smoothing threshold. Valid values are between 0 and 100. Smaller values
         /// smooth/thicken the text more. Larger values thin, but can result in gaps in the text. Nominal
         /// value is in the middle at about 50. The default value is to disable smoothing.
         /// </summary>
-        public Percentage? SmoothingThreshold
-        {
-            get;
-            set;
-        }
+        public Percentage? SmoothingThreshold { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the border around the image should be trimmed.
         /// Effective only if background well-cleaned.
         /// </summary>
-        public bool Trim
-        {
-            get;
-            set;
-        }
+        public bool Trim { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the image will be unrotated, the default value is false.
         /// </summary>
-        public bool Unrotate
-        {
-            get;
-            set;
-        }
+        public bool Unrotate { get; set; }
 
         /// <summary>
         /// Processses a scanned document of text to clean the text background and enhance the text.
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public IMagickImage Execute(IMagickImage input)
+        public IMagickImage<TQuantumType> Execute(IMagickImage<TQuantumType> input)
         {
             if (input == null)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             CheckSettings();
 
@@ -212,7 +158,7 @@ namespace FredsImageMagickScripts
         public void Reset()
         {
             AdaptiveBlur = 0.0;
-            BackgroundColor = new MagickColor("white");
+            BackgroundColor = _factory.Color.Create("white");
             CropOffset = new TextCleanerCropOffset();
             Enhance = TextCleanerEnhance.Stretch;
             FilterOffset = (Percentage)5;
@@ -228,7 +174,7 @@ namespace FredsImageMagickScripts
             Unrotate = false;
         }
 
-        private void AdaptiveBlurImage(IMagickImage image)
+        private void AdaptiveBlurImage(IMagickImage<TQuantumType> image)
         {
             if (AdaptiveBlur == 0.0)
                 return;
@@ -264,7 +210,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void ConvertToGrayscale(IMagickImage image)
+        private void ConvertToGrayscale(IMagickImage<TQuantumType> image)
         {
             if (!MakeGray)
                 return;
@@ -273,7 +219,7 @@ namespace FredsImageMagickScripts
             image.ColorType = ColorType.Grayscale;
         }
 
-        private void CropImage(IMagickImage image)
+        private void CropImage(IMagickImage<TQuantumType> image)
         {
             if (!CropOffset.IsSet)
                 return;
@@ -281,10 +227,10 @@ namespace FredsImageMagickScripts
             int width = image.Width - (CropOffset.Left + CropOffset.Right);
             int height = image.Height - (CropOffset.Top + CropOffset.Bottom);
 
-            image.Crop(new MagickGeometry(CropOffset.Left, CropOffset.Top, width, height));
+            image.Crop(_factory.Geometry.Create(CropOffset.Left, CropOffset.Top, width, height));
         }
 
-        private void EnhanceImage(IMagickImage image)
+        private void EnhanceImage(IMagickImage<TQuantumType> image)
         {
             if (Enhance == TextCleanerEnhance.Stretch)
                 image.ContrastStretch((Percentage)0);
@@ -292,7 +238,7 @@ namespace FredsImageMagickScripts
                 image.Normalize();
         }
 
-        private void PadImage(IMagickImage image)
+        private void PadImage(IMagickImage<TQuantumType> image)
         {
             if (Padding == 0)
                 return;
@@ -302,7 +248,7 @@ namespace FredsImageMagickScripts
             image.Border(Padding);
         }
 
-        private void RemoveNoise(IMagickImage image)
+        private void RemoveNoise(IMagickImage<TQuantumType> image)
         {
             using (var second = image.Clone())
             {
@@ -313,18 +259,19 @@ namespace FredsImageMagickScripts
 
                 if (SmoothingThreshold != null)
                 {
-                    second.Blur(SmoothingThreshold.Value.ToDouble() / 100, Quantum.Max);
+                    var max = _factory.QuantumInfo.ToDouble().Max;
+                    second.Blur(SmoothingThreshold.Value.ToDouble() / 100, max);
                     second.Level(SmoothingThreshold.Value, new Percentage(100));
                 }
 
                 image.Composite(second, CompositeOperator.CopyAlpha);
             }
 
-            image.Opaque(MagickColors.Transparent, BackgroundColor);
+            image.Opaque(_factory.Color.Create("transparent"), BackgroundColor);
             image.Alpha(AlphaOption.Off);
         }
 
-        private void RotateImage(IMagickImage image)
+        private void RotateImage(IMagickImage<TQuantumType> image)
         {
             if (Rotation == TextCleanerRotation.None)
                 return;
@@ -338,7 +285,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void SaturateImage(IMagickImage image)
+        private void SaturateImage(IMagickImage<TQuantumType> image)
         {
             if (Saturation == (Percentage)100)
                 return;
@@ -346,7 +293,7 @@ namespace FredsImageMagickScripts
             image.Modulate((Percentage)100, Saturation, (Percentage)100);
         }
 
-        private void SharpenImage(IMagickImage image)
+        private void SharpenImage(IMagickImage<TQuantumType> image)
         {
             if (Sharpen == 0.0)
                 return;
@@ -354,7 +301,7 @@ namespace FredsImageMagickScripts
             image.Sharpen(0.0, Sharpen);
         }
 
-        private void TrimImage(IMagickImage result)
+        private void TrimImage(IMagickImage<TQuantumType> result)
         {
             if (!Trim)
                 return;
@@ -363,7 +310,7 @@ namespace FredsImageMagickScripts
             result.RePage();
         }
 
-        private void UnrotateImage(IMagickImage image)
+        private void UnrotateImage(IMagickImage<TQuantumType> image)
         {
             if (!Unrotate)
                 return;

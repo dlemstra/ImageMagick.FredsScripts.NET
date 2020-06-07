@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -24,15 +24,20 @@ namespace FredsImageMagickScripts
     /// display hightlights from the tshirt image and be distorted to match the wrinkles in the
     /// tshirt image.
     /// </summary>
-    public sealed class TshirtScript
+    /// <typeparam name="TQuantumType">The quantum type.</typeparam>
+    public sealed class TshirtScript<TQuantumType>
+        where TQuantumType : struct
     {
+        private readonly IMagickFactory<TQuantumType> _factory;
         private PointD[] _coords;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TshirtScript"/> class.
+        /// Initializes a new instance of the <see cref="TshirtScript{TQuantumType}"/> class.
         /// </summary>
-        public TshirtScript()
+        /// <param name="factory">The magick factory.</param>
+        public TshirtScript(IMagickFactory<TQuantumType> factory)
         {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
             Reset();
         }
 
@@ -40,31 +45,19 @@ namespace FredsImageMagickScripts
         /// Gets or sets the antialias amount to apply to alpha channel of tshirt image.Values should be
         /// higher than or equal to zero. The default is 2.
         /// </summary>
-        public double AntiAlias
-        {
-            get;
-            set;
-        }
+        public double AntiAlias { get; set; }
 
         /// <summary>
         /// Gets or sets the blurring to apply to the displacement map to avoid jagged displacement.
         /// Values should be higherthan zero. The default is 1.
         /// </summary>
-        public double Blur
-        {
-            get;
-            set;
-        }
+        public double Blur { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of displacement for the distortion of the overlay image. Values should be
         /// higher than zero. The default is 10.
         /// </summary>
-        public int Displace
-        {
-            get;
-            set;
-        }
+        public int Displace { get; set; }
 
         /// <summary>
         /// Gets or sets the fitting method. If Crop, then the overlay image will be cropped to make its vertical
@@ -73,61 +66,37 @@ namespace FredsImageMagickScripts
         /// of the region. If Distort, the overlay image  will be fit to the coordinate area, if the aspect ratio
         /// of the overlay image  does not match that of the region or coordinate area. The default is None.
         /// </summary>
-        public TshirtFit Fit
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the contrast increase for highlights to apply to the overlay image. Valid values are
-        /// between 0 and 30. The default is 20.
-        /// </summary>
-        public int Lighting
-        {
-            get;
-            set;
-        }
+        public TshirtFit Fit { get; set; }
 
         /// <summary>
         /// Gets or sets the gravity for selecting the crop location. The choices are: North, South or Center.
         /// The default is Center.
         /// </summary>
-        public Gravity Gravity
-        {
-            get;
-            set;
-        }
+        public Gravity Gravity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the contrast increase for highlights to apply to the overlay image. Valid values are
+        /// between 0 and 30. The default is 20.
+        /// </summary>
+        public int Lighting { get; set; }
 
         /// <summary>
         /// Gets or sets an additional clockwise positive rotation in order to make orientational adjustments easier.
         /// Values are betweneen -360 and 360. The default is 0.
         /// </summary>
-        public double Rotation
-        {
-            get;
-            set;
-        }
+        public double Rotation { get; set; }
 
         /// <summary>
         /// Gets or sets the sharpening to apply to the overlay image. Values should be higher than or equal to than zero.
         /// The default is 1.
         /// </summary>
-        public double Sharpen
-        {
-            get;
-            set;
-        }
+        public double Sharpen { get; set; }
 
         /// <summary>
         /// Gets or sets the vertical shift of the crop region with respect to the gravity setting. Negative is upward and
         /// positive is downward. The default is 0 (no shift).
         /// </summary>
-        public int VerticalShift
-        {
-            get;
-            set;
-        }
+        public int VerticalShift { get; set; }
 
         /// <summary>
         /// Transforms an image to place it in a region of a tshirt image. The transformed image will
@@ -137,13 +106,13 @@ namespace FredsImageMagickScripts
         /// <param name="tshirt">The image of the shirt to put the overlay on.</param>
         /// <param name="overlay">The overlay to put on top of the shirt.</param>
         /// <returns>The resulting image.</returns>
-        public IMagickImage Execute(IMagickImage tshirt, IMagickImage overlay)
+        public IMagickImage<TQuantumType> Execute(IMagickImage<TQuantumType> tshirt, IMagickImage<TQuantumType> overlay)
         {
             if (tshirt == null)
-                throw new ArgumentNullException("tshirt");
+                throw new ArgumentNullException(nameof(tshirt));
 
             if (overlay == null)
-                throw new ArgumentNullException("overlay");
+                throw new ArgumentNullException(nameof(overlay));
 
             CheckSettings(tshirt);
 
@@ -155,37 +124,40 @@ namespace FredsImageMagickScripts
             var overlayCoordinates = CreateOverlayCoordinates(overlay, scale);
             var tshirtCoordinates = CreateTshirtCoordinates(overlay, scale, topWidth);
 
-            var alpha = ExtractAlpha(tshirt);
-            var gray = ToGrayScale(tshirt);
-            var mean = SubtractMean(gray, tshirtCoordinates);
-
-            ApplyLighting(mean);
-            var light = mean.Clone();
-            mean.Dispose();
-
-            var blur = gray.Clone();
-            ApplyBlur(blur);
-
-            var distorted = DistortOverlay(gray, overlay, overlayCoordinates, tshirtCoordinates);
-
-            var displaced = DisplaceOverlay(distorted, light, blur);
-            distorted.Dispose();
-            light.Dispose();
-            blur.Dispose();
-
-            var output = tshirt.Clone();
-            output.Composite(displaced, CompositeOperator.Over);
-            displaced.Dispose();
-
-            if (alpha != null)
+            using (var alpha = ExtractAlpha(tshirt))
             {
-                output.Alpha(AlphaOption.Off);
-                output.Composite(alpha, CompositeOperator.CopyAlpha);
+                using (var gray = ToGrayScale(tshirt))
+                {
+                    using (var mean = SubtractMean(gray, tshirtCoordinates))
+                    {
+                        ApplyLighting(mean);
+                        using (var light = mean.Clone())
+                        {
+                            using (var blur = gray.Clone())
+                            {
+                                ApplyBlur(blur);
 
-                alpha.Dispose();
+                                using (var distorted = DistortOverlay(gray, overlay, overlayCoordinates, tshirtCoordinates))
+                                {
+                                    using (var displaced = DisplaceOverlay(distorted, light, blur))
+                                    {
+                                        var output = tshirt.Clone();
+                                        output.Composite(displaced, CompositeOperator.Over);
+
+                                        if (alpha != null)
+                                        {
+                                            output.Alpha(AlphaOption.Off);
+                                            output.Composite(alpha, CompositeOperator.CopyAlpha);
+                                        }
+
+                                        return output;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
-            return output;
         }
 
         /// <summary>
@@ -223,10 +195,10 @@ namespace FredsImageMagickScripts
         /// Sets the four x,y corners of the region in the tshirt where the overlay image will be placed.
         /// </summary>
         /// <param name="geometry">The geometry.</param>
-        public void SetCoordinates(MagickGeometry geometry)
+        public void SetCoordinates(IMagickGeometry geometry)
         {
             if (geometry == null)
-                throw new ArgumentNullException("geometry");
+                throw new ArgumentNullException(nameof(geometry));
 
             var topLeft = new PointD(geometry.X, geometry.Y);
             var topRight = new PointD(geometry.X + geometry.Width - 1, geometry.Y);
@@ -235,7 +207,7 @@ namespace FredsImageMagickScripts
             SetCoordinates(topLeft, topRight, bottomRight, bottomLeft);
         }
 
-        private static void CheckCoordinate(IMagickImage image, string paramName, PointD coord)
+        private static void CheckCoordinate(IMagickImage<TQuantumType> image, string paramName, PointD coord)
         {
             if (coord.X < 0 || coord.X > image.Width)
                 throw new ArgumentOutOfRangeException(paramName);
@@ -261,7 +233,16 @@ namespace FredsImageMagickScripts
             return result;
         }
 
-        private static IMagickImage SubtractMean(IMagickImage image, PointD[] coords)
+        private static IMagickImage<TQuantumType> ToGrayScale(IMagickImage<TQuantumType> image)
+        {
+            var gray = image.Clone();
+            gray.Alpha(AlphaOption.Off);
+            gray.ColorSpace = ColorSpace.Gray;
+
+            return gray;
+        }
+
+        private IMagickImage<TQuantumType> SubtractMean(IMagickImage<TQuantumType> image, PointD[] coords)
         {
             using (var img = image.Clone())
             {
@@ -273,46 +254,38 @@ namespace FredsImageMagickScripts
                 int width = maxX - minX + 1;
                 int height = maxY - minY + 1;
 
-                img.Crop(minX, minY, width, height);
+                img.Crop(_factory.Geometry.Create(minX, minY, width, height));
                 img.RePage();
 
                 var statistics = img.Statistics();
-                double mean = (statistics.Composite().Mean / Quantum.Max) - 0.5;
+                var max = _factory.QuantumInfo.ToDouble().Max;
+                var mean = (statistics.Composite().Mean / max) - 0.5;
 
                 var result = image.Clone();
-                result.Evaluate(Channels.All, EvaluateOperator.Subtract, mean * Quantum.Max);
+                result.Evaluate(Channels.All, EvaluateOperator.Subtract, mean * max);
                 return result;
             }
         }
 
-        private static IMagickImage ToGrayScale(IMagickImage image)
-        {
-            var gray = image.Clone();
-            gray.Alpha(AlphaOption.Off);
-            gray.ColorSpace = ColorSpace.Gray;
-
-            return gray;
-        }
-
-        private void ApplyBlur(IMagickImage image)
+        private void ApplyBlur(IMagickImage<TQuantumType> image)
         {
             if (Blur != 0)
                 image.Blur(0, Blur);
         }
 
-        private void ApplyLighting(IMagickImage image)
+        private void ApplyLighting(IMagickImage<TQuantumType> image)
         {
             if (Lighting != 0)
                 image.SigmoidalContrast(true, Lighting / 3.0);
         }
 
-        private void ApplySharpen(IMagickImage image)
+        private void ApplySharpen(IMagickImage<TQuantumType> image)
         {
             if (Sharpen != 0)
                 image.UnsharpMask(0, Sharpen);
         }
 
-        private void CheckSettings(IMagickImage image)
+        private void CheckSettings(IMagickImage<TQuantumType> image)
         {
             if (_coords == null)
                 throw new InvalidOperationException("No coordinates have been set.");
@@ -335,7 +308,7 @@ namespace FredsImageMagickScripts
                 throw new InvalidOperationException("Invalid blur specified, value should be zero or higher.");
         }
 
-        private PointD[] CreateOverlayCoordinates(IMagickImage overlay, double scale)
+        private PointD[] CreateOverlayCoordinates(IMagickImage<TQuantumType> overlay, double scale)
         {
             var angle = -Math.Atan2(_coords[1].Y - _coords[0].Y, _coords[1].X - _coords[0].X);
             var xOffset = _coords[0].X;
@@ -362,7 +335,7 @@ namespace FredsImageMagickScripts
             return coords;
         }
 
-        private PointD[] CreateTshirtCoordinates(IMagickImage overlay, double scale, double topWidth)
+        private PointD[] CreateTshirtCoordinates(IMagickImage<TQuantumType> overlay, double scale, double topWidth)
         {
             if (Rotation == 0)
                 return _coords;
@@ -382,7 +355,7 @@ namespace FredsImageMagickScripts
             return coords;
         }
 
-        private IMagickImage CropOverlay(IMagickImage image, PointD[] coords)
+        private IMagickImage<TQuantumType> CropOverlay(IMagickImage<TQuantumType> image, PointD[] coords)
         {
             var result = image.Clone();
             if (Fit == TshirtFit.Crop)
@@ -395,40 +368,40 @@ namespace FredsImageMagickScripts
             return result;
         }
 
-        private IMagickImage DisplaceOverlay(IMagickImage overlay, IMagickImage light, IMagickImage blur)
+        private IMagickImage<TQuantumType> DisplaceOverlay(IMagickImage<TQuantumType> overlay, IMagickImage<TQuantumType> light, IMagickImage<TQuantumType> blur)
         {
-            var mergedAlpha = overlay.Clone();
-            mergedAlpha.Alpha(AlphaOption.Extract);
+            using (var mergedAlpha = overlay.Clone())
+            {
+                mergedAlpha.Alpha(AlphaOption.Extract);
 
-            var output = overlay.Clone();
-            output.Composite(light, CompositeOperator.HardLight);
+                var output = overlay.Clone();
+                output.Composite(light, CompositeOperator.HardLight);
 
-            output.Alpha(AlphaOption.Off);
-            output.Composite(mergedAlpha, CompositeOperator.CopyAlpha);
-            mergedAlpha.Dispose();
+                output.Alpha(AlphaOption.Off);
+                output.Composite(mergedAlpha, CompositeOperator.CopyAlpha);
 
-            var args = string.Format(CultureInfo.InvariantCulture, "{0},{0}", -Displace);
-            output.Composite(blur, 0, 0, CompositeOperator.Displace, args);
+                var args = string.Format(CultureInfo.InvariantCulture, "{0},{0}", -Displace);
+                output.Composite(blur, 0, 0, CompositeOperator.Displace, args);
 
-            return output;
+                return output;
+            }
         }
 
-        private IMagickImage DistortOverlay(IMagickImage grayShirt, IMagickImage overlay, PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
+        private IMagickImage<TQuantumType> DistortOverlay(IMagickImage<TQuantumType> grayShirt, IMagickImage<TQuantumType> overlay, PointD[] overlayCoordinates, PointD[] tshirtCoordinates)
         {
-            using (var images = new MagickImageCollection())
+            using (var images = _factory.ImageCollection.Create())
             {
                 grayShirt.Alpha(AlphaOption.Transparent);
-                grayShirt.BackgroundColor = MagickColors.Transparent;
+                grayShirt.BackgroundColor = _factory.Color.Create("transparent");
+                grayShirt.ColorSpace = ColorSpace.sRGB;
                 images.Add(grayShirt);
 
                 var croppedOverlay = CropOverlay(overlay, overlayCoordinates);
                 croppedOverlay.VirtualPixelMethod = VirtualPixelMethod.Transparent;
 
                 var arguments = CreateArguments(overlayCoordinates, tshirtCoordinates);
-                var distortSettings = new DistortSettings()
-                {
-                    Bestfit = true
-                };
+                var distortSettings = _factory.Settings.CreateDistortSettings();
+                distortSettings.Bestfit = true;
                 croppedOverlay.Distort(DistortMethod.Perspective, distortSettings, arguments);
                 ApplySharpen(croppedOverlay);
 
@@ -438,7 +411,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private IMagickImage ExtractAlpha(IMagickImage image)
+        private IMagickImage<TQuantumType> ExtractAlpha(IMagickImage<TQuantumType> image)
         {
             if (!image.HasAlpha)
                 return null;

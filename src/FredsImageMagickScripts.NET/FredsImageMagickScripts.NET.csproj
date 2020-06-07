@@ -2,13 +2,19 @@
   <PropertyGroup>
     <TargetFrameworks>net40;netstandard13</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Platforms>x86</Platforms>
+    <Platforms>AnyCPU</Platforms>
     <Configurations>Debug;Test;Release</Configurations>
+    <RootNamespace>FredsImageMagickScripts</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="!$(Configuration.Contains('Release'))">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <Optimize>false</Optimize>
     <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -18,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Magick.NET-Q16-x86" version="7.9.0.2" />
+    <PackageReference Include="Magick.NET.Core" version="2.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.164" PrivateAssets="All" />
   </ItemGroup>
 

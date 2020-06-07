@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -31,37 +31,21 @@ namespace FredsImageMagickScripts
         /// <summary>
         /// Gets or sets the number of extra pixels to shift the trim of the bottom edge of the image.
         /// </summary>
-        public int Bottom
-        {
-            get;
-            set;
-        }
+        public int Bottom { get; set; }
 
         /// <summary>
         /// Gets or sets the number of extra pixels to shift the trim of the left edge of the image.
         /// </summary>
-        public int Left
-        {
-            get;
-            set;
-        }
+        public int Left { get; set; }
 
         /// <summary>
         /// Gets or sets the number of extra pixels to shift the trim of the right edge of the image.
         /// </summary>
-        public int Right
-        {
-            get;
-            set;
-        }
+        public int Right { get; set; }
 
         /// <summary>
         /// Gets or sets the number of extra pixels to shift the trim of the top edge of the image.
         /// </summary>
-        public int Top
-        {
-            get;
-            set;
-        }
+        public int Top { get; set; }
     }
 }

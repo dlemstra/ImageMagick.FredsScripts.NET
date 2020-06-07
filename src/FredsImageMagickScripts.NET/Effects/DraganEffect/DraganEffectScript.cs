@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -21,13 +21,19 @@ namespace FredsImageMagickScripts
     /// <summary>
     /// Applies a Dragan-like effect to an image to enhance wrinkles creating a "gritty" effect.
     /// </summary>
-    public sealed class DraganEffectScript
+    /// <typeparam name="TQuantumType">The quantum type.</typeparam>
+    public sealed class DraganEffectScript<TQuantumType>
+        where TQuantumType : struct
     {
+        private readonly IMagickFactory<TQuantumType> _factory;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="DraganEffectScript"/> class.
+        /// Initializes a new instance of the <see cref="DraganEffectScript{TQuantumType}"/> class.
         /// </summary>
-        public DraganEffectScript()
+        /// <param name="factory">The magick factory.</param>
+        public DraganEffectScript(IMagickFactory<TQuantumType> factory)
         {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
             Reset();
         }
 
@@ -35,51 +41,35 @@ namespace FredsImageMagickScripts
         /// Gets or sets the brightness factor. Valid values are zero or higher. The default is 1.
         /// Increase brightness is larger than 1, decrease brightness is less than 1.
         /// </summary>
-        public double Brightness
-        {
-            get;
-            set;
-        }
+        public double Brightness { get; set; }
 
         /// <summary>
         /// Gets or sets the sigmoidal contrast. Valid values are nominally in the range of -10 to 10.
         /// Positive values increase contrast and negative values decrease contrast. The default is 0.
         /// </summary>
-        public double Contrast
-        {
-            get;
-            set;
-        }
+        public double Contrast { get; set; }
 
         /// <summary>
         /// Gets or sets the shadow darkening factor. Valid values are 1 or higher. The default is 1.
         /// Darker shadows is larger than 1.
         /// </summary>
-        public double Darkness
-        {
-            get;
-            set;
-        }
+        public double Darkness { get; set; }
 
         /// <summary>
         /// Gets or sets saturation. Valid values are zero or higher. A value of 100 is no change.
         /// The default is 150.
         /// </summary>
-        public Percentage Saturation
-        {
-            get;
-            set;
-        }
+        public Percentage Saturation { get; set; }
 
         /// <summary>
         /// Applies a Dragan-like effect to an image to enhance wrinkles creating a "gritty" effect.
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public IMagickImage Execute(IMagickImage input)
+        public IMagickImage<TQuantumType> Execute(IMagickImage<TQuantumType> input)
         {
             if (input == null)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             CheckSettings();
 
@@ -136,7 +126,7 @@ namespace FredsImageMagickScripts
             Saturation = (Percentage)150;
         }
 
-        private void ApplyBrightness(IMagickImage image)
+        private void ApplyBrightness(IMagickImage<TQuantumType> image)
         {
             if (Brightness == 1.0)
                 return;
@@ -144,16 +134,16 @@ namespace FredsImageMagickScripts
             image.Evaluate(Channels.All, EvaluateOperator.Multiply, Brightness);
         }
 
-        private void ApplyContrast(IMagickImage image)
+        private void ApplyContrast(IMagickImage<TQuantumType> image)
         {
             if (Contrast == 0.0)
                 return;
 
             var sharpen = Contrast >= 0.0;
-            image.SigmoidalContrast(sharpen, Math.Abs(Contrast), Quantum.Max / 2);
+            image.SigmoidalContrast(sharpen, Math.Abs(Contrast), _factory.QuantumInfo.ToDouble().Max / 2);
         }
 
-        private void ApplySaturation(IMagickImage result)
+        private void ApplySaturation(IMagickImage<TQuantumType> result)
         {
             if (Saturation == (Percentage)100)
                 return;

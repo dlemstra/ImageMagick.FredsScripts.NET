@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -34,24 +34,31 @@ namespace FredsImageMagickScripts
     /// converted back to cartesian coordinates and used with the ouput dimensions determined from
     /// the user specified (or computed) aspect ratio and user specified dimension.
     /// </summary>
-    public sealed partial class UnperspectiveScript
+    /// <typeparam name="TQuantumType">The quantum type.</typeparam>
+    public sealed partial class UnperspectiveScript<TQuantumType>
+        where TQuantumType : struct
     {
+        private readonly IMagickFactory<TQuantumType> _factory;
         private UnperspectiveMethod _method;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnperspectiveScript"/> class.
+        /// Initializes a new instance of the <see cref="UnperspectiveScript{TQuantumType}"/> class.
         /// </summary>
-        public UnperspectiveScript()
-          : this(UnperspectiveMethod.Peak)
+        /// <param name="factory">The magick factory.</param>
+        public UnperspectiveScript(IMagickFactory<TQuantumType> factory)
+          : this(factory, UnperspectiveMethod.Peak)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnperspectiveScript"/> class.
+        /// Initializes a new instance of the <see cref="UnperspectiveScript{TQuantumType}"/> class.
         /// </summary>
+        /// <param name="factory">The magick factory.</param>
         /// <param name="method">The unpersective method.</param>
-        public UnperspectiveScript(UnperspectiveMethod method)
+        public UnperspectiveScript(IMagickFactory<TQuantumType> factory, UnperspectiveMethod method)
         {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+
             if (method != UnperspectiveMethod.Peak && method != UnperspectiveMethod.Derivative)
                 throw new ArgumentException("Invalid unperspective method specified.", nameof(method));
 
@@ -64,30 +71,18 @@ namespace FredsImageMagickScripts
         /// Gets or sets the desired output width/height aspect ratio.
         /// Default is computed automatically.
         /// </summary>
-        public double? AspectRatio
-        {
-            get;
-            set;
-        }
+        public double? AspectRatio { get; set; }
 
         /// <summary>
         /// Gets or sets any location within the border area for the algorithm to find the base border color.
         /// </summary>
-        public PointD BorderColorLocation
-        {
-            get;
-            set;
-        }
+        public PointD BorderColorLocation { get; set; }
 
         /// <summary>
         /// Gets or sets the blurring amount for preprocessing images of text with no quadrilateral outline.
         /// The default is 0.
         /// </summary>
-        public double Blur
-        {
-            get;
-            set;
-        }
+        public double Blur { get; set; }
 
         /// <summary>
         /// Gets or sets the fuzz amount specified as a percent 0 to 100. It is used
@@ -98,138 +93,94 @@ namespace FredsImageMagickScripts
         /// distorted quadrilateral area of the image. Note that method=peak is fairly robust to
         /// minor imperfections in the mask, but method=derivative is not.
         /// </summary>
-        public Percentage ColorFuzz
-        {
-            get;
-            set;
-        }
+        public Percentage ColorFuzz { get; set; }
 
         /// <summary>
         /// Gets or sets default output dimension.
         /// Default is EdgeLength.
         /// </summary>
-        public UnperspectiveDefault Default
-        {
-            get;
-            set;
-        }
+        public UnperspectiveDefault Default { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the viewport crop of the output image should be disabled and allows
         /// distort to compute a larger output image before doing a fuzzy trim.
         /// </summary>
-        public bool DisableViewportCrop
-        {
-            get;
-            set;
-        }
+        public bool DisableViewportCrop { get; set; }
 
         /// <summary>
         /// Gets or sets the desired height of output.
         /// </summary>
-        public int? Height
-        {
-            get;
-            set;
-        }
+        public int? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the trap for maximum number of false peaks before filtering to remove false peaks.
         /// Default is 40.
         /// </summary>
-        public int MaxPeaks
-        {
-            get;
-            set;
-        }
+        public int MaxPeaks { get; set; }
 
         /// <summary>
         /// Gets or sets the trap for minimum edge length.
         /// Default is 10.
         /// </summary>
-        public int MinLength
-        {
-            get;
-            set;
-        }
+        public int MinLength { get; set; }
 
         /// <summary>
         /// Gets or sets the desired rotation of output image.
         /// </summary>
-        public UnperspectiveRotation? Rotation
-        {
-            get;
-            set;
-        }
+        public UnperspectiveRotation? Rotation { get; set; }
 
         /// <summary>
         /// Gets or sets the sharpening amount used to amplify true peaks.This is a filtering step applied after
         /// the smoothing to the 1D polar images.
         /// Default is 5 when method is Peak and 0 when method is Derivative.
         /// </summary>
-        public double Sharpen
-        {
-            get;
-            set;
-        }
+        public double Sharpen { get; set; }
 
         /// <summary>
         /// Gets or sets the smoothing amount used to help remove false peaks.
         /// Default is 1 when method is Peak and 5 when method is Derivative.
         /// </summary>
-        public double Smooth
-        {
-            get;
-            set;
-        }
+        public double Smooth { get; set; }
 
         /// <summary>
         /// Gets or sets the threshold value for removing false peaks.
         /// Default is 4 when method is Peak and 10 when method is Derivative.
         /// </summary>
-        public int Threshold
-        {
-            get;
-            set;
-        }
+        public int Threshold { get; set; }
 
         /// <summary>
         /// Gets or sets desired width of output.
         /// </summary>
-        public int? Width
-        {
-            get;
-            set;
-        }
+        public int? Width { get; set; }
 
         /// <summary>
         /// Automatically remove pespective distortion from an image.
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public IMagickImage Execute(IMagickImage input)
+        public IMagickImage<TQuantumType> Execute(IMagickImage<TQuantumType> input)
         {
             if (input == null)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             CheckSettings();
 
-            MagickGeometry inputDimensions = new MagickGeometry(input.Width, input.Height);
-            MagickColor backgroundColor = GetBorderColor(input);
+            var inputDimensions = _factory.Geometry.Create(input.Width, input.Height);
+            var backgroundColor = GetBorderColor(input);
             int borderSize = (int)((3 * Blur) + 5);
 
             var output = input.Clone();
 
-            MagickGeometry trimmedDimensions = TrimImage(output, backgroundColor, borderSize);
+            var trimmedDimensions = TrimImage(output, backgroundColor, borderSize);
 
             PadImage(output, borderSize);
 
             int xOffset;
 
-            using (IMagickImage paddedMask = CreatePaddedMask(output, out xOffset))
+            using (IMagickImage<TQuantumType> paddedMask = CreatePaddedMask(output, out xOffset))
             {
-                double maxRad = 0.5 * Hypot(output.Width, output.Height);
-                IMagickImage depolar = CreateDepolar(paddedMask, maxRad);
+                var maxRad = 0.5 * Hypot(output.Width, output.Height);
+                var depolar = CreateDepolar(paddedMask, maxRad);
 
                 ushort[] pixels = GetGrayChannel(depolar);
 
@@ -237,7 +188,7 @@ namespace FredsImageMagickScripts
 
                 PointD[] corners = GetCorners(paddedMask, maxList, maxRad, xOffset);
 
-                UnperspectiveRotation rotation = GetRotation(corners, output);
+                var rotation = GetRotation(corners, output);
 
                 Distort(output, corners, inputDimensions, trimmedDimensions, backgroundColor);
                 Rotate(output, rotation);
@@ -275,18 +226,6 @@ namespace FredsImageMagickScripts
             MinLength = 10;
             Rotation = null;
             Width = null;
-        }
-
-        private static IMagickImage CreateDepolar(IMagickImage image, double maxRad)
-        {
-            var depolar = image.Clone();
-
-            depolar.VirtualPixelMethod = VirtualPixelMethod.Black;
-            depolar.Distort(DistortMethod.DePolar, maxRad);
-            depolar.Scale(new MagickGeometry(depolar.Width + "x" + 1 + "!"));
-            depolar.VirtualPixelMethod = VirtualPixelMethod.Undefined;
-
-            return depolar;
         }
 
         private static double[] GetCoefficients(double[] arguments)
@@ -327,7 +266,7 @@ namespace FredsImageMagickScripts
             return InvertPerspectiveCoefficients(vectors);
         }
 
-        private static double[] GetCoefficients(IMagickImage image, double maxRad)
+        private static double[] GetCoefficients(IMagickImage<TQuantumType> image, double maxRad)
         {
             double[] coeff = new double[8];
             coeff[0] = maxRad;
@@ -341,7 +280,7 @@ namespace FredsImageMagickScripts
             return coeff;
         }
 
-        private static PointD[] GetCorners(IMagickImage paddedMask, List<PixelValue> maxList, double maxRad, int xOffset)
+        private static PointD[] GetCorners(IMagickImage<TQuantumType> paddedMask, List<PixelValue> maxList, double maxRad, int xOffset)
         {
             double[] coeff = GetCoefficients(paddedMask, maxRad);
 
@@ -366,26 +305,6 @@ namespace FredsImageMagickScripts
             return new PointD(
               Math.Floor(((coeff[0] * x) + (coeff[1] * y) + coeff[2]) / ((coeff[6] * x) + (coeff[7] * y) + 1)),
               Math.Floor(((coeff[3] * x) + (coeff[4] * y) + coeff[5]) / ((coeff[6] * x) + (coeff[7] * y) + 1)));
-        }
-
-        private static MagickGeometry GetViewport(double[] arguments, PointD[] corners)
-        {
-            double[] coeff = GetCoefficients(arguments);
-
-            PointD i1 = GetPoint(coeff, corners[0].X, corners[0].Y);
-            PointD i2 = GetPoint(coeff, corners[1].X, corners[1].Y);
-            PointD i3 = GetPoint(coeff, corners[2].X, corners[2].Y);
-            PointD i4 = GetPoint(coeff, corners[3].X, corners[3].Y);
-
-            double xmax = Math.Max(Math.Max(Math.Max(i1.X, i2.X), i3.X), i4.X);
-            double ymax = Math.Max(Math.Max(Math.Max(i1.Y, i2.Y), i3.Y), i4.Y);
-            double xmin = Math.Min(Math.Min(Math.Min(i1.X, i2.X), i3.X), i4.X);
-            double ymin = Math.Min(Math.Min(Math.Min(i1.Y, i2.Y), i3.Y), i4.Y);
-
-            double iw = Math.Abs(xmax - xmin);
-            double ih = Math.Abs(ymax - ymin);
-
-            return new MagickGeometry((int)xmin, (int)ymin, (int)iw, (int)ih);
         }
 
         private static bool GaussJordanElimination(double[][] matrix, double[] vectors)
@@ -493,7 +412,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private static void PadImage(IMagickImage image, int borderSize)
+        private static void PadImage(IMagickImage<TQuantumType> image, int borderSize)
         {
             image.Border(borderSize);
         }
@@ -523,7 +442,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private static void ResetMaxList(List<PixelValue> maxList, IMagickImage image)
+        private static void ResetMaxList(List<PixelValue> maxList, IMagickImage<TQuantumType> image)
         {
             using (var pixels = image.GetPixels())
             {
@@ -535,13 +454,45 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private static void Rotate(IMagickImage output, UnperspectiveRotation rotation)
+        private static void Rotate(IMagickImage<TQuantumType> output, UnperspectiveRotation rotation)
         {
             if (rotation != UnperspectiveRotation.None)
                 output.Rotate((int)rotation);
         }
 
-        private double CalculateAspectRation(IMagickImage image, PointD[] corners)
+        private IMagickImage<TQuantumType> CreateDepolar(IMagickImage<TQuantumType> image, double maxRad)
+        {
+            var depolar = image.Clone();
+
+            depolar.VirtualPixelMethod = VirtualPixelMethod.Black;
+            depolar.Distort(DistortMethod.DePolar, maxRad);
+            depolar.Scale(_factory.Geometry.Create(depolar.Width + "x" + 1 + "!"));
+            depolar.VirtualPixelMethod = VirtualPixelMethod.Undefined;
+
+            return depolar;
+        }
+
+        private IMagickGeometry GetViewport(double[] arguments, PointD[] corners)
+        {
+            double[] coeff = GetCoefficients(arguments);
+
+            PointD i1 = GetPoint(coeff, corners[0].X, corners[0].Y);
+            PointD i2 = GetPoint(coeff, corners[1].X, corners[1].Y);
+            PointD i3 = GetPoint(coeff, corners[2].X, corners[2].Y);
+            PointD i4 = GetPoint(coeff, corners[3].X, corners[3].Y);
+
+            double xmax = Math.Max(Math.Max(Math.Max(i1.X, i2.X), i3.X), i4.X);
+            double ymax = Math.Max(Math.Max(Math.Max(i1.Y, i2.Y), i3.Y), i4.Y);
+            double xmin = Math.Min(Math.Min(Math.Min(i1.X, i2.X), i3.X), i4.X);
+            double ymin = Math.Min(Math.Min(Math.Min(i1.Y, i2.Y), i3.Y), i4.Y);
+
+            double iw = Math.Abs(xmax - xmin);
+            double ih = Math.Abs(ymax - ymin);
+
+            return _factory.Geometry.Create((int)xmin, (int)ymin, (int)iw, (int)ih);
+        }
+
+        private double CalculateAspectRation(IMagickImage<TQuantumType> image, PointD[] corners)
         {
             if (AspectRatio.HasValue)
                 return AspectRatio.Value;
@@ -579,16 +530,18 @@ namespace FredsImageMagickScripts
                 throw new InvalidOperationException("Invalid default output dimension specified.");
         }
 
-        private IMagickImage CreateMask(IMagickImage image)
+        private IMagickImage<TQuantumType> CreateMask(IMagickImage<TQuantumType> image)
         {
             var mask = image.Clone();
             mask.Alpha(AlphaOption.Off);
             mask.Alpha(AlphaOption.Set);
             mask.ColorFuzz = ColorFuzz;
-            mask.Settings.FillColor = MagickColors.Transparent;
-            mask.Draw(new DrawableAlpha(0, 0, PaintMethod.Floodfill));
-            mask.InverseOpaque(MagickColors.Transparent, MagickColors.White);
-            mask.Opaque(MagickColors.Transparent, MagickColors.Black);
+            mask.Settings.FillColor = _factory.Color.Create("transparent");
+            var drawables = _factory.Drawables.Create();
+            drawables.Alpha(0, 0, PaintMethod.Floodfill);
+            mask.Draw(drawables);
+            mask.InverseOpaque(_factory.Color.Create("transparent"), _factory.Color.Create("white"));
+            mask.Opaque(_factory.Color.Create("transparent"), _factory.Color.Create("black"));
             mask.Alpha(AlphaOption.Off);
 
             if (Blur != 0.0)
@@ -600,15 +553,15 @@ namespace FredsImageMagickScripts
             return mask;
         }
 
-        private IMagickImage CreatePaddedMask(IMagickImage image, out int xOffset)
+        private IMagickImage<TQuantumType> CreatePaddedMask(IMagickImage<TQuantumType> image, out int xOffset)
         {
             xOffset = 0;
-            int minWidth = 500;
+            var minWidth = 500;
 
             var paddedMask = CreateMask(image);
             if (paddedMask.Width < minWidth)
             {
-                paddedMask.BackgroundColor = MagickColors.Black;
+                paddedMask.BackgroundColor = _factory.Color.Create("black");
                 paddedMask.Extent(minWidth, paddedMask.Height, Gravity.Center);
                 xOffset = (minWidth - image.Width) / 2;
             }
@@ -616,26 +569,24 @@ namespace FredsImageMagickScripts
             return paddedMask;
         }
 
-        private void Distort(IMagickImage output, PointD[] corners, MagickGeometry inputDimensions, MagickGeometry trimmedDimensions, MagickColor backgroundColor)
+        private void Distort(IMagickImage<TQuantumType> output, PointD[] corners, IMagickGeometry inputDimensions, IMagickGeometry trimmedDimensions, IMagickColor<TQuantumType> backgroundColor)
         {
-            MagickGeometry outputDimensions = GetDimensions(output, corners, inputDimensions, trimmedDimensions);
+            var outputDimensions = GetDimensions(output, corners, inputDimensions, trimmedDimensions);
 
-            double[] arguments = new double[16]
+            var arguments = new double[16]
             {
-        corners[0].X, corners[0].Y, 0, 0,
-        corners[1].X, corners[1].Y, 0, outputDimensions.Height,
-        corners[2].X, corners[2].Y, outputDimensions.Width, outputDimensions.Height,
-        corners[3].X, corners[3].Y, outputDimensions.Width, 0
+                corners[0].X, corners[0].Y, 0, 0,
+                corners[1].X, corners[1].Y, 0, outputDimensions.Height,
+                corners[2].X, corners[2].Y, outputDimensions.Width, outputDimensions.Height,
+                corners[3].X, corners[3].Y, outputDimensions.Width, 0
             };
 
             output.VirtualPixelMethod = VirtualPixelMethod.Background;
             output.BackgroundColor = backgroundColor;
             if (!DisableViewportCrop)
                 output.SetArtifact("distort:viewport", GetViewport(arguments, corners).ToString());
-            var distortSettings = new DistortSettings()
-            {
-                Bestfit = true
-            };
+            var distortSettings = _factory.Settings.CreateDistortSettings();
+            distortSettings.Bestfit = true;
             output.Distort(DistortMethod.Perspective, distortSettings, arguments);
             output.BorderColor = backgroundColor;
             output.Border(2);
@@ -644,7 +595,7 @@ namespace FredsImageMagickScripts
             output.RePage();
         }
 
-        private MagickColor GetBorderColor(IMagickImage image)
+        private IMagickColor<TQuantumType> GetBorderColor(IMagickImage<TQuantumType> image)
         {
             using (var pixels = image.GetPixels())
             {
@@ -652,7 +603,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickGeometry GetDimensions(IMagickImage image, PointD[] corners, MagickGeometry inputDimensions, MagickGeometry trimmedDimensions)
+        private IMagickGeometry GetDimensions(IMagickImage<TQuantumType> image, PointD[] corners, IMagickGeometry inputDimensions, IMagickGeometry trimmedDimensions)
         {
             double left = Hypot(corners[0].X - corners[1].X, corners[0].Y - corners[1].Y);
             double bottom = Hypot(corners[1].X - corners[2].X, corners[1].Y - corners[2].Y);
@@ -665,30 +616,30 @@ namespace FredsImageMagickScripts
             double aspectRatio = CalculateAspectRation(image, corners);
 
             if (Height != null)
-                return new MagickGeometry((int)Math.Floor(aspectRatio * Height.Value), Height.Value);
+                return _factory.Geometry.Create((int)Math.Floor(aspectRatio * Height.Value), Height.Value);
 
             if (Width != null)
-                return new MagickGeometry(Width.Value, (int)Math.Floor(Width.Value / aspectRatio));
+                return _factory.Geometry.Create(Width.Value, (int)Math.Floor(Width.Value / aspectRatio));
 
             if (Default == UnperspectiveDefault.EdgeLength)
-                return new MagickGeometry((int)Math.Floor(left * aspectRatio), (int)left);
+                return _factory.Geometry.Create((int)Math.Floor(left * aspectRatio), (int)left);
 
             if (Default == UnperspectiveDefault.BoundingBoxHeight)
-                return new MagickGeometry((int)Math.Floor(trimmedDimensions.Height * aspectRatio), trimmedDimensions.Height);
+                return _factory.Geometry.Create((int)Math.Floor(trimmedDimensions.Height * aspectRatio), trimmedDimensions.Height);
 
             if (Default == UnperspectiveDefault.BoundingBoxWidth)
-                return new MagickGeometry(trimmedDimensions.Width, (int)Math.Floor(trimmedDimensions.Width / aspectRatio));
+                return _factory.Geometry.Create(trimmedDimensions.Width, (int)Math.Floor(trimmedDimensions.Width / aspectRatio));
 
             if (Default == UnperspectiveDefault.Height)
-                return new MagickGeometry((int)Math.Floor(inputDimensions.Height * aspectRatio), inputDimensions.Height);
+                return _factory.Geometry.Create((int)Math.Floor(inputDimensions.Height * aspectRatio), inputDimensions.Height);
 
             // Default == UnperspectiveDefault.Width
-            return new MagickGeometry(inputDimensions.Width, (int)Math.Floor(inputDimensions.Width / aspectRatio));
+            return _factory.Geometry.Create(inputDimensions.Width, (int)Math.Floor(inputDimensions.Width / aspectRatio));
         }
 
-        private ushort[] GetGrayChannel(IMagickImage image)
+        private ushort[] GetGrayChannel(IMagickImage<TQuantumType> image)
         {
-            using (var images = new MagickImageCollection())
+            using (var images = _factory.ImageCollection.Create())
             {
                 images.Add(image.Clone());
                 images.Add(image.Clone());
@@ -726,7 +677,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private List<PixelValue> GetPeaks(ushort[] pixels, IMagickImage image)
+        private List<PixelValue> GetPeaks(ushort[] pixels, IMagickImage<TQuantumType> image)
         {
             ushort min = ushort.MaxValue;
             ushort max = ushort.MinValue;
@@ -737,7 +688,7 @@ namespace FredsImageMagickScripts
 
             for (int i = 0; i < pixels.Length; i++)
             {
-                ushort pixel = pixels[i];
+                var pixel = pixels[i];
                 if (pixel > max)
                     max = pixel;
 
@@ -785,7 +736,7 @@ namespace FredsImageMagickScripts
             return maxList;
         }
 
-        private UnperspectiveRotation GetRotation(PointD[] corners, IMagickImage image)
+        private UnperspectiveRotation GetRotation(PointD[] corners, IMagickImage<TQuantumType> image)
         {
             if (Rotation != null)
                 return Rotation.Value;
@@ -836,7 +787,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private MagickGeometry TrimImage(IMagickImage image, MagickColor backgroundColor, int borderSize)
+        private IMagickGeometry TrimImage(IMagickImage<TQuantumType> image, IMagickColor<TQuantumType> backgroundColor, int borderSize)
         {
             image.BorderColor = backgroundColor;
             image.Border(borderSize);
@@ -844,7 +795,7 @@ namespace FredsImageMagickScripts
             image.Trim();
             image.RePage();
 
-            return new MagickGeometry(image.Width, image.Height);
+            return _factory.Geometry.Create(image.Width, image.Height);
         }
     }
 }

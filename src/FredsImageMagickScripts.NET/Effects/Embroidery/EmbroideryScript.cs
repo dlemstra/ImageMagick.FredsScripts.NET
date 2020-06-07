@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -26,13 +26,19 @@ namespace FredsImageMagickScripts
     /// colors or only the top most frequent colors will be used. Each color will get the same
     /// pattern, but at different rotation angles.
     /// </summary>
-    public sealed class EmbroideryScript
+    /// <typeparam name="TQuantumType">The quantum type.</typeparam>
+    public sealed class EmbroideryScript<TQuantumType>
+        where TQuantumType : struct
     {
+        private readonly IMagickFactory<TQuantumType> _factory;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmbroideryScript"/> class.
+        /// Initializes a new instance of the <see cref="EmbroideryScript{TQuantumType}"/> class.
         /// </summary>
-        public EmbroideryScript()
+        /// <param name="factory">The magick factory.</param>
+        public EmbroideryScript(IMagickFactory<TQuantumType> factory)
         {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
             Reset();
         }
 
@@ -40,161 +46,97 @@ namespace FredsImageMagickScripts
         /// Gets or sets the initial pattern angle for background color.
         /// Default is 90.
         /// </summary>
-        public int Angle
-        {
-            get;
-            set;
-        }
+        public int Angle { get; set; }
 
         /// <summary>
         /// Gets or sets the bevel azimuth angle.
         /// Default is 130.
         /// </summary>
-        public double Azimuth
-        {
-            get;
-            set;
-        }
+        public double Azimuth { get; set; }
 
         /// <summary>
         /// Gets or sets the actual background color in image.
         /// Default is most the frequent color.
         /// </summary>
-        public MagickColor BackgroundColor
-        {
-            get;
-            set;
-        }
+        public IMagickColor<TQuantumType> BackgroundColor { get; set; }
 
         /// <summary>
         /// Gets or sets the pattern bevel amount.
         /// Default is 4.
         /// </summary>
-        public int Bevel
-        {
-            get;
-            set;
-        }
+        public int Bevel { get; set; }
 
         /// <summary>
         /// Gets or sets the fuzz value for recoloring near black and near white
         /// Default is 20.
         /// </summary>
-        public Percentage ColorFuzz
-        {
-            get;
-            set;
-        }
+        public Percentage ColorFuzz { get; set; }
 
         /// <summary>
         /// Gets or sets the bevel sigmoidal-contrast amount.
         /// Default is 0 (no added contrast).
         /// </summary>
-        public double Contrast
-        {
-            get;
-            set;
-        }
+        public double Contrast { get; set; }
 
         /// <summary>
         /// Gets or sets the bevel elevation angle.
         /// Default is 30.
         /// </summary>
-        public double Elevation
-        {
-            get;
-            set;
-        }
+        public double Elevation { get; set; }
 
         /// <summary>
         /// Gets or sets the shadow extent.
         /// Default is 2.
         /// </summary>
-        public double Extent
-        {
-            get;
-            set;
-        }
+        public double Extent { get; set; }
 
         /// <summary>
         /// Gets or sets the value to limit colors near black and near white to gray(graylimit%) and gray(100%-graylimit%).
         /// Default is 20.
         /// </summary>
-        public int GrayLimit
-        {
-            get;
-            set;
-        }
+        public int GrayLimit { get; set; }
 
         /// <summary>
         /// Gets or sets the shadow intensity (higher is darker).
         /// Default is 25.
         /// </summary>
-        public Percentage Intensity
-        {
-            get;
-            set;
-        }
+        public Percentage Intensity { get; set; }
 
         /// <summary>
         /// Gets or sets the mixing between before and after spread result.
         /// Default is 100.
         /// </summary>
-        public int Mix
-        {
-            get;
-            set;
-        }
+        public int Mix { get; set; }
 
         /// <summary>
         /// Gets or sets the number of desired or actual colors in image.
         /// Default is 8.
         /// </summary>
-        public int NumberOfColors
-        {
-            get;
-            set;
-        }
+        public int NumberOfColors { get; set; }
 
         /// <summary>
         /// Gets or sets the wave pattern.
         /// Default is Linear.
         /// </summary>
-        public EmbroideryPattern Pattern
-        {
-            get;
-            set;
-        }
+        public EmbroideryPattern Pattern { get; set; }
 
         /// <summary>
         /// Gets or sets the range of pattern angles over all the colors.
         /// Default is 90.
         /// </summary>
-        public int Range
-        {
-            get;
-            set;
-        }
+        public int Range { get; set; }
 
         /// <summary>
         /// Gets or sets the pattern spread (diffusion).
         /// Default is 1.
         /// </summary>
-        public double Spread
-        {
-            get;
-            set;
-        }
+        public double Spread { get; set; }
 
         /// <summary>
         /// Gets or sets the weave thickness.
         /// Default is 2.
         /// </summary>
-        public int Thickness
-        {
-            get;
-            set;
-        }
+        public int Thickness { get; set; }
 
         /// <summary>
         /// Applies an embroidery effect to each color in an image. The image must have limited number
@@ -203,10 +145,10 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public IMagickImage Execute(IMagickImage input)
+        public IMagickImage<TQuantumType> Execute(IMagickImage<TQuantumType> input)
         {
             if (input == null)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             CheckSettings();
 
@@ -218,15 +160,15 @@ namespace FredsImageMagickScripts
 
                 using (var pattern = CreatePattern(image.Width * 2, image.Height * 2))
                 {
-                    using (IMagickImage nearBlackWhite = ToNearBlackWhite(image))
+                    using (IMagickImage<TQuantumType> nearBlackWhite = ToNearBlackWhite(image))
                     {
-                        using (var images = new MagickImageCollection())
+                        using (var images = _factory.ImageCollection.Create())
                         {
                             double angle = (Pattern == EmbroideryPattern.Linear ? -45 : -90) + Angle;
 
                             foreach (var color in colors)
                             {
-                                bool useBevel = Bevel != 0 && color != colors.First();
+                                bool useBevel = Bevel != 0 && !color.Equals(colors.First());
 
                                 using (var croppedPattern = CreateCroppedPattern(image, pattern, angle))
                                 {
@@ -272,7 +214,7 @@ namespace FredsImageMagickScripts
             Thickness = 2;
         }
 
-        private static IMagickImage CreateCroppedPattern(IMagickImage image, IMagickImage pattern, double angle)
+        private static IMagickImage<TQuantumType> CreateCroppedPattern(IMagickImage<TQuantumType> image, IMagickImage<TQuantumType> pattern, double angle)
         {
             var croppedPattern = pattern.Clone();
             croppedPattern.Rotate(angle);
@@ -282,14 +224,14 @@ namespace FredsImageMagickScripts
             return croppedPattern;
         }
 
-        private static IMagickImage CreateRolled(IMagickImage image, int thickness)
+        private static IMagickImage<TQuantumType> CreateRolled(IMagickImage<TQuantumType> image, int thickness)
         {
-            IMagickImage rolled = image.Clone();
+            IMagickImage<TQuantumType> rolled = image.Clone();
             rolled.Roll(thickness, 0);
             return rolled;
         }
 
-        private static IMagickImage ExtractAlpha(IMagickImage image, MagickColor color)
+        private static IMagickImage<TQuantumType> ExtractAlpha(IMagickImage<TQuantumType> image, IMagickColor<TQuantumType> color)
         {
             var alpha = image.Clone();
             alpha.InverseTransparent(color);
@@ -297,24 +239,24 @@ namespace FredsImageMagickScripts
             return alpha;
         }
 
-        private static void RemapColors(IMagickImage image, IEnumerable<MagickColor> colors)
+        private void RemapColors(IMagickImage<TQuantumType> image, IEnumerable<IMagickColor<TQuantumType>> colors)
         {
-            using (var images = new MagickImageCollection())
+            using (var images = _factory.ImageCollection.Create())
             {
                 foreach (var color in colors)
-                    images.Add(new MagickImage(color, 1, 1));
+                    images.Add(_factory.Image.Create(color, 1, 1));
 
-                using (IMagickImage colorMap = images.AppendHorizontally())
+                using (IMagickImage<TQuantumType> colorMap = images.AppendHorizontally())
                 {
-                    image.Map(colorMap, new QuantizeSettings()
-                    {
-                        DitherMethod = DitherMethod.No
-                    });
+                    var settings = _factory.Settings.CreateQuantizeSettings();
+                    settings.DitherMethod = DitherMethod.No;
+
+                    image.Map(colorMap, settings);
                 }
             }
         }
 
-        private void AddBevel(IMagickImage image)
+        private void AddBevel(IMagickImage<TQuantumType> image)
         {
             using (var alphaTexture = image.Clone())
             {
@@ -379,7 +321,7 @@ namespace FredsImageMagickScripts
                 throw new InvalidOperationException("Invalid thickness specified, value must be higher than zero.");
         }
 
-        private IMagickImage CreateColor(IMagickImage alpha, IMagickImage croppedPattern, IMagickImage nearBlackWhite, bool useBevel)
+        private IMagickImage<TQuantumType> CreateColor(IMagickImage<TQuantumType> alpha, IMagickImage<TQuantumType> croppedPattern, IMagickImage<TQuantumType> nearBlackWhite, bool useBevel)
         {
             using (var alphaCopy = nearBlackWhite.Clone())
             {
@@ -391,7 +333,7 @@ namespace FredsImageMagickScripts
                     AddBevel(alphaCopy);
 
                 var result = alphaCopy.Clone();
-                result.BackgroundColor = MagickColors.Black;
+                result.BackgroundColor = _factory.Color.Create("black");
                 result.Shadow(0, 0, Extent, Intensity);
                 result.RePage();
                 result.Level((Percentage)0, (Percentage)50, Channels.Alpha);
@@ -401,15 +343,15 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private IMagickImage CreateCrosshatchTexture()
+        private IMagickImage<TQuantumType> CreateCrosshatchTexture()
         {
-            var gradient = new MagickImage("gradient:", Thickness + 3, Thickness + 3);
+            var gradient = _factory.Image.Create("gradient:", Thickness + 3, Thickness + 3);
             gradient.Rotate(270);
 
-            IMagickImage flopped = gradient.Clone();
+            var flopped = gradient.Clone();
             flopped.Flop();
 
-            using (MagickImageCollection images = new MagickImageCollection())
+            using (var images = _factory.ImageCollection.Create())
             {
                 images.Add(gradient);
                 images.Add(flopped);
@@ -418,16 +360,16 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private IMagickImage CreateLinearTexture()
+        private IMagickImage<TQuantumType> CreateLinearTexture()
         {
-            var gradient = new MagickImage("gradient:", Thickness, Thickness * 4);
+            var gradient = _factory.Image.Create("gradient:", Thickness, Thickness * 4);
             gradient.Rotate(270);
 
-            IMagickImage thick1 = CreateRolled(gradient, Thickness);
-            IMagickImage thick2 = CreateRolled(gradient, Thickness * 2);
-            IMagickImage thick3 = CreateRolled(gradient, Thickness * 3);
+            var thick1 = CreateRolled(gradient, Thickness);
+            var thick2 = CreateRolled(gradient, Thickness * 2);
+            var thick3 = CreateRolled(gradient, Thickness * 3);
 
-            using (MagickImageCollection images = new MagickImageCollection())
+            using (var images = _factory.ImageCollection.Create())
             {
                 images.Add(gradient);
                 images.Add(thick1);
@@ -438,11 +380,11 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private IMagickImage CreatePattern(int width, int height)
+        private IMagickImage<TQuantumType> CreatePattern(int width, int height)
         {
             using (var texture = CreateTexture())
             {
-                var pattern = new MagickImage(MagickColors.None, width, height);
+                var pattern = _factory.Image.Create(_factory.Color.Create("none"), width, height);
                 pattern.Texture(texture);
 
                 if (Spread == 0.0)
@@ -454,7 +396,7 @@ namespace FredsImageMagickScripts
                     return pattern;
                 }
 
-                using (IMagickImage mix = pattern.Clone())
+                using (IMagickImage<TQuantumType> mix = pattern.Clone())
                 {
                     mix.Spread(Spread);
 
@@ -464,7 +406,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private IMagickImage CreateTexture()
+        private IMagickImage<TQuantumType> CreateTexture()
         {
             if (Pattern == EmbroideryPattern.Linear)
                 return CreateLinearTexture();
@@ -472,15 +414,15 @@ namespace FredsImageMagickScripts
             return CreateCrosshatchTexture();
         }
 
-        private IMagickImage ToNearBlackWhite(IMagickImage image)
+        private IMagickImage<TQuantumType> ToNearBlackWhite(IMagickImage<TQuantumType> image)
         {
-            IMagickImage result = image.Clone();
+            IMagickImage<TQuantumType> result = image.Clone();
             if (GrayLimit == 0 && ColorFuzz == (Percentage)0)
                 return result;
 
             result.ColorFuzz = ColorFuzz;
-            result.Opaque(MagickColors.White, new MagickColor("gray(" + (100 - GrayLimit) + "%)"));
-            result.Opaque(MagickColors.Black, new MagickColor("gray(" + GrayLimit + "%)"));
+            result.Opaque(_factory.Color.Create("white"), _factory.Color.Create("gray(" + (100 - GrayLimit) + "%)"));
+            result.Opaque(_factory.Color.Create("black"), _factory.Color.Create("gray(" + GrayLimit + "%)"));
             result.ColorFuzz = (Percentage)0;
 
             return result;

@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -18,7 +18,7 @@ namespace FredsImageMagickScripts
     /// <content>
     /// The implementation of the private class <see cref="PixelValue"/>.
     /// </content>
-    public sealed partial class UnperspectiveScript
+    public sealed partial class UnperspectiveScript<TQuantumType>
     {
         private class PixelValue
         {
@@ -28,17 +28,9 @@ namespace FredsImageMagickScripts
                 Value = value;
             }
 
-            public int Position
-            {
-                get;
-                set;
-            }
+            public int Position { get; set; }
 
-            public ushort Value
-            {
-                get;
-                set;
-            }
+            public ushort Value { get; set; }
         }
     }
 }

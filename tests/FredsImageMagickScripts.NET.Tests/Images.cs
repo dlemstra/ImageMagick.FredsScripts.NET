@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -21,10 +21,7 @@ namespace FredsImageMagickScripts.NET.Tests
     {
         public static MagickImage Logo
         {
-            get
-            {
-                return new MagickImage("logo:");
-            }
+            get => new MagickImage("logo:");
         }
     }
 }

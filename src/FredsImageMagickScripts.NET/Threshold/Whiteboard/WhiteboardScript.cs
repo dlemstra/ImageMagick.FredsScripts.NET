@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -25,17 +25,22 @@ namespace FredsImageMagickScripts
     /// correct the perspective. The four corners of the actual interior of the whiteboard in the
     /// picture must be supplied in order to correct the perspective.
     /// </summary>
-    public sealed class WhiteboardScript
+    /// <typeparam name="TQuantumType">The quantum type.</typeparam>
+    public sealed class WhiteboardScript<TQuantumType>
+        where TQuantumType : struct
     {
+        private readonly IMagickFactory<TQuantumType> _factory;
         private PointD[] _coords;
         private double _height;
         private double _width;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WhiteboardScript"/> class.
+        /// Initializes a new instance of the <see cref="WhiteboardScript{TQuantumType}"/> class.
         /// </summary>
-        public WhiteboardScript()
+        /// <param name="factory">The magick factory.</param>
+        public WhiteboardScript(IMagickFactory<TQuantumType> factory)
         {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
             Reset();
         }
 
@@ -43,21 +48,13 @@ namespace FredsImageMagickScripts
         /// Gets or sets the width-to-height aspect ratio of actual whiteboard.
         /// Typical values are: (2:1), (3:2) and (4:3). The default is computed automatically.
         /// </summary>
-        public PointD? AspectRatio
-        {
-            get;
-            set;
-        }
+        public PointD? AspectRatio { get; set; }
 
         /// <summary>
         /// Gets or sets the desired background color of the whiteboard after it has been cleaned up.
         /// The default is white.
         /// </summary>
-        public MagickColor BackgroundColor
-        {
-            get;
-            set;
-        }
+        public IMagickColor<TQuantumType> BackgroundColor { get; set; }
 
         /// <summary>
         /// Gets or sets the desired dimension(s) of the output image. Choices are: WIDTH, xHEIGHT or WIDTHxHEIGHT;
@@ -67,32 +64,20 @@ namespace FredsImageMagickScripts
         /// image aspect ratio will be use. The default is to ignore dimensions and use the aspect
         /// and magnify.
         /// </summary>
-        public MagickGeometry Dimensions
-        {
-            get;
-            set;
-        }
+        public IMagickGeometry Dimensions { get; set; }
 
         /// <summary>
         /// Gets or sets the enhancement method for the image brightness before cleaning the background.
         /// The default is Stretch.
         /// </summary>
-        public WhiteboardEnhancements Enhance
-        {
-            get;
-            set;
-        }
+        public WhiteboardEnhancements Enhance { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the filter used to clean up the background. The filtersize needs to be larger
         /// than the thickness of the writing, but the smaller the better beyond this. Making it
         /// larger will increase the processing time and may lose text. The default is 15.
         /// </summary>
-        public int FilterSize
-        {
-            get;
-            set;
-        }
+        public int FilterSize { get; set; }
 
         /// <summary>
         /// Gets or sets the output image magnification (or minification) factor. Values larger than 1 will
@@ -102,62 +87,38 @@ namespace FredsImageMagickScripts
         /// that size. If no coordinates are supplied, then the width and height will be those of the
         /// input image multiplied by the magnify factor.
         /// </summary>
-        public double? Magnification
-        {
-            get;
-            set;
-        }
+        public double? Magnification { get; set; }
 
         /// <summary>
         /// Gets or sets the offset threshold in percent used by the filter to eliminate noise. Values too small
         /// will leave much noise and artifacts in the result. Values too large will remove too much
         /// text leaving gaps. The default is 5.
         /// </summary>
-        public Percentage FilterOffset
-        {
-            get;
-            set;
-        }
+        public Percentage FilterOffset { get; set; }
 
         /// <summary>
         /// Gets or sets the desired color saturation of the text expressed as a percentage. A value of 100 means
         /// no change. The default=200. Larger values will make the text colors more saturated.
         /// </summary>
-        public Percentage Saturation
-        {
-            get;
-            set;
-        }
+        public Percentage Saturation { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of sharpening to be applied to the resulting image in pixels. If used, it
         /// should be small (suggested about 1).
         /// </summary>
-        public int? SharpeningAmount
-        {
-            get;
-            set;
-        }
+        public int? SharpeningAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the text smoothing threshold. Smaller values smooth/thicken the text more. Larger values
         /// thin, but can result in gaps in the text. Nominal value is in the middle at about 50.
         /// The default is to disable smoothing.
         /// </summary>
-        public Percentage? Threshold
-        {
-            get;
-            set;
-        }
+        public Percentage? Threshold { get; set; }
 
         /// <summary>
         /// Gets or sets percent near white to use for white balancing. The default is 0.01.
         /// </summary>
-        public Percentage WhiteBalance
-        {
-            get;
-            set;
-        }
+        public Percentage WhiteBalance { get; set; }
 
         /// <summary>
         /// Processses a picture of a whiteboard with writing on it to clean up the background and
@@ -166,10 +127,10 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public IMagickImage Execute(IMagickImage input)
+        public IMagickImage<TQuantumType> Execute(IMagickImage<TQuantumType> input)
         {
             if (input == null)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             CheckSettings(input);
             CalculateWidthAndHeight(input);
@@ -190,7 +151,7 @@ namespace FredsImageMagickScripts
         public void Reset()
         {
             _coords = null;
-            BackgroundColor = new MagickColor("white");
+            BackgroundColor = _factory.Color.Create("white");
             Enhance = WhiteboardEnhancements.Stretch;
             FilterSize = 15;
             FilterOffset = (Percentage)5;
@@ -212,7 +173,7 @@ namespace FredsImageMagickScripts
             _coords = new PointD[] { topLeft, topRight, bottomRight, bottomLeft };
         }
 
-        private static void CheckCoordinate(IMagickImage image, string paramName, PointD coord)
+        private static void CheckCoordinate(IMagickImage<TQuantumType> image, string paramName, PointD coord)
         {
             if (coord.X < 0 || coord.X > image.Width)
                 throw new ArgumentOutOfRangeException(paramName);
@@ -221,15 +182,15 @@ namespace FredsImageMagickScripts
                 throw new ArgumentOutOfRangeException(paramName);
         }
 
-        private static double GetMean(IMagickImage image)
+        private double GetMean(IMagickImage<TQuantumType> image)
         {
             var mean = image.Statistics().GetChannel(PixelChannel.Composite).Mean;
-            return mean * 100 / Quantum.Max;
+            return mean * 100 / _factory.QuantumInfo.ToDouble().Max;
         }
 
-        private static double GetRatio(IMagickImage image, Channels channel, IMagickImage mask, double maskMean)
+        private double GetRatio(IMagickImage<TQuantumType> image, Channels channel, IMagickImage<TQuantumType> mask, double maskMean)
         {
-            using (IMagickImage channelImage = image.Separate(channel).First())
+            using (IMagickImage<TQuantumType> channelImage = image.Separate(channel).First())
             {
                 channelImage.Composite(mask, CompositeOperator.Multiply);
                 var channelMean = GetMean(channelImage);
@@ -238,7 +199,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void ApplyWhiteBalance(IMagickImage image)
+        private void ApplyWhiteBalance(IMagickImage<TQuantumType> image)
         {
             using (var mask = image.Clone())
             {
@@ -253,7 +214,7 @@ namespace FredsImageMagickScripts
                     }
 
                     newMask.ContrastStretch((Percentage)0, WhiteBalance);
-                    newMask.InverseOpaque(new MagickColor("white"), new MagickColor("black"));
+                    newMask.InverseOpaque(_factory.Color.Create("white"), _factory.Color.Create("black"));
 
                     double maskMean = GetMean(newMask);
 
@@ -261,14 +222,14 @@ namespace FredsImageMagickScripts
                     double greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
                     double blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
 
-                    var matrix = new MagickColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
+                    var matrix = _factory.Matrix.CreateColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
 
                     image.ColorMatrix(matrix);
                 }
             }
         }
 
-        private void CalculateWidthAndHeight(IMagickImage image)
+        private void CalculateWidthAndHeight(IMagickImage<TQuantumType> image)
         {
             if (_coords != null)
                 CalculateWidthAndHeightWithCoords();
@@ -278,7 +239,7 @@ namespace FredsImageMagickScripts
                 CalculateWidthAndHeightWithMagnification(image);
         }
 
-        private void CheckSettings(IMagickImage image)
+        private void CheckSettings(IMagickImage<TQuantumType> image)
         {
             if (_coords == null)
                 return;
@@ -333,7 +294,7 @@ namespace FredsImageMagickScripts
             return aspect;
         }
 
-        private void CalculateWidthAndHeightWithDimensions(IMagickImage image)
+        private void CalculateWidthAndHeightWithDimensions(IMagickImage<TQuantumType> image)
         {
             var aspect = image.Width / (double)image.Height;
 
@@ -366,14 +327,14 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void CalculateWidthAndHeightWithMagnification(IMagickImage image)
+        private void CalculateWidthAndHeightWithMagnification(IMagickImage<TQuantumType> image)
         {
             var magnification = GetMagnification();
             _width = image.Width * magnification;
             _height = image.Height * magnification;
         }
 
-        private void CopyOpacity(IMagickImage image)
+        private void CopyOpacity(IMagickImage<TQuantumType> image)
         {
             image.Alpha(AlphaOption.Off);
 
@@ -385,17 +346,17 @@ namespace FredsImageMagickScripts
                 gray.ContrastStretch((Percentage)0);
                 if (Threshold.HasValue)
                 {
-                    gray.Blur((double)Threshold.Value / 100.0, Quantum.Max);
+                    gray.Blur((double)Threshold.Value / 100.0, _factory.QuantumInfo.ToDouble().Max);
                     gray.Level(Threshold.Value, new Percentage(100));
                 }
 
                 image.Composite(gray, CompositeOperator.CopyAlpha);
-                image.Opaque(MagickColors.Transparent, BackgroundColor);
+                image.Opaque(_factory.Color.Create("transparent"), BackgroundColor);
                 image.Alpha(AlphaOption.Off);
             }
         }
 
-        private void DistortImage(IMagickImage input, IMagickImage image)
+        private void DistortImage(IMagickImage<TQuantumType> input, IMagickImage<TQuantumType> image)
         {
             if (_coords != null)
                 DistortImageWithCoords(image);
@@ -405,7 +366,7 @@ namespace FredsImageMagickScripts
                 DistortImageWithMagnification(input, image);
         }
 
-        private void DistortImageWithCoords(IMagickImage image)
+        private void DistortImageWithCoords(IMagickImage<TQuantumType> image)
         {
             SetDistortViewport(image, 0, 0);
 
@@ -418,7 +379,7 @@ namespace FredsImageMagickScripts
             image.Distort(DistortMethod.Perspective, arguments);
         }
 
-        private void DistortImageWithDimensions(IMagickImage input, IMagickImage image)
+        private void DistortImageWithDimensions(IMagickImage<TQuantumType> input, IMagickImage<TQuantumType> image)
         {
             var delX = (input.Width - _width) / 2;
             var delY = (input.Height - _height) / 2;
@@ -432,7 +393,7 @@ namespace FredsImageMagickScripts
             image.Distort(DistortMethod.ScaleRotateTranslate, cX, cY, magX, magY, 0);
         }
 
-        private void DistortImageWithMagnification(IMagickImage input, IMagickImage image)
+        private void DistortImageWithMagnification(IMagickImage<TQuantumType> input, IMagickImage<TQuantumType> image)
         {
             var delX = (input.Width - _width) / 2;
             var delY = (input.Height - _height) / 2;
@@ -441,7 +402,7 @@ namespace FredsImageMagickScripts
             image.Distort(DistortMethod.ScaleRotateTranslate, Magnification.Value, 0);
         }
 
-        private void EnhanceImage(IMagickImage image)
+        private void EnhanceImage(IMagickImage<TQuantumType> image)
         {
             if (Enhance == WhiteboardEnhancements.None)
                 return;
@@ -458,7 +419,7 @@ namespace FredsImageMagickScripts
             return Magnification.HasValue ? Magnification.Value : 1;
         }
 
-        private void Modulate(IMagickImage image)
+        private void Modulate(IMagickImage<TQuantumType> image)
         {
             if (Saturation == (Percentage)100)
                 return;
@@ -466,7 +427,7 @@ namespace FredsImageMagickScripts
             image.Modulate((Percentage)100, Saturation);
         }
 
-        private void SetDistortViewport(IMagickImage image, int x, int y)
+        private void SetDistortViewport(IMagickImage<TQuantumType> image, int x, int y)
         {
             image.VirtualPixelMethod = VirtualPixelMethod.White;
 
@@ -474,7 +435,7 @@ namespace FredsImageMagickScripts
             image.SetArtifact("distort:viewport", viewport);
         }
 
-        private void Sharpen(IMagickImage image)
+        private void Sharpen(IMagickImage<TQuantumType> image)
         {
             if (!SharpeningAmount.HasValue || SharpeningAmount <= 0)
                 return;

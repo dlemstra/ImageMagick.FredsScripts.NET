@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -24,7 +24,9 @@ namespace FredsImageMagickScripts
     /// appearance. The pattern parameter changes the shape of the segmentation for the given number
     /// of levels. Edges are then superimposed onto the image.
     /// </summary>
-    public sealed class CartoonScript
+    /// <typeparam name="TQuantumType">The quantum type.</typeparam>
+    public sealed class CartoonScript<TQuantumType>
+        where TQuantumType : struct
     {
         private static readonly int _edgeWidth = 2;
         private static readonly Percentage _edgeThreshold = new Percentage(90);
@@ -33,7 +35,7 @@ namespace FredsImageMagickScripts
         private CartoonMethod _method;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CartoonScript"/> class.
+        /// Initializes a new instance of the <see cref="CartoonScript{TQuantumType}"/> class.
         /// </summary>
         public CartoonScript()
           : this(CartoonMethod.Method1)
@@ -41,7 +43,7 @@ namespace FredsImageMagickScripts
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CartoonScript"/> class.
+        /// Initializes a new instance of the <see cref="CartoonScript{TQuantumType}"/> class.
         /// </summary>
         /// <param name="method">The cartoon method to use.</param>
         public CartoonScript(CartoonMethod method)
@@ -58,47 +60,27 @@ namespace FredsImageMagickScripts
         /// Gets or sets the brightness factor. Valid values are zero or higher. The default is 100.
         /// Increase brightness is larger than 1, decrease brightness is less than 1.
         /// </summary>
-        public Percentage Brightness
-        {
-            get;
-            set;
-        }
+        public Percentage Brightness { get; set; }
 
         /// <summary>
         /// Gets or sets the edge amount, which must be &gt;= 0. The default is 4.
         /// </summary>
-        public double EdgeAmount
-        {
-            get;
-            set;
-        }
+        public double EdgeAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the number of levels, which must be &gt;= 2 The default is 6.
         /// </summary>
-        public int NumberOflevels
-        {
-            get;
-            set;
-        }
+        public int NumberOflevels { get; set; }
 
         /// <summary>
         /// Gets or sets the segmentation pattern. The default is 70.
         /// </summary>
-        public Percentage Pattern
-        {
-            get;
-            set;
-        }
+        public Percentage Pattern { get; set; }
 
         /// <summary>
         /// Gets or sets the saturation. Valid values are zero or higher. A value of 100 is no change. The default is 150.
         /// </summary>
-        public Percentage Saturation
-        {
-            get;
-            set;
-        }
+        public Percentage Saturation { get; set; }
 
         /// <summary>
         /// Creates a cartoon-like appearance to an image. The image is smoothed and then multiplied by
@@ -108,14 +90,14 @@ namespace FredsImageMagickScripts
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public IMagickImage Execute(IMagickImage input)
+        public IMagickImage<TQuantumType> Execute(IMagickImage<TQuantumType> input)
         {
             if (input == null)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             CheckSettings();
 
-            using (IMagickImage first = SelectiveBlur(input))
+            using (var first = SelectiveBlur(input))
             {
                 using (var second = first.Clone())
                 {
@@ -149,9 +131,9 @@ namespace FredsImageMagickScripts
             Saturation = (Percentage)150;
         }
 
-        private static IMagickImage SelectiveBlur(IMagickImage image)
+        private static IMagickImage<TQuantumType> SelectiveBlur(IMagickImage<TQuantumType> image)
         {
-            IMagickImage result = image.Clone();
+            var result = image.Clone();
             result.SelectiveBlur(0, 5, new Percentage(10));
 
             return result;
@@ -172,37 +154,34 @@ namespace FredsImageMagickScripts
                 throw new InvalidOperationException("Invalid saturation specified, value must be zero or higher.");
         }
 
-        private IMagickImage ExecuteMethod1(IMagickImage first, IMagickImage second)
+        private IMagickImage<TQuantumType> ExecuteMethod1(IMagickImage<TQuantumType> first, IMagickImage<TQuantumType> second)
         {
-            using (var first_0 = first.Clone())
+            var result = first.Clone();
+            result.Composite(second, CompositeOperator.Multiply);
+            result.Modulate(Brightness, Saturation, (Percentage)100);
+
+            using (var third = first.Clone())
             {
-                first_0.Composite(second, CompositeOperator.Multiply);
-                first_0.Modulate(Brightness, Saturation, (Percentage)100);
+                third.ColorSpace = ColorSpace.Gray;
 
-                using (var third = first.Clone())
+                using (var fourth = third.Clone())
                 {
-                    third.ColorSpace = ColorSpace.Gray;
+                    fourth.Negate();
+                    fourth.Blur(0, _edgeWidth);
 
-                    using (var fourth = third.Clone())
-                    {
-                        fourth.Negate();
-                        fourth.Blur(0, _edgeWidth);
+                    var fifth = third.Clone();
+                    fifth.Composite(fourth, CompositeOperator.ColorDodge);
+                    fifth.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
+                    fifth.Threshold(_edgeThreshold);
+                    fifth.Statistic(StatisticType.Median, 3, 3);
 
-                        var result = third.Clone();
-                        result.Composite(fourth, CompositeOperator.ColorDodge);
-                        result.Evaluate(Channels.All, EvaluateOperator.Pow, EdgeAmount);
-                        result.Threshold(_edgeThreshold);
-                        result.Statistic(StatisticType.Median, 3, 3);
-
-                        result.Composite(first_0, CompositeOperator.Multiply);
-
-                        return result;
-                    }
+                    result.Composite(fifth, CompositeOperator.Multiply);
+                    return result;
                 }
             }
         }
 
-        private IMagickImage ExecuteMethod2(IMagickImage first, IMagickImage second)
+        private IMagickImage<TQuantumType> ExecuteMethod2(IMagickImage<TQuantumType> first, IMagickImage<TQuantumType> second)
         {
             var result = first.Clone();
             result.Composite(second, CompositeOperator.Multiply);
@@ -223,7 +202,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private IMagickImage ExecuteMethod3(IMagickImage first, IMagickImage second)
+        private IMagickImage<TQuantumType> ExecuteMethod3(IMagickImage<TQuantumType> first, IMagickImage<TQuantumType> second)
         {
             var result = first.Clone();
             result.Composite(second, CompositeOperator.Multiply);
@@ -244,7 +223,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private IMagickImage ExecuteMethod4(IMagickImage first, IMagickImage second)
+        private IMagickImage<TQuantumType> ExecuteMethod4(IMagickImage<TQuantumType> first, IMagickImage<TQuantumType> second)
         {
             var result = first.Clone();
             result.Composite(second, CompositeOperator.Multiply);

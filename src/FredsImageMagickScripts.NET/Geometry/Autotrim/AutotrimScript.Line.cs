@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -18,7 +18,7 @@ namespace FredsImageMagickScripts
     /// <content>
     /// The implementation of the private class <see cref="Line"/>.
     /// </content>
-    public sealed partial class AutotrimScript
+    public sealed partial class AutotrimScript<TQuantumType>
     {
         private class Line
         {

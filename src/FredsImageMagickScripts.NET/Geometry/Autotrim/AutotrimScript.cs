@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
+﻿// Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus (https://github.com/dlemstra/FredsImageMagickScripts.NET)
 //
 // These scripts are available free of charge for non-commercial use, ONLY.
 //
@@ -34,24 +34,26 @@ namespace FredsImageMagickScripts
     /// angles >= 5 degrees. If the result is off a little, you may use the left/right/top/bottom
     /// arguments to adjust the automatically determined trim region.
     /// </summary>
-    public sealed partial class AutotrimScript
+    /// <typeparam name="TQuantumType">The quantum type.</typeparam>
+    public sealed partial class AutotrimScript<TQuantumType>
+        where TQuantumType : struct
     {
+        private readonly IMagickFactory<TQuantumType> _factory;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutotrimScript"/> class.
+        /// Initializes a new instance of the <see cref="AutotrimScript{TQuantumType}"/> class.
         /// </summary>
-        public AutotrimScript()
+        /// <param name="factory">The magick factory.</param>
+        public AutotrimScript(IMagickFactory<TQuantumType> factory)
         {
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
             Reset();
         }
 
         /// <summary>
         /// Gets or sets any location within the border area for the algorithm to find the base border color.
         /// </summary>
-        public PointD BorderColorLocation
-        {
-            get;
-            set;
-        }
+        public PointD BorderColorLocation { get; set; }
 
         /// <summary>
         /// Gets or sets the fuzz amount specified as a percent 0 to 100. The default is zero which indicates
@@ -59,42 +61,30 @@ namespace FredsImageMagickScripts
         /// and to trim the border of the rotated area where the image data is a blend with the
         /// border color.
         /// </summary>
-        public Percentage ColorFuzz
-        {
-            get;
-            set;
-        }
+        public Percentage ColorFuzz { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether inner trimming is used. Default is outer trim (false).
         /// </summary>
-        public bool InnerTrim
-        {
-            get;
-            set;
-        }
+        public bool InnerTrim { get; set; }
 
         /// <summary>
         /// Gets the number of extra pixels to shift the trim of the image.
         /// </summary>
-        public AutotrimPixelShift PixelShift
-        {
-            get;
-            private set;
-        }
+        public AutotrimPixelShift PixelShift { get; private set; }
 
         /// <summary>
         /// Automatically unrotates a rotated image and trims the surrounding border.
         /// </summary>
         /// <param name="input">The image to execute the script on.</param>
         /// <returns>The resulting image.</returns>
-        public IMagickImage Execute(IMagickImage input)
+        public IMagickImage<TQuantumType> Execute(IMagickImage<TQuantumType> input)
         {
             if (input == null)
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException(nameof(input));
 
             var output = input.Clone();
-            MagickColor borderColor = GetBorderColor(output);
+            var borderColor = GetBorderColor(output);
 
             if (InnerTrim)
                 ExecuteInnerTrim(output, borderColor);
@@ -133,7 +123,7 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private static MagickGeometry TestGeometry(MagickGeometry geometry, Line line1, Line line2)
+        private IMagickGeometry TestGeometry(IMagickGeometry geometry, Line line1, Line line2)
         {
             int x = Math.Max(line1.X1, line2.X1);
             int y = line1.Y;
@@ -141,31 +131,31 @@ namespace FredsImageMagickScripts
             int width = Math.Min(line1.X2, line2.X2) - x;
             int height = line2.Y - line1.Y;
 
-            var newGeometry = new MagickGeometry(x, y, width, height);
+            var newGeometry = _factory.Geometry.Create(x, y, width, height);
 
-            return newGeometry > geometry ? newGeometry : geometry;
+            return newGeometry.CompareTo(geometry) == 1 ? newGeometry : geometry;
         }
 
-        private void Crop(IMagickImage image, MagickGeometry area)
+        private void Crop(IMagickImage<TQuantumType> image, IMagickGeometry area)
         {
             ShiftGeometry(area);
-            image.Crop(area.X, area.Y, area.Width, area.Height);
+            image.Crop(area);
             image.RePage();
         }
 
-        private MagickColor GetBorderColor(IMagickImage image)
+        private IMagickColor<TQuantumType> GetBorderColor(IMagickImage<TQuantumType> image)
         {
-            using (IPixelCollection pixels = image.GetPixels())
+            using (var pixels = image.GetPixels())
             {
                 return pixels.GetPixel((int)BorderColorLocation.X, (int)BorderColorLocation.Y).ToColor();
             }
         }
 
-        private MagickGeometry GetLargestArea(IMagickImage image, MagickColor borderColor)
+        private IMagickGeometry GetLargestArea(IMagickImage<TQuantumType> image, IMagickColor<TQuantumType> borderColor)
         {
             var points = new Line[4];
 
-            using (IPixelCollection pixels = image.GetPixels())
+            using (var pixels = image.GetPixelsUnsafe())
             {
                 var line = new Line(0, 0);
 
@@ -224,7 +214,7 @@ namespace FredsImageMagickScripts
                 points[3] = line;
             }
 
-            var geometry = new MagickGeometry(0, 0);
+            var geometry = _factory.Geometry.Create(0, 0);
 
             SwapPoints(points);
 
@@ -236,14 +226,14 @@ namespace FredsImageMagickScripts
             return geometry;
         }
 
-        private void ExecuteInnerTrim(IMagickImage image, MagickColor borderColor)
+        private void ExecuteInnerTrim(IMagickImage<TQuantumType> image, IMagickColor<TQuantumType> borderColor)
         {
             var area = GetLargestArea(image, borderColor);
 
             image.Rotate(90);
             var rotatedArea = GetLargestArea(image, borderColor);
 
-            if (rotatedArea > area)
+            if (rotatedArea.CompareTo(area) == 1)
             {
                 Crop(image, rotatedArea);
                 image.Rotate(-90);
@@ -255,25 +245,25 @@ namespace FredsImageMagickScripts
             }
         }
 
-        private void ExecuteOuterTrim(IMagickImage image, MagickColor borderColor)
+        private void ExecuteOuterTrim(IMagickImage<TQuantumType> image, IMagickColor<TQuantumType> borderColor)
         {
             image.BackgroundColor = borderColor;
             image.ColorFuzz = ColorFuzz;
             image.Trim();
             image.RePage();
 
-            var geometry = new MagickGeometry(0, 0, image.Width, image.Height);
+            var geometry = _factory.Geometry.Create(0, 0, image.Width, image.Height);
             ShiftGeometry(geometry);
             Crop(image, geometry);
         }
 
-        private bool IsBorderColor(IPixelCollection pixels, int x, int y, MagickColor borderColor)
+        private bool IsBorderColor(IUnsafePixelCollection<TQuantumType> pixels, int x, int y, IMagickColor<TQuantumType> borderColor)
         {
             var color = pixels.GetPixel(x, y).ToColor();
             return color.FuzzyEquals(borderColor, ColorFuzz);
         }
 
-        private void ShiftGeometry(MagickGeometry geometry)
+        private void ShiftGeometry(IMagickGeometry geometry)
         {
             geometry.X += PixelShift.Left;
             geometry.Y += PixelShift.Top;
