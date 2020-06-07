@@ -167,7 +167,7 @@ function LoadScripts()
 function Test()
 {
   $dll = "tests\FredsImageMagickScripts.NET.Tests\bin\Release\FredsImageMagickScripts.NET.Tests.dll"
-  vstest.console /inIsolation /platform:x86 $dll
+  vstest.console /inIsolation /platform:x64 $dll
   CheckExitCode ("Test failed for FredsImageMagickScripts.NET.Tests.dll")
 }
 
