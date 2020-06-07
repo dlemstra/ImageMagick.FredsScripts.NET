@@ -9,14 +9,10 @@
     <Optimize>false</Optimize>
     <DebugType>full</DebugType>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)' == 'Test'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Remove="Scripts\Threshold\WhiteboardScriptTests.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Magick.NET-Q16-x64" version="7.19.0.0" />
