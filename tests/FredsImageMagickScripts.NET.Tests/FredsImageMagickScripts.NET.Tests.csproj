@@ -22,7 +22,6 @@
   
   <ItemGroup>
     <Compile Remove="Scripts\Geometry\AutotrimScriptTests.cs" />
-    <Compile Remove="Scripts\Geometry\UnperspectiveScriptTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
