@@ -19,10 +19,6 @@
     <Compile Remove="Scripts\Threshold\**" />
     <EmbeddedResource Remove="Scripts\Threshold\**" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Remove="Scripts\Geometry\AutotrimScriptTests.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Magick.NET-Q16-x64" version="7.19.0.0" />
