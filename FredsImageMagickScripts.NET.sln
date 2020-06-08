@@ -5,28 +5,9 @@ VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{9B260F88-85D3-44B8-BDED-3279DDEEF8E9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appVeyor", "appVeyor", "{B00B1601-C840-4244-8E3B-DE80359D92DE}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\AppVeyor\Build.cmd = Tools\AppVeyor\Build.cmd
-		Tools\AppVeyor\packages.config = Tools\AppVeyor\packages.config
-		Tools\AppVeyor\Test.cmd = Tools\AppVeyor\Test.cmd
-		Tools\AppVeyor\VsDevCmd.cmd = Tools\AppVeyor\VsDevCmd.cmd
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{27E023F4-67BB-4C92-91B8-3510D52E2914}"
 	ProjectSection(SolutionItems) = preProject
 		Tools\Scripts\Publish.ps1 = Tools\Scripts\Publish.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{05BBF0EA-2A49-42A6-9F6C-B7757378390E}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\Scripts\Shared\Build.ps1 = Tools\Scripts\Shared\Build.ps1
-		Tools\Scripts\Shared\Functions.ps1 = Tools\Scripts\Shared\Functions.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppVeyor", "AppVeyor", "{7365D183-9D27-47B4-89FC-73B82D27D6EB}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\Scripts\AppVeyor\Build.ps1 = Tools\Scripts\AppVeyor\Build.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EB9E5423-2B70-4BC0-A06F-E9D47B9B971E}"
@@ -132,10 +113,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B00B1601-C840-4244-8E3B-DE80359D92DE} = {9B260F88-85D3-44B8-BDED-3279DDEEF8E9}
 		{27E023F4-67BB-4C92-91B8-3510D52E2914} = {9B260F88-85D3-44B8-BDED-3279DDEEF8E9}
-		{05BBF0EA-2A49-42A6-9F6C-B7757378390E} = {27E023F4-67BB-4C92-91B8-3510D52E2914}
-		{7365D183-9D27-47B4-89FC-73B82D27D6EB} = {27E023F4-67BB-4C92-91B8-3510D52E2914}
 		{125C202C-66B9-4555-84EF-7B5B52FAB30B} = {97A7724F-7172-4DAF-936B-49CB39EDD1BC}
 		{27E43A39-27F8-4B3C-826D-88B551A15201} = {EB9E5423-2B70-4BC0-A06F-E9D47B9B971E}
 		{26CDE18C-5ACA-40DD-B22E-DF63E438392E} = {271BF560-4B6B-4C6A-94E3-76CC1AA2AC19}
