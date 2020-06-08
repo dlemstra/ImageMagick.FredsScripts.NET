@@ -26,3 +26,11 @@ jobs:
     - name: Build FredsImageMagickScripts.NET (Test)
       run: './build.FredsImageMagickScripts.NET.cmd Test'
       working-directory: build/windows
+
+    - name: Test FredsImageMagickScripts.NET
+      run: './test.FredsImageMagickScripts.NET.cmd'
+      working-directory: build/windows
+
+    - name: Build FredsImageMagickScripts.NET (Release)
+      run: './build.FredsImageMagickScripts.NET.cmd Release'
+      working-directory: build/windows

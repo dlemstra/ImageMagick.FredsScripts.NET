@@ -78,12 +78,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows", "windows", "{F043
 		build\windows\build.FredsImageMagickScripts.NET.ps1 = build\windows\build.FredsImageMagickScripts.NET.ps1
 		build\windows\install.dependencies.cmd = build\windows\install.dependencies.cmd
 		build\windows\install.dependencies.ps1 = build\windows\install.dependencies.ps1
+		build\windows\test.FredsImageMagickScripts.NET.cmd = build\windows\test.FredsImageMagickScripts.NET.cmd
+		build\windows\test.FredsImageMagickScripts.NET.ps1 = build\windows\test.FredsImageMagickScripts.NET.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows", "windows", "{D8EB21A8-C239-44BC-824B-FC68141360A3}"
 	ProjectSection(SolutionItems) = preProject
 		tools\windows\init.visualstudio.cmd = tools\windows\init.visualstudio.cmd
 		tools\windows\utils.ps1 = tools\windows\utils.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{7C7AC270-03DB-436D-822D-82B6D0690D9D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Global
