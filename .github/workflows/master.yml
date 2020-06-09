@@ -24,13 +24,17 @@ jobs:
       working-directory: build/windows
 
     - name: Build FredsImageMagickScripts.NET (Test)
-      run: './build.FredsImageMagickScripts.NET.cmd Test'
+      run: './build.cmd Test'
       working-directory: build/windows
 
     - name: Test FredsImageMagickScripts.NET
-      run: './test.FredsImageMagickScripts.NET.cmd'
+      run: './test.cmd'
       working-directory: build/windows
 
     - name: Build FredsImageMagickScripts.NET (Release)
-      run: './build.FredsImageMagickScripts.NET.cmd Release'
+      run: './build.cmd Release'
       working-directory: build/windows
+
+    - name: Publish FredsImageMagickScripts.NET
+      run: './publish.cmd'
+      working-directory: publish
