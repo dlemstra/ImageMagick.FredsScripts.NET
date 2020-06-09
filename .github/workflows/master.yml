@@ -38,3 +38,9 @@ jobs:
     - name: Publish FredsImageMagickScripts.NET
       run: './publish.cmd'
       working-directory: publish
+
+    - name: Upload libraries
+      uses: actions/upload-artifact@v1
+      with:
+        name: packages
+        path: publish/nupkg
