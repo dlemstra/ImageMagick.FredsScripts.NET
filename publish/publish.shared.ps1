@@ -32,8 +32,8 @@ function loadScripts()
         $name = $type.Name.Replace($suffix, "")
         $file = Get-ChildItem -Path $src -Filter "$($name)Script.cs" -Recurse
         $path = (Split-Path -Parent $file.FullName)
-        $path = $path.Replace("\", "/").Split("/") | Select -Last 2
-        $path = $path -Join "/"
+        $path = $path.Split("\") | Select -Last 2
+        $path = $path -Join "\"
         $summary = $documentation.SelectSingleNode("member[@name='T:FredsImageMagickScripts.$($type.Name)']").summary.Trim()
         $summary = [System.Text.RegularExpressions.Regex]::Replace($summary, '\s+', ' ')
 
@@ -42,7 +42,7 @@ function loadScripts()
             name = $name
             description = $summary
             path = $path
-            url = "$github/tree/master/src/FredsImageMagickScripts.NET/$path"
+            url = "$github/tree/master/src/FredsImageMagickScripts.NET/$($path.Replace("\", "/"))"
         }
     }
 

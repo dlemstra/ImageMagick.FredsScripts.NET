@@ -5,11 +5,6 @@ VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{9B260F88-85D3-44B8-BDED-3279DDEEF8E9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{27E023F4-67BB-4C92-91B8-3510D52E2914}"
-	ProjectSection(SolutionItems) = preProject
-		Tools\Scripts\Publish.ps1 = Tools\Scripts\Publish.ps1
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EB9E5423-2B70-4BC0-A06F-E9D47B9B971E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{97A7724F-7172-4DAF-936B-49CB39EDD1BC}"
@@ -22,25 +17,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "publish", "publish", "{271B
 	ProjectSection(SolutionItems) = preProject
 		publish\Collaborators.txt = publish\Collaborators.txt
 		publish\FredsImageMagickScripts.NET.nuspec = publish\FredsImageMagickScripts.NET.nuspec
-		publish\Publish.cmd = publish\Publish.cmd
+		publish\publish.cmd = publish\publish.cmd
+		publish\publish.ps1 = publish\publish.ps1
+		publish\publish.readme.cmd = publish\publish.readme.cmd
+		publish\publish.readme.ps1 = publish\publish.readme.ps1
+		publish\publish.shared.ps1 = publish\publish.shared.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nupkg", "nupkg", "{26CDE18C-5ACA-40DD-B22E-DF63E438392E}"
 	ProjectSection(SolutionItems) = preProject
-		publish\nupkg\Push.cmd = publish\nupkg\Push.cmd
+		publish\nupkg\push.cmd = publish\nupkg\push.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{2F39F8B4-AEAB-4586-BAE5-49AC0C9853C8}"
 	ProjectSection(SolutionItems) = preProject
-		publish\nuspec\FredsImageMagickScripts.Autotrim.nuspec = publish\nuspec\FredsImageMagickScripts.Autotrim.nuspec
-		publish\nuspec\FredsImageMagickScripts.Cartoon.nuspec = publish\nuspec\FredsImageMagickScripts.Cartoon.nuspec
-		publish\nuspec\FredsImageMagickScripts.DraganEffect.nuspec = publish\nuspec\FredsImageMagickScripts.DraganEffect.nuspec
-		publish\nuspec\FredsImageMagickScripts.Embroidery.nuspec = publish\nuspec\FredsImageMagickScripts.Embroidery.nuspec
-		publish\nuspec\FredsImageMagickScripts.TextCleaner.nuspec = publish\nuspec\FredsImageMagickScripts.TextCleaner.nuspec
-		publish\nuspec\FredsImageMagickScripts.Tshirt.nuspec = publish\nuspec\FredsImageMagickScripts.Tshirt.nuspec
-		publish\nuspec\FredsImageMagickScripts.TwoColorThresh.nuspec = publish\nuspec\FredsImageMagickScripts.TwoColorThresh.nuspec
-		publish\nuspec\FredsImageMagickScripts.Unperspective.nuspec = publish\nuspec\FredsImageMagickScripts.Unperspective.nuspec
-		publish\nuspec\FredsImageMagickScripts.Whiteboard.nuspec = publish\nuspec\FredsImageMagickScripts.Whiteboard.nuspec
 		publish\nuspec\Readme.txt = publish\nuspec\Readme.txt
 	EndProjectSection
 EndProject
@@ -113,7 +103,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{27E023F4-67BB-4C92-91B8-3510D52E2914} = {9B260F88-85D3-44B8-BDED-3279DDEEF8E9}
 		{125C202C-66B9-4555-84EF-7B5B52FAB30B} = {97A7724F-7172-4DAF-936B-49CB39EDD1BC}
 		{27E43A39-27F8-4B3C-826D-88B551A15201} = {EB9E5423-2B70-4BC0-A06F-E9D47B9B971E}
 		{26CDE18C-5ACA-40DD-B22E-DF63E438392E} = {271BF560-4B6B-4C6A-94E3-76CC1AA2AC19}
