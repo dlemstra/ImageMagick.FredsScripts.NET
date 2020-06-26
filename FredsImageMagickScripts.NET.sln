@@ -45,12 +45,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2682E7CF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows", "windows", "{F04387ED-E4D9-414B-A8F6-2F62F4E86982}"
 	ProjectSection(SolutionItems) = preProject
-		build\windows\build.FredsImageMagickScripts.NET.cmd = build\windows\build.FredsImageMagickScripts.NET.cmd
-		build\windows\build.FredsImageMagickScripts.NET.ps1 = build\windows\build.FredsImageMagickScripts.NET.ps1
+		build\windows\build.cmd = build\windows\build.cmd
+		build\windows\build.ps1 = build\windows\build.ps1
 		build\windows\install.dependencies.cmd = build\windows\install.dependencies.cmd
 		build\windows\install.dependencies.ps1 = build\windows\install.dependencies.ps1
-		build\windows\test.FredsImageMagickScripts.NET.cmd = build\windows\test.FredsImageMagickScripts.NET.cmd
-		build\windows\test.FredsImageMagickScripts.NET.ps1 = build\windows\test.FredsImageMagickScripts.NET.ps1
+		build\windows\test.cmd = build\windows\test.cmd
+		build\windows\test.ps1 = build\windows\test.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows", "windows", "{D8EB21A8-C239-44BC-824B-FC68141360A3}"
