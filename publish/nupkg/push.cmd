@@ -1,13 +1,12 @@
 @echo off
 
-set /p ApiKey=<ApiKey.txt
+set /p ApiKey=<api.key.txt
 if not %ERRORLEVEL% == 0 goto done
 
 echo Are you sure?
 pause
 
-for /r %%i in (*.nupkg) do ..\..\Tools\Programs\nuget.exe push %%i %ApiKey% -src nuget.org
-for /r %%i in (*.nupkg) do move %%i ..\..\..\FredsImageMagickScripts.NET.Archive
+for /r %%i in (*.nupkg) do ..\..\Tools\windows\nuget.exe push %%i %ApiKey% -src nuget.org
 
 :done
 pause
