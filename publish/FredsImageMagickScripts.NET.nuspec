@@ -6,7 +6,7 @@
     <title/>
     <authors></authors>
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
-    <licenseUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md</licenseUrl>
+    <license type="file">LICENSE.md</license>
     <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
     <repository type="git" url="https://github.com/dlemstra/FredsImageMagickScripts.NET" branch="master" />
     <icon>FredsImageMagickScripts.Logo.png</icon>
@@ -22,6 +22,7 @@
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
+    <file src="..\..\LICENSE.md" target="" />
     <file src="..\..\Images\FredsImageMagickScripts.Logo.png" target="FredsImageMagickScripts.Logo.png" />
   </files>
 </package>
