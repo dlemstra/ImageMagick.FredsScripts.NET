@@ -21,12 +21,12 @@ namespace FredsImageMagickScripts
     public enum UnperspectiveMethod
     {
         /// <summary>
-        /// Derivative
+        /// Derivative.
         /// </summary>
         Derivative,
 
         /// <summary>
-        /// Peak
+        /// Peak.
         /// </summary>
         Peak
     }

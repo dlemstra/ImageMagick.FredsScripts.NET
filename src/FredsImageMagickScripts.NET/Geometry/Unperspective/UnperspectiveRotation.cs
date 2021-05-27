@@ -26,17 +26,17 @@ namespace FredsImageMagickScripts
         None,
 
         /// <summary>
-        /// Rotate 90
+        /// Rotate 90.
         /// </summary>
         Rotate90 = 90,
 
         /// <summary>
-        /// Rotate 180
+        /// Rotate 180.
         /// </summary>
         Rotate180 = 180,
 
         /// <summary>
-        /// Rotate 270
+        /// Rotate 270.
         /// </summary>
         Rotate270 = 270
     }

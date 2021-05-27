@@ -24,17 +24,17 @@ namespace FredsImageMagickScripts
     public enum WhiteboardEnhancements
     {
         /// <summary>
-        /// No ehancement
+        /// No ehancement.
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Stretch
+        /// Stretch.
         /// </summary>
         Stretch = 1,
 
         /// <summary>
-        /// White balance
+        /// White balance.
         /// </summary>
         Whitebalance = 2,
 

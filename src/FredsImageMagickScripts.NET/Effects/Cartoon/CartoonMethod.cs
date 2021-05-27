@@ -22,23 +22,23 @@ namespace FredsImageMagickScripts
     public enum CartoonMethod
     {
         /// <summary>
-        /// First method, which is the default and yields the best results but is also the most expensive
+        /// First method, which is the default and yields the best results but is also the most expensive.
         /// </summary>
         Method1,
 
         /// <summary>
-        /// Second method, which is cheaper than Method1 to compute
+        /// Second method, which is cheaper than Method1 to compute.
         /// </summary>
         Method2,
 
         /// <summary>
         /// Third method, which has the same computational complexity as Method2.
-        /// The result is much smoother which means a reduction in edge highlighting but it can also make it look slightly blurry
+        /// The result is much smoother which means a reduction in edge highlighting but it can also make it look slightly blurry.
         /// </summary>
         Method3,
 
         /// <summary>
-        /// Very similar to Method3 but looks less blurry and looks like a watercolour painting
+        /// Very similar to Method3 but looks less blurry and looks like a watercolour painting.
         /// </summary>
         Method4
     }

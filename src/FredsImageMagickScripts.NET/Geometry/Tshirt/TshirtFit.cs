@@ -21,17 +21,17 @@ namespace FredsImageMagickScripts
     public enum TshirtFit
     {
         /// <summary>
-        /// None
+        /// None.
         /// </summary>
         None,
 
         /// <summary>
-        /// Crop
+        /// Crop.
         /// </summary>
         Crop,
 
         /// <summary>
-        /// Distort
+        /// Distort.
         /// </summary>
         Distort
     }

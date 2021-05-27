@@ -21,7 +21,7 @@ namespace FredsImageMagickScripts
     public enum TextCleanerEnhance
     {
         /// <summary>
-        /// None
+        /// None.
         /// </summary>
         None,
 
