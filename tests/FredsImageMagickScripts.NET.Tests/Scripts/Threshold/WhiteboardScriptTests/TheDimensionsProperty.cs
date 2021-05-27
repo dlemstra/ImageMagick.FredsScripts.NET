@@ -25,26 +25,18 @@ namespace FredsImageMagickScripts.NET.Tests
         public class TheDimensionsProperty : WhiteboardScriptTests
         {
             [TestMethod]
-            public void ShouldThrowExceptionForInvalidDimensions()
+            public void ShouldThrowExceptionForInvalidDimension()
             {
-                AssertDimensions(0, 0);
-                AssertDimensions(-1, -1);
-                AssertDimensions(-1, 0);
-                AssertDimensions(0, -1);
-            }
-
-            private static void AssertDimensions(int width, int height)
-            {
-                ExceptionAssert.Throws<InvalidOperationException>(() =>
+                using (var logo = Images.Logo)
                 {
-                    using (var logo = Images.Logo)
+                    var factory = new MagickFactory();
+                    var script = new WhiteboardScript<ushort>(factory);
+                    script.Dimensions = new MagickGeometry(0, 0);
+                    ExceptionAssert.Throws<InvalidOperationException>(() =>
                     {
-                        var factory = new MagickFactory();
-                        var script = new WhiteboardScript<ushort>(factory);
-                        script.Dimensions = new MagickGeometry(width, height);
                         script.Execute(logo);
-                    }
-                });
+                    });
+                }
             }
         }
     }
