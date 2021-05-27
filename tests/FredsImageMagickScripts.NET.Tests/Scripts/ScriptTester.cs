@@ -86,11 +86,12 @@ namespace FredsImageMagickScripts.NET.Tests
                     Assert.AreEqual(expectedImage.Height, actualImage.Height, actualImage.FileName);
 
                     var distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
+                    var allowedDelta = 0.001;
 
-                    if (distortion != 0)
+                    if (distortion > allowedDelta)
                         LosslessCompress(actualOutputFile.FullName);
 
-                    Assert.AreEqual(0.0, distortion, new FileInfo(actualImage.FileName).Name);
+                    Assert.AreEqual(0.0, distortion, allowedDelta, new FileInfo(actualImage.FileName).Name);
                 }
             }
         }
