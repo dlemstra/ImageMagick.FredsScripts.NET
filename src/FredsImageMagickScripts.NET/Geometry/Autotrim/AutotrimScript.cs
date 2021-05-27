@@ -131,6 +131,9 @@ namespace FredsImageMagickScripts
             int width = Math.Min(line1.X2, line2.X2) - x;
             int height = line2.Y - line1.Y;
 
+            if (width < 0 || height < 0)
+                return geometry;
+
             var newGeometry = _factory.Geometry.Create(x, y, width, height);
 
             return newGeometry.CompareTo(geometry) == 1 ? newGeometry : geometry;
