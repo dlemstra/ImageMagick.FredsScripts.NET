@@ -1,4 +1,4 @@
-# Copyright 2015-2020 Dirk Lemstra, Fred Weinhaus 
+# Copyright Dirk Lemstra, Fred Weinhaus 
 <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 
 These scripts are available free of charge for non-commercial use, ONLY.

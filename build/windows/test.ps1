@@ -1,4 +1,4 @@
-# Copyright 2017-2020 Dirk Lemstra, Fred Weinhaus
+# Copyright Dirk Lemstra, Fred Weinhaus
 # <https://github.com/dlemstra/FredsImageMagickScripts.NET>
 #
 # Licensed under the ImageMagick License (the "License"); you may not use this file except in
