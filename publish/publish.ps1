@@ -63,7 +63,7 @@ function createNuspecFiles()
         }
         $xml.package.metadata.summary = $title + " (requires Magick.NET)"
         $xml.package.metadata.description = $script.description
-        $xml.package.metadata.copyright = "Copyright 2015-$((Get-Date).year) Dirk Lemstra, Fred Weinhaus"
+        $xml.package.metadata.copyright = "Copyright Dirk Lemstra, Fred Weinhaus"
         $xml.package.metadata.tags = "Fred Weinhaus ImageMagick " + $script.name
 
         $path = FullPath "src\FredsImageMagickScripts.NET\$($script.path)"
