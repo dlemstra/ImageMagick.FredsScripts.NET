@@ -16,9 +16,6 @@
     <releaseNotes/>
     <copyright></copyright>
     <tags>Fred Weinhaus ImageMagick Magick.NET</tags>
-    <dependencies>
-        <dependency id="Magick.NET.Core" version="3.0.0.0" />
-     </dependencies>
   </metadata>
   <files>
     <file src="Readme.txt" target="" />
