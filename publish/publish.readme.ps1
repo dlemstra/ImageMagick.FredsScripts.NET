@@ -37,7 +37,7 @@ function loadCollaborators()
 function updateReadme($scripts, $collaborators)
 {
     $content = @"
-# ImageMagick.FredsScripts.NET.NET
+# ImageMagick.FredsScripts.NET
 
 [![GitHub license](https://img.shields.io/badge/license-Fred%20Weinhaus-green.svg)](https://github.com/dlemstra/ImageMagick.FredsScripts.NET/blob/master/LICENSE.md)
 [![Build Status](https://github.com/dlemstra/ImageMagick.FredsScripts.NET/workflows/master/badge.svg)](https://github.com/dlemstra/ImageMagick.FredsScripts.NET/actions)
