@@ -17,8 +17,8 @@ param (
 
 . $PSScriptRoot\..\..\tools\windows\utils.ps1
 
-function buildFredsImageMagickScriptsNET($config) {
-    buildSolution "FredsImageMagickScripts.NET.sln" "Configuration=$config,Platform=x64"
+function buildImageMagickFredsScriptsNET($config) {
+    buildSolution "ImageMagick.FredsScripts.NET.sln" "Configuration=$config,Platform=x64"
 }
 
-buildFredsImageMagickScriptsNET $config
+buildImageMagickFredsScriptsNET $config

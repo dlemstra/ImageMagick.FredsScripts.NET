@@ -23,19 +23,19 @@ jobs:
       run: ./install.dependencies.cmd
       working-directory: build/windows
 
-    - name: Build FredsImageMagickScripts.NET (Test)
+    - name: Build ImageMagick.FredsScripts.NET (Test)
       run: './build.cmd Test'
       working-directory: build/windows
 
-    - name: Test FredsImageMagickScripts.NET
+    - name: Test ImageMagick.FredsScripts.NET
       run: './test.cmd'
       working-directory: build/windows
 
-    - name: Build FredsImageMagickScripts.NET (Release)
+    - name: Build ImageMagick.FredsScripts.NET (Release)
       run: './build.cmd Release'
       working-directory: build/windows
 
-    - name: Publish FredsImageMagickScripts.NET
+    - name: Publish ImageMagick.FredsScripts.NET
       run: './publish.cmd'
       working-directory: publish
 

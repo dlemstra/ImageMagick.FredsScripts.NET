@@ -13,15 +13,15 @@
 
 . $PSScriptRoot\..\..\tools\windows\utils.ps1
 
-function testFredsImageMagickScriptsNET() {
+function testImageMagickFredsScriptsNET() {
     $vstest = "$($env:VSINSTALLDIR)\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
 
-    $folder = fullPath "tests\FredsImageMagickScripts.NET.Tests\bin\x64\Test\net45"
-    $fileName = "$folder\FredsImageMagickScripts.NET.Tests.dll"
+    $folder = fullPath "tests\ImageMagick.FredsScripts.NET.Tests\bin\x64\Test\net45"
+    $fileName = "$folder\ImageMagick.FredsScripts.NET.Tests.dll"
 
     & $vstest $fileName /platform:x64 /TestAdapterPath:$folder
 
-    CheckExitCode("Failed to test FredsImageMagickScripts.NET")
+    CheckExitCode("Failed to test ImageMagick.FredsScripts.NET")
 }
 
-testFredsImageMagickScriptsNET
+testImageMagickFredsScriptsNET

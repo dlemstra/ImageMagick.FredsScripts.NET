@@ -9,7 +9,7 @@
     <license type="file">LICENSE.md</license>
     <projectUrl>https://github.com/dlemstra/FredsImageMagickScripts.NET</projectUrl>
     <repository type="git" url="https://github.com/dlemstra/FredsImageMagickScripts.NET" branch="master" />
-    <icon>FredsImageMagickScripts.Logo.png</icon>
+    <icon>ImageMagick.FredsScripts.Logo.png</icon>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description></description>
     <summary></summary>
@@ -20,6 +20,6 @@
   <files>
     <file src="Readme.txt" target="" />
     <file src="..\..\LICENSE.md" target="" />
-    <file src="..\..\Images\FredsImageMagickScripts.Logo.png" target="FredsImageMagickScripts.Logo.png" />
+    <file src="..\..\Images\ImageMagick.FredsScripts.Logo.png" target="ImageMagick.FredsScripts.Logo.png" />
   </files>
 </package>

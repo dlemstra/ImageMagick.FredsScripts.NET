@@ -17,14 +17,14 @@ $github = "https://github.com/dlemstra/FredsImageMagickScripts.NET"
 
 function loadScripts()
 {
-    $path = FullPath "src\FredsImageMagickScripts.NET\bin\Release\net40\FredsImageMagickScripts.NET.xml"
+    $path = FullPath "src\ImageMagick.FredsScripts.NET\bin\Release\net40\ImageMagick.FredsScripts.NET.xml"
     $documentation = ([xml](Get-Content $path)).doc.members
 
     $suffix = "Script``1"
-    $assembly = [System.Reflection.Assembly]::LoadFrom("..\src\FredsImageMagickScripts.NET\bin\Release\net40\FredsImageMagickScripts.NET.dll")
+    $assembly = [System.Reflection.Assembly]::LoadFrom("..\src\ImageMagick.FredsScripts.NET\bin\Release\net40\ImageMagick.FredsScripts.NET.dll")
     $types = $assembly.GetTypes() | Where { $_.Name.EndsWith($suffix) }
 
-    $src = FullPath "src\FredsImageMagickScripts.NET"
+    $src = FullPath "src\ImageMagick.FredsScripts.NET"
 
     $scripts = @()
     foreach ($type in $types)
@@ -34,15 +34,15 @@ function loadScripts()
         $path = (Split-Path -Parent $file.FullName)
         $path = $path.Split("\") | Select -Last 2
         $path = $path -Join "\"
-        $summary = $documentation.SelectSingleNode("member[@name='T:FredsImageMagickScripts.$($type.Name)']").summary.Trim()
+        $summary = $documentation.SelectSingleNode("member[@name='T:ImageMagick.FredsScripts.$($type.Name)']").summary.Trim()
         $summary = [System.Text.RegularExpressions.Regex]::Replace($summary, '\s+', ' ')
 
         $scripts += [pscustomobject]@{
-            id = "FredsImageMagickScripts.$name"
+            id = "ImageMagick.FredsScripts.$name"
             name = $name
             description = $summary
             path = $path
-            url = "$github/tree/master/src/FredsImageMagickScripts.NET/$($path.Replace("\", "/"))"
+            url = "$github/tree/master/src/ImageMagick.FredsScripts.NET/$($path.Replace("\", "/"))"
         }
     }
 

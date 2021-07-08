@@ -48,7 +48,7 @@ function createNuspecFiles()
 
         $title = "Fred's ImageMagick Script " + $script.name
 
-        $path = FullPath "publish\FredsImageMagickScripts.NET.nuspec"
+        $path = FullPath "publish\ImageMagick.FredsScripts.NET.nuspec"
         $xml = [xml](Get-Content $path)
         $xml.package.metadata.id = $script.id
         $xml.package.metadata.version = $version
@@ -66,11 +66,11 @@ function createNuspecFiles()
         $xml.package.metadata.copyright = "Copyright Dirk Lemstra, Fred Weinhaus"
         $xml.package.metadata.tags = "Fred Weinhaus ImageMagick " + $script.name
 
-        $path = FullPath "src\FredsImageMagickScripts.NET\$($script.path)"
+        $path = FullPath "src\ImageMagick.FredsScripts.NET\$($script.path)"
         foreach ($file in Get-ChildItem $path -Filter "$($script.name)*")
         {
             $file = "$($script.path)\$file"
-            addFileElement $xml "..\..\src\FredsImageMagickScripts.NET\$file" "Content\FredsImageMagickScripts\$file"
+            addFileElement $xml "..\..\src\ImageMagick.FredsScripts.NET\$file" "Content\ImageMagick.FredsScripts\$file"
         }
 
         $xml.Save($nuspecFile)
