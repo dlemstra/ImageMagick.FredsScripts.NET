@@ -1,5 +1,5 @@
 # Copyright Dirk Lemstra, Fred Weinhaus 
-<https://github.com/dlemstra/FredsImageMagickScripts.NET>
+<https://github.com/dlemstra/ImageMagick.FredsScripts.NET>
 
 These scripts are available free of charge for non-commercial use, ONLY.
 

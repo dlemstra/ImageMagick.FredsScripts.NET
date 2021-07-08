@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="FredsImageMagickScripts.NET" ToolsVersion="11.0">
+<RuleSet Name="ImageMagick.FredsScripts.NET" ToolsVersion="11.0">
   <Include Path="extendedcorrectnessrules.ruleset" Action="Default" />
   <Include Path="extendeddesignguidelinerules.ruleset" Action="Default" />
   <Include Path="globalizationrules.ruleset" Action="Default" />

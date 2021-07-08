@@ -1,5 +1,5 @@
 # Copyright Dirk Lemstra, Fred Weinhaus
-# <https://github.com/dlemstra/FredsImageMagickScripts.NET>
+# <https://github.com/dlemstra/ImageMagick.FredsScripts.NET>
 #
 # Licensed under the ImageMagick License (the "License"); you may not use this file except in
 # compliance with the License. You may obtain a copy of the License at
@@ -37,10 +37,10 @@ function loadCollaborators()
 function updateReadme($scripts, $collaborators)
 {
     $content = @"
-# FredsImageMagickScripts.NET
+# ImageMagick.FredsScripts.NET.NET
 
-[![GitHub license](https://img.shields.io/badge/license-Fred%20Weinhaus-green.svg)](https://github.com/dlemstra/FredsImageMagickScripts.NET/blob/master/LICENSE.md)
-[![Build Status](https://github.com/dlemstra/FredsImageMagickScripts.NET/workflows/master/badge.svg)](https://github.com/dlemstra/FredsImageMagickScripts.NET/actions)
+[![GitHub license](https://img.shields.io/badge/license-Fred%20Weinhaus-green.svg)](https://github.com/dlemstra/ImageMagick.FredsScripts.NET/blob/master/LICENSE.md)
+[![Build Status](https://github.com/dlemstra/ImageMagick.FredsScripts.NET/workflows/master/badge.svg)](https://github.com/dlemstra/ImageMagick.FredsScripts.NET/actions)
 
 This projects goal is to port most of the scripts for ImageMagick that are created by [Fred Weinhaus](http://www.fmwconcepts.com/imagemagick/) to C#. With the help of [Magick.NET](https://github.com/dlemstra/Magick.NET) a library will be created that will make it easy to use Fred's scripts in .NET.
 

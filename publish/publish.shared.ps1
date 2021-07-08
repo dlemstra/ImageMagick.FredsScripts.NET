@@ -1,5 +1,5 @@
 # Copyright Dirk Lemstra, Fred Weinhaus
-# <https://github.com/dlemstra/FredsImageMagickScripts.NET>
+# <https://github.com/dlemstra/ImageMagick.FredsScripts.NET>
 #
 # Licensed under the ImageMagick License (the "License"); you may not use this file except in
 # compliance with the License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 
 . $PSScriptRoot\..\tools\windows\utils.ps1
 
-$github = "https://github.com/dlemstra/FredsImageMagickScripts.NET"
+$github = "https://github.com/dlemstra/ImageMagick.FredsScripts.NET"
 
 function loadScripts()
 {
