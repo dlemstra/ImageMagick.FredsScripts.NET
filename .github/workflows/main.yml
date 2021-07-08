@@ -39,6 +39,12 @@ jobs:
       run: './publish.cmd'
       working-directory: publish
 
+    - name: Sign NuGet packages
+      uses: dlemstra/code-sign-action@v1
+      with:
+        certificate: '${{ secrets.IMAGEMAGICK_CERTIFICATE }}'
+        folder: publish/nupkg
+
     - name: Upload libraries
       uses: actions/upload-artifact@v1
       with:
