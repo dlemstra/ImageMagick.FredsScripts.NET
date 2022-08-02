@@ -14,25 +14,24 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class EmbroideryScriptTests
     {
-        [TestClass]
         public class TheExecuteMethod : EmbroideryScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenInputIsNull()
             {
                 var factory = new MagickFactory();
                 var script = new EmbroideryScript<ushort>(factory);
 
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () => script.Execute(null));
+                Assert.Throws<ArgumentNullException>("input", () => script.Execute(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenAngleBelowMinus360()
             {
                 AssertInvalidOperation("Invalid angle specified, value must be between -360 and 360.", (EmbroideryScript<ushort> script) =>
@@ -41,7 +40,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenAngleAbove360()
             {
                 AssertInvalidOperation("Invalid angle specified, value must be between -360 and 360.", (EmbroideryScript<ushort> script) =>
@@ -50,7 +49,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenAzimuthBelowMinus360()
             {
                 AssertInvalidOperation("Invalid azimuth specified, value must be between -360 and 360.", (EmbroideryScript<ushort> script) =>
@@ -59,7 +58,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenAzimuthAbove360()
             {
                 AssertInvalidOperation("Invalid azimuth specified, value must be between -360 and 360.", (EmbroideryScript<ushort> script) =>
@@ -68,7 +67,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenColorFuzzBelowZero()
             {
                 AssertInvalidOperation("Invalid color fuzz specified, value must be between 0 and 100.", (EmbroideryScript<ushort> script) =>
@@ -77,7 +76,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenColorFuzzAbove100()
             {
                 AssertInvalidOperation("Invalid color fuzz specified, value must be between 0 and 100.", (EmbroideryScript<ushort> script) =>
@@ -86,7 +85,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenContrastBelowZero()
             {
                 AssertInvalidOperation("Invalid contrast specified, value must be zero or higher.", (EmbroideryScript<ushort> script) =>
@@ -95,7 +94,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenElevationBelowZero()
             {
                 AssertInvalidOperation("Invalid elevation specified, value must be between 0 and 90.", (EmbroideryScript<ushort> script) =>
@@ -104,7 +103,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenElevationAbove90()
             {
                 AssertInvalidOperation("Invalid elevation specified, value must be between 0 and 90.", (EmbroideryScript<ushort> script) =>
@@ -113,7 +112,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenExtentBelowZero()
             {
                 AssertInvalidOperation("Invalid extent specified, value must be zero or higher.", (EmbroideryScript<ushort> script) =>
@@ -122,7 +121,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenGrayLimitBelowZero()
             {
                 AssertInvalidOperation("Invalid gray limit specified, value must be between 0 and 100.", (EmbroideryScript<ushort> script) =>
@@ -131,7 +130,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenGrayLimitAbove100()
             {
                 AssertInvalidOperation("Invalid gray limit specified, value must be between 0 and 100.", (EmbroideryScript<ushort> script) =>
@@ -140,7 +139,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenIntensityBelowZero()
             {
                 AssertInvalidOperation("Invalid intensity specified, value must be between 0 and 100.", (EmbroideryScript<ushort> script) =>
@@ -149,7 +148,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenIntensityAbove100()
             {
                 AssertInvalidOperation("Invalid intensity specified, value must be between 0 and 100.", (EmbroideryScript<ushort> script) =>
@@ -158,7 +157,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenMixBelowZero()
             {
                 AssertInvalidOperation("Invalid mix specified, value must be between 0 and 100.", (EmbroideryScript<ushort> script) =>
@@ -167,7 +166,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenMixAbove100()
             {
                 AssertInvalidOperation("Invalid mix specified, value must be between 0 and 100.", (EmbroideryScript<ushort> script) =>
@@ -176,7 +175,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenumberOfColorsZero()
             {
                 AssertInvalidOperation("Invalid number of colors specified, value must be higher than zero.", (EmbroideryScript<ushort> script) =>
@@ -185,7 +184,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenPatternInvalidValue()
             {
                 AssertInvalidOperation("Invalid pattern specified.", (EmbroideryScript<ushort> script) =>
@@ -194,7 +193,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenRangeBelowZero()
             {
                 AssertInvalidOperation("Invalid range specified, value must be between 0 and 360.", (EmbroideryScript<ushort> script) =>
@@ -203,7 +202,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenRangeAbove360()
             {
                 AssertInvalidOperation("Invalid range specified, value must be between 0 and 360.", (EmbroideryScript<ushort> script) =>
@@ -212,7 +211,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenSpreadBelowZero()
             {
                 AssertInvalidOperation("Invalid spread specified, value must be zero or higher.", (EmbroideryScript<ushort> script) =>
@@ -221,7 +220,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenThicknessZero()
             {
                 AssertInvalidOperation("Invalid thickness specified, value must be higher than zero.", (EmbroideryScript<ushort> script) =>
@@ -230,7 +229,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_default_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_default_jpg), (EmbroideryScript<ushort> script) =>
@@ -238,7 +237,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f0_g0_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_f0_g0_jpg), (EmbroideryScript<ushort> script) =>
@@ -248,7 +247,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_i0_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_i0_jpg), (EmbroideryScript<ushort> script) =>
@@ -257,7 +256,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_i0_C10_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_i0_C10_jpg), (EmbroideryScript<ushort> script) =>
@@ -267,7 +266,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_i50_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_i50_jpg), (EmbroideryScript<ushort> script) =>
@@ -276,7 +275,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_p2_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_p2_jpg), (EmbroideryScript<ushort> script) =>
@@ -285,7 +284,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_p2_t3_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_p2_t3_jpg), (EmbroideryScript<ushort> script) =>
@@ -295,7 +294,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_p2_t5_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_p2_t5_jpg), (EmbroideryScript<ushort> script) =>
@@ -305,7 +304,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_s100_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_s100_jpg), (EmbroideryScript<ushort> script) =>
@@ -314,7 +313,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_s0_t3_jpg()
             {
                 AssertExecute("cnbc.jpg", nameof(ShouldExecute_s0_t3_jpg), (EmbroideryScript<ushort> script) =>
@@ -333,16 +332,18 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     initAction(script);
 
-                    ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+                    var exception = Assert.Throws<InvalidOperationException>(() =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains(expectedMessage, exception.Message);
                 }
             }
 
             private void AssertExecute(string input, string methodName, Action<EmbroideryScript<ushort>> action)
             {
-                string inputFile = GetInputFile(input);
+                var inputFile = GetInputFile(input);
                 /* LosslessCompress(inputFile); */
 
                 using (var image = new MagickImage(inputFile))
@@ -353,7 +354,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
                     using (var scriptOutput = script.Execute(image))
                     {
-                        string outputFile = GetOutputFile(input, methodName);
+                        var outputFile = GetOutputFile(input, methodName);
                         AssertOutput(scriptOutput, outputFile);
                     }
                 }

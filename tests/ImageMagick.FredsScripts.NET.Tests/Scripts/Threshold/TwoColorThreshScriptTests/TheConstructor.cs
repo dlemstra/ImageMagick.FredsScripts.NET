@@ -14,19 +14,18 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class TwoColorThreshScriptTests
     {
-        [TestClass]
         public class TheConstructor : TwoColorThreshScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenFactoryIsNull()
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("factory", () => new TwoColorThreshScript<ushort>(null));
+                Assert.Throws<ArgumentNullException>("factory", () => new TwoColorThreshScript<ushort>(null));
             }
         }
     }

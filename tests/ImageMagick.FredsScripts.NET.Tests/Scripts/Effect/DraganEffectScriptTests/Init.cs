@@ -13,7 +13,7 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -21,10 +21,10 @@ namespace ImageMagick.FredsScripts.NET.Tests
     {
         private static void AssertDefaults(DraganEffectScript<ushort> script)
         {
-            Assert.AreEqual(1.0, script.Brightness);
-            Assert.AreEqual(0.0, script.Contrast);
-            Assert.AreEqual(1.0, script.Darkness);
-            Assert.AreEqual((Percentage)150, script.Saturation);
+            Assert.Equal(1.0, script.Brightness);
+            Assert.Equal(0.0, script.Contrast);
+            Assert.Equal(1.0, script.Darkness);
+            Assert.Equal((Percentage)150, script.Saturation);
         }
     }
 }

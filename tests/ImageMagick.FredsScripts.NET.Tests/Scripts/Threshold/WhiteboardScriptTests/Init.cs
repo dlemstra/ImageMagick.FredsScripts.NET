@@ -13,7 +13,7 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -22,11 +22,11 @@ namespace ImageMagick.FredsScripts.NET.Tests
         private static void AssertDefaults(WhiteboardScript<ushort> script)
         {
             ColorAssert.AreEqual(new MagickColor("white"), script.BackgroundColor);
-            Assert.AreEqual(WhiteboardEnhancements.Stretch, script.Enhance);
-            Assert.AreEqual((Percentage)5, script.FilterOffset);
-            Assert.AreEqual(15, script.FilterSize);
-            Assert.AreEqual((Percentage)200, script.Saturation);
-            Assert.AreEqual((Percentage)0.01, script.WhiteBalance);
+            Assert.Equal(WhiteboardEnhancements.Stretch, script.Enhance);
+            Assert.Equal((Percentage)5, script.FilterOffset);
+            Assert.Equal(15, script.FilterSize);
+            Assert.Equal((Percentage)200, script.Saturation);
+            Assert.Equal((Percentage)0.01, script.WhiteBalance);
         }
     }
 }

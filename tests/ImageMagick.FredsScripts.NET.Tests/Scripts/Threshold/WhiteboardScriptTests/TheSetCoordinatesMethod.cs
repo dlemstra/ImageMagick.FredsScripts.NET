@@ -14,16 +14,15 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class WhiteboardScriptTests
     {
-        [TestClass]
         public class TheSetCoordinatesMethod : WhiteboardScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionForInvalidCoordinates()
             {
                 var topLeft = new PointD(10, 10);
@@ -37,7 +36,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                     new PointD(650, 10), new PointD(630, 490),
                 };
 
-                for (int i = 0; i < invalid.Length; i++)
+                for (var i = 0; i < invalid.Length; i++)
                 {
                     AssertSetCoordinates("topLeft", invalid[i], topRight, bottomLeft, bottomRight);
                     AssertSetCoordinates("topRight", topLeft, invalid[i], bottomLeft, bottomRight);
@@ -48,7 +47,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
             private static void AssertSetCoordinates(string paramName, PointD topLeft, PointD topRight, PointD bottomLeft, PointD bottomRight)
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>(paramName, () =>
+                Assert.Throws<ArgumentOutOfRangeException>(paramName, () =>
                 {
                     using (var logo = Images.Logo)
                     {

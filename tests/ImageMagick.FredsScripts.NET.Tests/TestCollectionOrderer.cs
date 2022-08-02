@@ -13,18 +13,28 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using Xunit;
+using Xunit.Abstractions;
+
+[assembly: TestCollectionOrderer("ImageMagick.FredsScripts.Tests.TestCollectionOrderer", "ImageMagick.FredsScripts.NET.Tests")]
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
-    [TestClass]
-    public static class TestInitializer
+    public sealed class TestCollectionOrderer : ITestCollectionOrderer
     {
-        [AssemblyInitialize]
-        public static void Initialize(TestContext context)
+        public IEnumerable<ITestCollection> OrderTestCollections(IEnumerable<ITestCollection> testCollections)
         {
+            if (testCollections is null)
+            {
+                throw new ArgumentNullException(nameof(testCollections));
+            }
+
             OpenCL.IsEnabled = false;
             MagickNET.SetRandomSeed(100);
+
+            return testCollections;
         }
     }
 }

@@ -15,7 +15,7 @@
 
 using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -40,10 +40,10 @@ namespace ImageMagick.FredsScripts.NET.Tests
             if (methodName == null)
                 throw new ArgumentNullException(nameof(methodName));
 
-            string fileName = Path.GetFileNameWithoutExtension(input);
+            var fileName = Path.GetFileNameWithoutExtension(input);
 
-            int startOffset = "ShouldExecute_".Length;
-            int lastUnderscore = methodName.LastIndexOf('_');
+            var startOffset = "ShouldExecute_".Length;
+            var lastUnderscore = methodName.LastIndexOf('_');
             fileName += "_" + methodName.Substring(startOffset, lastUnderscore - startOffset);
             fileName += "." + methodName.Substring(lastUnderscore + 1);
 
@@ -80,8 +80,8 @@ namespace ImageMagick.FredsScripts.NET.Tests
             {
                 using (var actualImage = new MagickImage(actualOutputFile))
                 {
-                    Assert.AreEqual(expectedImage.Width, actualImage.Width, actualImage.FileName);
-                    Assert.AreEqual(expectedImage.Height, actualImage.Height, actualImage.FileName);
+                    Assert.Equal(expectedImage.Width, actualImage.Width);
+                    Assert.Equal(expectedImage.Height, actualImage.Height);
 
                     var distortion = actualImage.Compare(expectedImage, ErrorMetric.RootMeanSquared);
                     var allowedDelta = 0.001;
@@ -89,7 +89,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                     if (distortion > allowedDelta)
                         LosslessCompress(actualOutputFile.FullName);
 
-                    Assert.AreEqual(0.0, distortion, allowedDelta, new FileInfo(actualImage.FileName).Name);
+                    Assert.InRange(distortion, 0.0, allowedDelta);
                 }
             }
         }
@@ -102,9 +102,9 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 @"..\..\..\..\..\..\",
             };
 
-            foreach (string path in paths)
+            foreach (var path in paths)
             {
-                string directory = Path.GetFullPath(path) + @"Images\";
+                var directory = Path.GetFullPath(path) + @"Images\";
                 if (Directory.Exists(directory))
                     return directory;
             }
@@ -114,7 +114,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
         private FileInfo GetActualOutputFile(string fileName)
         {
-            int dotIndex = fileName.LastIndexOf('.');
+            var dotIndex = fileName.LastIndexOf('.');
             var name = fileName.Substring(0, dotIndex) + ".actual" + fileName.Substring(dotIndex);
 
             return new FileInfo(_root + @"Output\" + ScriptName + @"\" + name);

@@ -14,26 +14,25 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class CartoonScriptTests
     {
-        [TestClass]
         public class TheExecuteMethod : CartoonScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenInputIsNull()
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () =>
+                Assert.Throws<ArgumentNullException>("input", () =>
                 {
                     var script = new CartoonScript<ushort>();
                     script.Execute(null);
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenBrightnessBelowZero()
             {
                 AssertInvalidOperation("Invalid brightness specified, value must be zero or higher.", (CartoonScript<ushort> script) =>
@@ -42,7 +41,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenEdgeAmountBelowZero()
             {
                 AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonScript<ushort> script) =>
@@ -51,7 +50,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenEdgeAmountIsNan()
             {
                 AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonScript<ushort> script) =>
@@ -60,7 +59,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenEdgeAmountIsNegativeInfinity()
             {
                 AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonScript<ushort> script) =>
@@ -69,7 +68,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenEdgeAmountIsPositiveInfinity()
             {
                 AssertInvalidOperation("Invalid edge amount specified, value must be zero or higher.", (CartoonScript<ushort> script) =>
@@ -78,7 +77,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenNumberOflevelsBelowTwo()
             {
                 AssertInvalidOperation("Invalid number of levels specified, value must be two or higher.", (CartoonScript<ushort> script) =>
@@ -87,7 +86,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenSaturationBelowZero()
             {
                 AssertInvalidOperation("Invalid saturation specified, value must be zero or higher.", (CartoonScript<ushort> script) =>
@@ -96,7 +95,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_p60_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_p60_jpg), (CartoonScript<ushort> script) =>
@@ -105,7 +104,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_p70_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_p70_jpg), (CartoonScript<ushort> script) =>
@@ -114,7 +113,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_p80_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_p80_jpg), (CartoonScript<ushort> script) =>
@@ -123,7 +122,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_n4_p70_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_n4_p70_jpg), (CartoonScript<ushort> script) =>
@@ -133,7 +132,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_n5_p70_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_n5_p70_jpg), (CartoonScript<ushort> script) =>
@@ -143,7 +142,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_e3_p70_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_e3_p70_jpg), (CartoonScript<ushort> script) =>
@@ -153,7 +152,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_e5_p70_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_e5_p70_jpg), (CartoonScript<ushort> script) =>
@@ -163,7 +162,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_m2_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_m2_jpg), CartoonMethod.Method2, (CartoonScript<ushort> script) =>
@@ -171,7 +170,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_m3_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_m3_jpg), CartoonMethod.Method3, (CartoonScript<ushort> script) =>
@@ -179,7 +178,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_m4_jpg()
             {
                 AssertExecute("photo-1h.jpg", nameof(ShouldExecute_m4_jpg), CartoonMethod.Method4, (CartoonScript<ushort> script) =>
@@ -187,7 +186,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_e3_n6_p70_jpg()
             {
                 AssertExecute("oriental_lady.jpg", nameof(ShouldExecute_e3_n6_p70_jpg), (CartoonScript<ushort> script) =>
@@ -198,7 +197,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b120_e3_p80_jpg()
             {
                 AssertExecute("redhat.jpg", nameof(ShouldExecute_b120_e3_p80_jpg), (CartoonScript<ushort> script) =>
@@ -209,7 +208,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_m1_jpg()
             {
                 AssertExecute("obama.jpg", nameof(ShouldExecute_m1_jpg), (CartoonScript<ushort> script) =>
@@ -225,21 +224,21 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     initAction(script);
 
-                    ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+                    var exception = Assert.Throws<InvalidOperationException>(() =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains(expectedMessage, exception.Message);
                 }
             }
 
             private void AssertExecute(string input, string methodName, Action<CartoonScript<ushort>> action)
-            {
-                AssertExecute(input, methodName, CartoonMethod.Method1, action);
-            }
+                => AssertExecute(input, methodName, CartoonMethod.Method1, action);
 
             private void AssertExecute(string input, string methodName, CartoonMethod method, Action<CartoonScript<ushort>> action)
             {
-                string inputFile = GetInputFile(input);
+                var inputFile = GetInputFile(input);
                 /* LosslessCompress(inputFile); */
 
                 using (var image = new MagickImage(inputFile))
@@ -249,7 +248,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
                     using (var scriptOutput = script.Execute(image))
                     {
-                        string outputFile = GetOutputFile(input, methodName);
+                        var outputFile = GetOutputFile(input, methodName);
                         AssertOutput(scriptOutput, outputFile);
                     }
                 }

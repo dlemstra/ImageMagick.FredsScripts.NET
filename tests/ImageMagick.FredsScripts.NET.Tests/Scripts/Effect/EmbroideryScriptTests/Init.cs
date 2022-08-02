@@ -13,7 +13,7 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -21,22 +21,22 @@ namespace ImageMagick.FredsScripts.NET.Tests
     {
         private static void AssertDefaults(EmbroideryScript<ushort> script)
         {
-            Assert.AreEqual(0, script.Angle);
-            Assert.AreEqual(130, script.Azimuth);
-            Assert.AreEqual(null, script.BackgroundColor);
-            Assert.AreEqual(4, script.Bevel);
-            Assert.AreEqual((Percentage)20, script.ColorFuzz);
-            Assert.AreEqual(0, script.Contrast);
-            Assert.AreEqual(30.0, script.Elevation);
-            Assert.AreEqual(2, script.Extent);
-            Assert.AreEqual(20, script.GrayLimit);
-            Assert.AreEqual((Percentage)25, script.Intensity);
-            Assert.AreEqual(100, script.Mix);
-            Assert.AreEqual(8, script.NumberOfColors);
-            Assert.AreEqual(EmbroideryPattern.Linear, script.Pattern);
-            Assert.AreEqual(90, script.Range);
-            Assert.AreEqual(1.0, script.Spread);
-            Assert.AreEqual(2, script.Thickness);
+            Assert.Equal(0, script.Angle);
+            Assert.Equal(130, script.Azimuth);
+            Assert.Null(script.BackgroundColor);
+            Assert.Equal(4, script.Bevel);
+            Assert.Equal((Percentage)20, script.ColorFuzz);
+            Assert.Equal(0, script.Contrast);
+            Assert.Equal(30.0, script.Elevation);
+            Assert.Equal(2, script.Extent);
+            Assert.Equal(20, script.GrayLimit);
+            Assert.Equal((Percentage)25, script.Intensity);
+            Assert.Equal(100, script.Mix);
+            Assert.Equal(8, script.NumberOfColors);
+            Assert.Equal(EmbroideryPattern.Linear, script.Pattern);
+            Assert.Equal(90, script.Range);
+            Assert.Equal(1.0, script.Spread);
+            Assert.Equal(2, script.Thickness);
         }
     }
 }

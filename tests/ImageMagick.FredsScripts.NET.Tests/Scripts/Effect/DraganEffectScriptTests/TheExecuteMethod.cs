@@ -14,25 +14,24 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class DraganEffectScriptTests
     {
-        [TestClass]
         public class TheExecuteMethod : DraganEffectScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenInputIsNull()
             {
                 var factory = new MagickFactory();
                 var script = new DraganEffectScript<ushort>(factory);
 
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () => script.Execute(null));
+                Assert.Throws<ArgumentNullException>("input", () => script.Execute(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenBrightnessBelowZero()
             {
                 AssertInvalidOperation("Invalid brightness specified, value must be zero or higher.", (DraganEffectScript<ushort> script) =>
@@ -41,7 +40,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenContrastBelowMinusTen()
             {
                 AssertInvalidOperation("Invalid contrast specified, the range is -10 to 10.", (DraganEffectScript<ushort> script) =>
@@ -50,7 +49,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenContrastAboveTen()
             {
                 AssertInvalidOperation("Invalid contrast specified, the range is -10 to 10.", (DraganEffectScript<ushort> script) =>
@@ -59,7 +58,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenDarknessIsZero()
             {
                 AssertInvalidOperation("Invalid darkness specified, value must be 1 or higher.", (DraganEffectScript<ushort> script) =>
@@ -68,7 +67,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenSaturationBelowZero()
             {
                 AssertInvalidOperation("Invalid saturation specified, value must be zero or higher.", (DraganEffectScript<ushort> script) =>
@@ -77,7 +76,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b1_c0_d1_s150_r5_jpg()
             {
                 AssertExecute("before1.gif", nameof(ShouldExecute_b1_c0_d1_s150_r5_jpg), (DraganEffectScript<ushort> script) =>
@@ -97,7 +96,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b1p5_cm5_d1_s175_r5_jpg()
             {
                 AssertExecute("before1.gif", nameof(ShouldExecute_b1p5_cm5_d1_s175_r5_jpg), (DraganEffectScript<ushort> script) =>
@@ -109,7 +108,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b1p5_cm5_d2_s175_r5_jpg()
             {
                 AssertExecute("before1.gif", nameof(ShouldExecute_b1p5_cm5_d2_s175_r5_jpg), (DraganEffectScript<ushort> script) =>
@@ -121,7 +120,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b1_cm7p5_d1_s200_r5_jpg()
             {
                 AssertExecute("bluehat.jpg", nameof(ShouldExecute_b1_cm7p5_d1_s200_r5_jpg), (DraganEffectScript<ushort> script) =>
@@ -133,7 +132,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b1_cm7p5_d1p25_s200_r5_jpg()
             {
                 AssertExecute("bluehat.jpg", nameof(ShouldExecute_b1_cm7p5_d1p25_s200_r5_jpg), (DraganEffectScript<ushort> script) =>
@@ -145,7 +144,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b1_cm5_d1_s150_r5_jpg()
             {
                 AssertExecute("CHINA-715-4_small.jpg", nameof(ShouldExecute_b1_cm5_d1_s150_r5_jpg), (DraganEffectScript<ushort> script) =>
@@ -157,7 +156,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b1_cm10_d1_s200_r5_jpg()
             {
                 AssertExecute("CHINA-715-4_small.jpg", nameof(ShouldExecute_b1_cm10_d1_s200_r5_jpg), (DraganEffectScript<ushort> script) =>
@@ -168,7 +167,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_b1_cm5_d1p75_s175_r5_jpg()
             {
                 AssertExecute("mustache.jpg", nameof(ShouldExecute_b1_cm5_d1p75_s175_r5_jpg), (DraganEffectScript<ushort> script) =>
@@ -180,7 +179,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_d3_s100_jpg()
             {
                 AssertExecute("mustache.jpg", nameof(ShouldExecute_d3_s100_jpg), (DraganEffectScript<ushort> script) =>
@@ -199,16 +198,18 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     initAction(script);
 
-                    ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+                    var exception = Assert.Throws<InvalidOperationException>(() =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains(expectedMessage, exception.Message);
                 }
             }
 
             private void AssertExecute(string input, string methodName, Action<DraganEffectScript<ushort>> action)
             {
-                string inputFile = GetInputFile(input);
+                var inputFile = GetInputFile(input);
                 /* LosslessCompress(inputFile); */
 
                 using (var image = new MagickImage(inputFile))
@@ -219,7 +220,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
                     using (var scriptOutput = script.Execute(image))
                     {
-                        string outputFile = GetOutputFile(input, methodName);
+                        var outputFile = GetOutputFile(input, methodName);
                         AssertOutput(scriptOutput, outputFile);
                     }
                 }

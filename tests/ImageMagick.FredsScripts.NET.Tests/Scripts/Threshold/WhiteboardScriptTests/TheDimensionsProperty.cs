@@ -14,16 +14,15 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class WhiteboardScriptTests
     {
-        [TestClass]
         public class TheDimensionsProperty : WhiteboardScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionForInvalidDimension()
             {
                 using (var logo = Images.Logo)
@@ -31,7 +30,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                     var factory = new MagickFactory();
                     var script = new WhiteboardScript<ushort>(factory);
                     script.Dimensions = new MagickGeometry(0, 0);
-                    ExceptionAssert.Throws<InvalidOperationException>(() =>
+                    Assert.Throws<InvalidOperationException>(() =>
                     {
                         script.Execute(logo);
                     });

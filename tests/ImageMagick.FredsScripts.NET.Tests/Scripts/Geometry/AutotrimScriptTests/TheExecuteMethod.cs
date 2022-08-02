@@ -14,25 +14,24 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class AutotrimScriptTests
     {
-        [TestClass]
         public class TheExecuteMethod : AutotrimScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenInputIsNull()
             {
                 var factory = new MagickFactory();
                 var script = new AutotrimScript<ushort>(factory);
 
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () => script.Execute(null));
+                Assert.Throws<ArgumentNullException>("input", () => script.Execute(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenBorderColorLocationBeforeLeftTop()
             {
                 var factory = new MagickFactory();
@@ -42,14 +41,16 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     script.BorderColorLocation = new PointD(-1, -1);
 
-                    ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>("x", "Invalid X coordinate: -1.", () =>
+                    var exception = Assert.Throws<ArgumentOutOfRangeException>("x", () =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains("Invalid X coordinate: -1.", exception.Message);
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenBorderColorLocationAfterBottomRight()
             {
                 var factory = new MagickFactory();
@@ -59,14 +60,16 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     script.BorderColorLocation = new PointD(logo.Width, logo.Height);
 
-                    ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>("x", $"Invalid X coordinate: {logo.Width}.", () =>
+                    var exception = Assert.Throws<ArgumentOutOfRangeException>("x", () =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains($"Invalid X coordinate: {logo.Width}.", exception.Message);
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_zelda3_border()
             {
                 AssertExecuteWithFilename("zelda3_border2w.png", "zelda3_border.png", (AutotrimScript<ushort> script) =>
@@ -88,7 +91,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_zelda3_rot20_border10()
             {
                 AssertExecuteWithFilename("zelda3_rot20_border10.png", "zelda3_rot20_border10.png", (AutotrimScript<ushort> script) =>
@@ -96,7 +99,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f30_png()
             {
                 AssertExecute("zelda3_radborder.png", nameof(ShouldExecute_f30_png), (AutotrimScript<ushort> script) =>
@@ -105,7 +108,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f35_png()
             {
                 AssertExecute("zelda3_radborder.png", nameof(ShouldExecute_f35_png), (AutotrimScript<ushort> script) =>
@@ -114,7 +117,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f40_png()
             {
                 AssertExecute("zelda3_radborder.png", nameof(ShouldExecute_f40_png), (AutotrimScript<ushort> script) =>
@@ -123,7 +126,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f60_png()
             {
                 AssertExecute("zelda3_radborder.png", nameof(ShouldExecute_f60_png), (AutotrimScript<ushort> script) =>
@@ -132,7 +135,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_i_png()
             {
                 AssertExecute("zelda3_rot10.png", nameof(ShouldExecute_i_png), (AutotrimScript<ushort> script) =>
@@ -176,7 +179,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_i_f1_png()
             {
                 AssertExecute("zelda3_rotm20.png", nameof(ShouldExecute_i_f1_png), (AutotrimScript<ushort> script) =>
@@ -186,7 +189,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_logo_png()
             {
                 using (var image = new MagickImage(Images.Logo))
@@ -204,13 +207,13 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
             private void AssertExecute(string input, string methodName, Action<AutotrimScript<ushort>> action)
             {
-                string outputFile = GetOutputFile(input, methodName);
+                var outputFile = GetOutputFile(input, methodName);
                 AssertExecuteWithFilename(input, outputFile, action);
             }
 
             private void AssertExecuteWithFilename(string input, string output, Action<AutotrimScript<ushort>> action)
             {
-                string inputFile = GetInputFile(input);
+                var inputFile = GetInputFile(input);
                 /* LosslessCompress(inputFile); */
 
                 using (var image = new MagickImage(inputFile))

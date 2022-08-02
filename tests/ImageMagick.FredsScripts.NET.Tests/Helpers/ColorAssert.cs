@@ -14,7 +14,8 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Sdk;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -28,10 +29,16 @@ namespace ImageMagick.FredsScripts.NET.Tests
             if (actual == null)
                 throw new InvalidOperationException();
 
-            Assert.AreEqual(expected.R, actual.R, "R is not equal");
-            Assert.AreEqual(expected.G, actual.G, "G is not equal");
-            Assert.AreEqual(expected.B, actual.B, "B is not equal");
-            Assert.AreEqual(expected.A, actual.A, "A is not equal");
+            Equal(expected.R, actual.R, expected, actual, "R");
+            Equal(expected.G, actual.G, expected, actual, "G");
+            Equal(expected.B, actual.B, expected, actual, "B");
+            Equal(expected.A, actual.A, expected, actual, "A");
+        }
+
+        private static void Equal(ushort expected, ushort actual, IMagickColor<ushort> expectedColor, IMagickColor<ushort> actualColor, string channel)
+        {
+            if (actual < expected || actual > expected)
+                throw new XunitException(channel + " is not equal (" + expectedColor.ToString() + " != " + actualColor.ToString() + ") (" + expected + " != " + actual + ")");
         }
     }
 }

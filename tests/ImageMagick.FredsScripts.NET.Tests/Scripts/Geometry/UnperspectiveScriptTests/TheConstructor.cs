@@ -14,32 +14,33 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class UnperspectiveScriptTests
     {
-        [TestClass]
         public class TheConstructor : UnperspectiveScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenFactoryIsNull()
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("factory", () => new UnperspectiveScript<ushort>(null));
+                Assert.Throws<ArgumentNullException>("factory", () => new UnperspectiveScript<ushort>(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionForInvalidUnperspectiveMethod()
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentException>("method", "Invalid unperspective method specified.", () =>
+                var exception = Assert.Throws<ArgumentException>("method", () =>
                 {
                     var factory = new MagickFactory();
                     var script = new UnperspectiveScript<ushort>(factory, (UnperspectiveMethod)42);
                 });
+
+                Assert.Contains("Invalid unperspective method specified.", exception.Message);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldSetTheDefaults()
             {
                 var factory = new MagickFactory();
@@ -48,7 +49,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 AssertDefaults(script, UnperspectiveMethod.Peak);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldSetTheDefaultsForPeakMethod()
             {
                 var method = UnperspectiveMethod.Peak;
@@ -58,7 +59,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 AssertDefaults(script, method);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldSetTheDefaultsForDerivativeMethod()
             {
                 var method = UnperspectiveMethod.Derivative;

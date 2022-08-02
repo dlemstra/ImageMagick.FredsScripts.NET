@@ -14,22 +14,21 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class DraganEffectScriptTests
     {
-        [TestClass]
         public class TheConstructor : DraganEffectScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenFactoryIsNull()
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("factory", () => new DraganEffectScript<ushort>(null));
+                Assert.Throws<ArgumentNullException>("factory", () => new DraganEffectScript<ushort>(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldSetTheDefaults()
             {
                 var factory = new MagickFactory();

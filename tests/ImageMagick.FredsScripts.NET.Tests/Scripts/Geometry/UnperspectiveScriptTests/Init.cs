@@ -13,7 +13,7 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -21,29 +21,29 @@ namespace ImageMagick.FredsScripts.NET.Tests
     {
         private static void AssertDefaults(UnperspectiveScript<ushort> script, UnperspectiveMethod method)
         {
-            Assert.AreEqual(null, script.AspectRatio);
-            Assert.AreEqual(0, script.BorderColorLocation.X);
-            Assert.AreEqual(0, script.BorderColorLocation.Y);
-            Assert.AreEqual(0, script.Blur);
-            Assert.AreEqual(UnperspectiveDefault.EdgeLength, script.Default);
-            Assert.AreEqual(false, script.DisableViewportCrop);
-            Assert.AreEqual(null, script.Height);
-            Assert.AreEqual(10, script.MinLength);
-            Assert.AreEqual(40, script.MaxPeaks);
-            Assert.AreEqual(null, script.Rotation);
-            Assert.AreEqual(null, script.Width);
+            Assert.Null(script.AspectRatio);
+            Assert.Equal(0, script.BorderColorLocation.X);
+            Assert.Equal(0, script.BorderColorLocation.Y);
+            Assert.Equal(0, script.Blur);
+            Assert.Equal(UnperspectiveDefault.EdgeLength, script.Default);
+            Assert.False(script.DisableViewportCrop);
+            Assert.Null(script.Height);
+            Assert.Equal(10, script.MinLength);
+            Assert.Equal(40, script.MaxPeaks);
+            Assert.Null(script.Rotation);
+            Assert.Null(script.Width);
 
             if (method == UnperspectiveMethod.Peak)
             {
-                Assert.AreEqual(5.0, script.Sharpen);
-                Assert.AreEqual(1.0, script.Smooth);
-                Assert.AreEqual(4, script.Threshold);
+                Assert.Equal(5.0, script.Sharpen);
+                Assert.Equal(1.0, script.Smooth);
+                Assert.Equal(4, script.Threshold);
             }
             else
             {
-                Assert.AreEqual(0.0, script.Sharpen);
-                Assert.AreEqual(5.0, script.Smooth);
-                Assert.AreEqual(10, script.Threshold);
+                Assert.Equal(0.0, script.Sharpen);
+                Assert.Equal(5.0, script.Smooth);
+                Assert.Equal(10, script.Threshold);
             }
         }
     }

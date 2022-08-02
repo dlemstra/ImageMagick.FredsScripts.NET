@@ -14,26 +14,25 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class UnperspectiveScriptTests
     {
-        [TestClass]
         public class TheExecuteMethod : UnperspectiveScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenInputIsNull()
             {
                 var factory = new MagickFactory();
                 var script = new UnperspectiveScript<ushort>(factory);
 
                 var overlay = new MagickImage();
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () => script.Execute(null));
+                Assert.Throws<ArgumentNullException>("input", () => script.Execute(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenBorderColorLocationBeforeLeftTop()
             {
                 var factory = new MagickFactory();
@@ -43,14 +42,16 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     script.BorderColorLocation = new PointD(-1, -1);
 
-                    ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>("x", "Invalid X coordinate: -1.", () =>
+                    var exception = Assert.Throws<ArgumentOutOfRangeException>("x", () =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains("Invalid X coordinate: -1.", exception.Message);
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenBorderColorLocationAfterBottomRight()
             {
                 var factory = new MagickFactory();
@@ -60,14 +61,16 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     script.BorderColorLocation = new PointD(logo.Width, logo.Height);
 
-                    ExceptionAssert.ThrowsArgumentException<ArgumentOutOfRangeException>("x", "Invalid X coordinate: " + logo.Width + ".", () =>
+                    var exception = Assert.Throws<ArgumentOutOfRangeException>("x", () =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains("Invalid X coordinate: " + logo.Width + ".", exception.Message);
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenDefaultInvalidValue()
             {
                 AssertInvalidOperation("Invalid default output dimension specified.", (UnperspectiveScript<ushort> script) =>
@@ -76,7 +79,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenMaxPeaksToLow()
             {
                 AssertInvalidOperation("Unable to continue, the number of peaks is higher than 4.", (UnperspectiveScript<ushort> script) =>
@@ -85,7 +88,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenThresholdZero()
             {
                 AssertInvalidOperation("Unable to continue, the number of peaks should be 4.", (UnperspectiveScript<ushort> script) =>
@@ -94,7 +97,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenThresholdToHigh()
             {
                 AssertInvalidOperation("Unable to continue, the number of peaks should be 4.", (UnperspectiveScript<ushort> script) =>
@@ -108,7 +111,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenWidthHeightBothSet()
             {
                 AssertInvalidOperation("Both width and height cannot be specified at the same time.", (UnperspectiveScript<ushort> script) =>
@@ -118,7 +121,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenMinLengthValueToHigh()
             {
                 AssertMinLength(0, 209);
@@ -127,7 +130,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 AssertMinLength(25, 427);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f20_jpg()
             {
                 AssertExecute("mandril2_p30_t30_out.jpg", nameof(ShouldExecute_f20_jpg), (UnperspectiveScript<ushort> script) =>
@@ -146,7 +149,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f20_r270_jpg()
             {
                 AssertExecute("mandril2_p30_t30_r60_zc.jpg", nameof(ShouldExecute_f20_r270_jpg), (UnperspectiveScript<ushort> script) =>
@@ -156,7 +159,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f52_t8_s2_jpg()
             {
                 AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(ShouldExecute_f52_t8_s2_jpg), (UnperspectiveScript<ushort> script) =>
@@ -167,7 +170,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f14_bh_jpg()
             {
                 AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(ShouldExecute_f14_bh_jpg), (UnperspectiveScript<ushort> script) =>
@@ -177,7 +180,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f20_h_jpg()
             {
                 AssertExecute("mandril2_pm30_t30_r30_zc.jpg", nameof(ShouldExecute_f20_h_jpg), (UnperspectiveScript<ushort> script) =>
@@ -187,7 +190,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f20_s2_vc_jpg()
             {
                 AssertExecute("mandril2_round30_p30_t30_out.jpg", nameof(ShouldExecute_f20_s2_vc_jpg), (UnperspectiveScript<ushort> script) =>
@@ -198,7 +201,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f10_jpg()
             {
                 AssertExecute("monet2_p30_t30_r30_out.jpg", nameof(ShouldExecute_f10_jpg), (UnperspectiveScript<ushort> script) =>
@@ -212,7 +215,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f7_vc_jpg()
             {
                 AssertExecute("receipt1.jpg", nameof(ShouldExecute_f7_vc_jpg), (UnperspectiveScript<ushort> script) =>
@@ -222,7 +225,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f20_vc_jpg()
             {
                 AssertExecute("receipt1.jpg", nameof(ShouldExecute_f20_vc_jpg), (UnperspectiveScript<ushort> script) =>
@@ -232,7 +235,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f20_vc_w500_jpg()
             {
                 AssertExecute("receipt1.jpg", nameof(ShouldExecute_f20_vc_w500_jpg), (UnperspectiveScript<ushort> script) =>
@@ -243,7 +246,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f50_jpg()
             {
                 AssertExecute("receipt2.jpg", nameof(ShouldExecute_f50_jpg), (UnperspectiveScript<ushort> script) =>
@@ -252,7 +255,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f50_w200_jpg()
             {
                 AssertExecute("receipt2.jpg", nameof(ShouldExecute_f50_w200_jpg), (UnperspectiveScript<ushort> script) =>
@@ -262,7 +265,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f11_t10_s2_S0_B3_jpg()
             {
                 AssertExecute("textsample_localthresh_m1_r25_b5_white_b20_p30_t30_out.png", nameof(ShouldExecute_f11_t10_s2_S0_B3_jpg), (UnperspectiveScript<ushort> script) =>
@@ -275,7 +278,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f10_derivative_jpg()
             {
                 AssertExecute("redcanoe_p30_t30_out.jpg", nameof(ShouldExecute_f10_derivative_jpg), UnperspectiveMethod.Derivative, (UnperspectiveScript<ushort> script) =>
@@ -284,7 +287,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_a1_b3_h500_S0_t175_m150_jpg()
             {
                 AssertExecute("redcanoe_p30_t30_out.jpg", nameof(ShouldExecute_a1_b3_h500_S0_t175_m150_jpg), UnperspectiveMethod.Derivative, (UnperspectiveScript<ushort> script) =>
@@ -309,17 +312,17 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     image.Rotate(rotation);
 
-                    ExceptionAssert.Throws<InvalidOperationException>("Unable to continue, the edge length is less than 40.", () =>
+                    var exception = Assert.Throws<InvalidOperationException>(() =>
                     {
                         script.Execute(image);
                     });
+
+                    Assert.Contains("Unable to continue, the edge length is less than 40.", exception.Message);
                 }
             }
 
             private static void AssertInvalidOperation(string expectedMessage, Action<UnperspectiveScript<ushort>> initAction)
-            {
-                AssertInvalidOperation(expectedMessage, UnperspectiveMethod.Peak, initAction);
-            }
+                => AssertInvalidOperation(expectedMessage, UnperspectiveMethod.Peak, initAction);
 
             private static void AssertInvalidOperation(string expectedMessage, UnperspectiveMethod method, Action<UnperspectiveScript<ushort>> initAction)
             {
@@ -330,17 +333,17 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     initAction(script);
 
-                    ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+                    var exception = Assert.Throws<InvalidOperationException>(() =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains(expectedMessage, exception.Message);
                 }
             }
 
             private void AssertExecute(string input, string methodName, Action<UnperspectiveScript<ushort>> action)
-            {
-                AssertExecute(input, methodName, UnperspectiveMethod.Peak, action);
-            }
+                => AssertExecute(input, methodName, UnperspectiveMethod.Peak, action);
 
             private void AssertExecute(string input, string methodName, UnperspectiveMethod method, Action<UnperspectiveScript<ushort>> action)
             {
@@ -355,7 +358,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
                     using (var scriptOutput = script.Execute(image))
                     {
-                        string outputFile = GetOutputFile(inputFile, methodName);
+                        var outputFile = GetOutputFile(inputFile, methodName);
                         AssertOutput(scriptOutput, outputFile);
                     }
                 }

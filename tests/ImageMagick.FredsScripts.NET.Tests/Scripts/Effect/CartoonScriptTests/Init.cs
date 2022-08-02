@@ -13,7 +13,7 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -21,11 +21,11 @@ namespace ImageMagick.FredsScripts.NET.Tests
     {
         private static void AssertDefaults(CartoonScript<ushort> script)
         {
-            Assert.AreEqual((Percentage)70, script.Pattern);
-            Assert.AreEqual(6, script.NumberOflevels);
-            Assert.AreEqual(4, script.EdgeAmount);
-            Assert.AreEqual((Percentage)100, script.Brightness);
-            Assert.AreEqual((Percentage)150, script.Saturation);
+            Assert.Equal((Percentage)70, script.Pattern);
+            Assert.Equal(6, script.NumberOflevels);
+            Assert.Equal(4, script.EdgeAmount);
+            Assert.Equal((Percentage)100, script.Brightness);
+            Assert.Equal((Percentage)150, script.Saturation);
         }
     }
 }

@@ -13,16 +13,15 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class UnperspectiveScriptTests
     {
-        [TestClass]
         public class TheResetMethod : UnperspectiveScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldSetValueToTheDefaultsForPeakMethod()
             {
                 var method = UnperspectiveMethod.Peak;
@@ -33,7 +32,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 AssertDefaults(script, method);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldSetValueToTheDefaultsForDerivativeMethod()
             {
                 var method = UnperspectiveMethod.Derivative;

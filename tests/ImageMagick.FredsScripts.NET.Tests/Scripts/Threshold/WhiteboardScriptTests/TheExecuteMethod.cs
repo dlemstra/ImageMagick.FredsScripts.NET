@@ -14,25 +14,24 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class WhiteboardScriptTests
     {
-        [TestClass]
         public class TheExecuteMethod : WhiteboardScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenInputIsNull()
             {
                 var factory = new MagickFactory();
                 var script = new WhiteboardScript<ushort>(factory);
 
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () => script.Execute(null));
+                Assert.Throws<ArgumentNullException>("input", () => script.Execute(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_coords_a_m2_f25_o3_none_jpg()
             {
                 AssertExecute("whiteboard.jpg", nameof(ShouldExecute_coords_a_m2_f25_o3_none_jpg), (WhiteboardScript<ushort> script) =>
@@ -47,7 +46,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_coords_a_m2_f25_o3_both_jpg()
             {
                 AssertExecute("whiteboard.jpg", nameof(ShouldExecute_coords_a_m2_f25_o3_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -62,7 +61,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_coords_a_m2_f25_t60_o3_both_jpg()
             {
                 AssertExecute("whiteboard.jpg", nameof(ShouldExecute_coords_a_m2_f25_t60_o3_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -78,7 +77,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f12_o3_none_jpg()
             {
                 AssertExecute("whiteboard1_35pct.jpg", nameof(ShouldExecute_f12_o3_none_jpg), (WhiteboardScript<ushort> script) =>
@@ -89,7 +88,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f12_o3_both_jpg()
             {
                 AssertExecute("whiteboard1_35pct.jpg", nameof(ShouldExecute_f12_o3_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -100,7 +99,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f12_o3_t30_both_jpg()
             {
                 AssertExecute("whiteboard1_35pct.jpg", nameof(ShouldExecute_f12_o3_t30_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -112,7 +111,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f12_o3_t30_s1_both_jpg()
             {
                 AssertExecute("whiteboard1_35pct.jpg", nameof(ShouldExecute_f12_o3_t30_s1_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -125,7 +124,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_coords_a_f12_o7_t30_both_jpg()
             {
                 AssertExecute("whiteboard2.gif", nameof(ShouldExecute_coords_a_f12_o7_t30_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -140,7 +139,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_coords_f12_o7_t30_both_jpg()
             {
                 AssertExecute("whiteboard2.gif", nameof(ShouldExecute_coords_f12_o7_t30_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -154,7 +153,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_coords_a_f12_o3_t40_both_jpg()
             {
                 AssertExecute("WhiteboardBlog.jpg", nameof(ShouldExecute_coords_a_f12_o3_t40_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -169,7 +168,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_coords_f12_o3_t40_both_jpg()
             {
                 AssertExecute("WhiteboardBlog.jpg", nameof(ShouldExecute_coords_f12_o3_t40_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -183,7 +182,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_coords_d300x_jpg()
             {
                 AssertExecute("WhiteboardBlog.jpg", nameof(ShouldExecute_coords_d300x_jpg), (WhiteboardScript<ushort> script) =>
@@ -193,7 +192,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_f12_o4_both_jpg()
             {
                 AssertExecute("whiteboardScenario1.jpg", nameof(ShouldExecute_f12_o4_both_jpg), (WhiteboardScript<ushort> script) =>
@@ -204,7 +203,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_d300x_S100_stretch_jpg()
             {
                 AssertExecute("whiteboardScenario1.jpg", nameof(ShouldExecute_d300x_S100_stretch_jpg), (WhiteboardScript<ushort> script) =>
@@ -215,7 +214,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_dx300_sm1_whiteBalance_jpg()
             {
                 AssertExecute("whiteboardScenario1.jpg", nameof(ShouldExecute_dx300_sm1_whiteBalance_jpg), (WhiteboardScript<ushort> script) =>
@@ -226,7 +225,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_d300x300_jpg()
             {
                 AssertExecute("whiteboardScenario1.jpg", nameof(ShouldExecute_d300x300_jpg), (WhiteboardScript<ushort> script) =>
@@ -235,7 +234,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_m0_75_jpg()
             {
                 AssertExecute("whiteboardScenario1.jpg", nameof(ShouldExecute_m0_75_jpg), (WhiteboardScript<ushort> script) =>
@@ -246,7 +245,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
             private void AssertExecute(string input, string methodName, Action<WhiteboardScript<ushort>> action)
             {
-                string inputFile = GetInputFile(input);
+                var inputFile = GetInputFile(input);
 
                 using (var image = new MagickImage(inputFile))
                 {
@@ -256,7 +255,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
                     using (var scriptOutput = script.Execute(image))
                     {
-                        string outputFile = GetOutputFile(input, methodName);
+                        var outputFile = GetOutputFile(input, methodName);
                         AssertOutput(scriptOutput, outputFile);
                     }
                 }

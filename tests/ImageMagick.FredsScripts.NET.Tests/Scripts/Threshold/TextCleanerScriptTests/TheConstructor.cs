@@ -14,22 +14,21 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class TextCleanerScriptTests
     {
-        [TestClass]
         public class TheConstructor : TextCleanerScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenFactoryIsNull()
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("factory", () => new TextCleanerScript<ushort>(null));
+                Assert.Throws<ArgumentNullException>("factory", () => new TextCleanerScript<ushort>(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldSetTheDefaults()
             {
                 var factory = new MagickFactory();

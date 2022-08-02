@@ -14,16 +14,15 @@
 // http://www.imagemagick.org/script/license.php
 
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class UnperspectiveScriptTests
     {
-        [TestClass]
         public class ThePerceptibleReciprocalMethod
         {
-            [TestMethod]
+            [Fact]
             public void ShoudlReturnPositiveInfinityForNegativeNan()
             {
                 var factory = new MagickFactory();
@@ -33,7 +32,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 var method = type.GetMethod("PerceptibleReciprocal", BindingFlags.Static | BindingFlags.NonPublic);
 
                 var result = method.Invoke(null, new object[] { -double.NaN });
-                Assert.AreEqual(result, double.PositiveInfinity);
+                Assert.Equal(result, double.PositiveInfinity);
             }
         }
     }

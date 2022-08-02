@@ -13,7 +13,7 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -26,15 +26,15 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
         private static void AssertDefaults(TshirtScript<ushort> script)
         {
-            Assert.AreEqual(2.0, script.AntiAlias);
-            Assert.AreEqual(1.0, script.Blur);
-            Assert.AreEqual(10, script.Displace);
-            Assert.AreEqual(TshirtFit.None, script.Fit);
-            Assert.AreEqual(Gravity.Center, script.Gravity);
-            Assert.AreEqual(20, script.Lighting);
-            Assert.AreEqual(0, script.Rotation);
-            Assert.AreEqual(1.0, script.Sharpen);
-            Assert.AreEqual(0, script.VerticalShift);
+            Assert.Equal(2.0, script.AntiAlias);
+            Assert.Equal(1.0, script.Blur);
+            Assert.Equal(10, script.Displace);
+            Assert.Equal(TshirtFit.None, script.Fit);
+            Assert.Equal(Gravity.Center, script.Gravity);
+            Assert.Equal(20, script.Lighting);
+            Assert.Equal(0, script.Rotation);
+            Assert.Equal(1.0, script.Sharpen);
+            Assert.Equal(0, script.VerticalShift);
         }
     }
 }

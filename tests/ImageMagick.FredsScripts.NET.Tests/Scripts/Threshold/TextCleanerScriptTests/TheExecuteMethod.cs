@@ -14,26 +14,25 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class TextCleanerScriptTests
     {
-        [TestClass]
         public class TheExecuteMethod : TextCleanerScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenInputIsNull()
             {
                 var factory = new MagickFactory();
                 var script = new TextCleanerScript<ushort>(factory);
 
                 var overlay = new MagickImage();
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () => script.Execute(null));
+                Assert.Throws<ArgumentNullException>("input", () => script.Execute(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenAdaptiveBlurBelowZero()
             {
                 AssertInvalidOperation("Invalid adaptive blur specified, value must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -42,7 +41,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenCropOffsetBottomBelowZero()
             {
                 AssertInvalidOperation("Invalid crop offset specified, values must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -51,7 +50,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenCropOffsetLeftBelowZero()
             {
                 AssertInvalidOperation("Invalid crop offset specified, values must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -60,7 +59,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenCropOffsetRightBelowZero()
             {
                 AssertInvalidOperation("Invalid crop offset specified, values must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -69,7 +68,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenCropOffsetTopBelowZero()
             {
                 AssertInvalidOperation("Invalid crop offset specified, values must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -78,7 +77,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenFilterSizeBelowZero()
             {
                 AssertInvalidOperation("Invalid filter size specified, value must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -87,7 +86,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenPaddingBelowZero()
             {
                 AssertInvalidOperation("Invalid padding specified, value must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -96,7 +95,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenSharpenBelowZero()
             {
                 AssertInvalidOperation("Invalid sharpen specified, value must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -105,7 +104,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenSaturationBelowZero()
             {
                 AssertInvalidOperation("Invalid saturation specified, value must be zero or higher.", (TextCleanerScript<ushort> script) =>
@@ -114,7 +113,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenSmoothingThresholdAbove100()
             {
                 AssertInvalidOperation("Invalid smoothing threshold specified, value must be between zero and 100.", (TextCleanerScript<ushort> script) =>
@@ -123,7 +122,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenSmoothingThresholdMinusOneOrLower()
             {
                 AssertInvalidOperation("Invalid smoothing threshold specified, value must be between zero and 100.", (TextCleanerScript<ushort> script) =>
@@ -132,7 +131,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_none_f15_o20_jpg()
             {
                 AssertExecute("abbott2.jpg", nameof(ShouldExecute_g_none_f15_o20_jpg), (TextCleanerScript<ushort> script) =>
@@ -144,7 +143,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_stretch_f15_o20_jpg()
             {
                 AssertExecute("abbott2.jpg", nameof(ShouldExecute_g_stretch_f15_o20_jpg), (TextCleanerScript<ushort> script) =>
@@ -156,7 +155,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_stretch_f25_o20_jpg()
             {
                 AssertExecute("abbott2.jpg", nameof(ShouldExecute_g_stretch_f25_o20_jpg), (TextCleanerScript<ushort> script) =>
@@ -168,7 +167,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_stretch_f25_o20_s1_jpg()
             {
                 AssertExecute("abbott2.jpg", nameof(ShouldExecute_g_stretch_f25_o20_s1_jpg), (TextCleanerScript<ushort> script) =>
@@ -181,7 +180,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_stretch_f25_o20_t30_s1_u_T_p20_jpg()
             {
                 AssertExecute("abbott2.jpg", nameof(ShouldExecute_g_stretch_f25_o20_t30_s1_u_T_p20_jpg), (TextCleanerScript<ushort> script) =>
@@ -197,7 +196,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20_jpg()
             {
                 AssertExecute("brscan_original_r90.jpg", nameof(ShouldExecute_c_0x50x0x0_g_normalize_f15_o10_s2_u_T_p20_jpg), (TextCleanerScript<ushort> script) =>
@@ -214,7 +213,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_none_f15_o10_jpg()
             {
                 AssertExecute("brscan_original_r90.jpg", nameof(ShouldExecute_g_none_f15_o10_jpg), (TextCleanerScript<ushort> script) =>
@@ -226,7 +225,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_normalize_f15_o10_jpg()
             {
                 AssertExecute("brscan_original_r90.jpg", nameof(ShouldExecute_g_normalize_f15_o10_jpg), (TextCleanerScript<ushort> script) =>
@@ -238,7 +237,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_normalize_f15_o10_s1_jpg()
             {
                 AssertExecute("brscan_original_r90.jpg", nameof(ShouldExecute_g_normalize_f15_o10_s1_jpg), (TextCleanerScript<ushort> script) =>
@@ -251,7 +250,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_norm_f15_o5_S200_jpg()
             {
                 AssertExecute("congress.jpg", nameof(ShouldExecute_norm_f15_o5_S200_jpg), (TextCleanerScript<ushort> script) =>
@@ -263,7 +262,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_norm_f15_o5_S200_s1_jpg()
             {
                 AssertExecute("congress.jpg", nameof(ShouldExecute_norm_f15_o5_S200_s1_jpg), (TextCleanerScript<ushort> script) =>
@@ -276,7 +275,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_norm_f15_o5_S400_jpg()
             {
                 AssertExecute("congress.jpg", nameof(ShouldExecute_norm_f15_o5_S400_jpg), (TextCleanerScript<ushort> script) =>
@@ -289,7 +288,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_stretch_f25_o10_u_s1_T_p10_jpg()
             {
                 AssertExecute("crankshaft.jpg", nameof(ShouldExecute_g_stretch_f25_o10_u_s1_T_p10_jpg), (TextCleanerScript<ushort> script) =>
@@ -306,7 +305,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_stretch_f25_o5_s1_jpg()
             {
                 AssertExecute("railways.jpg", nameof(ShouldExecute_g_stretch_f25_o5_s1_jpg), (TextCleanerScript<ushort> script) =>
@@ -330,7 +329,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_a2_S100_st50_rc_jpg()
             {
                 AssertExecute("rfid.jpg", nameof(ShouldExecute_a2_S100_st50_rc_jpg), (TextCleanerScript<ushort> script) =>
@@ -342,7 +341,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_f25_o5_s1_rcc_jpg()
             {
                 AssertExecute("rfid.jpg", nameof(ShouldExecute_g_f25_o5_s1_rcc_jpg), (TextCleanerScript<ushort> script) =>
@@ -356,7 +355,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_stretch_f15_o5_s1_jpg()
             {
                 AssertExecute("telegram.jpg", nameof(ShouldExecute_g_stretch_f15_o5_s1_jpg), (TextCleanerScript<ushort> script) =>
@@ -369,7 +368,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_g_stretch_f25_o10_s1_jpg()
             {
                 AssertExecute("twinkle.jpg", nameof(ShouldExecute_g_stretch_f25_o10_s1_jpg), (TextCleanerScript<ushort> script) =>
@@ -392,16 +391,18 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 {
                     initAction(script);
 
-                    ExceptionAssert.Throws<InvalidOperationException>(expectedMessage, () =>
+                    var exception = Assert.Throws<InvalidOperationException>(() =>
                     {
                         script.Execute(logo);
                     });
+
+                    Assert.Contains(expectedMessage, exception.Message);
                 }
             }
 
             private void AssertExecute(string input, string methodName, Action<TextCleanerScript<ushort>> action)
             {
-                string inputFile = GetInputFile(input);
+                var inputFile = GetInputFile(input);
                 /* LosslessCompress(inputFile); */
 
                 using (var image = new MagickImage(inputFile))
@@ -412,7 +413,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
                     using (var scriptOutput = script.Execute(image))
                     {
-                        string outputFile = GetOutputFile(input, methodName);
+                        var outputFile = GetOutputFile(input, methodName);
                         AssertOutput(scriptOutput, outputFile);
                     }
                 }

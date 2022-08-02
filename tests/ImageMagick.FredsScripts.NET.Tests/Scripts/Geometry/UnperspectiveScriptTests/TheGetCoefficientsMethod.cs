@@ -15,23 +15,22 @@
 
 using System;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class UnperspectiveScriptTests
     {
-        [TestClass]
         public class TheGetCoefficientsMethod
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionForUnsolvableMatrix()
             {
-                ShouldThrowExceptionForUnsolvableMatrix(new double[] { 1, 2, 3, 4 });
-                ShouldThrowExceptionForUnsolvableMatrix(new double[] { -4, double.NaN, double.NaN, double.NaN });
+                ShouldThrowExceptionForUnsolvableMatrixPrivate(new double[] { 1, 2, 3, 4 });
+                ShouldThrowExceptionForUnsolvableMatrixPrivate(new double[] { -4, double.NaN, double.NaN, double.NaN });
             }
 
-            private static void ShouldThrowExceptionForUnsolvableMatrix(double[] arguments)
+            private static void ShouldThrowExceptionForUnsolvableMatrixPrivate(double[] arguments)
             {
                 var factory = new MagickFactory();
                 var script = new UnperspectiveScript<ushort>(factory);
@@ -39,7 +38,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 var type = script.GetType();
                 var method = type.GetMethod("GetCoefficients", BindingFlags.Static | BindingFlags.NonPublic, null, new Type[] { typeof(double[]) }, null);
 
-                ExceptionAssert.Throws<InvalidOperationException>("Unsolvable matrix detected.", () =>
+                var exception = Assert.Throws<InvalidOperationException>(() =>
                 {
                     try
                     {
@@ -50,6 +49,8 @@ namespace ImageMagick.FredsScripts.NET.Tests
                         throw ex.InnerException;
                     }
                 });
+
+                Assert.Contains("Unsolvable matrix detected.", exception.Message);
             }
         }
     }

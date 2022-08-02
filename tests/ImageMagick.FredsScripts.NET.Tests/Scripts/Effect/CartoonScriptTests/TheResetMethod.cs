@@ -13,16 +13,15 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class CartoonScriptTests
     {
-        [TestClass]
         public class TheResetMethod : CartoonScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldSetValueToTheDefaults()
             {
                 var script = new CartoonScript<ushort>

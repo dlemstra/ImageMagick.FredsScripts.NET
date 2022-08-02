@@ -13,7 +13,7 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -21,24 +21,24 @@ namespace ImageMagick.FredsScripts.NET.Tests
     {
         private static void AssertDefaults(TextCleanerScript<ushort> script)
         {
-            Assert.AreEqual(0.0, script.AdaptiveBlur);
+            Assert.Equal(0.0, script.AdaptiveBlur);
             ColorAssert.AreEqual(new MagickColor("white"), script.BackgroundColor);
-            Assert.AreEqual(0, script.CropOffset.Left);
-            Assert.AreEqual(0, script.CropOffset.Top);
-            Assert.AreEqual(0, script.CropOffset.Right);
-            Assert.AreEqual(0, script.CropOffset.Bottom);
-            Assert.AreEqual(TextCleanerEnhance.Stretch, script.Enhance);
-            Assert.AreEqual((Percentage)5, script.FilterOffset);
-            Assert.AreEqual(15, script.FilterSize);
-            Assert.AreEqual(TextCleanerLayout.Portrait, script.Layout);
-            Assert.AreEqual(false, script.MakeGray);
-            Assert.AreEqual(0, script.Padding);
-            Assert.AreEqual(TextCleanerRotation.None, script.Rotation);
-            Assert.AreEqual((Percentage)200, script.Saturation);
-            Assert.AreEqual(0.0, script.Sharpen);
-            Assert.AreEqual(null, script.SmoothingThreshold);
-            Assert.AreEqual(false, script.Trim);
-            Assert.AreEqual(false, script.Unrotate);
+            Assert.Equal(0, script.CropOffset.Left);
+            Assert.Equal(0, script.CropOffset.Top);
+            Assert.Equal(0, script.CropOffset.Right);
+            Assert.Equal(0, script.CropOffset.Bottom);
+            Assert.Equal(TextCleanerEnhance.Stretch, script.Enhance);
+            Assert.Equal((Percentage)5, script.FilterOffset);
+            Assert.Equal(15, script.FilterSize);
+            Assert.Equal(TextCleanerLayout.Portrait, script.Layout);
+            Assert.False(script.MakeGray);
+            Assert.Equal(0, script.Padding);
+            Assert.Equal(TextCleanerRotation.None, script.Rotation);
+            Assert.Equal((Percentage)200, script.Saturation);
+            Assert.Equal(0.0, script.Sharpen);
+            Assert.Null(script.SmoothingThreshold);
+            Assert.False(script.Trim);
+            Assert.False(script.Unrotate);
         }
     }
 }

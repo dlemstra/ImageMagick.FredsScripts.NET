@@ -14,22 +14,21 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class EmbroideryScriptTests
     {
-        [TestClass]
         public class TheConstructor : EmbroideryScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenFactoryIsNull()
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("factory", () => new EmbroideryScript<ushort>(null));
+                Assert.Throws<ArgumentNullException>("factory", () => new EmbroideryScript<ushort>(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldSetTheDefaults()
             {
                 var factory = new MagickFactory();

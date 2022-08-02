@@ -14,53 +14,52 @@
 // http://www.imagemagick.org/script/license.php
 
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class UnperspectiveScriptTests
     {
-        [TestClass]
         public class TheGetDimensionsMethod
         {
-            [TestMethod]
+            [Fact]
             public void ShouldReturnCorrectGeometryForUnperspectiveEdgeLength()
             {
                 var geometry = GetDimensions(UnperspectiveDefault.EdgeLength);
 
-                Assert.AreEqual(new MagickGeometry(1006, 670), geometry);
+                Assert.Equal(new MagickGeometry(1006, 670), geometry);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldReturnCorrectGeometryForUnperspectiveBoundingBoxHeight()
             {
                 var geometry = GetDimensions(UnperspectiveDefault.BoundingBoxHeight);
 
-                Assert.AreEqual(new MagickGeometry(1200, 800), geometry);
+                Assert.Equal(new MagickGeometry(1200, 800), geometry);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldReturnCorrectGeometryForUnperspectiveBoundingBoxWidth()
             {
                 var geometry = GetDimensions(UnperspectiveDefault.BoundingBoxWidth);
 
-                Assert.AreEqual(new MagickGeometry(800, 533), geometry);
+                Assert.Equal(new MagickGeometry(800, 533), geometry);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldReturnCorrectGeometryForUnperspectiveHeight()
             {
                 var geometry = GetDimensions(UnperspectiveDefault.Height);
 
-                Assert.AreEqual(new MagickGeometry(1500, 1000), geometry);
+                Assert.Equal(new MagickGeometry(1500, 1000), geometry);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldReturnCorrectGeometryForUnperspectiveWidth()
             {
                 var geometry = GetDimensions(UnperspectiveDefault.Width);
 
-                Assert.AreEqual(new MagickGeometry(1000, 666), geometry);
+                Assert.Equal(new MagickGeometry(1000, 666), geometry);
             }
 
             private static MagickGeometry GetDimensions(UnperspectiveDefault value)

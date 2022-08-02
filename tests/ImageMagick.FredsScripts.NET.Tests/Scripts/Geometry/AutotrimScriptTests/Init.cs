@@ -13,7 +13,7 @@
 // It is also subject, in a subordinate manner, to the ImageMagick license, which can be found at:
 // http://www.imagemagick.org/script/license.php
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
@@ -21,14 +21,14 @@ namespace ImageMagick.FredsScripts.NET.Tests
     {
         private static void AssertDefaults(AutotrimScript<ushort> script)
         {
-            Assert.AreEqual(0, script.BorderColorLocation.X);
-            Assert.AreEqual(0, script.BorderColorLocation.Y);
-            Assert.AreEqual((Percentage)0, script.ColorFuzz);
-            Assert.AreEqual(false, script.InnerTrim);
-            Assert.AreEqual(0, script.PixelShift.Left);
-            Assert.AreEqual(0, script.PixelShift.Top);
-            Assert.AreEqual(0, script.PixelShift.Right);
-            Assert.AreEqual(0, script.PixelShift.Bottom);
+            Assert.Equal(0, script.BorderColorLocation.X);
+            Assert.Equal(0, script.BorderColorLocation.Y);
+            Assert.Equal((Percentage)0, script.ColorFuzz);
+            Assert.False(script.InnerTrim);
+            Assert.Equal(0, script.PixelShift.Left);
+            Assert.Equal(0, script.PixelShift.Top);
+            Assert.Equal(0, script.PixelShift.Right);
+            Assert.Equal(0, script.PixelShift.Bottom);
         }
     }
 }

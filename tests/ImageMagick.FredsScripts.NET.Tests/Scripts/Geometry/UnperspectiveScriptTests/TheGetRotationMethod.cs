@@ -14,25 +14,24 @@
 // http://www.imagemagick.org/script/license.php
 
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class UnperspectiveScriptTests
     {
-        [TestClass]
         public class TheGetRotationMethod
         {
-            [TestMethod]
+            [Fact]
             public void ShouldReturnCorrectRotationForGeometry10x10()
             {
-                ShouldReturnCorrectRotationForGeometry10x10(4, 6, UnperspectiveRotation.Rotate270);
-                ShouldReturnCorrectRotationForGeometry10x10(6, 6, UnperspectiveRotation.Rotate180);
-                ShouldReturnCorrectRotationForGeometry10x10(6, 4, UnperspectiveRotation.Rotate90);
-                ShouldReturnCorrectRotationForGeometry10x10(4, 4, UnperspectiveRotation.None);
+                ShouldReturnCorrectRotationForGeometry10x10Private(4, 6, UnperspectiveRotation.Rotate270);
+                ShouldReturnCorrectRotationForGeometry10x10Private(6, 6, UnperspectiveRotation.Rotate180);
+                ShouldReturnCorrectRotationForGeometry10x10Private(6, 4, UnperspectiveRotation.Rotate90);
+                ShouldReturnCorrectRotationForGeometry10x10Private(4, 4, UnperspectiveRotation.None);
             }
 
-            private static void ShouldReturnCorrectRotationForGeometry10x10(int x, int y, UnperspectiveRotation expectedRotation)
+            private static void ShouldReturnCorrectRotationForGeometry10x10Private(int x, int y, UnperspectiveRotation expectedRotation)
             {
                 var factory = new MagickFactory();
                 var script = new UnperspectiveScript<ushort>(factory);
@@ -40,10 +39,10 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 var type = script.GetType();
                 var method = type.GetMethod("GetRotation", BindingFlags.Instance | BindingFlags.NonPublic);
 
-                using (MagickImage image = new MagickImage(MagickColors.Fuchsia, 10, 10))
+                using (var image = new MagickImage(MagickColors.Fuchsia, 10, 10))
                 {
                     var result = method.Invoke(script, new object[] { new PointD[] { new PointD(x, y) }, image });
-                    Assert.AreEqual(expectedRotation, result);
+                    Assert.Equal(expectedRotation, result);
                 }
             }
         }

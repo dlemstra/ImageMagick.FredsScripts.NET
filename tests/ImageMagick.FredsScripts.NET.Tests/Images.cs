@@ -18,8 +18,6 @@ namespace ImageMagick.FredsScripts.NET.Tests
     internal static class Images
     {
         public static MagickImage Logo
-        {
-            get => new MagickImage("logo:");
-        }
+            => new MagickImage("logo:");
     }
 }

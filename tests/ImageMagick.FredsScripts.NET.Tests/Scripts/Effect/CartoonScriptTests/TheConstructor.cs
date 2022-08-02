@@ -14,16 +14,15 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class CartoonScriptTests
     {
-        [TestClass]
         public class TheConstructor : CartoonScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldSetTheDefaults()
             {
                 var script = new CartoonScript<ushort>();
@@ -31,13 +30,15 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 AssertDefaults(script);
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenMethodIsInvalid()
             {
-                ExceptionAssert.ThrowsArgumentException<ArgumentException>("method", "Invalid cartoon method specified.", () =>
+                var exception = Assert.Throws<ArgumentException>("method", () =>
                 {
                     new CartoonScript<ushort>((CartoonMethod)42);
                 });
+
+                Assert.Contains("Invalid cartoon method specified.", exception.Message);
             }
         }
     }

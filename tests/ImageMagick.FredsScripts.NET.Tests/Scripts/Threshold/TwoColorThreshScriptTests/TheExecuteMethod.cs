@@ -14,80 +14,79 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace ImageMagick.FredsScripts.NET.Tests
 {
     public partial class TwoColorThreshScriptTests
     {
-        [TestClass]
         public class TheExecuteMethod : TwoColorThreshScriptTests
         {
-            [TestMethod]
+            [Fact]
             public void ShouldThrowExceptionWhenInputIsNull()
             {
                 var factory = new MagickFactory();
                 var script = new TwoColorThreshScript<ushort>(factory);
 
                 var overlay = new MagickImage();
-                ExceptionAssert.ThrowsArgumentException<ArgumentNullException>("input", () => script.Execute(null));
+                Assert.Throws<ArgumentNullException>("input", () => script.Execute(null));
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_blocks()
             {
                 AssertExecute("blocks.gif");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_blood()
             {
                 AssertExecute("blood.jpg");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_fingerprint()
             {
                 AssertExecute("fingerprint.jpg");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_flower()
             {
                 AssertExecute("flower.jpg");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_house()
             {
                 AssertExecute("house.jpg");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_kanji()
             {
                 AssertExecute("kanji.jpg");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_parts()
             {
                 AssertExecute("parts.gif");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_rice()
             {
                 AssertExecute("rice.jpg");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_tank()
             {
                 AssertExecute("tank.jpg");
             }
 
-            [TestMethod]
+            [Fact]
             public void ShouldExecute_textsample()
             {
                 AssertExecute("textsample.jpg");
@@ -95,10 +94,10 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
             private void AssertExecute(string input)
             {
-                string inputFile = GetInputFile(input);
+                var inputFile = GetInputFile(input);
                 /* LosslessCompress(inputFile); */
 
-                string output = input.Replace(".jpg", ".gif");
+                var output = input.Replace(".jpg", ".gif");
 
                 using (var image = new MagickImage(inputFile))
                 {
