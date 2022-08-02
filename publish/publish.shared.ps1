@@ -17,11 +17,11 @@ $github = "https://github.com/dlemstra/ImageMagick.FredsScripts.NET"
 
 function loadScripts()
 {
-    $path = FullPath "src\ImageMagick.FredsScripts.NET\bin\Release\net40\ImageMagick.FredsScripts.NET.xml"
+    $path = FullPath "src\ImageMagick.FredsScripts.NET\bin\Release\net462\ImageMagick.FredsScripts.NET.xml"
     $documentation = ([xml](Get-Content $path)).doc.members
 
     $suffix = "Script``1"
-    $assembly = [System.Reflection.Assembly]::LoadFrom("..\src\ImageMagick.FredsScripts.NET\bin\Release\net40\ImageMagick.FredsScripts.NET.dll")
+    $assembly = [System.Reflection.Assembly]::LoadFrom("..\src\ImageMagick.FredsScripts.NET\bin\Release\net462\ImageMagick.FredsScripts.NET.dll")
     $types = $assembly.GetTypes() | Where { $_.Name.EndsWith($suffix) }
 
     $src = FullPath "src\ImageMagick.FredsScripts.NET"
