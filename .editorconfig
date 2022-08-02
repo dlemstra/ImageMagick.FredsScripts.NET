@@ -1,0 +1,53 @@
+root = true
+
+[*.{cmd,cs,md,nuspec,ps1,sh,yml}]
+
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{csproj,nuspec,props,yml}]
+
+indent_size = 2
+tab_width = 2
+
+[*.{cs,ps1,sh}]
+
+indent_size = 4
+tab_width = 4
+
+[*.cs]
+
+csharp_prefer_simple_using_statement = false
+csharp_prefer_static_local_function = true: rror
+
+dotnet_sort_system_directives_first = true:error
+
+csharp_style_implicit_object_creation_when_type_is_apparent = false:error
+
+csharp_style_pattern_matching_over_as_with_null_check = true:error
+
+csharp_style_prefer_range_operator = false
+dotnet_style_prefer_simplified_boolean_expressions = true:error
+csharp_style_prefer_switch_expression = true:error
+
+dotnet_style_predefined_type_for_locals_parameters_members = true:error
+
+dotnet_style_qualification_for_event = false:error
+dotnet_style_qualification_for_field = false:error
+dotnet_style_qualification_for_method = false:error
+dotnet_style_qualification_for_property = false:error
+
+csharp_style_var_for_built_in_types = true:error
+csharp_style_var_when_type_is_apparent = true:error
+csharp_style_var_elsewhere = true:error
+
+csharp_style_unused_value_assignment_preference = true:error
+
+dotnet_naming_rule.camel_case_for_private_internal_fields.severity = suggestion
+dotnet_naming_rule.camel_case_for_private_internal_fields.symbols  = private_internal_fields
+dotnet_naming_rule.camel_case_for_private_internal_fields.style    = camel_case_underscore_style
+dotnet_naming_symbols.private_internal_fields.applicable_kinds = field
+dotnet_naming_symbols.private_internal_fields.applicable_accessibilities = private
+dotnet_naming_style.camel_case_underscore_style.required_prefix = _
+dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
