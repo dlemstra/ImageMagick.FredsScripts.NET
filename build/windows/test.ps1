@@ -16,7 +16,7 @@
 function testImageMagickFredsScriptsNET() {
     $vstest = "$($env:VSINSTALLDIR)\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
 
-    $folder = fullPath "tests\ImageMagick.FredsScripts.NET.Tests\bin\x64\Test\net45"
+    $folder = fullPath "tests\ImageMagick.FredsScripts.NET.Tests\bin\x64\Test\net462"
     $fileName = "$folder\ImageMagick.FredsScripts.NET.Tests.dll"
 
     & $vstest $fileName /platform:x64 /TestAdapterPath:$folder
