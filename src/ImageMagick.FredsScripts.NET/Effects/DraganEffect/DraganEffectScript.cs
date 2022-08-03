@@ -138,8 +138,10 @@ namespace ImageMagick.FredsScripts
             if (Contrast == 0.0)
                 return;
 
-            var sharpen = Contrast >= 0.0;
-            image.SigmoidalContrast(sharpen, Math.Abs(Contrast), _factory.QuantumInfo.ToDouble().Max / 2);
+            var contrast = Math.Abs(Contrast);
+            var midpoint = ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null) / 2;
+
+            image.SigmoidalContrast(Contrast >= 0.0, contrast, midpoint);
         }
 
         private void ApplySaturation(IMagickImage<TQuantumType> result)

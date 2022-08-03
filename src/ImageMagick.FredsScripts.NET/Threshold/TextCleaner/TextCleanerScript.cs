@@ -258,7 +258,7 @@ namespace ImageMagick.FredsScripts
 
                 if (SmoothingThreshold != null)
                 {
-                    var max = _factory.QuantumInfo.ToDouble().Max;
+                    var max = ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null);
                     second.Blur(SmoothingThreshold.Value.ToDouble() / 100, max);
                     second.Level(SmoothingThreshold.Value, new Percentage(100));
                 }

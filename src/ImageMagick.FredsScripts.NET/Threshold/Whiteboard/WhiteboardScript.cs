@@ -184,7 +184,7 @@ namespace ImageMagick.FredsScripts
         private double GetMean(IMagickImage<TQuantumType> image)
         {
             var mean = image.Statistics().GetChannel(PixelChannel.Composite).Mean;
-            return mean * 100 / _factory.QuantumInfo.ToDouble().Max;
+            return mean * 100 / ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null);
         }
 
         private double GetRatio(IMagickImage<TQuantumType> image, Channels channel, IMagickImage<TQuantumType> mask, double maskMean)
@@ -345,7 +345,7 @@ namespace ImageMagick.FredsScripts
                 gray.ContrastStretch((Percentage)0);
                 if (Threshold.HasValue)
                 {
-                    gray.Blur((double)Threshold.Value / 100.0, _factory.QuantumInfo.ToDouble().Max);
+                    gray.Blur((double)Threshold.Value / 100.0, ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null));
                     gray.Level(Threshold.Value, new Percentage(100));
                 }
 

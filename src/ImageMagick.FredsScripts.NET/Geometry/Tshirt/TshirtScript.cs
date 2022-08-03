@@ -257,7 +257,7 @@ namespace ImageMagick.FredsScripts
                 img.RePage();
 
                 var statistics = img.Statistics();
-                var max = _factory.QuantumInfo.ToDouble().Max;
+                var max = ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null);
                 var mean = (statistics.Composite().Mean / max) - 0.5;
 
                 var result = image.Clone();
