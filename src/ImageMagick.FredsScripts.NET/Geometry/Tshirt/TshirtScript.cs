@@ -219,8 +219,8 @@ namespace ImageMagick.FredsScripts
         {
             var result = new double[16];
 
-            int i = 0;
-            for (int j = 0; j < 4; j++)
+            var i = 0;
+            for (var j = 0; j < 4; j++)
             {
                 result[i++] = overlayCoordinates[j].X;
                 result[i++] = overlayCoordinates[j].Y;
@@ -245,13 +245,13 @@ namespace ImageMagick.FredsScripts
         {
             using (var img = image.Clone())
             {
-                int minX = (int)Math.Min(Math.Min(coords[0].X, coords[1].X), Math.Min(coords[2].X, coords[3].X));
-                int minY = (int)Math.Min(Math.Min(coords[0].Y, coords[1].Y), Math.Min(coords[2].Y, coords[3].Y));
-                int maxX = (int)Math.Max(Math.Max(coords[0].X, coords[1].X), Math.Max(coords[2].X, coords[3].X));
-                int maxY = (int)Math.Max(Math.Max(coords[0].Y, coords[1].Y), Math.Max(coords[2].Y, coords[3].Y));
+                var minX = (int)Math.Min(Math.Min(coords[0].X, coords[1].X), Math.Min(coords[2].X, coords[3].X));
+                var minY = (int)Math.Min(Math.Min(coords[0].Y, coords[1].Y), Math.Min(coords[2].Y, coords[3].Y));
+                var maxX = (int)Math.Max(Math.Max(coords[0].X, coords[1].X), Math.Max(coords[2].X, coords[3].X));
+                var maxY = (int)Math.Max(Math.Max(coords[0].Y, coords[1].Y), Math.Max(coords[2].Y, coords[3].Y));
 
-                int width = maxX - minX + 1;
-                int height = maxY - minY + 1;
+                var width = maxX - minX + 1;
+                var height = maxY - minY + 1;
 
                 img.Crop(_factory.Geometry.Create(minX, minY, width, height));
                 img.RePage();
@@ -313,15 +313,15 @@ namespace ImageMagick.FredsScripts
             var xOffset = _coords[0].X;
             var yOffset = _coords[0].Y;
 
-            PointD[] coords = new PointD[4];
-            for (int i = 0; i < 4; i++)
+            var coords = new PointD[4];
+            for (var i = 0; i < 4; i++)
             {
                 coords[i] = new PointD(
                   (int)Math.Round(((_coords[i].X - xOffset) * Math.Cos(angle)) + ((_coords[i].Y - yOffset) * Math.Sin(angle))),
                   (int)Math.Round(((_coords[i].X - xOffset) * Math.Sin(angle)) + ((_coords[i].Y - yOffset) * Math.Cos(angle))));
             }
 
-            double ho = Math.Max(coords[3].Y - coords[0].Y, coords[2].Y - coords[1].Y);
+            var ho = Math.Max(coords[3].Y - coords[0].Y, coords[2].Y - coords[1].Y);
 
             coords[0] = new PointD(0, 0);
             coords[1] = new PointD(overlay.Width - 1, 0);
@@ -344,7 +344,7 @@ namespace ImageMagick.FredsScripts
             var ycent = Math.Round((0.5 * (overlay.Height / scale)) + _coords[0].Y);
 
             var coords = new PointD[4];
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 coords[i] = new PointD(
                   (int)Math.Round(xcent + ((_coords[i].X - xcent) * Math.Cos(rotate)) - ((_coords[i].Y - ycent) * Math.Sin(rotate))),
@@ -359,7 +359,7 @@ namespace ImageMagick.FredsScripts
             var result = image.Clone();
             if (Fit == TshirtFit.Crop)
             {
-                int height = (int)coords[2].Y + 1;
+                var height = (int)coords[2].Y + 1;
                 if (image.Height > height)
                     result.Crop(image.Width, height, Gravity);
             }

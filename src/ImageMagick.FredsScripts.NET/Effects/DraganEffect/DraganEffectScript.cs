@@ -81,7 +81,7 @@ namespace ImageMagick.FredsScripts
                 using (var second = first.Clone())
                 {
                     second.Modulate((Percentage)100, (Percentage)0, (Percentage)100);
-                    double darkness = 3 / Darkness;
+                    var darkness = 3 / Darkness;
                     if (darkness != 1)
                     {
                         second.Evaluate(Channels.All, EvaluateOperator.Multiply, darkness);

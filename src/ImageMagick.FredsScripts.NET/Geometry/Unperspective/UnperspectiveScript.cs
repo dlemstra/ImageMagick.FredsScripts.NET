@@ -166,7 +166,7 @@ namespace ImageMagick.FredsScripts
 
             var inputDimensions = _factory.Geometry.Create(input.Width, input.Height);
             var backgroundColor = GetBorderColor(input);
-            int borderSize = (int)((3 * Blur) + 5);
+            var borderSize = (int)((3 * Blur) + 5);
 
             var output = input.Clone();
 
@@ -176,16 +176,16 @@ namespace ImageMagick.FredsScripts
 
             int xOffset;
 
-            using (IMagickImage<TQuantumType> paddedMask = CreatePaddedMask(output, out xOffset))
+            using (var paddedMask = CreatePaddedMask(output, out xOffset))
             {
                 var maxRad = 0.5 * Hypot(output.Width, output.Height);
                 var depolar = CreateDepolar(paddedMask, maxRad);
 
-                ushort[] pixels = GetGrayChannel(depolar);
+                var pixels = GetGrayChannel(depolar);
 
-                List<PixelValue> maxList = GetPeaks(pixels, depolar);
+                var maxList = GetPeaks(pixels, depolar);
 
-                PointD[] corners = GetCorners(paddedMask, maxList, maxRad, xOffset);
+                var corners = GetCorners(paddedMask, maxList, maxRad, xOffset);
 
                 var rotation = GetRotation(corners, output);
 
@@ -229,14 +229,14 @@ namespace ImageMagick.FredsScripts
 
         private static double[] GetCoefficients(double[] arguments)
         {
-            double[] terms = new double[8];
-            double[] vectors = new double[8];
-            double[][] matrix = new double[8][];
+            var terms = new double[8];
+            var vectors = new double[8];
+            var matrix = new double[8][];
 
-            for (int i = 0; i < 8; i++)
+            for (var i = 0; i < 8; i++)
                 matrix[i] = new double[8];
 
-            for (int i = 0; i < arguments.Length; i += 4)
+            for (var i = 0; i < arguments.Length; i += 4)
             {
                 terms[0] = arguments[i + 2];
                 terms[1] = arguments[i + 3];
@@ -267,7 +267,7 @@ namespace ImageMagick.FredsScripts
 
         private static double[] GetCoefficients(IMagickImage<TQuantumType> image, double maxRad)
         {
-            double[] coeff = new double[8];
+            var coeff = new double[8];
             coeff[0] = maxRad;
             coeff[1] = 0.0;
             coeff[2] = image.Width / 2.0;
@@ -281,11 +281,11 @@ namespace ImageMagick.FredsScripts
 
         private static PointD[] GetCorners(IMagickImage<TQuantumType> paddedMask, List<PixelValue> maxList, double maxRad, int xOffset)
         {
-            double[] coeff = GetCoefficients(paddedMask, maxRad);
+            var coeff = GetCoefficients(paddedMask, maxRad);
 
-            PointD[] corners = new PointD[4];
+            var corners = new PointD[4];
 
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
                 corners[i] = GetCorner(maxList, coeff, xOffset, paddedMask.Height, i);
 
             return corners;
@@ -293,8 +293,8 @@ namespace ImageMagick.FredsScripts
 
         private static PointD GetCorner(List<PixelValue> maxList, double[] coeff, int xOffset, int height, int index)
         {
-            double aa = ((maxList[index].Position + 0.5) * coeff[6]) + coeff[5];
-            double rr = ((((maxList[index].Value * height) / 65535.0) + 0.5) * coeff[7]) + coeff[1];
+            var aa = ((maxList[index].Position + 0.5) * coeff[6]) + coeff[5];
+            var rr = ((((maxList[index].Value * height) / 65535.0) + 0.5) * coeff[7]) + coeff[1];
 
             return new PointD((rr * Math.Sin(aa)) + coeff[2] - 0.5 - xOffset, (rr * Math.Cos(aa)) + coeff[3] - 0.5);
         }
@@ -308,20 +308,20 @@ namespace ImageMagick.FredsScripts
 
         private static bool GaussJordanElimination(double[][] matrix, double[] vectors)
         {
-            double[] columns = new double[8];
-            double[] rows = new double[8];
-            double[] pivots = new double[8];
-            int column = 0;
-            int row = 0;
-            for (int i = 0; i < 8; i++)
+            var columns = new double[8];
+            var rows = new double[8];
+            var pivots = new double[8];
+            var column = 0;
+            var row = 0;
+            for (var i = 0; i < 8; i++)
             {
-                double max = 0.0;
-                for (int j = 0; j < 8; j++)
+                var max = 0.0;
+                for (var j = 0; j < 8; j++)
                 {
                     if (pivots[j] == 1)
                         continue;
 
-                    for (int k = 0; k < 8; k++)
+                    for (var k = 0; k < 8; k++)
                     {
                         if (pivots[k] != 0)
                         {
@@ -340,7 +340,7 @@ namespace ImageMagick.FredsScripts
                 pivots[column]++;
                 if (row != column)
                 {
-                    for (int k = 0; k < 8; k++)
+                    for (var k = 0; k < 8; k++)
                         GaussJordanSwap(ref matrix[row][k], ref matrix[column][k]);
                     GaussJordanSwap(ref vectors[row], ref vectors[column]);
                 }
@@ -349,18 +349,18 @@ namespace ImageMagick.FredsScripts
                 columns[i] = column;
                 if (matrix[column][column] == 0.0)
                     return false;  /* sigularity */
-                double scale = PerceptibleReciprocal(matrix[column][column]);
+                var scale = PerceptibleReciprocal(matrix[column][column]);
                 matrix[column][column] = 1.0;
-                for (int j = 0; j < 8; j++)
+                for (var j = 0; j < 8; j++)
                     matrix[column][j] *= scale;
                 vectors[column] *= scale;
-                for (int j = 0; j < 8; j++)
+                for (var j = 0; j < 8; j++)
                 {
                     if (j == column)
                         continue;
                     scale = matrix[j][column];
                     matrix[j][column] = 0.0;
-                    for (int k = 0; k < 8; k++)
+                    for (var k = 0; k < 8; k++)
                         matrix[j][k] -= scale * matrix[column][k];
                     vectors[j] -= scale * vectors[column];
                 }
@@ -386,9 +386,9 @@ namespace ImageMagick.FredsScripts
 
         private static double[] InvertPerspectiveCoefficients(double[] coeff)
         {
-            double[] inverse = new double[8];
+            var inverse = new double[8];
 
-            double determinant = PerceptibleReciprocal((coeff[0] * coeff[4]) - (coeff[3] * coeff[1]));
+            var determinant = PerceptibleReciprocal((coeff[0] * coeff[4]) - (coeff[3] * coeff[1]));
             inverse[0] = determinant * (coeff[4] - (coeff[7] * coeff[5]));
             inverse[1] = determinant * ((coeff[7] * coeff[2]) - coeff[1]);
             inverse[2] = determinant * ((coeff[1] * coeff[5]) - (coeff[4] * coeff[2]));
@@ -403,9 +403,9 @@ namespace ImageMagick.FredsScripts
 
         private static void LeastSquaresAddTerms(double[][] matrix, double[] vectors, double[] terms, double result)
         {
-            for (int j = 0; j < 8; j++)
+            for (var j = 0; j < 8; j++)
             {
-                for (int i = 0; i < 8; i++)
+                for (var i = 0; i < 8; i++)
                     matrix[i][j] += terms[i] * terms[j];
                 vectors[j] += result * terms[j];
             }
@@ -429,7 +429,7 @@ namespace ImageMagick.FredsScripts
 
         private static void RemoveInvalidValues(List<PixelValue> list, int width)
         {
-            for (int i = list.Count - 1; i >= 0; i--)
+            for (var i = list.Count - 1; i >= 0; i--)
             {
                 if (list[i].Position >= width && list[i].Position < 2 * width)
                 {
@@ -446,7 +446,7 @@ namespace ImageMagick.FredsScripts
             using (var pixels = image.GetPixels())
             {
                 var values = pixels.ToShortArray(0, 0, image.Width, 1, "R");
-                for (int i = 0; i < maxList.Count; i++)
+                for (var i = 0; i < maxList.Count; i++)
                 {
                     maxList[i].Value = values[maxList[i].Position];
                 }
@@ -473,20 +473,20 @@ namespace ImageMagick.FredsScripts
 
         private IMagickGeometry GetViewport(double[] arguments, PointD[] corners)
         {
-            double[] coeff = GetCoefficients(arguments);
+            var coeff = GetCoefficients(arguments);
 
-            PointD i1 = GetPoint(coeff, corners[0].X, corners[0].Y);
-            PointD i2 = GetPoint(coeff, corners[1].X, corners[1].Y);
-            PointD i3 = GetPoint(coeff, corners[2].X, corners[2].Y);
-            PointD i4 = GetPoint(coeff, corners[3].X, corners[3].Y);
+            var i1 = GetPoint(coeff, corners[0].X, corners[0].Y);
+            var i2 = GetPoint(coeff, corners[1].X, corners[1].Y);
+            var i3 = GetPoint(coeff, corners[2].X, corners[2].Y);
+            var i4 = GetPoint(coeff, corners[3].X, corners[3].Y);
 
-            double xmax = Math.Max(Math.Max(Math.Max(i1.X, i2.X), i3.X), i4.X);
-            double ymax = Math.Max(Math.Max(Math.Max(i1.Y, i2.Y), i3.Y), i4.Y);
-            double xmin = Math.Min(Math.Min(Math.Min(i1.X, i2.X), i3.X), i4.X);
-            double ymin = Math.Min(Math.Min(Math.Min(i1.Y, i2.Y), i3.Y), i4.Y);
+            var xmax = Math.Max(Math.Max(Math.Max(i1.X, i2.X), i3.X), i4.X);
+            var ymax = Math.Max(Math.Max(Math.Max(i1.Y, i2.Y), i3.Y), i4.Y);
+            var xmin = Math.Min(Math.Min(Math.Min(i1.X, i2.X), i3.X), i4.X);
+            var ymin = Math.Min(Math.Min(Math.Min(i1.Y, i2.Y), i3.Y), i4.Y);
 
-            double iw = Math.Abs(xmax - xmin);
-            double ih = Math.Abs(ymax - ymin);
+            var iw = Math.Abs(xmax - xmin);
+            var ih = Math.Abs(ymax - ymin);
 
             return _factory.Geometry.Create((int)xmin, (int)ymin, (int)iw, (int)ih);
         }
@@ -496,8 +496,8 @@ namespace ImageMagick.FredsScripts
             if (AspectRatio.HasValue)
                 return AspectRatio.Value;
 
-            double centroidX = image.Width / 2.0;
-            double centroidY = image.Height / 2.0;
+            var centroidX = image.Width / 2.0;
+            var centroidY = image.Height / 2.0;
 
             // convert to proper x,y coordinates relative to center
             var m1x = corners[1].X - centroidX;
@@ -604,15 +604,15 @@ namespace ImageMagick.FredsScripts
 
         private IMagickGeometry GetDimensions(IMagickImage<TQuantumType> image, PointD[] corners, IMagickGeometry inputDimensions, IMagickGeometry trimmedDimensions)
         {
-            double left = Hypot(corners[0].X - corners[1].X, corners[0].Y - corners[1].Y);
-            double bottom = Hypot(corners[1].X - corners[2].X, corners[1].Y - corners[2].Y);
-            double right = Hypot(corners[2].X - corners[3].X, corners[2].Y - corners[3].Y);
-            double top = Hypot(corners[3].X - corners[0].X, corners[3].Y - corners[0].Y);
+            var left = Hypot(corners[0].X - corners[1].X, corners[0].Y - corners[1].Y);
+            var bottom = Hypot(corners[1].X - corners[2].X, corners[1].Y - corners[2].Y);
+            var right = Hypot(corners[2].X - corners[3].X, corners[2].Y - corners[3].Y);
+            var top = Hypot(corners[3].X - corners[0].X, corners[3].Y - corners[0].Y);
 
             if (left < MinLength || bottom < MinLength || right < MinLength || top < MinLength)
                 throw new InvalidOperationException("Unable to continue, the edge length is less than " + MaxPeaks + ".");
 
-            double aspectRatio = CalculateAspectRation(image, corners);
+            var aspectRatio = CalculateAspectRation(image, corners);
 
             if (Height != null)
                 return _factory.Geometry.Create((int)Math.Floor(aspectRatio * Height.Value), Height.Value);
@@ -678,14 +678,14 @@ namespace ImageMagick.FredsScripts
 
         private List<PixelValue> GetPeaks(ushort[] pixels, IMagickImage<TQuantumType> image)
         {
-            ushort min = ushort.MaxValue;
-            ushort max = ushort.MinValue;
+            var min = ushort.MaxValue;
+            var max = ushort.MinValue;
 
-            List<PixelValue> minList = new List<PixelValue>();
-            List<PixelValue> maxList = new List<PixelValue>();
-            bool lookingForMax = true;
+            var minList = new List<PixelValue>();
+            var maxList = new List<PixelValue>();
+            var lookingForMax = true;
 
-            for (int i = 0; i < pixels.Length; i++)
+            for (var i = 0; i < pixels.Length; i++)
             {
                 var pixel = pixels[i];
                 if (pixel > max)
@@ -698,7 +698,7 @@ namespace ImageMagick.FredsScripts
                 {
                     if (pixel < max)
                     {
-                        int j = i - 1;
+                        var j = i - 1;
                         maxList.Add(new PixelValue(j, pixels[j]));
                         min = pixel;
                         lookingForMax = false;
@@ -708,7 +708,7 @@ namespace ImageMagick.FredsScripts
                 {
                     if (pixel > min)
                     {
-                        int j = i - 1;
+                        var j = i - 1;
                         minList.Add(new PixelValue(j, pixels[j]));
                         max = pixel;
                         lookingForMax = true;
@@ -760,12 +760,12 @@ namespace ImageMagick.FredsScripts
 
             if (_method == UnperspectiveMethod.Peak)
             {
-                double posThreshold = Math.Pow(Threshold, 2);
-                double threshold = Math.Pow(Threshold * 255, 2);
+                var posThreshold = Math.Pow(Threshold, 2);
+                var threshold = Math.Pow(Threshold * 255, 2);
 
-                for (int i = maxList.Count - 1; i >= 0; i--)
+                for (var i = maxList.Count - 1; i >= 0; i--)
                 {
-                    for (int j = 0; j < minList.Count; j++)
+                    for (var j = 0; j < minList.Count; j++)
                     {
                         if (Math.Pow(maxList[i].Position - minList[j].Position, 2) <= posThreshold && Math.Pow(maxList[i].Value - minList[j].Value, 2) <= threshold)
                         {
@@ -778,7 +778,7 @@ namespace ImageMagick.FredsScripts
             else
             {
                 double threshold = Threshold * 255;
-                for (int i = maxList.Count - 1; i >= 0; i--)
+                for (var i = maxList.Count - 1; i >= 0; i--)
                 {
                     if (maxList[i].Value <= threshold)
                         maxList.RemoveAt(i);

@@ -203,7 +203,7 @@ namespace ImageMagick.FredsScripts
 
             if (SmoothingThreshold != null)
             {
-                double textSmoothingThreshold = SmoothingThreshold.Value.ToDouble();
+                var textSmoothingThreshold = SmoothingThreshold.Value.ToDouble();
                 if (textSmoothingThreshold < 0 || textSmoothingThreshold > 100)
                     throw new InvalidOperationException("Invalid smoothing threshold specified, value must be between zero and 100.");
             }
@@ -223,8 +223,8 @@ namespace ImageMagick.FredsScripts
             if (!CropOffset.IsSet)
                 return;
 
-            int width = image.Width - (CropOffset.Left + CropOffset.Right);
-            int height = image.Height - (CropOffset.Top + CropOffset.Bottom);
+            var width = image.Width - (CropOffset.Left + CropOffset.Right);
+            var height = image.Height - (CropOffset.Top + CropOffset.Bottom);
 
             image.Crop(_factory.Geometry.Create(CropOffset.Left, CropOffset.Top, width, height));
         }

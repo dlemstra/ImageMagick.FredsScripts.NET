@@ -124,11 +124,11 @@ namespace ImageMagick.FredsScripts
 
         private IMagickGeometry TestGeometry(IMagickGeometry geometry, Line line1, Line line2)
         {
-            int x = Math.Max(line1.X1, line2.X1);
-            int y = line1.Y;
+            var x = Math.Max(line1.X1, line2.X1);
+            var y = line1.Y;
 
-            int width = Math.Min(line1.X2, line2.X2) - x;
-            int height = line2.Y - line1.Y;
+            var width = Math.Min(line1.X2, line2.X2) - x;
+            var height = line2.Y - line1.Y;
 
             if (width < 0 || height < 0)
                 return geometry;

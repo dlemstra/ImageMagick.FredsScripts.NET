@@ -189,7 +189,7 @@ namespace ImageMagick.FredsScripts
 
         private double GetRatio(IMagickImage<TQuantumType> image, Channels channel, IMagickImage<TQuantumType> mask, double maskMean)
         {
-            using (IMagickImage<TQuantumType> channelImage = image.Separate(channel).First())
+            using (var channelImage = image.Separate(channel).First())
             {
                 channelImage.Composite(mask, CompositeOperator.Multiply);
                 var channelMean = GetMean(channelImage);
@@ -215,11 +215,11 @@ namespace ImageMagick.FredsScripts
                     newMask.ContrastStretch((Percentage)0, WhiteBalance);
                     newMask.InverseOpaque(_factory.Color.Create("white"), _factory.Color.Create("black"));
 
-                    double maskMean = GetMean(newMask);
+                    var maskMean = GetMean(newMask);
 
-                    double redRatio = GetRatio(image, Channels.Red, newMask, maskMean);
-                    double greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
-                    double blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
+                    var redRatio = GetRatio(image, Channels.Red, newMask, maskMean);
+                    var greenRatio = GetRatio(image, Channels.Green, newMask, maskMean);
+                    var blueRatio = GetRatio(image, Channels.Blue, newMask, maskMean);
 
                     var matrix = _factory.Matrix.CreateColorMatrix(3, redRatio, 0, 0, 0, greenRatio, 0, 0, 0, blueRatio);
 

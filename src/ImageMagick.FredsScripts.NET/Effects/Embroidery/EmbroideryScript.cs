@@ -159,7 +159,7 @@ namespace ImageMagick.FredsScripts
 
                 using (var pattern = CreatePattern(image.Width * 2, image.Height * 2))
                 {
-                    using (IMagickImage<TQuantumType> nearBlackWhite = ToNearBlackWhite(image))
+                    using (var nearBlackWhite = ToNearBlackWhite(image))
                     {
                         using (var images = _factory.ImageCollection.Create())
                         {
@@ -167,7 +167,7 @@ namespace ImageMagick.FredsScripts
 
                             foreach (var color in colors)
                             {
-                                bool useBevel = Bevel != 0 && !color.Equals(colors.First());
+                                var useBevel = Bevel != 0 && !color.Equals(colors.First());
 
                                 using (var croppedPattern = CreateCroppedPattern(image, pattern, angle))
                                 {
@@ -225,7 +225,7 @@ namespace ImageMagick.FredsScripts
 
         private static IMagickImage<TQuantumType> CreateRolled(IMagickImage<TQuantumType> image, int thickness)
         {
-            IMagickImage<TQuantumType> rolled = image.Clone();
+            var rolled = image.Clone();
             rolled.Roll(thickness, 0);
             return rolled;
         }
@@ -245,7 +245,7 @@ namespace ImageMagick.FredsScripts
                 foreach (var color in colors)
                     images.Add(_factory.Image.Create(color, 1, 1));
 
-                using (IMagickImage<TQuantumType> colorMap = images.AppendHorizontally())
+                using (var colorMap = images.AppendHorizontally())
                 {
                     var settings = _factory.Settings.CreateQuantizeSettings();
                     settings.DitherMethod = DitherMethod.No;
@@ -395,7 +395,7 @@ namespace ImageMagick.FredsScripts
                     return pattern;
                 }
 
-                using (IMagickImage<TQuantumType> mix = pattern.Clone())
+                using (var mix = pattern.Clone())
                 {
                     mix.Spread(Spread);
 
@@ -415,7 +415,7 @@ namespace ImageMagick.FredsScripts
 
         private IMagickImage<TQuantumType> ToNearBlackWhite(IMagickImage<TQuantumType> image)
         {
-            IMagickImage<TQuantumType> result = image.Clone();
+            var result = image.Clone();
             if (GrayLimit == 0 && ColorFuzz == (Percentage)0)
                 return result;
 
