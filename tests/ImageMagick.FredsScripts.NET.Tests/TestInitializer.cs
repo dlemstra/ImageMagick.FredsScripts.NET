@@ -29,8 +29,5 @@ namespace ImageMagick.FredsScripts.NET.Tests
             OpenCL.IsEnabled = false;
             MagickNET.SetRandomSeed(100);
         }
-
-        public new void Dispose()
-            => base.Dispose();
     }
 }
