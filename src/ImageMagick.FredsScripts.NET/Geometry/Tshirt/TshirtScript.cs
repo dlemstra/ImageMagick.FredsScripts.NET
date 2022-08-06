@@ -25,7 +25,7 @@ namespace ImageMagick.FredsScripts
     /// </summary>
     /// <typeparam name="TQuantumType">The quantum type.</typeparam>
     public sealed class TshirtScript<TQuantumType>
-        where TQuantumType : struct
+        where TQuantumType : struct, IConvertible
     {
         private readonly IMagickFactory<TQuantumType> _factory;
         private PointD[] _coords;
@@ -257,7 +257,7 @@ namespace ImageMagick.FredsScripts
                 img.RePage();
 
                 var statistics = img.Statistics();
-                var max = ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null);
+                var max = _factory.Quantum.Max.ToDouble(null);
                 var mean = (statistics.Composite().Mean / max) - 0.5;
 
                 var result = image.Clone();
@@ -275,7 +275,7 @@ namespace ImageMagick.FredsScripts
         private void ApplyLighting(IMagickImage<TQuantumType> image)
         {
             if (Lighting != 0)
-                image.SigmoidalContrast(true, Lighting / 3.0);
+                image.SigmoidalContrast(Lighting / 3.0);
         }
 
         private void ApplySharpen(IMagickImage<TQuantumType> image)

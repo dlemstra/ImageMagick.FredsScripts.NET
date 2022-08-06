@@ -25,7 +25,7 @@ namespace ImageMagick.FredsScripts
     /// </summary>
     /// <typeparam name="TQuantumType">The quantum type.</typeparam>
     public sealed class CartoonScript<TQuantumType>
-        where TQuantumType : struct
+        where TQuantumType : struct, IConvertible
     {
         private static readonly int _edgeWidth = 2;
         private static readonly Percentage _edgeThreshold = new Percentage(90);

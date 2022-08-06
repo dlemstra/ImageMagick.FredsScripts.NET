@@ -35,7 +35,7 @@ namespace ImageMagick.FredsScripts
     /// </summary>
     /// <typeparam name="TQuantumType">The quantum type.</typeparam>
     public sealed partial class UnperspectiveScript<TQuantumType>
-        where TQuantumType : struct
+        where TQuantumType : struct, IConvertible
     {
         private readonly IMagickFactory<TQuantumType> _factory;
         private UnperspectiveMethod _method;

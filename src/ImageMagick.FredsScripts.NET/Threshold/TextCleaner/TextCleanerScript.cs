@@ -22,7 +22,7 @@ namespace ImageMagick.FredsScripts
     /// </summary>
     /// <typeparam name="TQuantumType">The quantum type.</typeparam>
     public sealed class TextCleanerScript<TQuantumType>
-        where TQuantumType : struct
+        where TQuantumType : struct, IConvertible
     {
         private readonly IMagickFactory<TQuantumType> _factory;
 
@@ -258,7 +258,7 @@ namespace ImageMagick.FredsScripts
 
                 if (SmoothingThreshold != null)
                 {
-                    var max = ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null);
+                    var max = _factory.Quantum.Max.ToDouble(null);
                     second.Blur(SmoothingThreshold.Value.ToDouble() / 100, max);
                     second.Level(SmoothingThreshold.Value, new Percentage(100));
                 }

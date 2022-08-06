@@ -26,7 +26,7 @@ namespace ImageMagick.FredsScripts
     /// </summary>
     /// <typeparam name="TQuantumType">The quantum type.</typeparam>
     public sealed class WhiteboardScript<TQuantumType>
-        where TQuantumType : struct
+        where TQuantumType : struct, IConvertible
     {
         private readonly IMagickFactory<TQuantumType> _factory;
         private PointD[] _coords;
@@ -184,7 +184,7 @@ namespace ImageMagick.FredsScripts
         private double GetMean(IMagickImage<TQuantumType> image)
         {
             var mean = image.Statistics().GetChannel(PixelChannel.Composite).Mean;
-            return mean * 100 / ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null);
+            return mean * 100 / _factory.Quantum.Max.ToDouble(null);
         }
 
         private double GetRatio(IMagickImage<TQuantumType> image, Channels channel, IMagickImage<TQuantumType> mask, double maskMean)
@@ -345,7 +345,7 @@ namespace ImageMagick.FredsScripts
                 gray.ContrastStretch((Percentage)0);
                 if (Threshold.HasValue)
                 {
-                    gray.Blur((double)Threshold.Value / 100.0, ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null));
+                    gray.Blur((double)Threshold.Value / 100.0, _factory.Quantum.Max.ToDouble(null));
                     gray.Level(Threshold.Value, new Percentage(100));
                 }
 

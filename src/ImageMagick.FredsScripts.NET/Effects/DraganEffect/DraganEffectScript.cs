@@ -22,7 +22,7 @@ namespace ImageMagick.FredsScripts
     /// </summary>
     /// <typeparam name="TQuantumType">The quantum type.</typeparam>
     public sealed class DraganEffectScript<TQuantumType>
-        where TQuantumType : struct
+        where TQuantumType : struct, IConvertible
     {
         private readonly IMagickFactory<TQuantumType> _factory;
 
@@ -139,9 +139,12 @@ namespace ImageMagick.FredsScripts
                 return;
 
             var contrast = Math.Abs(Contrast);
-            var midpoint = ((IConvertible)_factory.QuantumInfo.Max).ToDouble(null) / 2;
+            var midpoint = _factory.Quantum.Max.ToDouble(null) / 2;
 
-            image.SigmoidalContrast(Contrast >= 0.0, contrast, midpoint);
+            if (Contrast >= 0.0)
+                image.SigmoidalContrast(contrast, midpoint);
+            else
+                image.InverseSigmoidalContrast(contrast, midpoint);
         }
 
         private void ApplySaturation(IMagickImage<TQuantumType> result)
