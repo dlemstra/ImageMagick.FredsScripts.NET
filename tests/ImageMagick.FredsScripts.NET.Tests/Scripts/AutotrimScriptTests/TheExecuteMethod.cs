@@ -214,7 +214,6 @@ namespace ImageMagick.FredsScripts.NET.Tests
             private void AssertExecuteWithFilename(string input, string output, Action<AutotrimScript<ushort>> action)
             {
                 var inputFile = GetInputFile(input);
-                /* LosslessCompress(inputFile); */
 
                 using (var image = new MagickImage(inputFile))
                 {

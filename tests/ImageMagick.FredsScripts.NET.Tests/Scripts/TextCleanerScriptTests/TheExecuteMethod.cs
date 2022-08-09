@@ -403,7 +403,6 @@ namespace ImageMagick.FredsScripts.NET.Tests
             private void AssertExecute(string input, string methodName, Action<TextCleanerScript<ushort>> action)
             {
                 var inputFile = GetInputFile(input);
-                /* LosslessCompress(inputFile); */
 
                 using (var image = new MagickImage(inputFile))
                 {

@@ -95,7 +95,6 @@ namespace ImageMagick.FredsScripts.NET.Tests
             private void AssertExecute(string input)
             {
                 var inputFile = GetInputFile(input);
-                /* LosslessCompress(inputFile); */
 
                 var output = input.Replace(".jpg", ".gif");
 
