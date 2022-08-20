@@ -443,7 +443,7 @@ namespace ImageMagick.FredsScripts
 
         private static void ResetMaxList(List<PixelValue> maxList, IMagickImage<TQuantumType> image)
         {
-            using (var pixels = image.GetPixels())
+            using (var pixels = image.GetPixelsUnsafe())
             {
                 var values = pixels.ToShortArray(0, 0, image.Width, 1, "R");
                 for (var i = 0; i < maxList.Count; i++)
@@ -668,7 +668,7 @@ namespace ImageMagick.FredsScripts
 
                     depolar.Depth = 16;
 
-                    using (var pixels = depolar.GetPixels())
+                    using (var pixels = depolar.GetPixelsUnsafe())
                     {
                         return pixels.ToShortArray(0, 0, depolar.Width, 1, "R");
                     }
