@@ -150,7 +150,7 @@ namespace ImageMagick.FredsScripts.NET.Tests
 
                 using (var tshirtImage = new MagickImage(tshirtFile))
                 {
-                    tshirtImage.Opaque(new MagickColor("#FFFFFF"), MagickColors.None);
+                    tshirtImage.Opaque(new MagickColor("#FFFFFF"), MagickColors.Transparent);
 
                     using (var overlayImage = new MagickImage(overlayFile))
                     {

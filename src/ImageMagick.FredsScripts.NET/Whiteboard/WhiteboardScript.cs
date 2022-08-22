@@ -150,7 +150,7 @@ namespace ImageMagick.FredsScripts
         public void Reset()
         {
             _coords = null;
-            BackgroundColor = _factory.Color.Create("white");
+            BackgroundColor = _factory.Colors.White;
             Enhance = WhiteboardEnhancements.Stretch;
             FilterSize = 15;
             FilterOffset = (Percentage)5;
@@ -213,7 +213,7 @@ namespace ImageMagick.FredsScripts
                     }
 
                     newMask.ContrastStretch((Percentage)0, WhiteBalance);
-                    newMask.InverseOpaque(_factory.Color.Create("white"), _factory.Color.Create("black"));
+                    newMask.InverseOpaque(_factory.Colors.White, _factory.Colors.Black);
 
                     var maskMean = GetMean(newMask);
 
@@ -350,7 +350,7 @@ namespace ImageMagick.FredsScripts
                 }
 
                 image.Composite(gray, CompositeOperator.CopyAlpha);
-                image.Opaque(_factory.Color.Create("transparent"), BackgroundColor);
+                image.Opaque(_factory.Colors.Transparent, BackgroundColor);
                 image.Alpha(AlphaOption.Off);
             }
         }

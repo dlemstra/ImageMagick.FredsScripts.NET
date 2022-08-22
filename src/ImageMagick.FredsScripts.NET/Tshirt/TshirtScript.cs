@@ -391,7 +391,7 @@ namespace ImageMagick.FredsScripts
             using (var images = _factory.ImageCollection.Create())
             {
                 grayShirt.Alpha(AlphaOption.Transparent);
-                grayShirt.BackgroundColor = _factory.Color.Create("transparent");
+                grayShirt.BackgroundColor = _factory.Colors.Transparent;
                 grayShirt.ColorSpace = ColorSpace.sRGB;
                 images.Add(grayShirt);
 

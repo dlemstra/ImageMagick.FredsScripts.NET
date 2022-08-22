@@ -157,7 +157,7 @@ namespace ImageMagick.FredsScripts
         public void Reset()
         {
             AdaptiveBlur = 0.0;
-            BackgroundColor = _factory.Color.Create("white");
+            BackgroundColor = _factory.Colors.White;
             CropOffset = new TextCleanerCropOffset();
             Enhance = TextCleanerEnhance.Stretch;
             FilterOffset = (Percentage)5;
@@ -266,7 +266,7 @@ namespace ImageMagick.FredsScripts
                 image.Composite(second, CompositeOperator.CopyAlpha);
             }
 
-            image.Opaque(_factory.Color.Create("transparent"), BackgroundColor);
+            image.Opaque(_factory.Colors.Transparent, BackgroundColor);
             image.Alpha(AlphaOption.Off);
         }
 

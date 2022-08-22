@@ -332,7 +332,7 @@ namespace ImageMagick.FredsScripts
                     AddBevel(alphaCopy);
 
                 var result = alphaCopy.Clone();
-                result.BackgroundColor = _factory.Color.Create("black");
+                result.BackgroundColor = _factory.Colors.Black;
                 result.Shadow(0, 0, Extent, Intensity);
                 result.RePage();
                 result.Level((Percentage)0, (Percentage)50, Channels.Alpha);
@@ -383,7 +383,7 @@ namespace ImageMagick.FredsScripts
         {
             using (var texture = CreateTexture())
             {
-                var pattern = _factory.Image.Create(_factory.Color.Create("none"), width, height);
+                var pattern = _factory.Image.Create(_factory.Colors.Transparent, width, height);
                 pattern.Texture(texture);
 
                 if (Spread == 0.0)
@@ -420,8 +420,8 @@ namespace ImageMagick.FredsScripts
                 return result;
 
             result.ColorFuzz = ColorFuzz;
-            result.Opaque(_factory.Color.Create("white"), _factory.Color.Create("gray(" + (100 - GrayLimit) + "%)"));
-            result.Opaque(_factory.Color.Create("black"), _factory.Color.Create("gray(" + GrayLimit + "%)"));
+            result.Opaque(_factory.Colors.White, _factory.Color.Create("gray(" + (100 - GrayLimit) + "%)"));
+            result.Opaque(_factory.Colors.Black, _factory.Color.Create("gray(" + GrayLimit + "%)"));
             result.ColorFuzz = (Percentage)0;
 
             return result;

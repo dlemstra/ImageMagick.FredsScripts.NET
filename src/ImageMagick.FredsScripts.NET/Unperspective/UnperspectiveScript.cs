@@ -535,12 +535,12 @@ namespace ImageMagick.FredsScripts
             mask.Alpha(AlphaOption.Off);
             mask.Alpha(AlphaOption.Set);
             mask.ColorFuzz = ColorFuzz;
-            mask.Settings.FillColor = _factory.Color.Create("transparent");
+            mask.Settings.FillColor = _factory.Colors.Transparent;
             var drawables = _factory.Drawables.Create();
             drawables.Alpha(0, 0, PaintMethod.Floodfill);
             mask.Draw(drawables);
-            mask.InverseOpaque(_factory.Color.Create("transparent"), _factory.Color.Create("white"));
-            mask.Opaque(_factory.Color.Create("transparent"), _factory.Color.Create("black"));
+            mask.InverseOpaque(_factory.Colors.Transparent, _factory.Colors.White);
+            mask.Opaque(_factory.Colors.Transparent, _factory.Colors.Black);
             mask.Alpha(AlphaOption.Off);
 
             if (Blur != 0.0)
@@ -560,7 +560,7 @@ namespace ImageMagick.FredsScripts
             var paddedMask = CreateMask(image);
             if (paddedMask.Width < minWidth)
             {
-                paddedMask.BackgroundColor = _factory.Color.Create("black");
+                paddedMask.BackgroundColor = _factory.Colors.Black;
                 paddedMask.Extent(minWidth, paddedMask.Height, Gravity.Center);
                 xOffset = (minWidth - image.Width) / 2;
             }
