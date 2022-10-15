@@ -18,13 +18,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Magick.NET.Core" version="12.1.0" />
+    <PackageReference Include="Magick.NET.Core" version="12.2.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="All" />
   </ItemGroup>
 
