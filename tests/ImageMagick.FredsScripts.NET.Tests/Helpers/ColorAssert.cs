@@ -14,7 +14,6 @@
 // http://www.imagemagick.org/script/license.php
 
 using System;
-using Xunit;
 using Xunit.Sdk;
 
 namespace ImageMagick.FredsScripts.NET.Tests
