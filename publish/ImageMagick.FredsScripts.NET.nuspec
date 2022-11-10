@@ -8,7 +8,7 @@
     <owners>Dirk Lemstra, Fred Weinhaus</owners>
     <license type="file">LICENSE.md</license>
     <projectUrl>https://github.com/dlemstra/ImageMagick.FredsScripts.NET</projectUrl>
-    <repository type="git" url="https://github.com/dlemstra/ImageMagick.FredsScripts.NET" branch="master" />
+    <repository type="git" url="https://github.com/dlemstra/ImageMagick.FredsScripts.NET" branch="main" />
     <icon>ImageMagick.FredsScripts.Logo.png</icon>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description></description>
