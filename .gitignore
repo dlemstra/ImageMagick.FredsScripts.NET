@@ -5,6 +5,6 @@
 bin
 obj
 /packages
-/publish/nupkg/api.key.txt
+/publish/nupkg
 /TestResults
 /tools/windows/nuget.exe
