@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30128.74
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{9B260F88-85D3-44B8-BDED-3279DDEEF8E9}"
 EndProject
@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nupkg", "nupkg", "{26CDE18C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{2F39F8B4-AEAB-4586-BAE5-49AC0C9853C8}"
 	ProjectSection(SolutionItems) = preProject
-		publish\nuspec\Readme.txt = publish\nuspec\Readme.txt
+		publish\nuspec\Readme.md = publish\nuspec\Readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E1FF85AD-B1E5-4517-BA74-D40E2EEE8B22}"

@@ -44,6 +44,9 @@ function createNuspecFiles()
 
     foreach ($script in $scripts)
     {
+        $readmeFile = FullPath "publish\nuspec\$($script.id).md"
+        $script.description | Out-File -FilePath $readmeFile
+
         $nuspecFile = FullPath "publish\nuspec\$($script.id).nuspec"
 
         $title = "Fred's ImageMagick Script " + $script.name
@@ -72,6 +75,7 @@ function createNuspecFiles()
             $file = "$($script.path)\$file"
             addFileElement $xml "..\..\src\ImageMagick.FredsScripts.NET\$file" "Content\ImageMagick.FredsScripts\$file"
         }
+         addFileElement $xml "$($script.id).md" "docs\Readme.md"
 
         $xml.Save($nuspecFile)
         Write-Host "Created: $nuspecFile"

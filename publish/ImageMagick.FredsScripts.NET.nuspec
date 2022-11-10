@@ -13,13 +13,13 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description></description>
     <summary></summary>
+    <readme>docs\Readme.md</readme>
     <releaseNotes/>
     <copyright></copyright>
     <tags>Fred Weinhaus ImageMagick Magick.NET</tags>
   </metadata>
   <files>
-    <file src="Readme.txt" target="" />
-    <file src="..\..\LICENSE.md" target="" />
     <file src="..\..\Images\ImageMagick.FredsScripts.Logo.png" target="ImageMagick.FredsScripts.Logo.png" />
+    <file src="..\..\LICENSE.md" target="" />
   </files>
 </package>
