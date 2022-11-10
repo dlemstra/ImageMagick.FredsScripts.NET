@@ -47,7 +47,7 @@ jobs:
         folder: publish/nupkg
 
     - name: Upload libraries
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: packages
         path: publish/nupkg
