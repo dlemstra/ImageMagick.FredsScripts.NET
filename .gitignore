@@ -6,5 +6,6 @@ bin
 obj
 /packages
 /publish/nupkg
+/publish/nuspec
 /TestResults
 /tools/windows/nuget.exe
