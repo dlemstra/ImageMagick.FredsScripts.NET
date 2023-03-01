@@ -252,6 +252,7 @@ namespace ImageMagick.FredsScripts
             using (var second = image.Clone())
             {
                 second.ColorSpace = ColorSpace.Gray;
+                second.Alpha(AlphaOption.Off);
                 second.Negate();
                 second.AdaptiveThreshold(FilterSize, FilterSize, FilterOffset);
                 second.ContrastStretch((Percentage)0);

@@ -382,6 +382,14 @@ namespace ImageMagick.FredsScripts.NET.Tests
                 });
             }
 
+            [Fact]
+            public void ShouldExecute_issue35_jpg()
+            {
+                AssertExecute("issue35.png", nameof(ShouldExecute_issue35_jpg), (TextCleanerScript<ushort> script) =>
+                {
+                });
+            }
+
             private static void AssertInvalidOperation(string expectedMessage, Action<TextCleanerScript<ushort>> initAction)
             {
                 var factory = new MagickFactory();
